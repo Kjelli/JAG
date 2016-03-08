@@ -1,0 +1,77 @@
+package no.kash.gamedev.jag;
+
+import com.esotericsoftware.kryonet.Connection;
+
+import no.kash.gamedev.jag.actionresolvers.ActionResolver;
+import no.kash.gamedev.jag.assets.Assets;
+import no.kash.gamedev.jag.commons.network.JagReceiver;
+import no.kash.gamedev.jag.commons.network.JagServer;
+import no.kash.gamedev.jag.commons.network.MessageListener;
+import no.kash.gamedev.jag.commons.network.packets.GamePacket;
+import no.kash.gamedev.jag.commons.network.packets.PlayerInput;
+import no.kash.gamedev.jag.commons.tweens.TweenGlobal;
+import no.kash.gamedev.jag.game.screens.GameScreen;
+
+public class JustAnotherGame extends JagEndpoint {
+
+	private JagReceiver receiver;
+
+	public JustAnotherGame(ActionResolver resolver) {
+		super(resolver);
+	}
+
+	private JagServer server;
+
+	@Override
+	public void create() {
+		init();
+		setScreen(new GameScreen(this));
+	}
+
+	private void init() {
+		TweenGlobal.init();
+		Assets.load();
+		server = new JagServer();
+		server.setListener(new MessageListener() {
+
+			@Override
+			public void onMessage(Connection c, GamePacket m) {
+				if (m instanceof PlayerInput) {
+					PlayerInput input = (PlayerInput) m;
+					if (getReceiver() != null) {
+						getReceiver().handleInput(input);
+					}
+				}
+			}
+
+			@Override
+			public void onConnection(Connection c) {
+				System.out.println("Connection " + c.getID() + " from " + c.getRemoteAddressTCP());
+				if (getReceiver() != null) {
+					getReceiver().handleConnection(c);
+				}
+			}
+
+			@Override
+			public void onDisconnection(Connection c) {
+				if (getReceiver() != null) {
+					getReceiver().handleDisconnection(c);
+				}
+			}
+		});
+
+	}
+
+	public JagServer getServer() {
+		return server;
+	}
+
+	public JagReceiver getReceiver() {
+		return receiver;
+	}
+
+	public void setReceiver(JagReceiver receiver) {
+		this.receiver = receiver;
+	}
+
+}

@@ -1,0 +1,37 @@
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>emma</groupId>
+  <artifactId>emma</artifactId>
+  <packaging>jar</packaging>
+  <name>EMMA</name>
+  <version>2.1.5320</version>
+  <description>EMMA is a fast Java code coverage tool based on bytecode instrumentation. It differs from the existing tools by enabling coverage profiling on large scale enterprise software projects with simultaneous emphasis on fast individual development.</description>
+  <url>http://emma.sourceforge.net/</url>
+  <licenses>
+    <license>
+      <name>Common Public License v1.0</name>
+      <url>http://www.eclipse.org/legal/cpl-v10.html</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <scm>
+    <url>http://bayonne.cvs.sourceforge.net/viewvc/emma/</url>
+  </scm>
+  <developers>
+    <developer>
+      <id>vlad</id>
+      <name>Vlad Roubtsov</name>
+      <email>vlad_r@sourceforge.net</email>
+      <url>http://vlad_r.users.sourceforge.net/</url>
+      <organization>sourceforge.net</organization>
+      <organizationUrl>http://sourceforge.net</organizationUrl>
+      <roles>
+        <role>admin</role>
+        <role>developer</role>
+      </roles>
+      <timezone>-6</timezone>
+    </developer>
+  </developers>
+  <dependencies>
+  </dependencies>
+</project>

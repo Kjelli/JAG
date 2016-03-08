@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="30" height="15" tilewidth="16" tileheight="16" nextobjectid="36">
+ <tileset firstgid="1" name="bomb_party_v4" tilewidth="16" tileheight="16" tilecount="90" columns="15">
+  <image source="tiles.png" width="240" height="96"/>
+  <terraintypes>
+   <terrain name="Grass" tile="1"/>
+  </terraintypes>
+ </tileset>
+ <layer name="ground" width="30" height="15">
+  <data encoding="base64" compression="zlib">
+   eJxjYmBgYKIzZhgAO0ftHbV31N5Re0ftHbUXm70AB+wDZw==
+  </data>
+ </layer>
+ <layer name="obstacles" width="30" height="15">
+  <data encoding="base64" compression="zlib">
+   eJwLY2BgcCcDh0ExJXrJAdTS604iTS29lLiZEr2j/sVPj/p31L+j/qWum8nRS059Qg0MADUINlE=
+  </data>
+ </layer>
+ <layer name="destructables" width="30" height="15">
+  <data encoding="base64" compression="zlib">
+   eJxjYBh4wIWEiRGnpl4GLGpwiVOql4sMTC295NDU0DsQ/sXldkLi1NQ7mp5H0/NoeqZMLz0BAI99B9E=
+  </data>
+ </layer>
+ <objectgroup color="#ffffff" name="spawns">
+  <object id="8" name="spawn" type="spawn" x="16" y="16" width="16" height="16"/>
+  <object id="16" name="spawn" type="spawn" x="112" y="112" width="16" height="16"/>
+  <object id="17" name="spawn" type="spawn" x="208" y="208" width="16" height="16"/>
+  <object id="18" name="spawn" type="spawn" x="16" y="208" width="16" height="16"/>
+  <object id="19" name="spawn" type="spawn" x="208" y="16" width="16" height="16"/>
+  <object id="20" name="spawn" type="spawn" x="208" y="112" width="16" height="16"/>
+  <object id="21" name="spawn" type="spawn" x="16" y="112" width="16" height="16"/>
+  <object id="22" name="spawn" type="spawn" x="112" y="16" width="16" height="16"/>
+  <object id="23" name="spawn" type="spawn" x="112" y="208" width="16" height="16"/>
+  <object id="24" name="spawn" type="spawn" x="352" y="112" width="16" height="16"/>
+  <object id="25" name="spawn" type="spawn" x="256" y="112" width="16" height="16"/>
+  <object id="26" name="spawn" type="spawn" x="448" y="112" width="16" height="16"/>
+  <object id="27" name="spawn" type="spawn" x="352" y="16" width="16" height="16"/>
+  <object id="28" name="spawn" type="spawn" x="448" y="16" width="16" height="16"/>
+  <object id="29" name="spawn" type="spawn" x="256" y="-80" width="16" height="16"/>
+  <object id="30" name="spawn" type="spawn" x="256" y="16" width="16" height="16"/>
+  <object id="31" name="spawn" type="spawn" x="448" y="-80" width="16" height="16"/>
+  <object id="32" name="spawn" type="spawn" x="352" y="-80" width="16" height="16"/>
+  <object id="33" name="spawn" type="spawn" x="352" y="208" width="16" height="16"/>
+  <object id="34" name="spawn" type="spawn" x="256" y="208" width="16" height="16"/>
+  <object id="35" name="spawn" type="spawn" x="448" y="208" width="16" height="16"/>
+ </objectgroup>
+</map>

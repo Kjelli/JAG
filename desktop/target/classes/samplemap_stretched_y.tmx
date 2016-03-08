@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="15" height="20" tilewidth="16" tileheight="16" nextobjectid="36">
+ <tileset firstgid="1" name="bomb_party_v4" tilewidth="16" tileheight="16" tilecount="90" columns="15">
+  <image source="tiles.png" width="240" height="96"/>
+  <terraintypes>
+   <terrain name="Grass" tile="1"/>
+  </terraintypes>
+ </tileset>
+ <layer name="ground" width="15" height="20">
+  <data encoding="base64" compression="zlib">
+   eJxjYmBgYBrFo3gUj+IhgAGH6wJZ
+  </data>
+ </layer>
+ <layer name="obstacles" width="15" height="20">
+  <data encoding="base64" compression="zlib">
+   eJwLY2BgcCcDh0ExOQBZrzuJ9Ki9o/YOVnsHMh8NJb3khBMMAwCVXiIg
+  </data>
+ </layer>
+ <layer name="destructables" width="15" height="20">
+  <data encoding="base64" compression="zlib">
+   eJxjYKAO4ELCxIijq2HAogaXOLq5xGJc5hJLU2ovIX/h8y82+4kRp9Te0XAmTnwU0AcAAH7VA+k=
+  </data>
+ </layer>
+ <objectgroup color="#ffffff" name="spawns">
+  <object id="8" name="spawn" type="spawn" x="16" y="16" width="16" height="16"/>
+  <object id="16" name="spawn" type="spawn" x="112" y="112" width="16" height="16"/>
+  <object id="17" name="spawn" type="spawn" x="208" y="208" width="16" height="16"/>
+  <object id="18" name="spawn" type="spawn" x="16" y="208" width="16" height="16"/>
+  <object id="19" name="spawn" type="spawn" x="208" y="16" width="16" height="16"/>
+  <object id="20" name="spawn" type="spawn" x="208" y="112" width="16" height="16"/>
+  <object id="21" name="spawn" type="spawn" x="16" y="112" width="16" height="16"/>
+  <object id="22" name="spawn" type="spawn" x="112" y="16" width="16" height="16"/>
+  <object id="23" name="spawn" type="spawn" x="112" y="208" width="16" height="16"/>
+ </objectgroup>
+</map>
