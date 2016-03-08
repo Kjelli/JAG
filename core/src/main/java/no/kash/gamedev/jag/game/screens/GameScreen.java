@@ -1,7 +1,7 @@
 package no.kash.gamedev.jag.game.screens;
 
-import static no.kash.gamedev.jag.controller.screens.ControllerScreen.BUTTON;
-import static no.kash.gamedev.jag.controller.screens.ControllerScreen.JOYSTICK;
+import static no.kash.gamedev.jag.controller.screens.ControllerScreen.JOYSTICK_RIGHT;
+import static no.kash.gamedev.jag.controller.screens.ControllerScreen.JOYSTICK_LEFT;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -76,11 +76,11 @@ public class GameScreen extends AbstractGameScreen {
 				}
 
 				switch (input.inputId) {
-				case JOYSTICK:
+				case JOYSTICK_LEFT:
 					p.velocity().x = input.state[0] * 150;
 					p.velocity().y = input.state[1] * 150;
 					break;
-				case BUTTON:
+				case JOYSTICK_RIGHT:
 					break;
 				default:
 					System.out.println("Unknown input: " + input.inputId);

@@ -17,10 +17,10 @@ import no.kash.gamedev.jag.controller.inputschemes.InputScheme;
 
 public class ControllerScreen extends AbstractControllerScreen {
 
-	public static final int JOYSTICK = 1, BUTTON = 2;
+	public static final int JOYSTICK_LEFT = 1, JOYSTICK_RIGHT = 2;
 
-	Joystick stick;
-	TextButton button;
+	Joystick stick_left;
+	Joystick stick_right;
 
 	GlyphLayout statusText;
 
@@ -36,8 +36,8 @@ public class ControllerScreen extends AbstractControllerScreen {
 
 	@Override
 	public void draw(float delta) {
-		stick.getTouchpad().draw(batch, 1.0f);
-		button.draw(batch, 1.0f);
+		stick_left.getTouchpad().draw(batch, 1.0f);
+		stick_right.getTouchpad().draw(batch, 1.0f);
 
 	}
 
@@ -48,33 +48,24 @@ public class ControllerScreen extends AbstractControllerScreen {
 		setBackgroundColor(Color.RED);
 		Skin someSkin = new Skin(Gdx.files.internal("uiskin.json"));
 
-		stick = new Joystick(Gdx.graphics.getWidth() / 20, Gdx.graphics.getHeight() / 20, 10);
+		stick_left = new Joystick(Gdx.graphics.getWidth() / 20, Gdx.graphics.getHeight() / 20, 10);
+		stick_right = new Joystick(Gdx.graphics.getWidth() * 19 / 20, Gdx.graphics.getHeight() / 20, 10);
 
-		stage.addActor(stick.getTouchpad());
-
-		button = new TextButton("A", someSkin, "default");
-
-		button.setWidth(300);
-		button.setHeight(300);
-		((TextButton) button).getSkin().getFont("default-font").getData().setScale(8);
-
-		button.setX(Gdx.graphics.getWidth() * 8 / 10);
-		button.setY(Gdx.graphics.getHeight() * 1 / 10);
-
-		stage.addActor(button);
+		stage.addActor(stick_left.getTouchpad());
+		stage.addActor(stick_right.getTouchpad());
 
 		InputScheme scheme = new InputScheme() {
 
 			@Override
 			protected void handleEvent(InputEvent event) {
 				switch (event.getId()) {
-				case BUTTON:
-					game.getClient().broadcast(new PlayerInput(game.getClient().getId(), BUTTON,
-							new float[] { button.isPressed() ? 1 : 0 }));
+				case JOYSTICK_RIGHT:
+					game.getClient().broadcast(new PlayerInput(game.getClient().getId(), JOYSTICK_RIGHT,
+							new float[] { stick_right.getXValue(), stick_right.getYValue() }));
 					break;
-				case JOYSTICK:
-					game.getClient().broadcast(new PlayerInput(game.getClient().getId(), JOYSTICK,
-							new float[] { stick.getXValue(), stick.getYValue() }));
+				case JOYSTICK_LEFT:
+					game.getClient().broadcast(new PlayerInput(game.getClient().getId(), JOYSTICK_LEFT,
+							new float[] { stick_left.getXValue(), stick_left.getYValue() }));
 					break;
 				default:
 					game.getActionResolver().toast("Unknown input: " + event.getId());
@@ -82,8 +73,8 @@ public class ControllerScreen extends AbstractControllerScreen {
 			}
 		};
 
-		scheme.addInputElement(BUTTON, button);
-		scheme.addInputElement(JOYSTICK, stick.getTouchpad());
+		scheme.addInputElement(JOYSTICK_RIGHT, button);
+		scheme.addInputElement(JOYSTICK_LEFT, stick_left.getTouchpad());
 
 		game.getClient().setListener(new MessageListener() {
 
@@ -110,7 +101,7 @@ public class ControllerScreen extends AbstractControllerScreen {
 	protected void update(float delta) {
 		if ((timeout -= delta) < 0 && !connected) {
 			try {
-				game.getClient().connect("152.94.124.196", 13337);
+				game.getClient().connect("152.94.125.165", 13337);
 				game.getActionResolver().toast("Connection made!! :D");
 			} catch (Exception e) {
 				game.getActionResolver().toast("Could not connect: " + e.getMessage());
