@@ -6,11 +6,14 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
 public class Assets {
 	public static Texture plain;
+	public static Texture man;
 	
 	public static BitmapFont font;
 
 	public static void load() {
 		plain = load("plain.png");
+		man = load("man.png");
+		
 		font = new BitmapFont(Gdx.files.internal("utf-font.fnt"));
 		font.getData().scaleX = 0.5f;
 		font.getData().scaleY = 0.5f;

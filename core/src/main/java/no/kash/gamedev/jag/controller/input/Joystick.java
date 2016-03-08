@@ -14,6 +14,8 @@ import no.kash.gamedev.jag.commons.tweens.accessors.ColorAccessor;
 
 public class Joystick {
 
+	public static final int WIDTH = 600, HEIGHT = 600;
+	
 	private final Touchpad tp;
 	private final Skin tpSkin;
 	private final TouchpadStyle tpStyle;
@@ -40,10 +42,8 @@ public class Joystick {
 		tpStyle.knob.setMinHeight(300);
 
 		tp = new Touchpad(1.0f, tpStyle);
-		tp.setX(x);
-		tp.setY(y);
 		tp.setColor(1.0f, 1.0f, 1.0f, 0.25f);
-		tp.setBounds(25, 25, 600, 600);
+		tp.setBounds(x, y, WIDTH, HEIGHT);
 
 		tp.addListener(new EventListener() {
 

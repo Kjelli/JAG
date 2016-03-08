@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.esotericsoftware.kryonet.Connection;
 
 import no.kash.gamedev.jag.commons.network.MessageListener;
@@ -17,10 +16,11 @@ import no.kash.gamedev.jag.controller.inputschemes.InputScheme;
 
 public class ControllerScreen extends AbstractControllerScreen {
 
-	public static final int JOYSTICK_LEFT = 1, JOYSTICK_RIGHT = 2;
+	public static final int JOYSTICK_LEFT = 1, JOYSTICK_RIGHT = 2, JOYSTICK_MID = 3;
 
 	Joystick stick_left;
 	Joystick stick_right;
+	Joystick stick_mid;
 
 	GlyphLayout statusText;
 
@@ -38,6 +38,7 @@ public class ControllerScreen extends AbstractControllerScreen {
 	public void draw(float delta) {
 		stick_left.getTouchpad().draw(batch, 1.0f);
 		stick_right.getTouchpad().draw(batch, 1.0f);
+		stick_mid.getTouchpad().draw(batch, 1.0f);
 
 	}
 
@@ -46,26 +47,35 @@ public class ControllerScreen extends AbstractControllerScreen {
 		game.getActionResolver().toast("Initializing controller");
 
 		setBackgroundColor(Color.RED);
-		Skin someSkin = new Skin(Gdx.files.internal("uiskin.json"));
 
-		stick_left = new Joystick(Gdx.graphics.getWidth() / 20, Gdx.graphics.getHeight() / 20, 10);
-		stick_right = new Joystick(Gdx.graphics.getWidth() * 19 / 20, Gdx.graphics.getHeight() / 20, 10);
+		stick_left = new Joystick(0, Gdx.graphics.getHeight() / 20.0f, 10);
+		stick_right = new Joystick(Gdx.graphics.getWidth() - Joystick.WIDTH, Gdx.graphics.getHeight() / 20.0f, 10);
+		stick_mid = new Joystick(Gdx.graphics.getWidth() / 2 - Joystick.WIDTH / 2,
+				Gdx.graphics.getHeight() / 2 - Joystick.HEIGHT / 2, 10);
 
 		stage.addActor(stick_left.getTouchpad());
 		stage.addActor(stick_right.getTouchpad());
+		stage.addActor(stick_mid.getTouchpad());
 
 		InputScheme scheme = new InputScheme() {
 
 			@Override
 			protected void handleEvent(InputEvent event) {
 				switch (event.getId()) {
-				case JOYSTICK_RIGHT:
-					game.getClient().broadcast(new PlayerInput(game.getClient().getId(), JOYSTICK_RIGHT,
-							new float[] { stick_right.getXValue(), stick_right.getYValue() }));
-					break;
 				case JOYSTICK_LEFT:
 					game.getClient().broadcast(new PlayerInput(game.getClient().getId(), JOYSTICK_LEFT,
 							new float[] { stick_left.getXValue(), stick_left.getYValue() }));
+					break;
+				case JOYSTICK_RIGHT:
+					if (stick_right.getXValue() == 0 || stick_right.getYValue() == 0) {
+						return;
+					}
+					game.getClient().broadcast(new PlayerInput(game.getClient().getId(), JOYSTICK_RIGHT,
+							new float[] { stick_right.getXValue(), stick_right.getYValue() }));
+					break;
+				case JOYSTICK_MID:
+					game.getClient().broadcast(new PlayerInput(game.getClient().getId(), JOYSTICK_MID,
+							new float[] { stick_mid.getXValue(), stick_mid.getYValue() }));
 					break;
 				default:
 					game.getActionResolver().toast("Unknown input: " + event.getId());
@@ -73,8 +83,9 @@ public class ControllerScreen extends AbstractControllerScreen {
 			}
 		};
 
-		scheme.addInputElement(JOYSTICK_RIGHT, button);
+		scheme.addInputElement(JOYSTICK_RIGHT, stick_right.getTouchpad());
 		scheme.addInputElement(JOYSTICK_LEFT, stick_left.getTouchpad());
+		scheme.addInputElement(JOYSTICK_MID, stick_mid.getTouchpad());
 
 		game.getClient().setListener(new MessageListener() {
 

@@ -31,8 +31,8 @@ public class Draw {
 			c_old = batch.getColor();
 			batch.setColor(color);
 		}
-		batch.draw(sprite.getTexture(), x, y, 0, 0, w, h, 1.0f, 1.0f, rot, 0, 0, sprite.getRegionWidth(),
-				sprite.getRegionHeight(), flipX, sprite.isFlipY());
+		batch.draw(sprite.getTexture(), x, y, sprite.getOriginX(), sprite.getOriginY(), w, h, 1.0f, 1.0f, rot, 0, 0,
+				sprite.getRegionWidth(), sprite.getRegionHeight(), flipX, sprite.isFlipY());
 
 		if (sprite.getColor() != null) {
 			batch.setColor(c_old);
