@@ -76,4 +76,18 @@ public class JagClient {
 		return id;
 	}
 
+	public void connect(String connectionString) throws UnknownHostException, IOException {
+		String[] elements = connectionString.split("[:]");
+		String ipaddr;
+		int port;
+		if (elements.length == 2) {
+			ipaddr = connectionString.split(":")[0];
+			port = Integer.parseInt(connectionString.split(":")[1]);
+		} else {
+			ipaddr = connectionString;
+			port = 13337;
+		}
+		connect(ipaddr, port);
+	}
+
 }

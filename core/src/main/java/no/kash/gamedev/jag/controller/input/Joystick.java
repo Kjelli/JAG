@@ -14,15 +14,13 @@ import no.kash.gamedev.jag.commons.tweens.accessors.ColorAccessor;
 
 public class Joystick {
 
-	public static final int WIDTH = 600, HEIGHT = 600;
-	
 	private final Touchpad tp;
 	private final Skin tpSkin;
 	private final TouchpadStyle tpStyle;
 
 	private boolean active;
 
-	public Joystick(float x, float y, float deadzoneRadius) {
+	public Joystick(float x, float y, float bgRadius, float knobRadius, float deadzoneRadius) {
 		tpSkin = new Skin();
 
 		tpSkin.add("touchBackground", new Texture("touchBackground.png"));
@@ -34,16 +32,16 @@ public class Joystick {
 		Drawable touchKnob = tpSkin.getDrawable("touchKnob");
 
 		tpStyle.background = touchBackground;
-		tpStyle.background.setMinWidth(500);
-		tpStyle.background.setMinHeight(500);
+		tpStyle.background.setMinWidth(bgRadius);
+		tpStyle.background.setMinHeight(bgRadius);
 
 		tpStyle.knob = touchKnob;
-		tpStyle.knob.setMinWidth(300);
-		tpStyle.knob.setMinHeight(300);
+		tpStyle.knob.setMinWidth(knobRadius);
+		tpStyle.knob.setMinHeight(knobRadius);
 
 		tp = new Touchpad(1.0f, tpStyle);
 		tp.setColor(1.0f, 1.0f, 1.0f, 0.25f);
-		tp.setBounds(x, y, WIDTH, HEIGHT);
+		tp.setBounds(x, y, bgRadius, bgRadius);
 
 		tp.addListener(new EventListener() {
 

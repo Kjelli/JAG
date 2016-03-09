@@ -5,6 +5,7 @@ import no.kash.gamedev.jag.actionresolvers.ActionResolver;
 import no.kash.gamedev.jag.assets.Assets;
 import no.kash.gamedev.jag.commons.network.JagClient;
 import no.kash.gamedev.jag.commons.tweens.TweenGlobal;
+import no.kash.gamedev.jag.controller.screens.ConfigureScreen;
 import no.kash.gamedev.jag.controller.screens.ControllerScreen;
 
 public class JustAnotherGameController extends JagEndpoint {
@@ -18,7 +19,7 @@ public class JustAnotherGameController extends JagEndpoint {
 	@Override
 	public void create() {
 		init();
-		setScreen(new ControllerScreen(this));
+		setScreen(new ConfigureScreen(this));
 	}
 
 	private void init() {

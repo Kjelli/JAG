@@ -1,11 +1,15 @@
 package no.kash.gamedev.jag.controller.screens;
 
+import java.net.InetAddress;
+
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.esotericsoftware.kryonet.Connection;
 
+import no.kash.gamedev.jag.commons.defs.Defs;
 import no.kash.gamedev.jag.commons.network.MessageListener;
 import no.kash.gamedev.jag.commons.network.packets.GamePacket;
 import no.kash.gamedev.jag.commons.network.packets.PlayerInput;
@@ -30,8 +34,11 @@ public class ControllerScreen extends AbstractControllerScreen {
 
 	float timeout = 0;
 
-	public ControllerScreen(JustAnotherGameController controller) {
+	String connectionString;
+
+	public ControllerScreen(String connection, JustAnotherGameController controller) {
 		super(controller);
+		connectionString = connection;
 	}
 
 	@Override
@@ -48,10 +55,9 @@ public class ControllerScreen extends AbstractControllerScreen {
 
 		setBackgroundColor(Color.RED);
 
-		stick_left = new Joystick(0, Gdx.graphics.getHeight() / 20.0f, 10);
-		stick_right = new Joystick(Gdx.graphics.getWidth() - Joystick.WIDTH, Gdx.graphics.getHeight() / 20.0f, 10);
-		stick_mid = new Joystick(Gdx.graphics.getWidth() / 2 - Joystick.WIDTH / 2,
-				Gdx.graphics.getHeight() / 2 - Joystick.HEIGHT / 2, 10);
+		stick_left = new Joystick(0, stage.getHeight() / 20.0f, 60, 40, 10);
+		stick_mid = new Joystick(stage.getWidth() / 2 - 60, stage.getHeight() / 2 - 60, 120, 10, 10);
+		stick_right = new Joystick(stage.getWidth() - 60, stage.getHeight() / 20.0f, 60, 40, 10);
 
 		stage.addActor(stick_left.getTouchpad());
 		stage.addActor(stick_right.getTouchpad());
@@ -112,8 +118,11 @@ public class ControllerScreen extends AbstractControllerScreen {
 	protected void update(float delta) {
 		if ((timeout -= delta) < 0 && !connected) {
 			try {
-				game.getClient().connect("152.94.125.165", 13337);
+				game.getClient().connect(connectionString);
 				game.getActionResolver().toast("Connection made!! :D");
+				Preferences prefs = Gdx.app.getPreferences(Defs.PREFERENCE_NAME);
+				prefs.putString(Defs.CONNECTION_ADDRESS, connectionString);
+				prefs.flush();
 			} catch (Exception e) {
 				game.getActionResolver().toast("Could not connect: " + e.getMessage());
 				timeout = MAX_TIMEOUT;

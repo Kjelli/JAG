@@ -10,7 +10,6 @@ import no.kash.gamedev.jag.game.gamecontext.GameContext;
 public abstract class AbstractGameObject implements GameObject {
 	private GameContext context;
 
-	public static final int LEFT = 1, RIGHT = 2, UP = 4, DOWN = 8, ALL = LEFT + RIGHT + UP + DOWN;
 	public static final float EPSILON = 50.0f;
 	protected Vector2 position, velocity, max_velocity, acceleration, max_acceleration;
 	protected float width, height;

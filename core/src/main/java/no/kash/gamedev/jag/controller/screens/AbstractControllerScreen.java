@@ -37,11 +37,12 @@ public abstract class AbstractControllerScreen implements Screen {
 	private Color bgcolor;
 
 	private boolean paused;
+	private boolean disposed;
 
 	public AbstractControllerScreen(JustAnotherGameController game) {
 		this.game = game;
 		camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), camera));
+		stage = new Stage(new StretchViewport(320, 200, camera));
 		batch = new SpriteBatch();
 		gameContext = new GameContext(game);
 		inputMux = new InputMultiplexer(stage);
@@ -111,10 +112,15 @@ public abstract class AbstractControllerScreen implements Screen {
 	 */
 	@Override
 	public void dispose() {
+		disposed = true;
 		stage.dispose();
 		batch.dispose();
 		gameContext.dispose();
 		Gdx.input.setInputProcessor(null);
+	}
+	
+	protected boolean isDisposed() {
+		return disposed;
 	}
 
 	protected final void setBackground(Texture background) {
