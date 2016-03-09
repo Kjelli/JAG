@@ -118,11 +118,7 @@ public class ControllerScreen extends AbstractControllerScreen {
 	protected void update(float delta) {
 		if ((timeout -= delta) < 0 && !connected) {
 			try {
-<<<<<<< HEAD
 				game.getClient().connect(connectionString);
-=======
-				game.getClient().connect("192.168.1.2", 13337);
->>>>>>> 806b3d7e75d540f21add8e5ce95f58a1635c8e21
 				game.getActionResolver().toast("Connection made!! :D");
 				Preferences prefs = Gdx.app.getPreferences(Defs.PREFERENCE_NAME);
 				prefs.putString(Defs.CONNECTION_ADDRESS, connectionString);
