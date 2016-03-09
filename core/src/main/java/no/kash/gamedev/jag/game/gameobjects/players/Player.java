@@ -1,4 +1,4 @@
-	package no.kash.gamedev.jag.game.gameobjects.players;
+package no.kash.gamedev.jag.game.gameobjects.players;
 
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -7,22 +7,19 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import no.kash.gamedev.jag.assets.Assets;
 import no.kash.gamedev.jag.game.gameobjects.AbstractGameObject;
 import no.kash.gamedev.jag.game.gameobjects.bullets.Bullet;
+import no.kash.gamedev.jag.game.gameobjects.players.guns.Gun;
 
 public class Player extends AbstractGameObject {
-
-	private static final float ACCELERATION = 4000;
-	private static final float SPEED = 250;
 	private final int id;
 	private final String name;
 
 	private final GlyphLayout nameLabel;
+	private Gun gun;
 	
-	
-
 	public Player(int id, String name, float x, float y) {
-		super(x, y, 16, 16);
+		super(x, y, 32, 32);
 		Sprite sprite = new Sprite(Assets.man);
-		sprite.setOrigin(8, 8);
+		sprite.setOrigin(getWidth() / 2, getHeight() / 2);
 		setSprite(sprite);
 
 		this.position.x = x;
@@ -31,11 +28,6 @@ public class Player extends AbstractGameObject {
 		this.name = name;
 
 		nameLabel = new GlyphLayout(Assets.font, name);
-
-		max_acceleration.x = ACCELERATION;
-		max_acceleration.y = ACCELERATION;
-		max_velocity.x = SPEED;
-		max_velocity.y = SPEED;
 	}
 
 	@Override
@@ -59,7 +51,7 @@ public class Player extends AbstractGameObject {
 	}
 
 	public void fireBullet(float direction) {
-		Bullet temp = new Bullet(getCenterX(),getCenterY(),4,4,direction);
+		Bullet temp = new Bullet(getCenterX(), getCenterY(), 4, 4, direction);
 		getGameContext().spawn(temp);
 	}
 

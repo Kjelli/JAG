@@ -10,3 +10,6 @@
 *-html/war/
 */.settings/
 */bin/
+
+android/.project
+android/bin/*

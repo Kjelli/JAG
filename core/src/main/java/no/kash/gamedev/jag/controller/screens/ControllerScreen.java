@@ -55,9 +55,9 @@ public class ControllerScreen extends AbstractControllerScreen {
 
 		setBackgroundColor(Color.RED);
 
-		stick_left = new Joystick(0, stage.getHeight() / 20.0f, 60, 40, 10);
+		stick_left = new Joystick(0, stage.getHeight() / 20.0f, 90, 40, 10);
 		stick_mid = new Joystick(stage.getWidth() / 2 - 60, stage.getHeight() / 2 - 60, 120, 10, 10);
-		stick_right = new Joystick(stage.getWidth() - 60, stage.getHeight() / 20.0f, 60, 40, 10);
+		stick_right = new Joystick(stage.getWidth() - 90, stage.getHeight() / 20.0f, 90, 40, 10);
 
 		stage.addActor(stick_left.getTouchpad());
 		stage.addActor(stick_right.getTouchpad());
