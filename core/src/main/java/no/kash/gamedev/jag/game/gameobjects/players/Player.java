@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import no.kash.gamedev.jag.assets.Assets;
 import no.kash.gamedev.jag.game.gameobjects.AbstractGameObject;
 import no.kash.gamedev.jag.game.gameobjects.bullets.Bullet;
+
 import no.kash.gamedev.jag.game.gameobjects.players.guns.Gun;
 
 public class Player extends AbstractGameObject {
@@ -15,7 +16,7 @@ public class Player extends AbstractGameObject {
 
 	private final GlyphLayout nameLabel;
 	private Gun gun;
-	
+
 	public Player(int id, String name, float x, float y) {
 		super(x, y, 32, 32);
 		Sprite sprite = new Sprite(Assets.man);
