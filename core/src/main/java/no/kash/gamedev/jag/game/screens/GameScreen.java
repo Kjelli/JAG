@@ -73,7 +73,7 @@ public class GameScreen extends AbstractGameScreen {
 				case JOYSTICK_RIGHT:
 					float rot = (float) (1.5 * Math.PI - Math.atan2(input.state[0], input.state[1]) * 180 / Math.PI);
 					p.setRotation(rot);
-					p.fireBullet(rot);
+					p.fireBullet();
 					break;
 				default:
 					System.out.println("Unknown input: " + input.inputId);

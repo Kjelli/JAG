@@ -9,6 +9,8 @@ import no.kash.gamedev.jag.game.gameobjects.AbstractGameObject;
 import no.kash.gamedev.jag.game.gameobjects.bullets.Bullet;
 
 import no.kash.gamedev.jag.game.gameobjects.players.guns.Gun;
+import no.kash.gamedev.jag.game.gameobjects.players.guns.GunType;
+import no.kash.gamedev.jag.game.gameobjects.players.guns.Pistol;
 
 public class Player extends AbstractGameObject {
 	private final int id;
@@ -29,10 +31,15 @@ public class Player extends AbstractGameObject {
 		this.name = name;
 
 		nameLabel = new GlyphLayout(Assets.font, name);
+		gun = new Pistol(GunType.pistol);
+		gun.setAmmo(100);
+		gun.reload();
+		gun.equip(this);
 	}
 
 	@Override
 	public void update(float delta) {
+		gun.update(delta);
 		move(delta);
 	}
 
@@ -51,9 +58,8 @@ public class Player extends AbstractGameObject {
 		return name;
 	}
 
-	public void fireBullet(float direction) {
-		Bullet temp = new Bullet(getCenterX(), getCenterY(), 4, 4, direction);
-		getGameContext().spawn(temp);
+	public void fireBullet() {
+		gun.shoot();
 	}
 
 }
