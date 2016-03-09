@@ -44,7 +44,7 @@ public class GameScreen extends AbstractGameScreen {
 	protected void onShow() {
 		level = new Level(getCamera(), batch);
 
-		MapObjects spawnPoints = level.map.getLayers().get("spawns").getObjects();
+		MapObjects spawnPoints = level.map.getLayers().get("spawnpoints").getObjects();
 		this.spawnPoints = new float[spawnPoints.getCount()][];
 		for (int i = 0; i < spawnPoints.getCount(); i++) {
 			MapObject spawnPoint = spawnPoints.get(i);
@@ -73,6 +73,7 @@ public class GameScreen extends AbstractGameScreen {
 				case JOYSTICK_RIGHT:
 					float rot = (float) (1.5 * Math.PI - Math.atan2(input.state[0], input.state[1]) * 180 / Math.PI);
 					p.setRotation(rot);
+					p.fireBullet(rot);
 					break;
 				default:
 					System.out.println("Unknown input: " + input.inputId);

@@ -18,7 +18,7 @@ public class Level {
 
 	public Level(OrthographicCamera camera, SpriteBatch batch) {
 		this.camera = camera;
-		map = new TmxMapLoader().load("samplemap_stretched_y.tmx");
+		map = new TmxMapLoader().load("sumoarena1.tmx");
 		width = (Integer) map.getProperties().get("width", -1, Integer.class);
 		height = (Integer) map.getProperties().get("height", -1, Integer.class);
 		tileWidth = (Integer) map.getProperties().get("tilewidth", -1, Integer.class);

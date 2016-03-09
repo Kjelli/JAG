@@ -112,7 +112,7 @@ public class ControllerScreen extends AbstractControllerScreen {
 	protected void update(float delta) {
 		if ((timeout -= delta) < 0 && !connected) {
 			try {
-				game.getClient().connect("152.94.125.165", 13337);
+				game.getClient().connect("192.168.1.2", 13337);
 				game.getActionResolver().toast("Connection made!! :D");
 			} catch (Exception e) {
 				game.getActionResolver().toast("Could not connect: " + e.getMessage());

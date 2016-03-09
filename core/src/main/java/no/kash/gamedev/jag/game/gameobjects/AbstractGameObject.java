@@ -101,11 +101,8 @@ public abstract class AbstractGameObject implements GameObject {
 	}
 
 	protected final void move(float delta) {
-		velocity.x = Math.max(Math.min(velocity.x + acceleration.x * delta, max_velocity.x), -max_velocity.x);
-		velocity.y = Math.max(Math.min(velocity.y + acceleration.y * delta, max_velocity.y), -max_velocity.y);
 		position.x += velocity.x * delta;
 		position.y += velocity.y * delta;
-
 	}
 
 	@Override
