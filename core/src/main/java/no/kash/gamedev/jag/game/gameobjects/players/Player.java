@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import no.kash.gamedev.jag.assets.Assets;
 import no.kash.gamedev.jag.game.gameobjects.AbstractGameObject;
 import no.kash.gamedev.jag.game.gameobjects.bullets.Bullet;
+import no.kash.gamedev.jag.game.gameobjects.players.guns.Guns;
 
 public class Player extends AbstractGameObject {
 
@@ -14,7 +15,8 @@ public class Player extends AbstractGameObject {
 	private static final float SPEED = 250;
 	private final int id;
 	private final String name;
-
+	
+	private Guns gun;
 	private final GlyphLayout nameLabel;
 	
 	
