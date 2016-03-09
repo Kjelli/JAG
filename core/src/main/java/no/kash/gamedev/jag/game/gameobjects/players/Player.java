@@ -1,4 +1,4 @@
-package no.kash.gamedev.jag.game.gameobjects.players;
+	package no.kash.gamedev.jag.game.gameobjects.players;
 
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import no.kash.gamedev.jag.assets.Assets;
 import no.kash.gamedev.jag.game.gameobjects.AbstractGameObject;
+import no.kash.gamedev.jag.game.gameobjects.bullets.Bullet;
 
 public class Player extends AbstractGameObject {
 
@@ -15,6 +16,8 @@ public class Player extends AbstractGameObject {
 	private final String name;
 
 	private final GlyphLayout nameLabel;
+	
+	
 
 	public Player(int id, String name, float x, float y) {
 		super(x, y, 16, 16);
@@ -53,6 +56,11 @@ public class Player extends AbstractGameObject {
 
 	public String getName() {
 		return name;
+	}
+
+	public void fireBullet(float direction) {
+		Bullet temp = new Bullet(getCenterX(),getCenterY(),4,4,direction);
+		getGameContext().spawn(temp);
 	}
 
 }
