@@ -6,7 +6,7 @@ import no.kash.gamedev.jag.assets.Assets;
 
 public enum GunType {
 
-	pistol("pistol", 1.0f, 0.5f, Assets.pistol), mac10("mac10", 0.3f, 0.7f, Assets.pistol, 200);
+	pistol("pistol", 0.1f, 0.5f, Assets.pistol), mac10("mac10", 0.3f, 0.7f, Assets.pistol, 200);
 
 	private String name;
 	private float cooldown;

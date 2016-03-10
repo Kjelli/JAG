@@ -12,6 +12,8 @@ import no.kash.gamedev.jag.game.gamecontext.physics.Collidable;
 import no.kash.gamedev.jag.game.gamecontext.physics.Collision;
 import no.kash.gamedev.jag.game.gameobjects.AbstractGameObject;
 import no.kash.gamedev.jag.game.gameobjects.GameObject;
+import no.kash.gamedev.jag.game.gameobjects.bullets.Bullet;
+import no.kash.gamedev.jag.game.gameobjects.particles.BloodSplatter;
 import no.kash.gamedev.jag.game.gameobjects.players.guns.Gun;
 import no.kash.gamedev.jag.game.gameobjects.players.guns.GunType;
 import no.kash.gamedev.jag.game.gameobjects.players.guns.Pistol;
@@ -30,7 +32,7 @@ public class Player extends AbstractGameObject implements Collidable {
 		sprite.setOrigin(getWidth() / 2, getHeight() / 2);
 		setSprite(sprite);
 
-		hitbox = new Hitbox(x, y, 32, 32);
+		hitbox = new Hitbox(x + getWidth() / 2 - 3, y + getHeight() / 2 - 3, 6, 6);
 
 		this.id = id;
 		this.name = name;
@@ -46,6 +48,7 @@ public class Player extends AbstractGameObject implements Collidable {
 	public void update(float delta) {
 		gun.update(delta);
 		move(delta);
+		hitbox.update(getX(), getY());
 	}
 
 	@Override
@@ -84,9 +87,22 @@ public class Player extends AbstractGameObject implements Collidable {
 
 	@Override
 	public void onCollide(Collision collision) {
-		System.out.println(collision);
+		if (collision.getTarget() instanceof Bullet) {
+			Bullet target = (Bullet) collision.getTarget();
+			if (target.getShooter().equals(this) || target.distanceTo(this) > 16) {
+				return;
+			}
+
+			for (int i = 0; i < 200; i++) {
+				getGameContext().spawn(new BloodSplatter(getCenterX(), getCenterY(), (float) Math.random() * 360));
+			}
+			// Vibration
+			vibrate(100);
+			target.destroy();
+		}
 	}
 
+	// TODO fix
 	@Override
 	public boolean intersects(GameObject other) {
 		return hitbox.intersection(other.getBounds()) != null;

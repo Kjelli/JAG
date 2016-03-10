@@ -7,6 +7,7 @@ import no.kash.gamedev.jag.assets.Assets;
 import no.kash.gamedev.jag.game.gamecontext.physics.Collidable;
 import no.kash.gamedev.jag.game.gamecontext.physics.Collision;
 import no.kash.gamedev.jag.game.gameobjects.AbstractGameObject;
+import no.kash.gamedev.jag.game.gameobjects.particles.BloodSplatter;
 import no.kash.gamedev.jag.game.gameobjects.players.Player;
 
 public class Bullet extends AbstractGameObject implements Collidable {
@@ -45,14 +46,11 @@ public class Bullet extends AbstractGameObject implements Collidable {
 
 	@Override
 	public void onCollide(Collision collision) {
-		if (collision.getTarget() instanceof Player) {
-			Player target = (Player) collision.getTarget();
-			if (target.equals(shooter)) {
-				return;
-			}
-			target.setScale(target.getScale() * 0.9f);
-			destroy();
-		}
+
+	}
+
+	public Player getShooter() {
+		return shooter;
 	}
 
 }

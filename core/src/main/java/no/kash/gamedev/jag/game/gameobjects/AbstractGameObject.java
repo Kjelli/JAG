@@ -118,8 +118,8 @@ public abstract class AbstractGameObject implements GameObject {
 	}
 
 	protected final void move(float delta) {
-		x += velocity.x * delta;
-		y += velocity.y * delta;
+		setX(x + velocity.x * delta);
+		setY(y + velocity.y * delta);
 	}
 
 	@Override

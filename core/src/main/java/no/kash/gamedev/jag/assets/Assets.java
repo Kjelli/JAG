@@ -12,6 +12,7 @@ public class Assets {
 	public static Texture man;
 	public static Texture bullet;
 	public static Texture pistol;
+	public static Texture blood;
 
 	public static BitmapFont font;
 
@@ -20,7 +21,7 @@ public class Assets {
 		man = load("playerSprite/player.png");
 		bullet = load("bullet.png");
 		pistol = load("playerSprite/pistol.png");
-
+		blood = load("blood.png");
 		FreeTypeFontGenerator font10gen = new FreeTypeFontGenerator(Gdx.files.internal("pixelmix.ttf"));
 		FreeTypeFontParameter font10params = new FreeTypeFontParameter();
 		font10params.minFilter = Texture.TextureFilter.Nearest;

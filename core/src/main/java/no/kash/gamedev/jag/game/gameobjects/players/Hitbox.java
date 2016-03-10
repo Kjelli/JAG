@@ -18,4 +18,9 @@ public class Hitbox {
 			return null;
 		}
 	}
+
+	public void update(float x, float y) {
+		rect.x = x;
+		rect.y = y;
+	}
 }

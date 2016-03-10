@@ -65,8 +65,6 @@ public abstract class AbstractGun implements Gun {
 			cooldownTimer = cooldown;
 			// TODO Shoot sfx?
 
-			// Vibration
-			player.vibrate(100);
 		} else {
 			// TODO Empty mag sfx?
 		}

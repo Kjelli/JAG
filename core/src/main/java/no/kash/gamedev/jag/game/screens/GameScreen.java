@@ -53,12 +53,17 @@ public class GameScreen extends AbstractGameScreen {
 			this.spawnPoints[i] = new float[] { x, y };
 		}
 
+		Player man = new Player(-1, "Small Electric Car", 400, 400);
+		gameContext.spawn(man);
+
 		game.getServer().listen(13337);
 		game.setReceiver(new JagReceiver() {
 
 			@Override
 			public void handleInput(PlayerInput input) {
-				printInput(input);
+
+				// Print input received from player
+				// printInput(input);
 
 				Player p = players.getOrDefault(input.senderId, null);
 				if (p == null) {
@@ -76,6 +81,7 @@ public class GameScreen extends AbstractGameScreen {
 					break;
 				case BUTTON_RELOAD:
 					p.reload();
+					break;
 				default:
 					System.out.println("Unknown input: " + input.inputId);
 				}
