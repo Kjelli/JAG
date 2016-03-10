@@ -2,6 +2,8 @@ package no.kash.gamedev.jag.game.gameobjects;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 import no.kash.gamedev.jag.commons.graphics.Draw;
@@ -11,8 +13,10 @@ public abstract class AbstractGameObject implements GameObject {
 	private GameContext context;
 
 	public static final float EPSILON = 50.0f;
-	protected Vector2 position, velocity, max_velocity, acceleration, max_acceleration;
-	protected float width, height;
+	protected Vector2 velocity, max_velocity, acceleration, max_acceleration;
+	private float x, y;
+	private float width, height;
+	protected Rectangle bounds;
 	protected boolean alive = true;
 
 	protected Sprite sprite;
@@ -22,15 +26,15 @@ public abstract class AbstractGameObject implements GameObject {
 	protected float scale = 1.0f;
 
 	public AbstractGameObject(float x, float y, float width, float height) {
-		position = new Vector2();
 		velocity = new Vector2();
 		acceleration = new Vector2();
 		max_acceleration = new Vector2(50, 50);
 		max_velocity = new Vector2(50, 50);
-		this.position.x = x;
-		this.position.y = y;
-		this.width = width;
-		this.height = height;
+		bounds = new Rectangle(x, y, width, height);
+		setX(x);
+		setY(y);
+		setWidth(width);
+		setHeight(height);
 	}
 
 	public final GameContext getGameContext() {
@@ -41,8 +45,22 @@ public abstract class AbstractGameObject implements GameObject {
 		this.context = context;
 	}
 
-	public Vector2 position() {
-		return position;
+	public float getX() {
+		return x;
+	}
+
+	public float getY() {
+		return y;
+	}
+
+	public void setX(float x) {
+		bounds.x = x;
+		this.x = x;
+	}
+
+	public void setY(float y) {
+		bounds.y = y;
+		this.y = y;
 	}
 
 	public Vector2 velocity() {
@@ -63,12 +81,12 @@ public abstract class AbstractGameObject implements GameObject {
 
 	@Override
 	public final float getCenterX() {
-		return position.x + getWidth() / 2;
+		return x + getWidth() / 2;
 	}
 
 	@Override
 	public final float getCenterY() {
-		return position.y + getHeight() / 2;
+		return y + getHeight() / 2;
 	}
 
 	@Override
@@ -100,8 +118,8 @@ public abstract class AbstractGameObject implements GameObject {
 	}
 
 	protected final void move(float delta) {
-		position.x += velocity.x * delta;
-		position.y += velocity.y * delta;
+		x += velocity.x * delta;
+		y += velocity.y * delta;
 	}
 
 	@Override
@@ -113,22 +131,11 @@ public abstract class AbstractGameObject implements GameObject {
 	}
 
 	public boolean contains(float x, float y) {
-		return (x >= this.position.x && x <= this.position.x + this.width)
-				&& (y >= this.position.y && y <= this.position.y + this.height);
-	}
-
-	private boolean valueInRange(float value, float min, float max) {
-		return (value >= min) && (value <= max);
+		return (x >= this.x && x <= this.x + this.width) && (y >= this.y && y <= this.y + this.height);
 	}
 
 	public boolean intersects(GameObject other) {
-		boolean xOverlap = valueInRange(position().x, other.position().x, other.position().x + other.getWidth())
-				|| valueInRange(other.position().x, position().x, position().x + getWidth());
-
-		boolean yOverlap = valueInRange(position().y, other.position().y, other.position().y + other.getHeight())
-				|| valueInRange(other.position().y, position().y, position().y + getHeight());
-
-		return xOverlap && yOverlap;
+		return Intersector.overlaps(other.getBounds(), this.getBounds());
 	}
 
 	@Override
@@ -232,6 +239,11 @@ public abstract class AbstractGameObject implements GameObject {
 
 	public float getRotation() {
 		return rot;
+	}
+
+	@Override
+	public Rectangle getBounds() {
+		return bounds;
 	}
 
 	/**

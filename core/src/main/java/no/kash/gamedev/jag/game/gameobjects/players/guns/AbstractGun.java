@@ -1,5 +1,6 @@
 package no.kash.gamedev.jag.game.gameobjects.players.guns;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -27,6 +28,7 @@ public abstract class AbstractGun implements Gun {
 		this.maxAmmo = type.getMaxAmmo();
 		this.reloadTime = type.getReloadTime();
 		this.sprite = new Sprite(type.getGunTexture());
+
 	}
 
 	protected void setMagazine(Magazine magazine) {
@@ -46,33 +48,45 @@ public abstract class AbstractGun implements Gun {
 			reloadTimer = 0;
 		}
 	}
-	
+
 	@Override
 	public void equip(Player player) {
 		this.player = player;
+		sprite.setOrigin(player.getWidth() / 2, player.getHeight() / 2);
 	}
 
 	@Override
 	public void shoot() {
-		if (magazine.getBulletCount() > 0 && cooldownTimer == 0) {
-			Bullet temp = new Bullet(player.getCenterX(), player.getCenterY(), 4, 4, player.getRotation());
+		if (magazine.getBulletCount() > 0 && cooldownTimer == 0 && reloadTimer == 0) {
+			Bullet temp = new Bullet(player, player.getBulletOriginX(), player.getBulletOriginY(),
+					player.getRotation());
 			player.getGameContext().spawn(temp);
 			magazine.setBulletCount(magazine.getBulletCount() - 1);
 			cooldownTimer = cooldown;
-			System.out.println("Pow!");
-		}else{
-			System.out.println("Couldn't shoot!");
-			System.out.println("CD: "+cooldownTimer+", " + "MAG "+ magazine.getBulletCount());
+			// TODO Shoot sfx?
+
+			// Vibration
+			player.vibrate(100);
+		} else {
+			// TODO Empty mag sfx?
 		}
 	}
 
 	@Override
 	public void reload() {
-		if (magazine.getBulletCount() < magazine.getCapacity() && reloadTimer == 0 && ammo > 0) {
+		// If room in magazine, reloadtimer is over, ammo exists or unlimited
+		// ammo
+		if (magazine.getBulletCount() < magazine.getCapacity() && reloadTimer == 0 && (ammo > 0 || maxAmmo == -1)) {
 			int bulletsLeft = (int) Math.min(magazine.getCapacity(), ammo);
 			magazine.setBulletCount(bulletsLeft);
-			setAmmo(ammo - bulletsLeft);
+			// Update ammo if not unlimited
+			if (maxAmmo != -1) {
+				setAmmo(ammo - bulletsLeft);
+			}
 			reloadTimer = reloadTime;
+			// TODO Reload sfx?
+		} else {
+			// TODO Out of ammo sfx?
 		}
 	}
 
@@ -89,9 +103,14 @@ public abstract class AbstractGun implements Gun {
 		this.ammo = ammo;
 	}
 
+	public boolean isReloading() {
+		return reloadTimer > 0;
+	}
+
 	public void draw(SpriteBatch batch) {
 		// TODO draw correctly
-		Draw.sprite(batch, sprite, player.getCenterX(), player.getCenterY(), 5, 5, player.getRotation());
+		Draw.sprite(batch, sprite, player.getX(), player.getY(), player.getWidth(), player.getHeight(),
+				player.getRotation());
 	}
 
 }

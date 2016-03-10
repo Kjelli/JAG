@@ -18,4 +18,6 @@ public interface Gun {
 	void setAmmo(int ammo);
 	
 	void equip(Player player);
+	
+	boolean isReloading();
 }

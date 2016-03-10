@@ -1,5 +1,6 @@
 package no.kash.gamedev.jag.game.screens;
 
+import static no.kash.gamedev.jag.controller.screens.ControllerScreen.BUTTON_RELOAD;
 import static no.kash.gamedev.jag.controller.screens.ControllerScreen.JOYSTICK_LEFT;
 import static no.kash.gamedev.jag.controller.screens.ControllerScreen.JOYSTICK_RIGHT;
 
@@ -37,7 +38,6 @@ public class GameScreen extends AbstractGameScreen {
 	protected void draw(float delta) {
 		level.render();
 		gameContext.draw(batch);
-
 	}
 
 	@Override
@@ -71,10 +71,11 @@ public class GameScreen extends AbstractGameScreen {
 					p.velocity().y = input.state[1] * 70;
 					break;
 				case JOYSTICK_RIGHT:
-					float rot = (float) (1.5 * Math.PI - Math.atan2(input.state[0], input.state[1]) * 180 / Math.PI);
-					p.setRotation(rot);
+					p.setRotation((float) (1.5 * Math.PI - Math.atan2(input.state[0], input.state[1]) * 180 / Math.PI));
 					p.fireBullet();
 					break;
+				case BUTTON_RELOAD:
+					p.reload();
 				default:
 					System.out.println("Unknown input: " + input.inputId);
 				}

@@ -3,30 +3,35 @@ package no.kash.gamedev.jag.game.gameobjects.players;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Intersector;
 
+import no.kash.gamedev.jag.JustAnotherGame;
 import no.kash.gamedev.jag.assets.Assets;
+import no.kash.gamedev.jag.commons.network.packets.PlayerFeedback;
+import no.kash.gamedev.jag.game.gamecontext.physics.Collidable;
+import no.kash.gamedev.jag.game.gamecontext.physics.Collision;
 import no.kash.gamedev.jag.game.gameobjects.AbstractGameObject;
-import no.kash.gamedev.jag.game.gameobjects.bullets.Bullet;
-
+import no.kash.gamedev.jag.game.gameobjects.GameObject;
 import no.kash.gamedev.jag.game.gameobjects.players.guns.Gun;
 import no.kash.gamedev.jag.game.gameobjects.players.guns.GunType;
 import no.kash.gamedev.jag.game.gameobjects.players.guns.Pistol;
 
-public class Player extends AbstractGameObject {
+public class Player extends AbstractGameObject implements Collidable {
 	private final int id;
 	private final String name;
 
 	private final GlyphLayout nameLabel;
 	private Gun gun;
+	private Hitbox hitbox;
 
 	public Player(int id, String name, float x, float y) {
-		super(x, y, 32, 32);
+		super(x, y, 64, 64);
 		Sprite sprite = new Sprite(Assets.man);
 		sprite.setOrigin(getWidth() / 2, getHeight() / 2);
 		setSprite(sprite);
 
-		this.position.x = x;
-		this.position.y = y;
+		hitbox = new Hitbox(x, y, 32, 32);
+
 		this.id = id;
 		this.name = name;
 
@@ -46,8 +51,11 @@ public class Player extends AbstractGameObject {
 	@Override
 	public void draw(SpriteBatch batch) {
 		super.draw(batch);
-		Assets.font.draw(batch, nameLabel, position.x + width / 2 - nameLabel.width / 2,
-				position.y + height + nameLabel.height);
+		if (!gun.isReloading()) {
+			gun.draw(batch);
+		}
+		Assets.font.draw(batch, nameLabel, getX() + getWidth() / 2 - nameLabel.width / 2,
+				getY() + getHeight() + nameLabel.height);
 	}
 
 	public int getId() {
@@ -62,4 +70,30 @@ public class Player extends AbstractGameObject {
 		gun.shoot();
 	}
 
+	public void reload() {
+		gun.reload();
+	}
+
+	public float getBulletOriginX() {
+		return (float) (getCenterX() + Math.cos((rot * Math.PI / 180) + (Math.PI / 2)) * getWidth() / 2);
+	}
+
+	public float getBulletOriginY() {
+		return (float) (getCenterY() + Math.sin((rot * Math.PI / 180) + (Math.PI / 2)) * getHeight() / 2);
+	}
+
+	@Override
+	public void onCollide(Collision collision) {
+		System.out.println(collision);
+	}
+
+	@Override
+	public boolean intersects(GameObject other) {
+		return hitbox.intersection(other.getBounds()) != null;
+	}
+
+	public void vibrate(int ms) {
+		((JustAnotherGame) getGameContext().getGame()).getServer().send(id,
+				new PlayerFeedback(PlayerFeedback.FEEDBACK_VIBRATION, new float[] { ms }));
+	}
 }

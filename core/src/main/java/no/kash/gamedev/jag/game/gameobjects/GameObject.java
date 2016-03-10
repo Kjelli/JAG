@@ -2,21 +2,28 @@ package no.kash.gamedev.jag.game.gameobjects;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 import no.kash.gamedev.jag.game.gamecontext.GameContext;
 
 public interface GameObject {
 
-	public Vector2 position();
-
 	public Vector2 velocity();
 
 	public Vector2 acceleration();
-	
+
 	public Vector2 maxVelocity();
 
 	public Vector2 maxAcceleration();
+	
+	public float getX();
+
+	public float getY();
+	
+	public void setX(float x);
+	
+	public void setY(float y);
 
 	public float getCenterX();
 
@@ -33,6 +40,8 @@ public interface GameObject {
 	public float getHeight();
 
 	public void setHeight(float height);
+
+	public Rectangle getBounds();
 
 	public void setScale(float scale);
 

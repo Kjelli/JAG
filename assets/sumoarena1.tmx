@@ -24,7 +24,7 @@
    <ellipse/>
   </object>
  </objectgroup>
- <layer name="obsticles" width="50" height="50">
+ <layer name="obstacles" width="50" height="50">
   <data encoding="base64" compression="zlib">
    eJzt1tkNQEAYRWGtWBqwNGBpwNIAHdD/g6sBDwx/ZuZ8yXmVO2ISSQIAAAAgZKvarEc4sKvDekTEYvqOQj5ryGcDvsCd+Z9P7/xuq0/v3NXWVGUqV4WD51kpVaVq1RhveaNVnerVYLzl8vRuj2pSs1qcLnom9n9JAAAAAPDFCRJBEn8=
   </data>

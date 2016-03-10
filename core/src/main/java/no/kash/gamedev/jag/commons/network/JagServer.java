@@ -60,6 +60,14 @@ public class JagServer {
 		}
 	}
 
+	public void send(int id, GamePacket packet) {
+		server.sendToTCP(id, packet);
+	}
+
+	public void broadcast(GamePacket packet) {
+		server.sendToAllTCP(packet);
+	}
+
 	public MessageListener getListener() {
 		return listener;
 	}

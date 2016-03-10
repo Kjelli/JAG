@@ -14,17 +14,17 @@ public class Collision {
 		this.source = source;
 		this.target = target;
 		impactDirection = 0;
-		boolean above = target.contains(source.position().x + 1, source.position().y + source.getHeight() + 1)
-				|| target.contains(source.position().x + source.getWidth() - 1, source.position().y + source.getHeight() + 1);
+		boolean above = target.contains(source.getX() + 1, source.getY() + source.getHeight() + 1)
+				|| target.contains(source.getX() + source.getWidth() - 1, source.getY() + source.getHeight() + 1);
 
-		boolean below = target.contains(source.position().x + 1, source.position().y - 1)
-				|| target.contains(source.position().x + source.getWidth() - 1, source.position().y - 1);
+		boolean below = target.contains(source.getX() + 1, source.getY() - 1)
+				|| target.contains(source.getX() + source.getWidth() - 1, source.getY() - 1);
 
-		boolean right = target.contains(source.position().x + source.getWidth() + 1, source.position().y + 1)
-				|| target.contains(source.position().x + source.getWidth() + 1, source.position().y + source.getHeight() - 1);
+		boolean right = target.contains(source.getX() + source.getWidth() + 1, source.getY() + 1)
+				|| target.contains(source.getX() + source.getWidth() + 1, source.getY() + source.getHeight() - 1);
 
-		boolean left = target.contains(source.position().x - 1, source.position().y + 1)
-				|| target.contains(source.position().x - 1, source.position().y + source.getHeight() - 1);
+		boolean left = target.contains(source.getX() - 1, source.getY() + 1)
+				|| target.contains(source.getX() - 1, source.getY() + source.getHeight() - 1);
 		if (above)
 			impactDirection += UP;
 		if (below)
