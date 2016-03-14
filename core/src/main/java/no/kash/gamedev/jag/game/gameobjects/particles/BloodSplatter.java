@@ -27,8 +27,8 @@ public class BloodSplatter extends AbstractParticle {
 		getSprite().setColor(color);
 
 		this.direction = (float) direction;
-		velocity.x = (float) Math.cos(direction * 180 / Math.PI) * SPEED;
-		velocity.y = (float) Math.sin(direction * 180 / Math.PI) * SPEED;
+		velocity.x = (float) Math.cos(direction) * SPEED;
+		velocity.y = (float) Math.sin(direction) * SPEED;
 		setRotation(direction);
 	}
 
@@ -36,8 +36,8 @@ public class BloodSplatter extends AbstractParticle {
 	public void updateParticle(float delta) {
 		move(delta);
 		if (!timedOut) {
-			velocity.x = (float) Math.cos(direction * 180 / Math.PI) * SPEED * getTimeToLive() / TIME_TO_LIVE;
-			velocity.y = (float) Math.sin(direction * 180 / Math.PI) * SPEED * getTimeToLive() / TIME_TO_LIVE;
+			velocity.x = (float) Math.cos(direction) * SPEED * getTimeToLive() / TIME_TO_LIVE;
+			velocity.y = (float) Math.sin(direction) * SPEED * getTimeToLive() / TIME_TO_LIVE;
 		}
 		getSprite().setColor(color);
 	}
@@ -52,7 +52,6 @@ public class BloodSplatter extends AbstractParticle {
 					@Override
 					public void onEvent(int arg0, BaseTween<?> arg1) {
 						if (arg0 == TweenCallback.COMPLETE) {
-							System.out.println("Destroyed " + this);
 							destroy();
 						}
 					}

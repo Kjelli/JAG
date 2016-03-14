@@ -15,6 +15,7 @@ import no.kash.gamedev.jag.game.screens.GameScreen;
 public class JustAnotherGame extends JagEndpoint {
 
 	private JagReceiver receiver;
+	public static long ticks = 0;
 
 	public JustAnotherGame(ActionResolver resolver) {
 		super(resolver);
@@ -60,6 +61,12 @@ public class JustAnotherGame extends JagEndpoint {
 			}
 		});
 
+	}
+
+	@Override
+	public void render() {
+		super.render();
+		ticks++;
 	}
 
 	public JagServer getServer() {

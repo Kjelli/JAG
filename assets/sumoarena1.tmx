@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="16" tileheight="16" nextobjectid="17">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="16" tileheight="16" nextobjectid="39">
  <tileset firstgid="1" name="landscapetextures" tilewidth="16" tileheight="16" tilecount="32" columns="8">
   <image source="sprites/landscapetextures.png" width="128" height="64"/>
  </tileset>
@@ -17,16 +17,73 @@
   </data>
  </layer>
  <objectgroup name="spawnpoints">
-  <object id="10" name="spawn1" type="spawn" x="176" y="496" width="16" height="16">
+  <object id="10" name="spawn1" type="spawn" x="198" y="390.5" width="16" height="16">
    <ellipse/>
   </object>
-  <object id="14" name="spawn2" type="spawn" x="523.333" y="297">
+  <object id="14" name="spawn2" type="spawn" x="592.333" y="381">
    <ellipse/>
   </object>
  </objectgroup>
  <layer name="obstacles" width="50" height="50">
   <data encoding="base64" compression="zlib">
-   eJzt1tkNQEAYRWGtWBqwNGBpwNIAHdD/g6sBDwx/ZuZ8yXmVO2ISSQIAAAAgZKvarEc4sKvDekTEYvqOQj5ryGcDvsCd+Z9P7/xuq0/v3NXWVGUqV4WD51kpVaVq1RhveaNVnerVYLzl8vRuj2pSs1qcLnom9n9JAAAAAPDFCRJBEn8=
+   eJzt1sENgkAURVESKkFsAKUB0QZEG5AOoP+FjwU7M4txyP/M3JPcrXnMEGJVAQAAAMjZR03WIxKY1WI9omAlvUc5PyvP5p+3b13suXq7j9hz5T72ETrXbWv9oyPdh7etIam2NuqkWnVO8HtWOnVRV9Ubb/nHTQ3qrh7GW1ax36GnGtVLvZMuilP6f0kAAAAAOIovyEgZJg==
   </data>
  </layer>
+ <objectgroup name="collision">
+  <object id="17" name="collision" type="collision_full" x="240" y="240" width="32" height="32">
+   <properties>
+    <property name="collision_level" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="29" name="collision" type="collision_full" x="176" y="288" width="32" height="32">
+   <properties>
+    <property name="collision_level" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="30" name="collision" type="collision_full" x="320" y="304" width="32" height="32">
+   <properties>
+    <property name="collision_level" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="31" name="collision" type="collision_full" x="400" y="320" width="32" height="32">
+   <properties>
+    <property name="collision_level" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="32" name="collision" type="collision_full" x="368" y="416" width="32" height="32">
+   <properties>
+    <property name="collision_level" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="33" name="collision" type="collision_full" x="320" y="496" width="32" height="32">
+   <properties>
+    <property name="collision_level" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="34" name="collision" type="collision_full" x="464" y="512" width="32" height="32">
+   <properties>
+    <property name="collision_level" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="35" name="collision" type="collision_full" x="544" y="448" width="64" height="64">
+   <properties>
+    <property name="collision_level" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="36" name="collision" type="collision_full" x="256" y="368" width="32" height="96">
+   <properties>
+    <property name="collision_level" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="37" name="collision" type="collision_full" x="480" y="336" width="32" height="96">
+   <properties>
+    <property name="collision_level" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="38" name="collision" type="collision_full" x="400" y="416" width="80" height="16">
+   <properties>
+    <property name="collision_level" type="int" value="1"/>
+   </properties>
+  </object>
+ </objectgroup>
 </map>

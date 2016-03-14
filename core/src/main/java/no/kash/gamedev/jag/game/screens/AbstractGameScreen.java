@@ -55,8 +55,8 @@ public abstract class AbstractGameScreen implements Screen {
 
 		Gdx.gl.glClearColor(0.0f, 0.1f, 0.0f, 1.0f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		batch.setTransformMatrix(camera.view);
-		batch.setProjectionMatrix(camera.projection);
+		camera.update();
+		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 		draw(delta);
 		batch.end();
@@ -65,9 +65,10 @@ public abstract class AbstractGameScreen implements Screen {
 
 	@Override
 	public void resize(int width, int height) {
-		//stage.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
-		//stage.getViewport().apply();
-		//camera.update();
+		// stage.getViewport().update(Gdx.graphics.getWidth(),
+		// Gdx.graphics.getHeight(), true);
+		// stage.getViewport().apply();
+		// camera.update();
 	}
 
 	@Override

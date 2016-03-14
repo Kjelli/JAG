@@ -77,9 +77,7 @@ public class ControllerScreen extends AbstractControllerScreen {
 							new float[] { stick_left.getXValue(), stick_left.getYValue() }));
 					break;
 				case JOYSTICK_RIGHT:
-					if (stick_right.getXValue() == 0 || stick_right.getYValue() == 0) {
-						return;
-					}
+
 					game.getClient().broadcast(new PlayerInput(game.getClient().getId(), JOYSTICK_RIGHT,
 							new float[] { stick_right.getXValue(), stick_right.getYValue() }));
 					break;

@@ -6,12 +6,15 @@ import java.util.Map.Entry;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenAccessor;
 import aurelienribon.tweenengine.TweenManager;
 import no.kash.gamedev.jag.commons.tweens.accessors.ColorAccessor;
+import no.kash.gamedev.jag.commons.tweens.accessors.FloatAccessor;
 import no.kash.gamedev.jag.commons.tweens.accessors.Vector2Accessor;
+import no.kash.gamedev.jag.commons.tweens.accessors.Vector3Accessor;
 
 public class TweenGlobal {
 	private static TweenManager manager;
@@ -23,7 +26,9 @@ public class TweenGlobal {
 		manager = new TweenManager();
 		accessors = new HashMap<>();
 		accessors.put(Vector2.class, new Vector2Accessor());
+		accessors.put(Vector3.class, new Vector3Accessor());
 		accessors.put(Color.class, new ColorAccessor());
+		accessors.put(TweenableFloat.class, new FloatAccessor());
 		register();
 	}
 

@@ -58,8 +58,8 @@ public abstract class AbstractGun implements Gun {
 	@Override
 	public void shoot() {
 		if (magazine.getBulletCount() > 0 && cooldownTimer == 0 && reloadTimer == 0) {
-			Bullet temp = new Bullet(player, player.getBulletOriginX(), player.getBulletOriginY(),
-					player.getRotation());
+			Bullet temp = new Bullet(player.getLevel(), player, player.getBulletOriginX(), player.getBulletOriginY(),
+					(float) (player.getRotation() + Math.PI / 2));
 			player.getGameContext().spawn(temp);
 			magazine.setBulletCount(magazine.getBulletCount() - 1);
 			cooldownTimer = cooldown;

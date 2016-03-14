@@ -6,7 +6,7 @@ import aurelienribon.tweenengine.TweenAccessor;
 
 public class Vector2Accessor implements TweenAccessor<Vector2> {
 
-	static final int TYPE_XY = 0;
+	public static final int TYPE_XY = 0;
 
 	@Override
 	public int getValues(Vector2 v, int type, float[] returnVals) {

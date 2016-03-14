@@ -231,7 +231,10 @@ public abstract class AbstractGameObject implements GameObject {
 	}
 
 	public void setRotation(float rot) {
-		this.rot = rot % 360;
+		while (rot < 0) {
+			rot += 2 * Math.PI;
+		}
+		this.rot = (float) (rot % (2 * Math.PI));
 		if (sprite != null) {
 			sprite.setRotation(this.rot);
 		}

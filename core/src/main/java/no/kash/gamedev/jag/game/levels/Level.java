@@ -47,7 +47,6 @@ public class Level {
 
 		camera.setToOrtho(false, effectiveWidth, effectiveHeight);
 		camera.lookAt(offsetX, offsetY, 0);
-		camera.zoom = 0.5f;
 		camera.update();
 
 		renderer.setView(camera.projection, 0, 0, width * tileWidth, height * tileHeight);
