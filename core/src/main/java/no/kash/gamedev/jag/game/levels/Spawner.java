@@ -18,4 +18,10 @@ public class Spawner {
 		Weapon wep = new Weapon(spawnPoints[0][0],spawnPoints[0][1], GunType.m4);
 		gameContext.spawn(wep);
 	}
+
+
+	public void update(float delta) {
+		
+		
+	}
 }

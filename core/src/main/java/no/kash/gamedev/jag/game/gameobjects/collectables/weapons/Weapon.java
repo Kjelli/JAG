@@ -15,7 +15,7 @@ public class Weapon extends AbstractGameObject implements Collectable, Collidabl
 	private int ammo;
 	
 	public Weapon(float x, float y, GunType gun) {
-		super(x, y, 64, 64);
+		super(x, y, 32, 32);
 		this.gun = gun;
 		
 		Sprite sprite = new Sprite(gun.getOnGroundTexture());
@@ -25,8 +25,13 @@ public class Weapon extends AbstractGameObject implements Collectable, Collidabl
 	}
 
 	private void determineAmmo() {
+		/*Laget for å randomise antall ammo du får du plukker opp et våpen, setter bare max enn så lenge
 		int randomNum = 0 + (int)(Math.random() * 6);
 		ammo = gun.getMaxAmmo() * (1-randomNum);
+		 * 
+		 */
+		
+		ammo = gun.getMaxAmmo();
 	}
 
 	@Override

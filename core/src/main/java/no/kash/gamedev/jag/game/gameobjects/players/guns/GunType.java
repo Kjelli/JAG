@@ -7,8 +7,9 @@ import no.kash.gamedev.jag.assets.Assets;
 public enum GunType {
 
 
-	pistol("pistol", 0.1f, 0.5f, Assets.pistol,-1,-1,null),
-	m4("m4", 0.3f, 0.7f, Assets.m4,2, 30, Assets.m4_ground);
+	pistol("pistol", 0.5f, 0.5f, Assets.pistol,-1,-1,null, 20f, 300f),
+	m4("m4", 0.1f, 0.1f, Assets.m4,2, 30, Assets.m4_ground, 10f, 400f);
+
 
 
 
@@ -17,14 +18,15 @@ public enum GunType {
 	private int maxAmmo;
 	private int magazineSize;
 	private float reloadTime;
+	private float damage;
 	private Texture gunTexture;
 	private Texture onGroundTexture;
+	private float bulletSpeed;
 
 
 
 
-	GunType(String name, float cooldown, float reloadTime, Texture gunTexture, int maxAmmo, int magazineSize, Texture onGroundTexture) {
-
+	GunType(String name, float cooldown, float reloadTime, Texture gunTexture, int maxAmmo, int magazineSize, Texture onGroundTexture, float damage, float bulletSpeed) {
 		this.name = name;
 		this.cooldown = cooldown;
 		this.gunTexture = gunTexture;
@@ -32,13 +34,15 @@ public enum GunType {
 		this.reloadTime = reloadTime;
 		this.onGroundTexture = onGroundTexture;
 		this.magazineSize = magazineSize;
+		this.damage = damage;
+		this.bulletSpeed = bulletSpeed;
 	}
 
 
 	public int getMaxAmmo() {
 		return maxAmmo;
 	}
-	
+
 	public int getMagazineSize() {
 		return magazineSize;
 	}
@@ -59,10 +63,19 @@ public enum GunType {
 		return reloadTime;
 	}
 
+
 	public Texture getOnGroundTexture() {
 		return onGroundTexture;
 	}
+	
+	public float getDamage() {
+		return damage;
+	}
 
+
+	public float getBulletSpeed() {
+		return bulletSpeed;
+	}
 	
 	
 }

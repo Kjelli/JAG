@@ -18,12 +18,14 @@ public class Assets {
 	public static Texture m4;
 	public static Texture blood;
 	public static Texture grenade;
+
 	
 
 	//Collectibles
 	public static Texture m4_ground;
 
-	public static Texture health, health_border, health_shine;
+	public static Texture health, health_bg, health_border, health_shine;
+
 
 
 	public static Array<TextureRegion> explosion_frames;
@@ -39,14 +41,14 @@ public class Assets {
 		m4 = load("playerSprite/m4.png");
 		grenade = load("sprites/grenade.png");
 		blood = load("blood.png");
-		
+
 
 		//Collectibles
 		m4_ground = load("sprites/gun_m4.png");
-		
-		
+
 
 		health = load("hud/health.png");
+		health_bg = load("hud/health_bg.png");
 		health_border = load("hud/health_border.png");
 		health_shine = load("hud/health_shine.png");
 
