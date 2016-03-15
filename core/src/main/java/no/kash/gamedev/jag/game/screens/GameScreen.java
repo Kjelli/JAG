@@ -1,6 +1,9 @@
 package no.kash.gamedev.jag.game.screens;
 
-import static no.kash.gamedev.jag.controller.screens.ControllerScreen.*;
+import static no.kash.gamedev.jag.controller.screens.ControllerScreen.BUTTON_RELOAD;
+import static no.kash.gamedev.jag.controller.screens.ControllerScreen.JOYSTICK_LEFT;
+import static no.kash.gamedev.jag.controller.screens.ControllerScreen.JOYSTICK_MID;
+import static no.kash.gamedev.jag.controller.screens.ControllerScreen.JOYSTICK_RIGHT;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -83,6 +86,7 @@ public class GameScreen extends AbstractGameScreen {
 	@Override
 	protected void onShow() {
 		level = new Level(getCamera(), batch);
+		gameContext.setLevel(level);
 
 		MapObjects spawnPoints = level.map.getLayers().get("spawnpoints").getObjects();
 		this.spawnPoints = new float[spawnPoints.getCount()][];
@@ -93,7 +97,7 @@ public class GameScreen extends AbstractGameScreen {
 			this.spawnPoints[i] = new float[] { x, y };
 		}
 
-		Player man = new Player(level, -1, "Small Electric Car", 400, 400);
+		Player man = new Player(-1, "Small Electric Car", 400, 400);
 		players.put(-666, man);
 		gameContext.spawn(man);
 
@@ -155,7 +159,7 @@ public class GameScreen extends AbstractGameScreen {
 						* GameScreen.this.spawnPoints.length)];
 				float spawnX = spawnPoint[0];
 				float spawnY = spawnPoint[1];
-				Player man = new Player(level, c.getID(), "Minge", spawnX, spawnY);
+				Player man = new Player(c.getID(), "Minge", spawnX, spawnY);
 				gameContext.spawn(man);
 				players.put(c.getID(), man);
 			}

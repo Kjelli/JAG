@@ -25,7 +25,6 @@ import no.kash.gamedev.jag.game.tilecollisions.TileCollisionListener;
 public class Player extends AbstractGameObject implements Collidable {
 	private final int id;
 	private final String name;
-	private final Level level;
 
 	private float grenadePower;
 	private float grenadeDirection;
@@ -37,9 +36,8 @@ public class Player extends AbstractGameObject implements Collidable {
 	private Hitbox hitbox;
 	private boolean firing;
 
-	public Player(Level level, int id, String name, float x, float y) {
+	public Player(int id, String name, float x, float y) {
 		super(x, y, 64, 64);
-		this.level = level;
 		Sprite sprite = new Sprite(Assets.man);
 		sprite.setOrigin(getWidth() / 2, getHeight() / 2);
 		setSprite(sprite);
@@ -72,7 +70,7 @@ public class Player extends AbstractGameObject implements Collidable {
 			gun.shoot();
 		}
 
-		TileCollisionDetector.checkTileCollisions(level, this, tileCollisionListener);
+		TileCollisionDetector.checkTileCollisions(getGameContext().getLevel(), this, tileCollisionListener);
 	}
 
 	@Override
@@ -137,10 +135,7 @@ public class Player extends AbstractGameObject implements Collidable {
 		((JustAnotherGame) getGameContext().getGame()).getServer().send(id,
 				new PlayerFeedback(PlayerFeedback.FEEDBACK_VIBRATION, new float[] { ms }));
 	}
-
-	public Level getLevel() {
-		return level;
-	}
+	
 
 	public void setFiring(boolean firing) {
 		this.firing = firing;
