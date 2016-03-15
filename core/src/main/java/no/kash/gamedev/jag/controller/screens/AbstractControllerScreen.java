@@ -118,7 +118,7 @@ public abstract class AbstractControllerScreen implements Screen {
 		gameContext.dispose();
 		Gdx.input.setInputProcessor(null);
 	}
-	
+
 	protected boolean isDisposed() {
 		return disposed;
 	}

@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import no.kash.gamedev.jag.game.gamecontext.physics.BruteForcePhysicsHandler;
 import no.kash.gamedev.jag.game.gamecontext.physics.PhysicsHandler;
 import no.kash.gamedev.jag.game.gameobjects.GameObject;
+import no.kash.gamedev.jag.game.levels.Level;
 
 public class GameContext {
 
@@ -26,6 +27,8 @@ public class GameContext {
 	private PhysicsHandler physics;
 	private long ticks = 0;
 	private double elapsedTime = 0;
+
+	private Level level;
 
 	private float timeModifier = 1.0f;
 
@@ -127,6 +130,14 @@ public class GameContext {
 
 	public boolean isPaused() {
 		return paused;
+	}
+
+	public void setLevel(Level level) {
+		this.level = level;
+	}
+
+	public Level getLevel() {
+		return level;
 	}
 
 }
