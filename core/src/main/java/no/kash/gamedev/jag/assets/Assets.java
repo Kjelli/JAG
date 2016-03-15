@@ -17,6 +17,8 @@ public class Assets {
 	public static Texture pistol;
 	public static Texture blood;
 	public static Texture grenade;
+	
+	public static Texture health, health_border, health_shine;
 
 	public static Array<TextureRegion> explosion_frames;
 
@@ -30,6 +32,10 @@ public class Assets {
 		pistol = load("playerSprite/pistol.png");
 		grenade = load("sprites/grenade.png");
 		blood = load("blood.png");
+		
+		health = load("hud/health.png");
+		health_border = load("hud/health_border.png");
+		health_shine = load("hud/health_shine.png");
 
 		Texture explosionSheet = load("animations/explosion1.png");
 		explosion_frames = new Array<>();
