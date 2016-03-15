@@ -21,10 +21,8 @@ public class BruteForcePhysicsHandler implements PhysicsHandler {
 					Collidable cgo1 = (Collidable) one;
 					Collidable cgo2 = (Collidable) other;
 					Collision col1 = new Collision(cgo1, cgo2);
-					Collision col2 = new Collision(cgo2, cgo1);
 
 					cgo1.onCollide(col1);
-					cgo2.onCollide(col2);
 				}
 			}
 		}

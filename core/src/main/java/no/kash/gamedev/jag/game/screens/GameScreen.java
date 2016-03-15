@@ -34,7 +34,6 @@ public class GameScreen extends AbstractGameScreen {
 	@Override
 	protected void update(float delta) {
 		gameContext.update(delta);
-
 		handleCamera(delta);
 
 	}
@@ -97,7 +96,7 @@ public class GameScreen extends AbstractGameScreen {
 			this.spawnPoints[i] = new float[] { x, y };
 		}
 
-		Player man = new Player(-1, "Small Electric Car", 400, 400);
+		Player man = new Player(-1, "Dummy", 400, 400);
 		players.put(-666, man);
 		gameContext.spawn(man);
 

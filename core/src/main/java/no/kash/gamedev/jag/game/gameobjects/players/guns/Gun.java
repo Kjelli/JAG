@@ -17,6 +17,7 @@ public class Gun {
 	protected int magasineSize;
 	protected int maxAmmo;
 	protected int ammo;
+	protected float damage;
 
 	protected Sprite sprite;
 
@@ -30,6 +31,7 @@ public class Gun {
 		this.ammo = maxAmmo;
 		this.magasineSize = type.getMagazineSize();
 		this.bulletCount = magasineSize;
+		this.damage = type.getDamage();
 	}
 
 	public void update(float delta) {
@@ -51,10 +53,9 @@ public class Gun {
 	}
 
 	public void shoot() {
-		System.out.println(bulletCount + " " + cooldownTimer + " " + reloadTimer);
 		if ((bulletCount == -1 || bulletCount > 0) && cooldownTimer == 0 && reloadTimer == 0) {
-			Bullet temp = new Bullet(player.getGameContext().getLevel(), player, player.getBulletOriginX(),
-					player.getBulletOriginY(), (float) (player.getRotation() + Math.PI / 2));
+			Bullet temp = new Bullet(player, player.getBulletOriginX(), player.getBulletOriginY(),
+					(float) (player.getRotation() + Math.PI / 2), damage);
 			player.getGameContext().spawn(temp);
 			if (bulletCount != -1) {
 				bulletCount -= 1;
