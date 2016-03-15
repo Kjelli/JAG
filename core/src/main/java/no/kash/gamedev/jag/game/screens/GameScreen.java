@@ -18,13 +18,16 @@ import no.kash.gamedev.jag.commons.network.JagReceiver;
 import no.kash.gamedev.jag.commons.network.packets.PlayerInput;
 import no.kash.gamedev.jag.game.gameobjects.players.Player;
 import no.kash.gamedev.jag.game.levels.Level;
+import no.kash.gamedev.jag.game.levels.Spawner;
 
 public class GameScreen extends AbstractGameScreen {
 
 	Map<Integer, Player> players;
 	Level level;
+	Spawner spawnpoints;
 
 	float[][] spawnPoints;
+	float [][] weaponSpawnPoints;
 
 	public GameScreen(JustAnotherGame game) {
 		super(game);
@@ -87,6 +90,7 @@ public class GameScreen extends AbstractGameScreen {
 	protected void onShow() {
 		level = new Level(getCamera(), batch);
 		gameContext.setLevel(level);
+		
 
 		MapObjects spawnPoints = level.map.getLayers().get("spawnpoints").getObjects();
 		this.spawnPoints = new float[spawnPoints.getCount()][];
@@ -96,6 +100,17 @@ public class GameScreen extends AbstractGameScreen {
 			float y = spawnPoint.getProperties().get("y", Float.class);
 			this.spawnPoints[i] = new float[] { x, y };
 		}
+		
+		MapObjects weaponSpawnPoints = level.map.getLayers().get("weaponspawn").getObjects();
+		this.weaponSpawnPoints = new float[weaponSpawnPoints.getCount()][];
+		for (int i = 0; i < weaponSpawnPoints.getCount(); i++) {
+			MapObject temp = weaponSpawnPoints.get(i);
+			float x = temp.getProperties().get("x", Float.class);
+			float y = temp.getProperties().get("y", Float.class);
+			this.weaponSpawnPoints[i] = new float[] { x, y };
+		}
+		
+		spawnpoints = new Spawner(this.weaponSpawnPoints, getGameContext());
 
 		Player man = new Player(-1, "Small Electric Car", 400, 400);
 		players.put(-666, man);

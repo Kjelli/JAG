@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="16" tileheight="16" nextobjectid="39">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="16" tileheight="16" nextobjectid="45">
  <tileset firstgid="1" name="landscapetextures" tilewidth="16" tileheight="16" tilecount="32" columns="8">
   <image source="sprites/landscapetextures.png" width="128" height="64"/>
  </tileset>
@@ -8,7 +8,7 @@
  </tileset>
  <layer name="Ground" width="50" height="50">
   <data encoding="base64" compression="zlib">
-   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
+   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
   </data>
  </layer>
  <layer name="Lava" width="50" height="50">
@@ -32,58 +32,62 @@
  <objectgroup name="collision">
   <object id="17" name="collision" type="collision_full" x="240" y="240" width="32" height="32">
    <properties>
-    <property name="collision_level" type="int" value="2"/>
+    <property name="collision_level" value="2"/>
    </properties>
   </object>
   <object id="29" name="collision" type="collision_full" x="176" y="288" width="32" height="32">
    <properties>
-    <property name="collision_level" type="int" value="2"/>
+    <property name="collision_level" value="2"/>
    </properties>
   </object>
   <object id="30" name="collision" type="collision_full" x="320" y="304" width="32" height="32">
    <properties>
-    <property name="collision_level" type="int" value="2"/>
+    <property name="collision_level" value="2"/>
    </properties>
   </object>
   <object id="31" name="collision" type="collision_full" x="400" y="320" width="32" height="32">
    <properties>
-    <property name="collision_level" type="int" value="2"/>
+    <property name="collision_level" value="2"/>
    </properties>
   </object>
   <object id="32" name="collision" type="collision_full" x="368" y="416" width="32" height="32">
    <properties>
-    <property name="collision_level" type="int" value="2"/>
+    <property name="collision_level" value="2"/>
    </properties>
   </object>
   <object id="33" name="collision" type="collision_full" x="320" y="496" width="32" height="32">
    <properties>
-    <property name="collision_level" type="int" value="2"/>
+    <property name="collision_level" value="2"/>
    </properties>
   </object>
   <object id="34" name="collision" type="collision_full" x="464" y="512" width="32" height="32">
    <properties>
-    <property name="collision_level" type="int" value="2"/>
+    <property name="collision_level" value="2"/>
    </properties>
   </object>
   <object id="35" name="collision" type="collision_full" x="544" y="448" width="64" height="64">
    <properties>
-    <property name="collision_level" type="int" value="2"/>
+    <property name="collision_level" value="2"/>
    </properties>
   </object>
   <object id="36" name="collision" type="collision_full" x="256" y="368" width="32" height="96">
    <properties>
-    <property name="collision_level" type="int" value="2"/>
+    <property name="collision_level" value="2"/>
    </properties>
   </object>
   <object id="37" name="collision" type="collision_full" x="480" y="336" width="32" height="96">
    <properties>
-    <property name="collision_level" type="int" value="2"/>
+    <property name="collision_level" value="2"/>
    </properties>
   </object>
   <object id="38" name="collision" type="collision_full" x="400" y="416" width="80" height="16">
    <properties>
-    <property name="collision_level" type="int" value="1"/>
+    <property name="collision_level" value="1"/>
    </properties>
   </object>
+ </objectgroup>
+ <objectgroup name="weaponspawn">
+  <object id="42" name="weaponspawn" x="384.5" y="255.5" width="30.5" height="31"/>
+  <object id="44" name="weaponspawn" x="384.25" y="544.5" width="30.5" height="31"/>
  </objectgroup>
 </map>

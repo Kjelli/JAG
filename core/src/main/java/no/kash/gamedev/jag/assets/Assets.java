@@ -1,18 +1,11 @@
 package no.kash.gamedev.jag.assets;
 
-import java.io.File;
-import java.io.FilenameFilter;
-
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.Animation.PlayMode;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
-import com.badlogic.gdx.graphics.g3d.particles.influencers.RegionInfluencer.Animated;
 import com.badlogic.gdx.utils.Array;
 
 public class Assets {
@@ -22,13 +15,17 @@ public class Assets {
 
 	public static Texture bullet;
 	public static Texture pistol;
+	public static Texture m4;
 	public static Texture blood;
 	public static Texture grenade;
 	
+
 	//Collectibles
 	public static Texture m4_ground;
 
-	public static Animation explosion_animation;
+	public static Texture health, health_border, health_shine;
+
+
 	public static Array<TextureRegion> explosion_frames;
 
 	public static BitmapFont font;
@@ -39,16 +36,27 @@ public class Assets {
 
 		bullet = load("bullet.png");
 		pistol = load("playerSprite/pistol.png");
-		grenade = load("playerSprite/grenade.png");
+		m4 = load("playerSprite/m4.png");
+		grenade = load("sprites/grenade.png");
 		blood = load("blood.png");
 		
-		//Collectibles
-		m4_ground = load("gun_m4");
 
-		// TODO load animation frames
-		explosion_frames = new Array<>(loadMany("playerSprite/grenade_frames", ""));
-		explosion_animation = new Animation(40, explosion_frames);
-		explosion_animation.setPlayMode(PlayMode.NORMAL);
+		//Collectibles
+		m4_ground = load("sprites/gun_m4.png");
+		
+		
+
+		health = load("hud/health.png");
+		health_border = load("hud/health_border.png");
+		health_shine = load("hud/health_shine.png");
+
+		Texture explosionSheet = load("animations/explosion1.png");
+		explosion_frames = new Array<>();
+		for (int y = 0; y < explosionSheet.getHeight(); y += 128) {
+			TextureRegion region = new TextureRegion(explosionSheet, 0, y, 128, 128);
+			explosion_frames.add(region);
+		}
+
 
 		FreeTypeFontGenerator font10gen = new FreeTypeFontGenerator(Gdx.files.internal("pixelmix.ttf"));
 		FreeTypeFontParameter font10params = new FreeTypeFontParameter();
@@ -63,27 +71,4 @@ public class Assets {
 		return newTexture;
 	}
 
-	private static TextureRegion[] loadMany(String foldername, final String prefix) {
-		TextureRegion[] tempTextures;
-
-		FileHandle[] handles = Gdx.files.internal(foldername).list(new FilenameFilter() {
-
-			@Override
-			public boolean accept(File dir, String name) {
-				if (name.startsWith(prefix)) {
-					return true;
-				}
-				return false;
-			}
-		});
-
-		tempTextures = new TextureRegion[handles.length];
-
-		for (int i = 0; i < handles.length; i++) {
-			tempTextures[i] = new TextureRegion(load(handles[i].name()));
-		}
-
-		return tempTextures;
-
-	}
 }

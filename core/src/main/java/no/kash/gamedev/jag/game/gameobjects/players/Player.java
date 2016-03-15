@@ -18,24 +18,29 @@ import no.kash.gamedev.jag.game.gameobjects.grenades.Grenade;
 import no.kash.gamedev.jag.game.gameobjects.particles.BloodSplatter;
 import no.kash.gamedev.jag.game.gameobjects.players.guns.Gun;
 import no.kash.gamedev.jag.game.gameobjects.players.guns.GunType;
-import no.kash.gamedev.jag.game.gameobjects.players.guns.Pistol;
-import no.kash.gamedev.jag.game.levels.Level;
+import no.kash.gamedev.jag.game.gameobjects.players.hud.HealthHud;
 import no.kash.gamedev.jag.game.tilecollisions.TileCollisionDetector;
 import no.kash.gamedev.jag.game.tilecollisions.TileCollisionListener;
 
 public class Player extends AbstractGameObject implements Collidable {
-	private final int id;
-	private final String name;
-
-	private float grenadePower;
-	private float grenadeDirection;
 
 	private final TileCollisionListener tileCollisionListener;
 
-	private final GlyphLayout nameLabel;
+	private final int id;
+	private final String name;
+
+	private boolean firing;
+
 	private Gun gun;
 	private Hitbox hitbox;
-	private boolean firing;
+	private HealthHud healthHud;
+
+	private float grenadePower;
+	private float grenadeDirection;
+	private float healthMax = 100;
+	private float health;
+
+	private final GlyphLayout nameLabel;
 
 	public Player(int id, String name, float x, float y) {
 		super(x, y, 64, 64);
@@ -55,9 +60,8 @@ public class Player extends AbstractGameObject implements Collidable {
 		};
 
 		nameLabel = new GlyphLayout(Assets.font, name);
-		gun = new Pistol(GunType.pistol);
-		gun.setAmmo(100);
-		gun.reload();
+		healthHud = new HealthHud(this, getCenterX() - HealthHud.WIDTH / 2, getCenterY() - HealthHud.HEIGHT / 2);
+		gun = new Gun(GunType.pistol);
 		gun.equip(this);
 	}
 
@@ -66,6 +70,10 @@ public class Player extends AbstractGameObject implements Collidable {
 		gun.update(delta);
 		move(delta);
 		hitbox.update(getX() + getWidth() / 2 - 8, getY() + getHeight() / 2 - 8);
+		if (healthHud.isVisible()) {
+			healthHud.setX(getCenterX() - HealthHud.WIDTH / 2);
+			healthHud.setY(getCenterY() - HealthHud.HEIGHT / 2);
+		}
 
 		if (isFiring()) {
 			gun.shoot();
@@ -86,6 +94,7 @@ public class Player extends AbstractGameObject implements Collidable {
 	
 	public void equipWeapon(Weapon weapon){
 		gun = new Gun(weapon.gun);
+		gun.equip(this);
 	}
 	
 	public int getId() {
@@ -140,7 +149,6 @@ public class Player extends AbstractGameObject implements Collidable {
 		((JustAnotherGame) getGameContext().getGame()).getServer().send(id,
 				new PlayerFeedback(PlayerFeedback.FEEDBACK_VIBRATION, new float[] { ms }));
 	}
-	
 
 	public void setFiring(boolean firing) {
 		this.firing = firing;
@@ -153,6 +161,14 @@ public class Player extends AbstractGameObject implements Collidable {
 	public void holdGrenade(float power, float dir) {
 		this.grenadeDirection = dir;
 		this.grenadePower = power;
+	}
+
+	public float getHealth() {
+		return health;
+	}
+
+	public float getHealthPercentage() {
+		return health / healthMax;
 	}
 
 	public void releaseGrenade() {
