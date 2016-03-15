@@ -7,11 +7,12 @@ import no.kash.gamedev.jag.assets.Assets;
 import no.kash.gamedev.jag.commons.tweens.TweenGlobal;
 import no.kash.gamedev.jag.commons.tweens.accessors.Vector2Accessor;
 import no.kash.gamedev.jag.game.gameobjects.AbstractGameObject;
+import no.kash.gamedev.jag.game.gameobjects.particles.Explosion;
 import no.kash.gamedev.jag.game.gameobjects.players.Player;
 
 public class Grenade extends AbstractGameObject {
 
-	public static final float TIME_TO_LIVE_MAX = 2.0f;
+	public static final float TIME_TO_LIVE_MAX = 1.0f;
 	public static final float SPEED = 300f;
 	public static final float AIR_TIME = 1.0f;
 
@@ -22,6 +23,7 @@ public class Grenade extends AbstractGameObject {
 	public Grenade(Player thrower, float x, float y, float direction, float power) {
 		super(x, y, 16, 16);
 		setSprite(new Sprite(Assets.grenade));
+		getSprite().setOrigin(getWidth() / 2, getHeight() / 2);
 		this.direction = direction;
 		this.power = power;
 		velocity().x = (float) (thrower.velocity().x + Math.cos(direction) * power * SPEED);
@@ -34,13 +36,14 @@ public class Grenade extends AbstractGameObject {
 		if ((timeToLive -= delta) <= 0) {
 			blowUp();
 		}
-		System.out.println(direction);
+
+		setRotation((Math.max(timeToLive - TIME_TO_LIVE_MAX / 2, 0) / TIME_TO_LIVE_MAX) * power * 10 + power * direction );
 
 		move(delta);
 	}
 
 	private void blowUp() {
-		// TODO stuff
+		getGameContext().spawn(new Explosion(getCenterX() - Explosion.WIDTH / 2, getCenterY() - Explosion.HEIGHT / 2));
 		destroy();
 	}
 
