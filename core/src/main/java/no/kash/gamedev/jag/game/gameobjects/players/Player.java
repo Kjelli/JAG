@@ -13,6 +13,7 @@ import no.kash.gamedev.jag.game.gamecontext.physics.Collidable;
 import no.kash.gamedev.jag.game.gamecontext.physics.Collision;
 import no.kash.gamedev.jag.game.gameobjects.AbstractGameObject;
 import no.kash.gamedev.jag.game.gameobjects.bullets.Bullet;
+import no.kash.gamedev.jag.game.gameobjects.collectables.weapons.Weapon;
 import no.kash.gamedev.jag.game.gameobjects.grenades.Grenade;
 import no.kash.gamedev.jag.game.gameobjects.particles.BloodSplatter;
 import no.kash.gamedev.jag.game.gameobjects.players.guns.Gun;
@@ -82,7 +83,11 @@ public class Player extends AbstractGameObject implements Collidable {
 		Assets.font.draw(batch, nameLabel, getX() + getWidth() / 2 - nameLabel.width / 2,
 				getY() + getHeight() + nameLabel.height);
 	}
-
+	
+	public void equipWeapon(Weapon weapon){
+		gun = new Gun(weapon.gun);
+	}
+	
 	public int getId() {
 		return id;
 	}
@@ -153,4 +158,6 @@ public class Player extends AbstractGameObject implements Collidable {
 	public void releaseGrenade() {
 		getGameContext().spawn(new Grenade(this, getCenterX(), getCenterY(), grenadeDirection, grenadePower));
 	}
+	
+	
 }

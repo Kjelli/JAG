@@ -6,24 +6,26 @@ import no.kash.gamedev.jag.assets.Assets;
 
 public enum GunType {
 
-	pistol("pistol", 0.1f, 0.5f, Assets.pistol), mac10("mac10", 0.3f, 0.7f, Assets.pistol, 200);
+	pistol("pistol", 0.1f, 0.5f, Assets.pistol), m4("m4", 0.3f, 0.7f, Assets.pistol, 30, Assets.m4_ground);
 
 	private String name;
 	private float cooldown;
 	private int maxAmmo;
 	private float reloadTime;
 	private Texture gunTexture;
+	private Texture onGroundTexture;
 
-	GunType(String name, float cooldown, float reloadTime, Texture gunTexture, int maxAmmo) {
+	GunType(String name, float cooldown, float reloadTime, Texture gunTexture, int maxAmmo, Texture onGroundTexture) {
 		this.name = name;
 		this.cooldown = cooldown;
 		this.gunTexture = gunTexture;
 		this.maxAmmo = maxAmmo;
 		this.reloadTime = reloadTime;
+		this.onGroundTexture = onGroundTexture;
 	}
 	
 	GunType(String name, float cooldown, float reloadTime, Texture gunTexture) {
-		this(name,cooldown,reloadTime,gunTexture, -1);
+		this(name,cooldown,reloadTime,gunTexture, -1,null);
 	}
 
 
@@ -46,4 +48,11 @@ public enum GunType {
 	public float getReloadTime() {
 		return reloadTime;
 	}
+
+	public Texture getOnGroundTexture() {
+		return onGroundTexture;
+	}
+
+	
+	
 }

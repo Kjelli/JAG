@@ -24,6 +24,9 @@ public class Assets {
 	public static Texture pistol;
 	public static Texture blood;
 	public static Texture grenade;
+	
+	//Collectibles
+	public static Texture m4_ground;
 
 	public static Animation explosion_animation;
 	public static Array<TextureRegion> explosion_frames;
@@ -38,6 +41,9 @@ public class Assets {
 		pistol = load("playerSprite/pistol.png");
 		grenade = load("playerSprite/grenade.png");
 		blood = load("blood.png");
+		
+		//Collectibles
+		m4_ground = load("gun_m4");
 
 		// TODO load animation frames
 		explosion_frames = new Array<>(loadMany("playerSprite/grenade_frames", ""));
