@@ -28,6 +28,7 @@ public class Level {
 
 	public Level(GameSettings settings, SpriteBatch batch, GameContext context) {
 		map = new TmxMapLoader().load(settings.mapFilename);
+
 		width = (Integer) map.getProperties().get("width", -1, Integer.class);
 		height = (Integer) map.getProperties().get("height", -1, Integer.class);
 		tileWidth = (Integer) map.getProperties().get("tilewidth", -1, Integer.class);

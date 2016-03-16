@@ -51,7 +51,9 @@ public class Gun {
 	}
 
 	public void shoot() {
-		System.out.println(bulletCount + "  / " + magasineSize + " ( " + ammo + " / " + maxAmmo + " )");
+		if(ammo == 0 && bulletCount == 0){
+			player.equipGun(GunType.pistol);
+		}
 		if ((bulletCount == -1 || bulletCount > 0) && bulletCooldown.getCooldownTimer() == 0
 				&& reloadCooldown.getCooldownTimer() == 0) {
 			Bullet temp = new Bullet(player, player.getBulletOriginX(), player.getBulletOriginY(),
@@ -68,6 +70,8 @@ public class Gun {
 		}
 
 	}
+
+	
 
 	public void reload() {
 		// If room in magazine, reloadtimer is over, ammo exists or unlimited
@@ -107,4 +111,14 @@ public class Gun {
 	public double getAngleOffset() {
 		return angleOffset;
 	}
+
+	public int getMagasineSize() {
+		return magasineSize;
+	}
+
+	public int getAmmo() {
+		return ammo;
+	}
+	
+	
 }

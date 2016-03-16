@@ -13,3 +13,4 @@
 
 android/.project
 android/bin/*
+*.class

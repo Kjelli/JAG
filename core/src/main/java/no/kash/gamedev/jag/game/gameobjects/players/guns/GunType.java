@@ -6,7 +6,7 @@ import no.kash.gamedev.jag.assets.Assets;
 
 public enum GunType {
 
-	pistol("pistol", 0.5f, 0.5f, Assets.pistol, -1, -1, null, 20f, 300f, 0f), m4("m4", 0.1f, 0.1f, Assets.m4, 300, 30,
+	pistol("pistol", 0.5f, 0.5f, Assets.pistol, -1, -1, null, 20f, 300f, 0f), m4("m4", 0.1f, 0.1f, Assets.m4, 60, 30,
 			Assets.m4_ground, 10f, 400f, -Math.PI / 18);
 
 	private String name;
