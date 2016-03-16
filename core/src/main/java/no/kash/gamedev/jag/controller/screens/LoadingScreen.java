@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.esotericsoftware.kryonet.Connection;
 
 import no.kash.gamedev.jag.assets.Assets;
-import no.kash.gamedev.jag.commons.network.MessageListener;
+import no.kash.gamedev.jag.commons.network.NetworkListener;
 import no.kash.gamedev.jag.commons.network.packets.GamePacket;
 import no.kash.gamedev.jag.commons.network.packets.PlayerConnect;
 import no.kash.gamedev.jag.commons.network.packets.PlayerStateChange;
@@ -55,9 +55,9 @@ public class LoadingScreen extends AbstractControllerScreen {
 	@Override
 	protected void onShow() {
 
-		game.getClient().setListener(new MessageListener() {
+		game.getClient().setListener(new NetworkListener() {
 			@Override
-			public void onMessage(Connection c, GamePacket m) {
+			public void receivedPacket(Connection c, GamePacket m) {
 				if (m instanceof PlayerStateChange) {
 					PlayerStateChange sc = (PlayerStateChange) m;
 					handleStateChange(sc);
@@ -65,12 +65,12 @@ public class LoadingScreen extends AbstractControllerScreen {
 			}
 
 			@Override
-			public void onDisconnection(Connection connection) {
+			public void disconnected(Connection connection) {
 				setBackgroundColor(Color.RED);
 			}
 
 			@Override
-			public void onConnection(Connection c) {
+			public void connected(Connection c) {
 				setBackgroundColor(Color.WHITE);
 			}
 		});

@@ -18,5 +18,7 @@ public class JagKryo {
 		kryo.register(PlayerStateChange.class);
 		kryo.register(PlayerStateChangeResponse.class);
 		kryo.register(float[].class);
+		kryo.register(float[][].class);	
+		kryo.register(int[].class);
 	}
 }

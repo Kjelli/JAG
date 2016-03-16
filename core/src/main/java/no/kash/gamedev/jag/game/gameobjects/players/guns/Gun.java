@@ -4,14 +4,16 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import no.kash.gamedev.jag.commons.graphics.Draw;
+import no.kash.gamedev.jag.commons.network.packets.PlayerUpdate;
+import no.kash.gamedev.jag.game.JustAnotherGame;
 import no.kash.gamedev.jag.game.gamecontext.functions.Cooldown;
 import no.kash.gamedev.jag.game.gameobjects.bullets.Bullet;
 import no.kash.gamedev.jag.game.gameobjects.players.Player;
 
 public class Gun {
 
-	protected int bulletCount;
-	protected int magasineSize;
+	protected int magazineAmmo;
+	protected int magazineSize;
 	protected int maxAmmo;
 	protected int ammo;
 	protected float damage;
@@ -30,8 +32,8 @@ public class Gun {
 		this.maxAmmo = type.getMaxAmmo();
 		this.sprite = new Sprite(type.getGunTexture());
 		this.ammo = maxAmmo;
-		this.magasineSize = type.getMagazineSize();
-		this.bulletCount = magasineSize;
+		this.magazineSize = type.getMagazineSize();
+		this.magazineAmmo = magazineSize;
 		this.damage = type.getDamage();
 		this.bulletSpeed = type.getBulletSpeed();
 		this.angleOffset = type.getAngleOffset();
@@ -51,16 +53,19 @@ public class Gun {
 	}
 
 	public void shoot() {
-		if(ammo == 0 && bulletCount == 0){
+		if (ammo == 0 && magazineAmmo == 0) {
 			player.equipGun(GunType.pistol);
 		}
-		if ((bulletCount == -1 || bulletCount > 0) && bulletCooldown.getCooldownTimer() == 0
+		if ((magazineAmmo == -1 || magazineAmmo > 0) && bulletCooldown.getCooldownTimer() == 0
 				&& reloadCooldown.getCooldownTimer() == 0) {
 			Bullet temp = new Bullet(player, player.getBulletOriginX(), player.getBulletOriginY(),
 					(float) (player.getRotation() + Math.PI / 2), damage, bulletSpeed);
 			player.getGameContext().spawn(temp);
-			if (bulletCount != -1) {
-				bulletCount -= 1;
+			if (magazineAmmo != -1) {
+				magazineAmmo -= 1;
+				((JustAnotherGame) player.getGameContext().getGame()).getServer().send(player.getId(),
+						new PlayerUpdate(1, new int[] { PlayerUpdate.AMMO },
+								new float[][] { { magazineAmmo, magazineSize, ammo } }));
 			}
 			bulletCooldown.startCooldown();
 			// TODO Shoot sfx?
@@ -71,19 +76,21 @@ public class Gun {
 
 	}
 
-	
-
 	public void reload() {
 		// If room in magazine, reloadtimer is over, ammo exists or unlimited
 		// ammo
-		if (bulletCount < magasineSize && reloadCooldown.getCooldownTimer() == 0 && (ammo > 0 || maxAmmo == -1)) {
-			int bulletsLeft = (int) Math.min(magasineSize, ammo);
+		if (magazineAmmo < magazineSize && reloadCooldown.getCooldownTimer() == 0 && (ammo > 0 || maxAmmo == -1)) {
+			int bulletsLeft = (int) Math.min(magazineSize, ammo);
 			// Update ammo if not unlimited
 			if (maxAmmo != -1) {
-				setAmmo(ammo - (bulletsLeft - bulletCount));
+				setAmmo(ammo - (bulletsLeft - magazineAmmo));
+
 			}
-			bulletCount = bulletsLeft;
+			magazineAmmo = bulletsLeft;
 			reloadCooldown.startCooldown();
+
+			((JustAnotherGame) player.getGameContext().getGame()).getServer().send(player.getId(), new PlayerUpdate(1,
+					new int[] { PlayerUpdate.AMMO }, new float[][] { { magazineAmmo, magazineSize, ammo } }));
 			// TODO Reload sfx?
 		} else {
 			// TODO Out of ammo sfx?
@@ -113,12 +120,15 @@ public class Gun {
 	}
 
 	public int getMagasineSize() {
-		return magasineSize;
+		return magazineSize;
 	}
 
 	public int getAmmo() {
 		return ammo;
 	}
-	
-	
+
+	public float getMagasineAmmo() {
+		return magazineAmmo;
+	}
+
 }

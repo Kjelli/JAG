@@ -7,7 +7,7 @@ import no.kash.gamedev.jag.actionresolvers.ActionResolver;
 import no.kash.gamedev.jag.assets.Assets;
 import no.kash.gamedev.jag.commons.network.JagReceiver;
 import no.kash.gamedev.jag.commons.network.JagServer;
-import no.kash.gamedev.jag.commons.network.MessageListener;
+import no.kash.gamedev.jag.commons.network.NetworkListener;
 import no.kash.gamedev.jag.commons.network.packets.GamePacket;
 import no.kash.gamedev.jag.commons.network.packets.PlayerConnect;
 import no.kash.gamedev.jag.commons.network.packets.PlayerInput;
@@ -35,10 +35,10 @@ public class JustAnotherGame extends JagEndpoint {
 		TweenGlobal.init();
 		Assets.load();
 		server = new JagServer();
-		server.setListener(new MessageListener() {
+		server.setListener(new NetworkListener() {
 
 			@Override
-			public void onMessage(Connection c, GamePacket m) {
+			public void receivedPacket(Connection c, GamePacket m) {
 				if (m instanceof PlayerInput) {
 					PlayerInput input = (PlayerInput) m;
 					if (getReceiver() != null) {
@@ -52,12 +52,12 @@ public class JustAnotherGame extends JagEndpoint {
 			}
 
 			@Override
-			public void onConnection(Connection c) {
+			public void connected(Connection c) {
 				System.out.println("Connection " + c.getID() + " from " + c.getRemoteAddressTCP());
 			}
 
 			@Override
-			public void onDisconnection(Connection c) {
+			public void disconnected(Connection c) {
 				if (getReceiver() != null) {
 					getReceiver().handleDisconnection(c);
 				}

@@ -14,7 +14,7 @@ public class JagClient {
 	private final Client client;
 	private int id;
 	private String connectionString;
-	private MessageListener listener;
+	private NetworkListener listener;
 	
 	private boolean connected = false;
 
@@ -31,14 +31,14 @@ public class JagClient {
 				connected = true;
 				id = connection.getID();
 				if (listener != null) {
-					listener.onConnection(connection);
+					listener.connected(connection);
 				}
 			}
 
 			@Override
 			public void received(Connection connection, Object object) {
 				if (listener != null && object instanceof GamePacket) {
-					listener.onMessage(connection, (GamePacket) object);
+					listener.receivedPacket(connection, (GamePacket) object);
 				}
 			}
 
@@ -46,7 +46,7 @@ public class JagClient {
 			public void disconnected(Connection connection) {
 				connected = false;
 				if (listener != null) {
-					listener.onDisconnection(connection);
+					listener.disconnected(connection);
 				}
 			}
 		});
@@ -69,11 +69,11 @@ public class JagClient {
 		client.sendTCP(packet);
 	}
 
-	public MessageListener getListener() {
+	public NetworkListener getListener() {
 		return listener;
 	}
 
-	public void setListener(MessageListener listener) {
+	public void setListener(NetworkListener listener) {
 		this.listener = listener;
 	}
 

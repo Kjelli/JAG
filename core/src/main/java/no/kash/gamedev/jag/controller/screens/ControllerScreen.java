@@ -8,13 +8,19 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.esotericsoftware.kryonet.Connection;
 
+import aurelienribon.tweenengine.BaseTween;
+import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.TweenCallback;
 import no.kash.gamedev.jag.commons.defs.Defs;
-import no.kash.gamedev.jag.commons.network.MessageListener;
+import no.kash.gamedev.jag.commons.network.NetworkListener;
 import no.kash.gamedev.jag.commons.network.packets.GamePacket;
 import no.kash.gamedev.jag.commons.network.packets.PlayerUpdate;
+import no.kash.gamedev.jag.commons.tweens.TweenGlobal;
+import no.kash.gamedev.jag.commons.tweens.accessors.ColorAccessor;
 import no.kash.gamedev.jag.commons.network.packets.PlayerInput;
 import no.kash.gamedev.jag.commons.network.packets.PlayerStateChangeResponse;
 import no.kash.gamedev.jag.controller.JustAnotherGameController;
+import no.kash.gamedev.jag.controller.hud.InGameHud;
 import no.kash.gamedev.jag.controller.input.Joystick;
 import no.kash.gamedev.jag.controller.inputschemes.InputEvent;
 import no.kash.gamedev.jag.controller.inputschemes.InputScheme;
@@ -29,17 +35,11 @@ public class ControllerScreen extends AbstractControllerScreen {
 	Joystick stick_mid;
 	TextButton reload;
 
-	GlyphLayout statusText;
-
-	boolean connected = false;
-
-	static final float MAX_TIMEOUT = 2.0f;
-
-	float timeout = 0;
-
-	String connectionString;
-	
 	private InGameHud hud;
+
+	private Tween bgFadeTween = newFadeFromTween();
+
+	private Color bgColor;
 
 	public ControllerScreen(JustAnotherGameController controller) {
 		super(controller);
@@ -49,9 +49,9 @@ public class ControllerScreen extends AbstractControllerScreen {
 	@Override
 	public void onShow() {
 		hideUI();
-		hud = new InGameHud(0,stage.getHeight()-stage.getHeight()/2,stage.getWidth()/3,stage.getHeight()/2);
-		
-		setBackgroundColor(Color.WHITE);
+		hud = new InGameHud(0, stage.getHeight(), stage.getWidth() / 3, stage.getHeight() / 2);
+		bgColor = new Color(Color.GRAY);
+		setBackgroundColor(bgColor);
 
 		game.getActionResolver().toast("Initializing controller");
 
@@ -59,10 +59,18 @@ public class ControllerScreen extends AbstractControllerScreen {
 
 		skin.getFont("default-font").getData().scale(0.15f);
 
-		stick_left = new Joystick(0, stage.getHeight() / 20.0f, 90, 40, 10);
-		stick_mid = new Joystick(stage.getWidth() / 2 - 60, stage.getHeight() / 2 - 60, 120, 10, 10);
-		stick_right = new Joystick(stage.getWidth() - 90, stage.getHeight() / 20.0f, 90, 40, 10);
+		float joystickLRPadSize = stage.getWidth() * 0.3f;
+		float joystickLRKnobSize = joystickLRPadSize * 0.3f;
+		float joystickMPadSize = stage.getWidth() * 0.4f;
+		float joystickMKnobSize = joystickMPadSize * 0.10f;
+		stick_left = new Joystick(0, stage.getHeight() / 20.0f, joystickLRPadSize, joystickLRKnobSize, 10);
+		stick_mid = new Joystick(stage.getWidth() / 2 - joystickMPadSize / 2,
+				stage.getHeight() / 2 - joystickMPadSize / 2, joystickMPadSize, joystickMKnobSize, 10);
+		stick_right = new Joystick(stage.getWidth() - joystickLRPadSize, stage.getHeight() / 20.0f, joystickLRPadSize,
+				joystickLRPadSize / 3, 10);
 		reload = new TextButton("Reload", skin);
+		reload.setWidth(stage.getWidth() / 4);
+		reload.setHeight(stage.getWidth() / 6);
 		reload.setX(stage.getWidth() - reload.getWidth());
 		reload.setY(stage.getHeight() - reload.getHeight());
 
@@ -74,7 +82,7 @@ public class ControllerScreen extends AbstractControllerScreen {
 		InputScheme scheme = new InputScheme() {
 
 			@Override
-			protected void handleEvent(InputEvent event) {
+			protected void handleInputEvent(InputEvent event) {
 				switch (event.getId()) {
 				case JOYSTICK_LEFT:
 					game.getClient().broadcast(new PlayerInput(game.getClient().getId(), JOYSTICK_LEFT,
@@ -104,38 +112,55 @@ public class ControllerScreen extends AbstractControllerScreen {
 		scheme.addInputElement(JOYSTICK_MID, stick_mid.getTouchpad());
 		scheme.addInputElement(BUTTON_RELOAD, reload);
 
-		game.getClient().setListener(new MessageListener() {
+		game.getClient().setListener(new NetworkListener() {
 
 			@Override
-			public void onMessage(Connection c, GamePacket m) {
+			public void receivedPacket(Connection c, GamePacket m) {
 				if (m instanceof PlayerUpdate) {
 					PlayerUpdate pf = (PlayerUpdate) m;
 					handlePlayerUpdate(pf);
 				}
 			}
-			
-			
 
 			@Override
-			public void onDisconnection(Connection connection) {
+			public void disconnected(Connection connection) {
 				nextScreen = new LoadingScreen(game, "Connection lost, retrying...");
 			}
 
 			@Override
-			public void onConnection(Connection c) {
+			public void connected(Connection c) {
 			}
 		});
 
 		game.getClient().broadcast(new PlayerStateChangeResponse(JustAnotherGameController.PLAY_STATE));
 	}
-	
-	public void handlePlayerUpdate(PlayerUpdate m){
-		if(m.feedbackId == PlayerUpdate.FEEDBACK_VIBRATION){
-			Gdx.input.vibrate((int) m.state[0]);
-		}
-		if(m.feedbackId == PlayerUpdate.HEALTH){
-			hud.setHealth((int)m.state[0]);
-		}
+
+	public void handlePlayerUpdate(PlayerUpdate m) {
+		for (int i = 0; i < m.fields; i++)
+			switch (m.fieldId[i]) {
+			case PlayerUpdate.FEEDBACK_VIBRATION:
+				Gdx.input.vibrate((int) m.state[i][0]);
+				break;
+			case PlayerUpdate.HEALTH:
+				hud.setHealth((int) m.state[i][0]);
+
+				bgColor.r = Color.GRAY.r;
+				bgColor.g = Color.GRAY.g;
+				bgColor.b = Color.GRAY.b;
+				bgFadeTween.kill();
+				bgFadeTween = newFadeFromTween();
+				TweenGlobal.start(bgFadeTween);
+				break;
+			case PlayerUpdate.AMMO:
+				int magAmmo = (int) m.state[i][0];
+				int magSize = (int) m.state[i][1];
+				int ammo = (int) m.state[i][2];
+				hud.updateAmmo(magAmmo, magSize, ammo);
+				break;
+			case PlayerUpdate.GUN:
+				hud.updateGun((int) m.state[i][0]);
+				break;
+			}
 	}
 
 	private void hideUI() {
@@ -149,11 +174,15 @@ public class ControllerScreen extends AbstractControllerScreen {
 		stick_mid.getTouchpad().draw(batch, 1.0f);
 		reload.draw(batch, 1.0f);
 		hud.draw(batch);
-		
+
 	}
 
 	@Override
 	protected void update(float delta) {
+	}
+
+	private Tween newFadeFromTween() {
+		return Tween.from(bgColor, ColorAccessor.TYPE_RGBA, 1.0f).target(1, 0, 0, 1);
 	}
 
 }

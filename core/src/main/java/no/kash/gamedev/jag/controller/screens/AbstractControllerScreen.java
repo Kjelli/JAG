@@ -75,7 +75,7 @@ public abstract class AbstractControllerScreen implements Screen {
 	@Override
 	public void show() {
 		camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		stage = new Stage(new StretchViewport(320, 200, camera));
+		stage = new Stage(new StretchViewport(640, 480, camera));
 		batch = new SpriteBatch();
 		gameContext = new GameContext(game);
 		inputMux = new InputMultiplexer(stage);

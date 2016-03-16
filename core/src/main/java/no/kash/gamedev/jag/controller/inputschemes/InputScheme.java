@@ -20,12 +20,12 @@ public abstract class InputScheme {
 
 			@Override
 			public boolean handle(Event event) {
-				handleEvent(new InputEvent(id, actor, event));
+				handleInputEvent(new InputEvent(id, actor, event));
 				return true;
 			}
 		});
 	}
 
-	protected abstract void handleEvent(InputEvent event);
+	protected abstract void handleInputEvent(InputEvent event);
 
 }

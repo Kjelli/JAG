@@ -13,7 +13,7 @@ import no.kash.gamedev.jag.commons.network.packets.GamePacket;
 public class JagServer {
 	private final Server server;
 	private int port;
-	private MessageListener listener;
+	private NetworkListener listener;
 
 	public JagServer() {
 		server = new Server();
@@ -27,21 +27,21 @@ public class JagServer {
 			@Override
 			public void connected(Connection connection) {
 				if (listener != null) {
-					listener.onConnection(connection);
+					listener.connected(connection);
 				}
 			}
 
 			@Override
 			public void disconnected(Connection connection) {
 				if (listener != null) {
-					listener.onDisconnection(connection);
+					listener.disconnected(connection);
 				}
 			}
 
 			@Override
 			public void received(Connection connection, Object object) {
 				if (listener != null && object instanceof GamePacket) {
-					listener.onMessage(connection, (GamePacket) object);
+					listener.receivedPacket(connection, (GamePacket) object);
 				}
 			}
 		});
@@ -70,11 +70,11 @@ public class JagServer {
 		server.sendToAllTCP(packet);
 	}
 
-	public MessageListener getListener() {
+	public NetworkListener getListener() {
 		return listener;
 	}
 
-	public void setListener(MessageListener listener) {
+	public void setListener(NetworkListener listener) {
 		this.listener = listener;
 	}
 

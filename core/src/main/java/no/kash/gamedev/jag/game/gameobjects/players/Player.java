@@ -51,7 +51,7 @@ public class Player extends AbstractGameObject implements Collidable {
 	private Cooldown grenadeCooldown;
 	private float grenadeCooldownDuration = 3;
 
-	private final GlyphLayout nameLabel;
+	private GlyphLayout nameLabel;
 
 	private DamageHandler damageHandler;
 
@@ -62,7 +62,21 @@ public class Player extends AbstractGameObject implements Collidable {
 
 		this.id = id;
 		this.name = name;
+		this.tileCollisionListener = new TileCollisionListener() {
+			@Override
+			public void onCollide(MapObject rectangleObject, Rectangle intersection) {
+				TileCollisionDetector.nudge(Player.this, intersection);
+			}
+		};
+	}
 
+	private void init(GameSettings gameSettings) {
+		this.healthMax = gameSettings.startingHealth;
+		this.health = healthMax;
+	}
+
+	@Override
+	public void onSpawn() {
 		// Set sprite
 		Sprite sprite = new Sprite(Assets.man);
 		sprite.setOrigin(getWidth() / 2, getHeight() / 2);
@@ -72,29 +86,16 @@ public class Player extends AbstractGameObject implements Collidable {
 		maxAcceleration().y = ACCELERATION;
 		setMaxSpeed(MAX_SPEED);
 
-		hitbox = new Hitbox(x + getWidth() / 2 - 8, y + getHeight() / 2 - 8, 16, 16);
+		hitbox = new Hitbox(getX() + getWidth() / 2 - 8, getY() + getHeight() / 2 - 8, 16, 16);
 
 		// TODO choose damagehandler according to game mode
 		setDamageHandler(new VanillaDamageHandler(this));
-
-		this.tileCollisionListener = new TileCollisionListener() {
-			@Override
-			public void onCollide(MapObject rectangleObject, Rectangle intersection) {
-				TileCollisionDetector.nudge(Player.this, intersection);
-			}
-		};
 
 		nameLabel = new GlyphLayout(Assets.font, name);
 		healthHud = new HealthHud(this, getCenterX() - HealthHud.WIDTH / 2, getCenterY() - HealthHud.HEIGHT / 2 - 20f);
 
 		equipGun(GunType.pistol);
 		grenadeCooldown = new Cooldown(grenadeCooldownDuration);
-
-	}
-
-	private void init(GameSettings gameSettings) {
-		this.healthMax = gameSettings.startingHealth;
-		this.health = healthMax;
 	}
 
 	@Override
@@ -137,6 +138,9 @@ public class Player extends AbstractGameObject implements Collidable {
 	public void equipGun(GunType type) {
 		gun = new Gun(type);
 		gun.equip(this);
+		((JustAnotherGame) getGameContext().getGame()).getServer().send(id, new PlayerUpdate(2,
+				new int[] { PlayerUpdate.GUN, PlayerUpdate.AMMO },
+				new float[][] { { type.ordinal() }, { gun.getMagasineAmmo(), gun.getMagasineSize(), gun.getAmmo() } }));
 	}
 
 	public int getId() {
@@ -170,11 +174,6 @@ public class Player extends AbstractGameObject implements Collidable {
 		return hitbox.rect;
 	}
 
-	public void vibrate(int ms) {
-		((JustAnotherGame) getGameContext().getGame()).getServer().send(id,
-				new PlayerUpdate(PlayerUpdate.FEEDBACK_VIBRATION, new float[] { ms }));
-	}
-
 	public void setFiring(boolean firing) {
 		this.firing = firing;
 	}
@@ -192,12 +191,11 @@ public class Player extends AbstractGameObject implements Collidable {
 
 	public void setHealth(float health) {
 		this.health = health;
-		if (health < 0) {
+		if (health <= 0) {
 			onDeath();
 		}
 		healthHud.display();
-		((JustAnotherGame) getGameContext().getGame()).getServer().send(id,
-				new PlayerUpdate(PlayerUpdate.HEALTH, new float[] { health }));
+
 	}
 
 	private void onDeath() {
@@ -241,10 +239,18 @@ public class Player extends AbstractGameObject implements Collidable {
 
 	public void damage(Bullet bullet) {
 		damageHandler.onDamage(bullet);
+		System.out.println("Sending health update to " + id + " , " + health);
+		((JustAnotherGame) getGameContext().getGame()).getServer().send(id,
+				new PlayerUpdate(2, new int[] { PlayerUpdate.HEALTH, PlayerUpdate.FEEDBACK_VIBRATION },
+						new float[][] { { health }, { 100.0f } }));
 	}
 
 	public void damage(Explosion explosion) {
 		damageHandler.onDamage(explosion);
+		System.out.println("Sending health update to " + id + " , " + health);
+		((JustAnotherGame) getGameContext().getGame()).getServer().send(id,
+				new PlayerUpdate(2, new int[] { PlayerUpdate.HEALTH, PlayerUpdate.FEEDBACK_VIBRATION },
+						new float[][] { { health }, { 400.0f } }));
 	}
 
 }
