@@ -84,8 +84,7 @@ public class Player extends AbstractGameObject implements Collidable {
 		nameLabel = new GlyphLayout(Assets.font, name);
 		healthHud = new HealthHud(this, getCenterX() - HealthHud.WIDTH / 2, getCenterY() - HealthHud.HEIGHT / 2 - 20f);
 
-		gun = new Gun(GunType.pistol);
-		gun.equip(this);
+		equipGun(GunType.pistol);
 		grenadeCooldown = new Cooldown(grenadeCooldownDuration);
 
 	}
@@ -104,6 +103,16 @@ public class Player extends AbstractGameObject implements Collidable {
 		}
 
 		TileCollisionDetector.checkTileCollisions(getGameContext().getLevel(), this, tileCollisionListener);
+		outOfAmmo();
+	}
+
+	private void outOfAmmo() {
+		System.out.println("AMMO: " + gun.getAmmo());
+		System.out.println("Magazine: " + gun.getMagasineSize());
+		if(gun.getAmmo() == 0 && gun.getMagasineSize() == 0){
+			equipGun(GunType.pistol);
+		}
+		
 	}
 
 	@Override
@@ -237,5 +246,7 @@ public class Player extends AbstractGameObject implements Collidable {
 	public void damage(Explosion explosion) {
 		damageHandler.onDamage(explosion);
 	}
+	
+	
 
 }

@@ -106,4 +106,14 @@ public class Gun {
 	public double getAngleOffset() {
 		return angleOffset;
 	}
+
+	public int getMagasineSize() {
+		return magasineSize;
+	}
+
+	public int getAmmo() {
+		return ammo;
+	}
+	
+	
 }
