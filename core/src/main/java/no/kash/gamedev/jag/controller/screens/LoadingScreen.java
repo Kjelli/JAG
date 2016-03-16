@@ -19,8 +19,8 @@ public class LoadingScreen extends AbstractControllerScreen {
 	private static final float RETRY_TIMER_MAX = 1.0f;
 	GlyphLayout loadingText;
 	GlyphLayout loadingStatus;
-
 	float retryTimer = RETRY_TIMER_MAX;
+	int retryAttempts = 0;
 
 	public LoadingScreen(JustAnotherGameController game, String string) {
 		super(game);
@@ -30,10 +30,10 @@ public class LoadingScreen extends AbstractControllerScreen {
 
 	@Override
 	protected void update(float delta) {
-		game.getActionResolver().toast("Retrying in " + retryTimer + "s");
-
 		if ((retryTimer -= delta) < 0) {
 			retryTimer = RETRY_TIMER_MAX;
+			retryAttempts++;
+			loadingStatus = new GlyphLayout(Assets.fontSmall, "Connection lost, retrying("+retryAttempts+")...");
 			if (!game.getClient().isConnected()) {
 				try {
 					game.getClient().connect(game.getClient().getConnectionString());
