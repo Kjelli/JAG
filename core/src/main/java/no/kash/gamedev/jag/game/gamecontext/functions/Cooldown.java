@@ -5,10 +5,9 @@ public class Cooldown {
 	private float cooldown;
 	private float cooldownTimer;
 	
-	private float coolDownDuration;
 	
 	public Cooldown(float coolDownDuration){
-		this.coolDownDuration = coolDownDuration;
+		this.cooldown = coolDownDuration;
 	}
 	
 	public void update(float delta){
@@ -17,10 +16,21 @@ public class Cooldown {
 		} else {
 			cooldownTimer = 0;
 		}
-		if (coolDownDuration > 0) {
-			coolDownDuration -= delta;
-		} else {
-			coolDownDuration = 0;
-		}
+		
 	}
+	
+	public void startCooldown(){
+		cooldownTimer = cooldown;
+	}
+
+	public float getCooldownTimer() {
+		return cooldownTimer;
+	}
+	
+	public boolean isOnCooldown(){
+		return cooldownTimer>0;
+	}
+
+
+	
 }

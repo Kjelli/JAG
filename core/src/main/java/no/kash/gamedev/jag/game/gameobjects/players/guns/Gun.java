@@ -4,15 +4,12 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import no.kash.gamedev.jag.commons.graphics.Draw;
+import no.kash.gamedev.jag.game.gamecontext.functions.Cooldown;
 import no.kash.gamedev.jag.game.gameobjects.bullets.Bullet;
 import no.kash.gamedev.jag.game.gameobjects.players.Player;
 
 public class Gun {
 
-	protected final float cooldown;
-	protected final float reloadTime;
-	protected float reloadTimer;
-	protected float cooldownTimer;
 	protected int bulletCount;
 	protected int magasineSize;
 	protected int maxAmmo;
@@ -23,30 +20,26 @@ public class Gun {
 	protected Sprite sprite;
 
 	protected Player player;
+	
+	private Cooldown bulletCooldown;
+	private Cooldown reloadCooldown;
 
 	public Gun(GunType type) {
-		this.cooldown = type.getCooldown();
 		this.maxAmmo = type.getMaxAmmo();
-		this.reloadTime = type.getReloadTime();
 		this.sprite = new Sprite(type.getGunTexture());
 		this.ammo = maxAmmo;
 		this.magasineSize = type.getMagazineSize();
 		this.bulletCount = magasineSize;
 		this.damage = type.getDamage();
 		this.bulletSpeed = type.getBulletSpeed();
+		
+		bulletCooldown = new Cooldown(type.getCooldown());
+		reloadCooldown = new Cooldown(type.getReloadTime());
 	}
 
 	public void update(float delta) {
-		if (cooldownTimer > 0) {
-			cooldownTimer -= delta;
-		} else {
-			cooldownTimer = 0;
-		}
-		if (reloadTimer > 0) {
-			reloadTimer -= delta;
-		} else {
-			reloadTimer = 0;
-		}
+		bulletCooldown.update(delta);
+		reloadCooldown.update(delta);
 	}
 
 	public void equip(Player player) {
@@ -55,14 +48,14 @@ public class Gun {
 	}
 
 	public void shoot() {
-		if ((bulletCount == -1 || bulletCount > 0) && cooldownTimer == 0 && reloadTimer == 0) {
+		if ((bulletCount == -1 || bulletCount > 0) && bulletCooldown.getCooldownTimer() == 0 && reloadCooldown.getCooldownTimer() == 0) {
 			Bullet temp = new Bullet(player, player.getBulletOriginX(), player.getBulletOriginY(),
 					(float) (player.getRotation() + Math.PI / 2), damage, bulletSpeed);
 			player.getGameContext().spawn(temp);
 			if (bulletCount != -1) {
 				bulletCount -= 1;
 			}
-			cooldownTimer = cooldown;
+			bulletCooldown.startCooldown();
 			// TODO Shoot sfx?
 		} else {
 			//player.equipGun(GunType.pistol);
@@ -74,14 +67,14 @@ public class Gun {
 	public void reload() {
 		// If room in magazine, reloadtimer is over, ammo exists or unlimited
 		// ammo
-		if (bulletCount < magasineSize && reloadTimer == 0 && (ammo > 0 || maxAmmo == -1)) {
+		if (bulletCount < magasineSize && reloadCooldown.getCooldownTimer() == 0 && (ammo > 0 || maxAmmo == -1)) {
 			int bulletsLeft = (int) Math.min(magasineSize, ammo);
 			bulletCount = bulletsLeft;
 			// Update ammo if not unlimited
 			if (maxAmmo != -1) {
 				setAmmo(ammo - bulletsLeft);
 			}
-			reloadTimer = reloadTime;
+			reloadCooldown.startCooldown();
 			// TODO Reload sfx?
 		} else {
 			// TODO Out of ammo sfx?
@@ -97,7 +90,7 @@ public class Gun {
 	}
 
 	public boolean isReloading() {
-		return reloadTimer > 0;
+		return reloadCooldown.getCooldownTimer() > 0;
 	}
 
 	public void draw(SpriteBatch batch) {

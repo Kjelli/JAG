@@ -101,6 +101,7 @@ public class GameScreen extends AbstractGameScreen {
 			this.spawnPoints[i] = new float[] { x, y };
 		}
 		
+		
 		MapObjects weaponSpawnPoints = level.map.getLayers().get("weaponspawn").getObjects();
 		this.weaponSpawnPoints = new float[weaponSpawnPoints.getCount()][];
 		for (int i = 0; i < weaponSpawnPoints.getCount(); i++) {

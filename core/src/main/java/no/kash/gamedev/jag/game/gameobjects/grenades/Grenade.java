@@ -19,6 +19,8 @@ public class Grenade extends AbstractGameObject {
 	public float timeToLive = TIME_TO_LIVE_MAX;
 	public final float direction;
 	public final float power;
+	
+	
 
 	public Grenade(Player thrower, float x, float y, float direction, float power) {
 		super(x, y, 16, 16);
@@ -29,6 +31,8 @@ public class Grenade extends AbstractGameObject {
 		velocity().x = (float) (thrower.velocity().x + Math.cos(direction) * power * SPEED);
 		velocity().y = (float) (thrower.velocity().y + Math.sin(direction) * power * SPEED);
 		TweenGlobal.start(Tween.to(velocity, Vector2Accessor.TYPE_XY, AIR_TIME).target(0, 0));
+		
+		
 	}
 
 	@Override

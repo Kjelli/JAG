@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Rectangle;
 import no.kash.gamedev.jag.JustAnotherGame;
 import no.kash.gamedev.jag.assets.Assets;
 import no.kash.gamedev.jag.commons.network.packets.PlayerFeedback;
+import no.kash.gamedev.jag.game.gamecontext.functions.Cooldown;
 import no.kash.gamedev.jag.game.gamecontext.physics.Collidable;
 import no.kash.gamedev.jag.game.gamecontext.physics.Collision;
 import no.kash.gamedev.jag.game.gameobjects.AbstractGameObject;
@@ -42,6 +43,8 @@ public class Player extends AbstractGameObject implements Collidable {
 	private float grenadeDirection;
 	private float healthMax = 100;
 	private float health = healthMax;
+	private Cooldown granadeCooldown;
+	private float granadeCooldownDuration = 3;
 
 	private final GlyphLayout nameLabel;
 
@@ -71,11 +74,14 @@ public class Player extends AbstractGameObject implements Collidable {
 		healthHud = new HealthHud(this, getCenterX() - HealthHud.WIDTH / 2, getCenterY() - HealthHud.HEIGHT / 2 - 20f);
 		gun = new Gun(GunType.pistol);
 		gun.equip(this);
+		
+		granadeCooldown = new Cooldown(granadeCooldownDuration); 
 	}
 
 	@Override
 	public void update(float delta) {
 		gun.update(delta);
+		granadeCooldown.update(delta);
 		move(delta);
 		hitbox.update(getX() + getWidth() / 2 - 8, getY() + getHeight() / 2 - 8);
 		healthHud.setX(getCenterX() - HealthHud.WIDTH / 2);
@@ -152,8 +158,10 @@ public class Player extends AbstractGameObject implements Collidable {
 	}
 
 	public void holdGrenade(float power, float dir) {
+		if(!granadeCooldown.isOnCooldown()){
 		this.grenadeDirection = dir;
 		this.grenadePower = power;
+		}
 	}
 
 	public void setHealth(float health) {
@@ -184,7 +192,10 @@ public class Player extends AbstractGameObject implements Collidable {
 	}
 
 	public void releaseGrenade() {
+		if(!granadeCooldown.isOnCooldown()){
 		getGameContext().spawn(new Grenade(this, getCenterX(), getCenterY(), grenadeDirection, grenadePower));
+		granadeCooldown.startCooldown();
+		}
 	}
 
 

@@ -21,7 +21,7 @@ public class HealthHud extends AbstractGameObject {
 	private final Player player;
 	private boolean visible;
 
-	private final Sprite health, health_bg, health_border, health_shine;
+	private final Sprite health, health_bg, health_border;
 	private Color color;
 
 	private Tween tween = newFadeOutTween();
@@ -33,7 +33,6 @@ public class HealthHud extends AbstractGameObject {
 		health = new Sprite(Assets.health);
 		health_bg = new Sprite(Assets.health_bg);
 		health_border = new Sprite(Assets.health_border);
-		health_shine = new Sprite(Assets.health_shine);
 	}
 
 	@Override
@@ -48,7 +47,6 @@ public class HealthHud extends AbstractGameObject {
 		Draw.sprite(batch, health, getX(), getY(), getWidth() * player.getHealthPercentage(), getHeight(),
 				getRotation(), color, false);
 		Draw.sprite(batch, health_border, getX(), getY(), getWidth(), getHeight(), getRotation(), color, false);
-		Draw.sprite(batch, health_shine, getX(), getY(), getWidth(), getHeight(), getRotation(), color, false);
 	}
 
 	public void display() {

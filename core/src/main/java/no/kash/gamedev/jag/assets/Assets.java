@@ -50,7 +50,6 @@ public class Assets {
 		health = load("hud/health.png");
 		health_bg = load("hud/health_bg.png");
 		health_border = load("hud/health_border.png");
-		health_shine = load("hud/health_shine.png");
 
 		Texture explosionSheet = load("animations/explosion1.png");
 		explosion_frames = new Array<>();
