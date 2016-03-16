@@ -14,14 +14,13 @@ public class VanillaDamageHandler implements DamageHandler {
 
 	@Override
 	public void onDamage(Bullet bullet) {
-		System.out.print(player.getHealth() + " -> ");
 		player.setHealth(player.getHealth() - bullet.getDamage());
-		System.out.println(player.getHealth());
 	}
 
 	@Override
-	public void onDamage(Explosion bullet) {
-		
+	public void onDamage(Explosion explosion) {
+		float damage = 100 - Math.min(player.distanceTo(explosion), 100);
+		player.setHealth(player.getHealth() - damage);
 	}
 
 }

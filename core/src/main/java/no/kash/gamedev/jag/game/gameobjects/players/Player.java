@@ -103,17 +103,9 @@ public class Player extends AbstractGameObject implements Collidable {
 		}
 
 		TileCollisionDetector.checkTileCollisions(getGameContext().getLevel(), this, tileCollisionListener);
-		outOfAmmo();
 	}
 
-	private void outOfAmmo() {
-		System.out.println("AMMO: " + gun.getAmmo());
-		System.out.println("Magazine: " + gun.getMagasineSize());
-		if(gun.getAmmo() == 0 && gun.getMagasineSize() == 0){
-			equipGun(GunType.pistol);
-		}
-		
-	}
+	
 
 	@Override
 	public void draw(SpriteBatch batch) {
