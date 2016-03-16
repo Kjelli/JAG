@@ -12,8 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
 
-import no.kash.gamedev.jag.JustAnotherGame;
 import no.kash.gamedev.jag.commons.tweens.TweenGlobal;
+import no.kash.gamedev.jag.game.JustAnotherGame;
 import no.kash.gamedev.jag.game.gamecontext.GameContext;
 
 public abstract class AbstractGameScreen implements Screen {

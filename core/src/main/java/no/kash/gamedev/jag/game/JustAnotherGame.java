@@ -1,7 +1,8 @@
-package no.kash.gamedev.jag;
+package no.kash.gamedev.jag.game;
 
 import com.esotericsoftware.kryonet.Connection;
 
+import no.kash.gamedev.jag.JagEndpoint;
 import no.kash.gamedev.jag.actionresolvers.ActionResolver;
 import no.kash.gamedev.jag.assets.Assets;
 import no.kash.gamedev.jag.commons.network.JagReceiver;

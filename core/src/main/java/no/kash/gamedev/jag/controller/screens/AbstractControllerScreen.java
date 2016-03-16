@@ -74,6 +74,7 @@ public abstract class AbstractControllerScreen implements Screen {
 	@Override
 	public void show() {
 		Gdx.input.setInputProcessor(inputMux);
+		Gdx.input.setOnscreenKeyboardVisible(false);
 		onShow();
 	}
 

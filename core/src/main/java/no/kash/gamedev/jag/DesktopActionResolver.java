@@ -9,4 +9,9 @@ public class DesktopActionResolver implements ActionResolver {
 		System.out.println(text);
 	}
 
+	@Override
+	public void immersiveFullscreen() {
+		// TODO
+	}
+
 }

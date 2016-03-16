@@ -13,9 +13,9 @@ import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
 import com.esotericsoftware.kryonet.Connection;
 
-import no.kash.gamedev.jag.JustAnotherGame;
 import no.kash.gamedev.jag.commons.network.JagReceiver;
 import no.kash.gamedev.jag.commons.network.packets.PlayerInput;
+import no.kash.gamedev.jag.game.JustAnotherGame;
 import no.kash.gamedev.jag.game.gameobjects.players.Player;
 import no.kash.gamedev.jag.game.gamesettings.GameMode;
 import no.kash.gamedev.jag.game.gamesettings.GameSettings;
@@ -122,7 +122,7 @@ public class GameScreen extends AbstractGameScreen {
 		players.put(-666, man);
 		gameContext.spawn(man);
 
-		game.getServer().listen(13337);
+		game.getServer().listen(13337);	
 		game.setReceiver(new JagReceiver() {
 
 			@Override
