@@ -17,7 +17,7 @@ public class Gun {
 	protected float damage;
 	protected float bulletSpeed;
 	
-	protected float xOffset, yOffset;
+	protected double angleOffset;
 
 	protected Sprite sprite;
 
@@ -34,8 +34,7 @@ public class Gun {
 		this.bulletCount = magasineSize;
 		this.damage = type.getDamage();
 		this.bulletSpeed = type.getBulletSpeed();
-		this.xOffset = type.getXOffset();
-		this.yOffset = type.getYOffset();
+		this.angleOffset = type.getAngleOffset();
 
 		bulletCooldown = new Cooldown(type.getCooldown());
 		reloadCooldown = new Cooldown(type.getReloadTime());
@@ -104,10 +103,7 @@ public class Gun {
 				player.getRotation());
 	}
 
-	public float getXOffset() {
-		return xOffset;
-	}
-	public float getYOffset() {
-		return yOffset;
+	public double getAngleOffset() {
+		return angleOffset;
 	}
 }

@@ -15,6 +15,7 @@ import no.kash.gamedev.jag.game.tilecollisions.TileCollisionListener;
 
 public class Bullet extends AbstractGameObject implements Collidable {
 
+	public static final float WIDTH = 8, HEIGHT = 2;
 	protected Player shooter;
 	protected float damage;
 
@@ -23,12 +24,11 @@ public class Bullet extends AbstractGameObject implements Collidable {
 	TileCollisionListener tileCollisionListener;
 
 	public Bullet(Player shooter, float x, float y, float direction, float damage, float speed) {
-		super(x, y, 8, 2);
+		super(x, y, WIDTH, HEIGHT);
 		this.shooter = shooter;
 		this.damage = damage;
 		this.speed = speed;
 		Sprite sprite = new Sprite(Assets.bullet);
-		sprite.setOrigin(getWidth() / 2, getHeight() / 2);
 		setSprite(sprite);
 
 		setRotation(direction);

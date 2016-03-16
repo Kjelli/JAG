@@ -149,13 +149,13 @@ public class Player extends AbstractGameObject implements Collidable {
 	}
 
 	public float getBulletOriginX() {
-		return (float) (getCenterX() + Math.cos((rot) + (Math.PI / 2)) * getWidth() / 2
-				+ Math.cos(rot + Math.PI / 2) * gun.getXOffset() + Math.sin(rot + Math.PI / 2) * gun.getYOffset());
+		return (float) (getCenterX() + Math.cos((rot) + (Math.PI / 2) + gun.getAngleOffset()) * getWidth() / 2
+				- Bullet.WIDTH / 2);
 	}
 
 	public float getBulletOriginY() {
-		return (float) (getCenterY() + Math.sin((rot) + (Math.PI / 2)) * getHeight() / 2
-				+ Math.sin(rot + Math.PI / 2) * gun.getYOffset() + Math.cos(rot + Math.PI / 2) * gun.getXOffset());
+		return (float) (getCenterY() + Math.sin((rot) + (Math.PI / 2) + gun.getAngleOffset()) * getHeight() / 2
+				- Bullet.HEIGHT / 2);
 	}
 
 	@Override
