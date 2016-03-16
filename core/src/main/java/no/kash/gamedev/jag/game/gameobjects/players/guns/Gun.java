@@ -16,11 +16,13 @@ public class Gun {
 	protected int ammo;
 	protected float damage;
 	protected float bulletSpeed;
+	
+	protected float xOffset, yOffset;
 
 	protected Sprite sprite;
 
 	protected Player player;
-	
+
 	private Cooldown bulletCooldown;
 	private Cooldown reloadCooldown;
 
@@ -32,7 +34,9 @@ public class Gun {
 		this.bulletCount = magasineSize;
 		this.damage = type.getDamage();
 		this.bulletSpeed = type.getBulletSpeed();
-		
+		this.xOffset = type.getXOffset();
+		this.yOffset = type.getYOffset();
+
 		bulletCooldown = new Cooldown(type.getCooldown());
 		reloadCooldown = new Cooldown(type.getReloadTime());
 	}
@@ -48,7 +52,8 @@ public class Gun {
 	}
 
 	public void shoot() {
-		if ((bulletCount == -1 || bulletCount > 0) && bulletCooldown.getCooldownTimer() == 0 && reloadCooldown.getCooldownTimer() == 0) {
+		if ((bulletCount == -1 || bulletCount > 0) && bulletCooldown.getCooldownTimer() == 0
+				&& reloadCooldown.getCooldownTimer() == 0) {
 			Bullet temp = new Bullet(player, player.getBulletOriginX(), player.getBulletOriginY(),
 					(float) (player.getRotation() + Math.PI / 2), damage, bulletSpeed);
 			player.getGameContext().spawn(temp);
@@ -58,10 +63,10 @@ public class Gun {
 			bulletCooldown.startCooldown();
 			// TODO Shoot sfx?
 		} else {
-			//player.equipGun(GunType.pistol);
+			// player.equipGun(GunType.pistol);
 			// TODO Empty mag sfx?
 		}
-		
+
 	}
 
 	public void reload() {
@@ -98,7 +103,11 @@ public class Gun {
 		Draw.sprite(batch, sprite, player.getX(), player.getY(), player.getWidth(), player.getHeight(),
 				player.getRotation());
 	}
-	
-	
 
+	public float getXOffset() {
+		return xOffset;
+	}
+	public float getYOffset() {
+		return yOffset;
+	}
 }

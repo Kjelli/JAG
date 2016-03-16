@@ -42,11 +42,11 @@ public class HealthHud extends AbstractGameObject {
 
 	@Override
 	public void draw(SpriteBatch batch) {
-		Draw.sprite(batch, health_bg, getX(), getY(), getWidth(), getHeight(),
+		Draw.sprite(batch, health_bg, getX(), getY(), getWidth(), getHeight(), 1.0f, 1.0f, getRotation(), color, false);
+		Draw.sprite(batch, health, getX(), getY(), getWidth() * player.getHealthPercentage(), getHeight(), 1.0f, 1.0f,
 				getRotation(), color, false);
-		Draw.sprite(batch, health, getX(), getY(), getWidth() * player.getHealthPercentage(), getHeight(),
-				getRotation(), color, false);
-		Draw.sprite(batch, health_border, getX(), getY(), getWidth(), getHeight(), getRotation(), color, false);
+		Draw.sprite(batch, health_border, getX(), getY(), getWidth(), getHeight(), 1.0f, 1.0f, getRotation(), color,
+				false);
 	}
 
 	public void display() {

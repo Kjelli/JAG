@@ -9,7 +9,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.badlogic.gdx.utils.Scaling;
+import com.badlogic.gdx.utils.viewport.ScalingViewport;
 
 import no.kash.gamedev.jag.JustAnotherGame;
 import no.kash.gamedev.jag.commons.tweens.TweenGlobal;
@@ -41,7 +42,7 @@ public abstract class AbstractGameScreen implements Screen {
 	public AbstractGameScreen(JustAnotherGame game) {
 		this.game = game;
 		camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), camera));
+		stage = new Stage(new ScalingViewport(Scaling.fill, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), camera));
 		batch = new SpriteBatch();
 		gameContext = new GameContext(game);
 		inputMux = new InputMultiplexer(stage);
@@ -65,10 +66,7 @@ public abstract class AbstractGameScreen implements Screen {
 
 	@Override
 	public void resize(int width, int height) {
-		// stage.getViewport().update(Gdx.graphics.getWidth(),
-		// Gdx.graphics.getHeight(), true);
-		// stage.getViewport().apply();
-		// camera.update();
+		stage.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
 	}
 
 	@Override

@@ -28,6 +28,10 @@ import no.kash.gamedev.jag.game.tilecollisions.TileCollisionListener;
 
 public class Player extends AbstractGameObject implements Collidable {
 
+	public static final float MAX_SPEED = 150;
+	public static final float ACCELERATION = 3200;
+	public static final float WIDTH = 64, HEIGHT = 64;
+
 	private final TileCollisionListener tileCollisionListener;
 
 	private final int id;
@@ -51,7 +55,7 @@ public class Player extends AbstractGameObject implements Collidable {
 	private DamageHandler damageHandler;
 
 	public Player(int id, String name, float x, float y) {
-		super(x, y, 64, 64);
+		super(x, y, WIDTH, HEIGHT);
 
 		this.id = id;
 		this.name = name;
@@ -60,11 +64,10 @@ public class Player extends AbstractGameObject implements Collidable {
 		Sprite sprite = new Sprite(Assets.man);
 		sprite.setOrigin(getWidth() / 2, getHeight() / 2);
 		setSprite(sprite);
-		
-		maxAcceleration().x = 3200;
-		maxAcceleration().y = 3200;
-		setMaxSpeed(200);
 
+		maxAcceleration().x = ACCELERATION;
+		maxAcceleration().y = ACCELERATION;
+		setMaxSpeed(MAX_SPEED);
 
 		hitbox = new Hitbox(x + getWidth() / 2 - 8, y + getHeight() / 2 - 8, 16, 16);
 
@@ -146,11 +149,13 @@ public class Player extends AbstractGameObject implements Collidable {
 	}
 
 	public float getBulletOriginX() {
-		return (float) (getCenterX() + Math.cos((rot) + (Math.PI / 2)) * getWidth() / 2);
+		return (float) (getCenterX() + Math.cos((rot) + (Math.PI / 2)) * getWidth() / 2
+				+ Math.cos(rot + Math.PI / 2) * gun.getXOffset() + Math.sin(rot + Math.PI / 2) * gun.getYOffset());
 	}
 
 	public float getBulletOriginY() {
-		return (float) (getCenterY() + Math.sin((rot) + (Math.PI / 2)) * getHeight() / 2);
+		return (float) (getCenterY() + Math.sin((rot) + (Math.PI / 2)) * getHeight() / 2
+				+ Math.sin(rot + Math.PI / 2) * gun.getYOffset() + Math.cos(rot + Math.PI / 2) * gun.getXOffset());
 	}
 
 	@Override

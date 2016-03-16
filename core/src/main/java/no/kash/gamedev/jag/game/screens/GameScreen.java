@@ -27,7 +27,6 @@ public class GameScreen extends AbstractGameScreen {
 	Spawner spawnpoints;
 
 	float[][] spawnPoints;
-	float[][] weaponSpawnPoints;
 
 	public GameScreen(JustAnotherGame game) {
 		super(game);
@@ -99,17 +98,6 @@ public class GameScreen extends AbstractGameScreen {
 			float y = spawnPoint.getProperties().get("y", Float.class);
 			this.spawnPoints[i] = new float[] { x, y };
 		}
-
-		MapObjects weaponSpawnPoints = level.map.getLayers().get("weaponspawn").getObjects();
-		this.weaponSpawnPoints = new float[weaponSpawnPoints.getCount()][];
-		for (int i = 0; i < weaponSpawnPoints.getCount(); i++) {
-			MapObject temp = weaponSpawnPoints.get(i);
-			float x = temp.getProperties().get("x", Float.class);
-			float y = temp.getProperties().get("y", Float.class);
-			this.weaponSpawnPoints[i] = new float[] { x, y };
-		}
-
-		spawnpoints = new Spawner(this.weaponSpawnPoints, getGameContext());
 
 
 		Player man = new Player(-1, "Dummy", 400, 400);

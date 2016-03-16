@@ -2,11 +2,11 @@ package no.kash.gamedev.jag.game.gamecontext;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.Queue;
 
 import no.kash.gamedev.jag.game.gamecontext.physics.BruteForcePhysicsHandler;
 import no.kash.gamedev.jag.game.gamecontext.physics.PhysicsHandler;
@@ -18,10 +18,10 @@ public class GameContext {
 	private final Game game;
 
 	private final List<GameObject> objects;
-	private final Stack<GameObject> add;
-	private final Stack<GameObject> remove;
-	private final Stack<GameObject> newlySpawned;
-	private final Stack<GameObject> newlyDespawned;
+	private final Queue<GameObject> add;
+	private final Queue<GameObject> remove;
+	private final Queue<GameObject> newlySpawned;
+	private final Queue<GameObject> newlyDespawned;
 
 	private Stage stage;
 	private PhysicsHandler physics;
@@ -38,10 +38,10 @@ public class GameContext {
 		this.game = game;
 
 		objects = new ArrayList<>();
-		add = new Stack<>();
-		remove = new Stack<>();
-		newlySpawned = new Stack<>();
-		newlyDespawned = new Stack<>();
+		add = new Queue<>();
+		remove = new Queue<>();
+		newlySpawned = new Queue<>();
+		newlyDespawned = new Queue<>();
 
 		stage = new Stage();
 
@@ -59,25 +59,25 @@ public class GameContext {
 		for (GameObject object : objects) {
 			object.update(delta * timeModifier);
 		}
-		while (!add.isEmpty()) {
-			GameObject n = add.pop();
+		while ((add.size > 0)) {
+			GameObject n = add.removeFirst();
 			n.setGameContext(this);
-			newlySpawned.push(n);
+			newlySpawned.addFirst(n);
 			objects.add(0, n);
 		}
-		while (!remove.isEmpty()) {
-			GameObject o = remove.pop();
-			newlyDespawned.push(o);
+		while ((remove.size > 0)) {
+			GameObject o = remove.removeFirst();
+			newlyDespawned.addFirst(o);
 			objects.remove(o);
 		}
 
-		while (!newlySpawned.isEmpty()) {
-			GameObject o = newlySpawned.pop();
+		while ((newlySpawned.size > 0)) {
+			GameObject o = newlySpawned.removeFirst();
 			o.onSpawn();
 		}
 
-		while (!newlyDespawned.isEmpty()) {
-			GameObject o = newlyDespawned.pop();
+		while ((newlyDespawned.size > 0)) {
+			GameObject o = newlyDespawned.removeFirst();
 			o.onDespawn();
 		}
 
@@ -89,11 +89,11 @@ public class GameContext {
 	}
 
 	public void spawn(GameObject object) {
-		add.push(object);
+		add.addFirst(object);
 	}
 
 	public void despawn(GameObject object) {
-		remove.push(object);
+		remove.addFirst(object);
 	}
 
 	public void draw(SpriteBatch batch) {

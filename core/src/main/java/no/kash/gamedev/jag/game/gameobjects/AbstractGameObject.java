@@ -224,6 +224,7 @@ public abstract class AbstractGameObject implements GameObject {
 	@Override
 	public void setSprite(Sprite sprite) {
 		this.sprite = sprite;
+		sprite.setOrigin(width / 2, height / 2);
 	}
 
 	public void onSpawn() {

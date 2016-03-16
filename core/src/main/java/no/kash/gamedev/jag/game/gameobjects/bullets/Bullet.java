@@ -79,7 +79,6 @@ public class Bullet extends AbstractGameObject implements Collidable {
 			}
 			// Vibration
 			target.vibrate(100);
-			System.out.println(collision);
 			target.damage(this);
 			destroy();
 		}

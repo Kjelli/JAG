@@ -10,27 +10,28 @@ import no.kash.gamedev.jag.game.gameobjects.players.Player;
 import no.kash.gamedev.jag.game.gameobjects.players.guns.GunType;
 
 public class Weapon extends AbstractGameObject implements Collectable, Collidable {
-	
+
 	public GunType gun;
 	private int ammo;
-	
+
 	public Weapon(float x, float y, GunType gun) {
 		super(x, y, 32, 32);
 		this.gun = gun;
-		
+
 		Sprite sprite = new Sprite(gun.getOnGroundTexture());
 		setSprite(sprite);
-		
+
 		determineAmmo();
 	}
 
 	private void determineAmmo() {
-		/*Laget for å randomise antall ammo du får du plukker opp et våpen, setter bare max enn så lenge
-		int randomNum = 0 + (int)(Math.random() * 6);
-		ammo = gun.getMaxAmmo() * (1-randomNum);
+		/*
+		 * Laget for å randomise antall ammo du får du plukker opp et våpen,
+		 * setter bare max enn så lenge int randomNum = 0 + (int)(Math.random()
+		 * * 6); ammo = gun.getMaxAmmo() * (1-randomNum);
 		 * 
 		 */
-		
+
 		ammo = gun.getMaxAmmo();
 	}
 
@@ -48,14 +49,13 @@ public class Weapon extends AbstractGameObject implements Collectable, Collidabl
 
 	@Override
 	public void update(float delta) {
-		// TODO Auto-generated method stub
-		
+		setScale((float) (Math.sin(getGameContext().getElapsedTime() * 5.0f)) * 0.1f + 1.0f);
 	}
 
 	@Override
 	public void onCollide(Collision collision) {
-		if(collision.getTarget() instanceof Player){
-			collect((Player)collision.getTarget());
+		if (collision.getTarget() instanceof Player) {
+			collect((Player) collision.getTarget());
 		}
 	}
 
