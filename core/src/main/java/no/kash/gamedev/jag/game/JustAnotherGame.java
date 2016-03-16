@@ -9,6 +9,7 @@ import no.kash.gamedev.jag.commons.network.JagReceiver;
 import no.kash.gamedev.jag.commons.network.JagServer;
 import no.kash.gamedev.jag.commons.network.MessageListener;
 import no.kash.gamedev.jag.commons.network.packets.GamePacket;
+import no.kash.gamedev.jag.commons.network.packets.PlayerConnect;
 import no.kash.gamedev.jag.commons.network.packets.PlayerInput;
 import no.kash.gamedev.jag.commons.tweens.TweenGlobal;
 import no.kash.gamedev.jag.game.screens.GameScreen;
@@ -43,15 +44,16 @@ public class JustAnotherGame extends JagEndpoint {
 					if (getReceiver() != null) {
 						getReceiver().handleInput(input);
 					}
+				} else {
+					if (getReceiver() != null) {
+						getReceiver().handlePacket(c, m);
+					}
 				}
 			}
 
 			@Override
 			public void onConnection(Connection c) {
 				System.out.println("Connection " + c.getID() + " from " + c.getRemoteAddressTCP());
-				if (getReceiver() != null) {
-					getReceiver().handleConnection(c);
-				}
 			}
 
 			@Override

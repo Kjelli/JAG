@@ -13,7 +13,10 @@ import no.kash.gamedev.jag.commons.network.packets.GamePacket;
 public class JagClient {
 	private final Client client;
 	private int id;
+	private String connectionString;
 	private MessageListener listener;
+	
+	private boolean connected = false;
 
 	public JagClient() {
 		client = new Client();
@@ -25,6 +28,7 @@ public class JagClient {
 		client.addListener(new Listener() {
 			@Override
 			public void connected(Connection connection) {
+				connected = true;
 				id = connection.getID();
 				if (listener != null) {
 					listener.onConnection(connection);
@@ -40,6 +44,7 @@ public class JagClient {
 
 			@Override
 			public void disconnected(Connection connection) {
+				connected = false;
 				if (listener != null) {
 					listener.onDisconnection(connection);
 				}
@@ -77,6 +82,7 @@ public class JagClient {
 	}
 
 	public void connect(String connectionString) throws UnknownHostException, IOException {
+		this.connectionString = connectionString;
 		String[] elements = connectionString.split("[:]");
 		String ipaddr;
 		int port;
@@ -88,6 +94,14 @@ public class JagClient {
 			port = 13337;
 		}
 		connect(ipaddr, port);
+	}
+
+	public boolean isConnected() {
+		return connected;
+	}
+	
+	public String getConnectionString() {
+		return connectionString;
 	}
 
 }

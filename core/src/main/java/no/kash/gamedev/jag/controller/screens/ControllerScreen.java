@@ -13,6 +13,7 @@ import no.kash.gamedev.jag.commons.network.MessageListener;
 import no.kash.gamedev.jag.commons.network.packets.GamePacket;
 import no.kash.gamedev.jag.commons.network.packets.PlayerFeedback;
 import no.kash.gamedev.jag.commons.network.packets.PlayerInput;
+import no.kash.gamedev.jag.commons.network.packets.PlayerStateChangeResponse;
 import no.kash.gamedev.jag.controller.JustAnotherGameController;
 import no.kash.gamedev.jag.controller.input.Joystick;
 import no.kash.gamedev.jag.controller.inputschemes.InputEvent;
@@ -38,22 +39,21 @@ public class ControllerScreen extends AbstractControllerScreen {
 
 	String connectionString;
 
-	public ControllerScreen(String connection, JustAnotherGameController controller) {
+	public ControllerScreen(JustAnotherGameController controller) {
 		super(controller);
-		connectionString = connection;
+		game.getActionResolver().toast("Making screen " + this);
 	}
 
 	@Override
 	public void onShow() {
 		hideUI();
+		setBackgroundColor(Color.WHITE);
 
 		game.getActionResolver().toast("Initializing controller");
 
 		Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
 
 		skin.getFont("default-font").getData().scale(0.15f);
-
-		setBackgroundColor(Color.RED);
 
 		stick_left = new Joystick(0, stage.getHeight() / 20.0f, 90, 40, 10);
 		stick_mid = new Joystick(stage.getWidth() / 2 - 60, stage.getHeight() / 2 - 60, 120, 10, 10);
@@ -112,16 +112,15 @@ public class ControllerScreen extends AbstractControllerScreen {
 
 			@Override
 			public void onDisconnection(Connection connection) {
-				setBackgroundColor(Color.RED);
-				connected = false;
+				nextScreen = new LoadingScreen(game, "Connection lost, retrying...");
 			}
 
 			@Override
 			public void onConnection(Connection c) {
-				setBackgroundColor(Color.WHITE);
-				connected = true;
 			}
 		});
+
+		game.getClient().broadcast(new PlayerStateChangeResponse(JustAnotherGameController.PLAY_STATE));
 	}
 
 	private void hideUI() {
@@ -138,17 +137,6 @@ public class ControllerScreen extends AbstractControllerScreen {
 
 	@Override
 	protected void update(float delta) {
-		if ((timeout -= delta) < 0 && !connected) {
-			try {
-				game.getClient().connect(connectionString);
-				game.getActionResolver().toast("Connection made!! :D");
-				Preferences prefs = Gdx.app.getPreferences(Defs.PREFERENCE_NAME);
-				prefs.putString(Defs.CONNECTION_ADDRESS, connectionString);
-				prefs.flush();
-			} catch (Exception e) {
-				game.getActionResolver().toast("Could not connect: " + e.getMessage());
-				timeout = MAX_TIMEOUT;
-			}
-		}
 	}
+
 }

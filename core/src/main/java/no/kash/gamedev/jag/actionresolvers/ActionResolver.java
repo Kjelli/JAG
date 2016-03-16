@@ -4,5 +4,4 @@ public interface ActionResolver {
 
 	void toast(String text);
 
-	void immersiveFullscreen();
 }

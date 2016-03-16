@@ -14,7 +14,12 @@ import com.badlogic.gdx.maps.MapObjects;
 import com.esotericsoftware.kryonet.Connection;
 
 import no.kash.gamedev.jag.commons.network.JagReceiver;
+import no.kash.gamedev.jag.commons.network.packets.GamePacket;
+import no.kash.gamedev.jag.commons.network.packets.PlayerConnect;
 import no.kash.gamedev.jag.commons.network.packets.PlayerInput;
+import no.kash.gamedev.jag.commons.network.packets.PlayerStateChange;
+import no.kash.gamedev.jag.commons.network.packets.PlayerStateChangeResponse;
+import no.kash.gamedev.jag.controller.JustAnotherGameController;
 import no.kash.gamedev.jag.game.JustAnotherGame;
 import no.kash.gamedev.jag.game.gameobjects.players.Player;
 import no.kash.gamedev.jag.game.gamesettings.GameMode;
@@ -29,7 +34,7 @@ public class GameScreen extends AbstractGameScreen {
 		STD = new GameSettings();
 		STD.gameMode = GameMode.STANDARD_FFA;
 		STD.mapFilename = "maps/sumoarena1.tmx";
-		STD.startingHealth = 1000f;
+		STD.startingHealth = 100f;
 		STD.rounds = 3;
 		STD.roundTime = 60.0f;
 	}
@@ -122,8 +127,37 @@ public class GameScreen extends AbstractGameScreen {
 		players.put(-666, man);
 		gameContext.spawn(man);
 
-		game.getServer().listen(13337);	
+		game.getServer().listen(13337);
 		game.setReceiver(new JagReceiver() {
+
+			@Override
+			public void handlePacket(Connection c, GamePacket m) {
+				System.out.println("GamePacket received: " + m);
+
+				if (m instanceof PlayerStateChangeResponse) {
+
+					PlayerStateChangeResponse resp = (PlayerStateChangeResponse) m;
+
+					if (resp.stateId == JustAnotherGameController.PLAY_STATE) {
+						log("Connection " + c.getID() + " made! [" + c.getRemoteAddressTCP() + "]");
+						float[] spawnPoint = GameScreen.this.spawnPoints[(int) (Math.random()
+								* GameScreen.this.spawnPoints.length)];
+						float spawnX = spawnPoint[0];
+						float spawnY = spawnPoint[1];
+						Player man = new Player(gameSettings, c.getID(), "Minge", spawnX, spawnY);
+						gameContext.spawn(man);
+						players.put(c.getID(), man);
+					}
+				}
+
+				if (m instanceof PlayerConnect) {
+					if (gameSettings.dropIn) {
+						game.getServer().send(c.getID(), new PlayerStateChange(JustAnotherGameController.PLAY_STATE));
+					} else {
+						// TODO send message to wait for next game
+					}
+				}
+			}
 
 			@Override
 			public void handleInput(PlayerInput input) {
@@ -174,14 +208,7 @@ public class GameScreen extends AbstractGameScreen {
 
 			@Override
 			public void handleConnection(Connection c) {
-				log("Connection " + c.getID() + " made! [" + c.getRemoteAddressTCP() + "]");
-				float[] spawnPoint = GameScreen.this.spawnPoints[(int) (Math.random()
-						* GameScreen.this.spawnPoints.length)];
-				float spawnX = spawnPoint[0];
-				float spawnY = spawnPoint[1];
-				Player man = new Player(gameSettings, c.getID(), "Minge", spawnX, spawnY);
-				gameContext.spawn(man);
-				players.put(c.getID(), man);
+
 			}
 
 			@Override
