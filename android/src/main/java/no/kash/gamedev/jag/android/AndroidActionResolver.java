@@ -4,6 +4,8 @@ import com.badlogic.gdx.backends.android.AndroidApplication;
 
 import android.app.Application;
 import android.util.Log;
+import android.view.View;
+import android.view.Window;
 import android.widget.Toast;
 import no.kash.gamedev.jag.actionresolvers.ActionResolver;
 
@@ -16,8 +18,9 @@ public class AndroidActionResolver implements ActionResolver {
 
 	@Override
 	public void toast(String text) {
-		// DOESNT WOROOOORORORORKRKKK 
-		//Toast.makeText(app, text, 1000);
+		// DOESNT WOROOOORORORORKRKKK
+		// Toast.makeText(app, text, 1000);
 		Log.i("JustAnotherGame", text);
 	}
+
 }

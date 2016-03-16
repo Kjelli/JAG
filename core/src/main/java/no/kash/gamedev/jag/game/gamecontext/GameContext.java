@@ -73,12 +73,16 @@ public class GameContext {
 
 		while ((newlySpawned.size > 0)) {
 			GameObject o = newlySpawned.removeFirst();
-			o.onSpawn();
+			if (o != null) {
+				o.onSpawn();
+			}
 		}
 
 		while ((newlyDespawned.size > 0)) {
 			GameObject o = newlyDespawned.removeFirst();
-			o.onDespawn();
+			if (o != null) {
+				o.onDespawn();
+			}
 		}
 
 		physics.collisonCheck(objects);

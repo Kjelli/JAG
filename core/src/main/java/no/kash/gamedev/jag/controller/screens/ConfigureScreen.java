@@ -1,6 +1,10 @@
 package no.kash.gamedev.jag.controller.screens;
 
+import java.io.IOException;
+import java.net.UnknownHostException;
+
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
@@ -15,6 +19,7 @@ import aurelienribon.tweenengine.BaseTween;
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenCallback;
 import no.kash.gamedev.jag.commons.defs.Defs;
+import no.kash.gamedev.jag.commons.network.packets.PlayerConnect;
 import no.kash.gamedev.jag.commons.tweens.TweenGlobal;
 import no.kash.gamedev.jag.commons.tweens.accessors.ColorAccessor;
 import no.kash.gamedev.jag.controller.JustAnotherGameController;
@@ -60,7 +65,7 @@ public class ConfigureScreen extends AbstractControllerScreen {
 		connect.addListener(new EventListener() {
 			@Override
 			public boolean handle(Event event) {
-				game.setScreen(new ControllerScreen(connectionString.getText(), game));
+				connect();
 				return true;
 			}
 		});
@@ -70,6 +75,7 @@ public class ConfigureScreen extends AbstractControllerScreen {
 		table.add(connect).row();
 
 		stage.addActor(table);
+
 		final TweenCallback colorLoop = new TweenCallback() {
 			@Override
 			public void onEvent(int arg0, BaseTween<?> arg1) {
@@ -84,6 +90,26 @@ public class ConfigureScreen extends AbstractControllerScreen {
 
 		TweenGlobal.start(Tween.to(getBackgroundColor(), ColorAccessor.TYPE_RGBA, 1.0f).target(0.0f, 0.0f, 0.0f, 1.0f)
 				.setCallback(colorLoop));
+
+		if (addr != null && !addr.equals("")) {
+			connect();
+		}
+	}
+
+	protected void connect() {
+		try {
+			game.getClient().connect(connectionString.getText());
+			Preferences prefs = Gdx.app.getPreferences(Defs.PREFERENCE_NAME);
+			prefs.putString(Defs.CONNECTION_ADDRESS, connectionString.getText());
+			prefs.flush();
+			game.setScreen(new LoadingScreen(game, "Waiting for gameserver..."));
+		} catch (UnknownHostException e) {
+			game.getActionResolver().toast("Could not connect: " + e.getMessage());
+
+		} catch (IOException e) {
+			game.getActionResolver().toast("Could not connect: " + e.getMessage());
+		}
+
 	}
 
 }

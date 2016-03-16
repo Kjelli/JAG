@@ -3,6 +3,7 @@ package no.kash.gamedev.jag.commons.network;
 import java.io.IOException;
 import java.util.HashMap;
 
+import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
@@ -51,12 +52,13 @@ public class JagServer {
 	}
 
 	public void listen(int port) {
-		server.start();
+		server.start();	
 		this.port = port;
 		try {
 			server.bind(port);
 		} catch (IOException e) {
 			e.printStackTrace();
+			Gdx.app.exit();
 		}
 	}
 

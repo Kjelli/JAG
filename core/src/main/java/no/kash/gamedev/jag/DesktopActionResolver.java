@@ -9,4 +9,5 @@ public class DesktopActionResolver implements ActionResolver {
 		System.out.println(text);
 	}
 
+
 }

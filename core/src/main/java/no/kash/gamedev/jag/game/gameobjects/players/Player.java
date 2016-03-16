@@ -6,12 +6,14 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.math.Rectangle;
 
-import no.kash.gamedev.jag.JustAnotherGame;
 import no.kash.gamedev.jag.assets.Assets;
 import no.kash.gamedev.jag.commons.network.packets.PlayerUpdate;
+import no.kash.gamedev.jag.game.JustAnotherGame;
 import no.kash.gamedev.jag.game.gamecontext.functions.Cooldown;
 import no.kash.gamedev.jag.game.gamecontext.physics.Collidable;
 import no.kash.gamedev.jag.game.gamecontext.physics.Collision;
+import no.kash.gamedev.jag.game.gamecontext.physics.tilecollisions.TileCollisionDetector;
+import no.kash.gamedev.jag.game.gamecontext.physics.tilecollisions.TileCollisionListener;
 import no.kash.gamedev.jag.game.gameobjects.AbstractGameObject;
 import no.kash.gamedev.jag.game.gameobjects.bullets.Bullet;
 import no.kash.gamedev.jag.game.gameobjects.collectables.weapons.Weapon;
@@ -23,8 +25,7 @@ import no.kash.gamedev.jag.game.gameobjects.players.damagehandlers.VanillaDamage
 import no.kash.gamedev.jag.game.gameobjects.players.guns.Gun;
 import no.kash.gamedev.jag.game.gameobjects.players.guns.GunType;
 import no.kash.gamedev.jag.game.gameobjects.players.hud.HealthHud;
-import no.kash.gamedev.jag.game.tilecollisions.TileCollisionDetector;
-import no.kash.gamedev.jag.game.tilecollisions.TileCollisionListener;
+import no.kash.gamedev.jag.game.gamesettings.GameSettings;
 
 public class Player extends AbstractGameObject implements Collidable {
 
@@ -45,8 +46,8 @@ public class Player extends AbstractGameObject implements Collidable {
 
 	private float grenadePower;
 	private float grenadeDirection;
-	private float healthMax = 100;
-	private float health = healthMax;
+	private float healthMax;
+	private float health;
 	private Cooldown grenadeCooldown;
 	private float grenadeCooldownDuration = 3;
 
@@ -54,8 +55,10 @@ public class Player extends AbstractGameObject implements Collidable {
 
 	private DamageHandler damageHandler;
 
-	public Player(int id, String name, float x, float y) {
+	public Player(GameSettings gameSettings, int id, String name, float x, float y) {
 		super(x, y, WIDTH, HEIGHT);
+
+		init(gameSettings);
 
 		this.id = id;
 		this.name = name;
@@ -87,6 +90,11 @@ public class Player extends AbstractGameObject implements Collidable {
 		equipGun(GunType.pistol);
 		grenadeCooldown = new Cooldown(grenadeCooldownDuration);
 
+	}
+
+	private void init(GameSettings gameSettings) {
+		this.healthMax = gameSettings.startingHealth;
+		this.health = healthMax;
 	}
 
 	@Override

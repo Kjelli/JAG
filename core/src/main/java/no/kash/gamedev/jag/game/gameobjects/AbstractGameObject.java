@@ -168,7 +168,6 @@ public abstract class AbstractGameObject implements GameObject {
 		float deltaY = other.getCenterY() - getCenterY();
 		float deltaX = other.getCenterX() - getCenterX();
 		float angle = (float) (Math.atan2(deltaY, deltaX));
-
 		return angle;
 	}
 

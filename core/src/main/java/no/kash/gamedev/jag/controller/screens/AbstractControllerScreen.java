@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
+import no.kash.gamedev.jag.commons.network.packets.PlayerStateChange;
 import no.kash.gamedev.jag.commons.tweens.TweenGlobal;
 import no.kash.gamedev.jag.controller.JustAnotherGameController;
 import no.kash.gamedev.jag.game.gamecontext.GameContext;
@@ -25,12 +26,12 @@ public abstract class AbstractControllerScreen implements Screen {
 
 	protected final JustAnotherGameController game;
 
-	protected final OrthographicCamera camera;
-	protected final Stage stage;
+	protected  OrthographicCamera camera;
+	protected  Stage stage;
 	protected GameContext gameContext;
-	protected final InputMultiplexer inputMux;
+	protected  InputMultiplexer inputMux;
 
-	protected final SpriteBatch batch;
+	protected  SpriteBatch batch;
 
 	private Texture background;
 
@@ -38,19 +39,19 @@ public abstract class AbstractControllerScreen implements Screen {
 
 	private boolean paused;
 	private boolean disposed;
+	
+	// TODO is this dumb?
+	public Screen nextScreen;
 
 	public AbstractControllerScreen(JustAnotherGameController game) {
 		this.game = game;
-		camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		stage = new Stage(new StretchViewport(320, 200, camera));
-		batch = new SpriteBatch();
-		gameContext = new GameContext(game);
-		inputMux = new InputMultiplexer(stage);
-		bgcolor = new Color(0.0f, 0.0f, 0.0f, 1.0f);
 	}
 
 	@Override
 	public void render(float delta) {
+		if(nextScreen != null){
+			game.setScreen(nextScreen);
+		}
 		TweenGlobal.update(delta);
 		update(delta);
 		stage.act(delta);
@@ -73,7 +74,14 @@ public abstract class AbstractControllerScreen implements Screen {
 
 	@Override
 	public void show() {
+		camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		stage = new Stage(new StretchViewport(320, 200, camera));
+		batch = new SpriteBatch();
+		gameContext = new GameContext(game);
+		inputMux = new InputMultiplexer(stage);
+		bgcolor = new Color(0.0f, 0.0f, 0.0f, 1.0f);
 		Gdx.input.setInputProcessor(inputMux);
+		Gdx.input.setOnscreenKeyboardVisible(false);
 		onShow();
 	}
 
@@ -158,6 +166,18 @@ public abstract class AbstractControllerScreen implements Screen {
 
 	public OrthographicCamera getCamera() {
 		return camera;
+	}
+
+	protected void handleStateChange(PlayerStateChange sc) {
+		game.getActionResolver().toast("Changing state : " + sc.stateId);
+		switch (sc.stateId) {
+		case JustAnotherGameController.PLAY_STATE:
+			System.out.println("Making controller");
+			nextScreen = new ControllerScreen(game);
+			break;
+		default:
+			game.getActionResolver().toast("Unknown gamestate: " + sc.stateId);
+		}
 	}
 
 }

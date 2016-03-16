@@ -32,7 +32,7 @@ public class Assets {
 
 	public static Array<TextureRegion> explosion_frames;
 
-	public static BitmapFont font;
+	public static BitmapFont font, fontSmall;
 
 	public static void load() {
 		plain = load("plain.png");
@@ -63,12 +63,20 @@ public class Assets {
 		}
 
 
-		FreeTypeFontGenerator font10gen = new FreeTypeFontGenerator(Gdx.files.internal("pixelmix.ttf"));
-		FreeTypeFontParameter font10params = new FreeTypeFontParameter();
-		font10params.minFilter = Texture.TextureFilter.Nearest;
-		font10params.magFilter = Texture.TextureFilter.MipMapLinearNearest;
-		font10params.size = 20;
-		font = font10gen.generateFont(font10params);
+		FreeTypeFontGenerator fontgen = new FreeTypeFontGenerator(Gdx.files.internal("pixelmix.ttf"));
+		FreeTypeFontParameter font20params = new FreeTypeFontParameter();
+		font20params.minFilter = Texture.TextureFilter.Nearest;
+		font20params.magFilter = Texture.TextureFilter.MipMapLinearNearest;
+		font20params.size = 20;
+		
+		font = fontgen.generateFont(font20params);
+		
+		FreeTypeFontParameter font12params = new FreeTypeFontParameter();
+		font12params.minFilter = Texture.TextureFilter.Nearest;
+		font12params.magFilter = Texture.TextureFilter.MipMapLinearNearest;
+		font12params.size = 12;
+		
+		fontSmall = fontgen.generateFont(font12params);
 	}
 
 	private static Texture load(String filename) {

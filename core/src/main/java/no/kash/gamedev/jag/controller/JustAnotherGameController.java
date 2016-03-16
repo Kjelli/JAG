@@ -9,6 +9,8 @@ import no.kash.gamedev.jag.controller.screens.ConfigureScreen;
 import no.kash.gamedev.jag.controller.screens.ControllerScreen;
 
 public class JustAnotherGameController extends JagEndpoint {
+	public static final int PLAY_STATE = 1;
+	
 	ActionResolver resolver;
 	JagClient client;
 
