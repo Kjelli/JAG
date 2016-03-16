@@ -1,11 +1,18 @@
 package no.kash.gamedev.jag.game.levels;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Vector2;
+
+import no.kash.gamedev.jag.game.gamecontext.GameContext;
 
 public class Level {
 	public TiledMap map;
@@ -15,8 +22,11 @@ public class Level {
 
 	public OrthogonalTiledMapRenderer renderer;
 	public OrthographicCamera camera;
+	
+	public ArrayList<Vector2> wepSpawns;
+	Spawner spawn;
 
-	public Level(OrthographicCamera camera, SpriteBatch batch) {
+	public Level(OrthographicCamera camera, SpriteBatch batch,GameContext context) {
 		this.camera = camera;
 		map = new TmxMapLoader().load("sumoarena1.tmx");
 		width = (Integer) map.getProperties().get("width", -1, Integer.class);
@@ -50,6 +60,21 @@ public class Level {
 		camera.update();
 
 		renderer.setView(camera.projection, 0, 0, width * tileWidth, height * tileHeight);
+		
+		wepSpawns = deterimnePoints("weaponspawn");
+		spawn = new Spawner(wepSpawns, context);
+		
+	}
+
+	private ArrayList<Vector2> deterimnePoints(String layer) {
+		MapObjects weaponSpawnPoints = map.getLayers().get(layer).getObjects();
+		ArrayList<Vector2> tempList = new ArrayList<Vector2>();
+		for (int i = 0; i < weaponSpawnPoints.getCount(); i++) {
+			MapObject temp = weaponSpawnPoints.get(i);
+			tempList.add(new Vector2(temp.getProperties().get("x",Float.class),
+					temp.getProperties().get("y",Float.class)));
+;		}
+		return tempList;
 	}
 
 	public void dispose() {
@@ -61,5 +86,9 @@ public class Level {
 		renderer.getBatch().end();
 		renderer.render();
 		renderer.getBatch().begin();
+	}
+
+	public void update(float delta) {
+		spawn.update(delta);
 	}
 }

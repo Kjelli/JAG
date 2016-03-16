@@ -38,7 +38,7 @@ public class GameScreen extends AbstractGameScreen {
 	protected void update(float delta) {
 		gameContext.update(delta);
 		handleCamera(delta);
-		spawnpoints.update(delta);
+		level.update(delta);
 
 	}
 
@@ -88,7 +88,7 @@ public class GameScreen extends AbstractGameScreen {
 
 	@Override
 	protected void onShow() {
-		level = new Level(getCamera(), batch);
+		level = new Level(getCamera(), batch, getGameContext());
 		gameContext.setLevel(level);
 		
 
@@ -102,16 +102,6 @@ public class GameScreen extends AbstractGameScreen {
 		}
 		
 		
-		MapObjects weaponSpawnPoints = level.map.getLayers().get("weaponspawn").getObjects();
-		this.weaponSpawnPoints = new float[weaponSpawnPoints.getCount()][];
-		for (int i = 0; i < weaponSpawnPoints.getCount(); i++) {
-			MapObject temp = weaponSpawnPoints.get(i);
-			float x = temp.getProperties().get("x", Float.class);
-			float y = temp.getProperties().get("y", Float.class);
-			this.weaponSpawnPoints[i] = new float[] { x, y };
-		}
-		
-		spawnpoints = new Spawner(this.weaponSpawnPoints, getGameContext());
 
 		Player man = new Player(-1, "Dummy", 400, 400);
 		players.put(-666, man);
