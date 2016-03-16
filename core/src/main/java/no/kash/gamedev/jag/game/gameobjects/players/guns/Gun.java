@@ -16,7 +16,7 @@ public class Gun {
 	protected int ammo;
 	protected float damage;
 	protected float bulletSpeed;
-	
+
 	protected double angleOffset;
 
 	protected Sprite sprite;
@@ -51,6 +51,7 @@ public class Gun {
 	}
 
 	public void shoot() {
+		System.out.println(bulletCount + "  / " + magasineSize + " ( " + ammo + " / " + maxAmmo + " )");
 		if ((bulletCount == -1 || bulletCount > 0) && bulletCooldown.getCooldownTimer() == 0
 				&& reloadCooldown.getCooldownTimer() == 0) {
 			Bullet temp = new Bullet(player, player.getBulletOriginX(), player.getBulletOriginY(),
@@ -73,11 +74,11 @@ public class Gun {
 		// ammo
 		if (bulletCount < magasineSize && reloadCooldown.getCooldownTimer() == 0 && (ammo > 0 || maxAmmo == -1)) {
 			int bulletsLeft = (int) Math.min(magasineSize, ammo);
-			bulletCount = bulletsLeft;
 			// Update ammo if not unlimited
 			if (maxAmmo != -1) {
-				setAmmo(ammo - bulletsLeft);
+				setAmmo(ammo - (bulletsLeft - bulletCount));
 			}
+			bulletCount = bulletsLeft;
 			reloadCooldown.startCooldown();
 			// TODO Reload sfx?
 		} else {
