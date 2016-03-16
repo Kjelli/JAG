@@ -27,7 +27,6 @@ public class GameScreen extends AbstractGameScreen {
 	Spawner spawnpoints;
 
 	float[][] spawnPoints;
-	float [][] weaponSpawnPoints;
 
 	public GameScreen(JustAnotherGame game) {
 		super(game);
