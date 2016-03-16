@@ -11,7 +11,7 @@ import com.esotericsoftware.kryonet.Connection;
 import no.kash.gamedev.jag.commons.defs.Defs;
 import no.kash.gamedev.jag.commons.network.MessageListener;
 import no.kash.gamedev.jag.commons.network.packets.GamePacket;
-import no.kash.gamedev.jag.commons.network.packets.PlayerFeedback;
+import no.kash.gamedev.jag.commons.network.packets.PlayerUpdate;
 import no.kash.gamedev.jag.commons.network.packets.PlayerInput;
 import no.kash.gamedev.jag.controller.JustAnotherGameController;
 import no.kash.gamedev.jag.controller.input.Joystick;
@@ -37,6 +37,8 @@ public class ControllerScreen extends AbstractControllerScreen {
 	float timeout = 0;
 
 	String connectionString;
+	
+	private InGameHud hud;
 
 	public ControllerScreen(String connection, JustAnotherGameController controller) {
 		super(controller);
@@ -46,7 +48,8 @@ public class ControllerScreen extends AbstractControllerScreen {
 	@Override
 	public void onShow() {
 		hideUI();
-
+		hud = new InGameHud(0,stage.getHeight()-stage.getHeight()/2,stage.getWidth()/3,stage.getHeight()/2);
+		
 		game.getActionResolver().toast("Initializing controller");
 
 		Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
@@ -104,11 +107,13 @@ public class ControllerScreen extends AbstractControllerScreen {
 
 			@Override
 			public void onMessage(Connection c, GamePacket m) {
-				if (m instanceof PlayerFeedback) {
-					PlayerFeedback pf = (PlayerFeedback) m;
-					Gdx.input.vibrate((int) pf.state[0]);
+				if (m instanceof PlayerUpdate) {
+					PlayerUpdate pf = (PlayerUpdate) m;
+					handlePlayerUpdate(pf);
 				}
 			}
+			
+			
 
 			@Override
 			public void onDisconnection(Connection connection) {
@@ -123,6 +128,15 @@ public class ControllerScreen extends AbstractControllerScreen {
 			}
 		});
 	}
+	
+	public void handlePlayerUpdate(PlayerUpdate m){
+		if(m.feedbackId == PlayerUpdate.FEEDBACK_VIBRATION){
+			Gdx.input.vibrate((int) m.state[0]);
+		}
+		if(m.feedbackId == PlayerUpdate.HEALTH){
+			hud.setHealth((int)m.state[0]);
+		}
+	}
 
 	private void hideUI() {
 		stage.unfocusAll();
@@ -134,6 +148,8 @@ public class ControllerScreen extends AbstractControllerScreen {
 		stick_right.getTouchpad().draw(batch, 1.0f);
 		stick_mid.getTouchpad().draw(batch, 1.0f);
 		reload.draw(batch, 1.0f);
+		hud.draw(batch);
+		
 	}
 
 	@Override

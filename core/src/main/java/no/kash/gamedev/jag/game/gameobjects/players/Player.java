@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Rectangle;
 
 import no.kash.gamedev.jag.JustAnotherGame;
 import no.kash.gamedev.jag.assets.Assets;
-import no.kash.gamedev.jag.commons.network.packets.PlayerFeedback;
+import no.kash.gamedev.jag.commons.network.packets.PlayerUpdate;
 import no.kash.gamedev.jag.game.gamecontext.functions.Cooldown;
 import no.kash.gamedev.jag.game.gamecontext.physics.Collidable;
 import no.kash.gamedev.jag.game.gamecontext.physics.Collision;
@@ -105,8 +105,6 @@ public class Player extends AbstractGameObject implements Collidable {
 		TileCollisionDetector.checkTileCollisions(getGameContext().getLevel(), this, tileCollisionListener);
 	}
 
-	
-
 	@Override
 	public void draw(SpriteBatch batch) {
 		super.draw(batch);
@@ -166,7 +164,7 @@ public class Player extends AbstractGameObject implements Collidable {
 
 	public void vibrate(int ms) {
 		((JustAnotherGame) getGameContext().getGame()).getServer().send(id,
-				new PlayerFeedback(PlayerFeedback.FEEDBACK_VIBRATION, new float[] { ms }));
+				new PlayerUpdate(PlayerUpdate.FEEDBACK_VIBRATION, new float[] { ms }));
 	}
 
 	public void setFiring(boolean firing) {
@@ -190,6 +188,8 @@ public class Player extends AbstractGameObject implements Collidable {
 			onDeath();
 		}
 		healthHud.display();
+		((JustAnotherGame) getGameContext().getGame()).getServer().send(id,
+				new PlayerUpdate(PlayerUpdate.HEALTH, new float[] { health }));
 	}
 
 	private void onDeath() {
@@ -238,7 +238,5 @@ public class Player extends AbstractGameObject implements Collidable {
 	public void damage(Explosion explosion) {
 		damageHandler.onDamage(explosion);
 	}
-	
-	
 
 }
