@@ -13,8 +13,6 @@ public interface GameObject {
 
 	public Vector2 acceleration();
 
-	public Vector2 maxVelocity();
-
 	public Vector2 maxAcceleration();
 	
 	public float getX();

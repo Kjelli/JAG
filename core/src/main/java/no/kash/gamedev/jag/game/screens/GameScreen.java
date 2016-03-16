@@ -27,7 +27,7 @@ public class GameScreen extends AbstractGameScreen {
 	Spawner spawnpoints;
 
 	float[][] spawnPoints;
-	float [][] weaponSpawnPoints;
+	float[][] weaponSpawnPoints;
 
 	public GameScreen(JustAnotherGame game) {
 		super(game);
@@ -90,7 +90,6 @@ public class GameScreen extends AbstractGameScreen {
 	protected void onShow() {
 		level = new Level(getCamera(), batch);
 		gameContext.setLevel(level);
-		
 
 		MapObjects spawnPoints = level.map.getLayers().get("spawnpoints").getObjects();
 		this.spawnPoints = new float[spawnPoints.getCount()][];
@@ -100,8 +99,7 @@ public class GameScreen extends AbstractGameScreen {
 			float y = spawnPoint.getProperties().get("y", Float.class);
 			this.spawnPoints[i] = new float[] { x, y };
 		}
-		
-		
+
 		MapObjects weaponSpawnPoints = level.map.getLayers().get("weaponspawn").getObjects();
 		this.weaponSpawnPoints = new float[weaponSpawnPoints.getCount()][];
 		for (int i = 0; i < weaponSpawnPoints.getCount(); i++) {
@@ -110,7 +108,7 @@ public class GameScreen extends AbstractGameScreen {
 			float y = temp.getProperties().get("y", Float.class);
 			this.weaponSpawnPoints[i] = new float[] { x, y };
 		}
-		
+
 		spawnpoints = new Spawner(this.weaponSpawnPoints, getGameContext());
 
 		Player man = new Player(-1, "Dummy", 400, 400);
@@ -133,8 +131,7 @@ public class GameScreen extends AbstractGameScreen {
 
 				switch (input.inputId) {
 				case JOYSTICK_LEFT:
-					p.velocity().x = input.state[0] * 140;
-					p.velocity().y = input.state[1] * 140;
+					p.accelerate(input.state[0], input.state[1]);
 					break;
 				case JOYSTICK_RIGHT:
 					float x = input.state[0];
@@ -186,6 +183,7 @@ public class GameScreen extends AbstractGameScreen {
 				gameContext.despawn(players.remove(c.getID()));
 			}
 
+			@SuppressWarnings("unused")
 			protected void printInput(PlayerInput input) {
 				StringBuilder stateString = new StringBuilder("{");
 				for (int i = 1; i < input.state.length; i++) {

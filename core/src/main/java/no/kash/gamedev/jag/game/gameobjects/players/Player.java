@@ -43,25 +43,34 @@ public class Player extends AbstractGameObject implements Collidable {
 	private float grenadeDirection;
 	private float healthMax = 100;
 	private float health = healthMax;
-	private Cooldown granadeCooldown;
-	private float granadeCooldownDuration = 3;
+	private Cooldown grenadeCooldown;
+	private float grenadeCooldownDuration = 3;
 
 	private final GlyphLayout nameLabel;
 
 	private DamageHandler damageHandler;
-	
+
 	public Player(int id, String name, float x, float y) {
 		super(x, y, 64, 64);
-		Sprite sprite = new Sprite(Assets.man);
-		sprite.setOrigin(getWidth() / 2, getHeight() / 2);
-		setSprite(sprite);
-
-		setDamageHandler(new VanillaDamageHandler(this));
-
-		hitbox = new Hitbox(x + getWidth() / 2 - 8, y + getHeight() / 2 - 8, 16, 16);
 
 		this.id = id;
 		this.name = name;
+
+		// Set sprite
+		Sprite sprite = new Sprite(Assets.man);
+		sprite.setOrigin(getWidth() / 2, getHeight() / 2);
+		setSprite(sprite);
+		
+		maxAcceleration().x = 3200;
+		maxAcceleration().y = 3200;
+		setMaxSpeed(200);
+
+
+		hitbox = new Hitbox(x + getWidth() / 2 - 8, y + getHeight() / 2 - 8, 16, 16);
+
+		// TODO choose damagehandler according to game mode
+		setDamageHandler(new VanillaDamageHandler(this));
+
 		this.tileCollisionListener = new TileCollisionListener() {
 			@Override
 			public void onCollide(MapObject rectangleObject, Rectangle intersection) {
@@ -70,18 +79,18 @@ public class Player extends AbstractGameObject implements Collidable {
 		};
 
 		nameLabel = new GlyphLayout(Assets.font, name);
-
 		healthHud = new HealthHud(this, getCenterX() - HealthHud.WIDTH / 2, getCenterY() - HealthHud.HEIGHT / 2 - 20f);
+
 		gun = new Gun(GunType.pistol);
 		gun.equip(this);
-		
-		granadeCooldown = new Cooldown(granadeCooldownDuration); 
+		grenadeCooldown = new Cooldown(grenadeCooldownDuration);
+
 	}
 
 	@Override
 	public void update(float delta) {
 		gun.update(delta);
-		granadeCooldown.update(delta);
+		grenadeCooldown.update(delta);
 		move(delta);
 		hitbox.update(getX() + getWidth() / 2 - 8, getY() + getHeight() / 2 - 8);
 		healthHud.setX(getCenterX() - HealthHud.WIDTH / 2);
@@ -105,16 +114,21 @@ public class Player extends AbstractGameObject implements Collidable {
 
 		healthHud.draw(batch);
 	}
-	
-	public void equipWeapon(Weapon weapon){
+
+	public void accelerate(float xacc, float yacc) {
+		acceleration.x = xacc * max_acceleration.x;
+		acceleration.y = yacc * max_acceleration.y;
+	}
+
+	public void equipWeapon(Weapon weapon) {
 		equipGun(weapon.gun);
 	}
-	
-	public void equipGun(GunType type){
+
+	public void equipGun(GunType type) {
 		gun = new Gun(type);
 		gun.equip(this);
 	}
-	
+
 	public int getId() {
 		return id;
 	}
@@ -158,9 +172,9 @@ public class Player extends AbstractGameObject implements Collidable {
 	}
 
 	public void holdGrenade(float power, float dir) {
-		if(!granadeCooldown.isOnCooldown()){
-		this.grenadeDirection = dir;
-		this.grenadePower = power;
+		if (!grenadeCooldown.isOnCooldown()) {
+			this.grenadeDirection = dir;
+			this.grenadePower = power;
 		}
 	}
 
@@ -192,12 +206,11 @@ public class Player extends AbstractGameObject implements Collidable {
 	}
 
 	public void releaseGrenade() {
-		if(!granadeCooldown.isOnCooldown()){
-		getGameContext().spawn(new Grenade(this, getCenterX(), getCenterY(), grenadeDirection, grenadePower));
-		granadeCooldown.startCooldown();
+		if (!grenadeCooldown.isOnCooldown()) {
+			getGameContext().spawn(new Grenade(this, getCenterX(), getCenterY(), grenadeDirection, grenadePower));
+			grenadeCooldown.startCooldown();
 		}
 	}
-
 
 	public void setDamageHandler(DamageHandler handler) {
 		this.damageHandler = handler;
@@ -220,6 +233,4 @@ public class Player extends AbstractGameObject implements Collidable {
 		damageHandler.onDamage(explosion);
 	}
 
-
-	
 }

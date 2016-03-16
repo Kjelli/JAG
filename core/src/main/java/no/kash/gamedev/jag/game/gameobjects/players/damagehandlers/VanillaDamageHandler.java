@@ -21,7 +21,7 @@ public class VanillaDamageHandler implements DamageHandler {
 
 	@Override
 	public void onDamage(Explosion bullet) {
-
+		
 	}
 
 }

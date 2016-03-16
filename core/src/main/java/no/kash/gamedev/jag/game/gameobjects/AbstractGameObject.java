@@ -12,8 +12,8 @@ import no.kash.gamedev.jag.game.gamecontext.GameContext;
 public abstract class AbstractGameObject implements GameObject {
 	private GameContext context;
 
-	public static final float EPSILON = 50.0f;
-	protected Vector2 velocity, max_velocity, acceleration, max_acceleration;
+	public static final float EPSILON = 0.0001f;
+	protected Vector2 velocity, acceleration, max_acceleration;
 	private float x, y;
 	private float width, height;
 	protected Rectangle bounds;
@@ -21,15 +21,14 @@ public abstract class AbstractGameObject implements GameObject {
 
 	protected Sprite sprite;
 
-	protected float speed = 30f;
+	protected float maxSpeed = 500f;
 	protected float rot = 0f;
 	protected float scale = 1.0f;
 
 	public AbstractGameObject(float x, float y, float width, float height) {
 		velocity = new Vector2();
 		acceleration = new Vector2();
-		max_acceleration = new Vector2(50, 50);
-		max_velocity = new Vector2(50, 50);
+		max_acceleration = new Vector2(5000, 5000);
 		bounds = new Rectangle(x, y, width, height);
 		setX(x);
 		setY(y);
@@ -72,11 +71,7 @@ public abstract class AbstractGameObject implements GameObject {
 	}
 
 	public Vector2 maxAcceleration() {
-		return acceleration;
-	}
-
-	public Vector2 maxVelocity() {
-		return acceleration;
+		return max_acceleration;
 	}
 
 	@Override
@@ -91,12 +86,12 @@ public abstract class AbstractGameObject implements GameObject {
 
 	@Override
 	public void setMaxSpeed(float speed) {
-		this.speed = speed;
+		this.maxSpeed = speed;
 	}
 
 	@Override
 	public float getMaxSpeed() {
-		return speed;
+		return maxSpeed;
 	}
 
 	@Override
@@ -117,7 +112,21 @@ public abstract class AbstractGameObject implements GameObject {
 		this.height = height / getScale();
 	}
 
-	protected final void move(float delta) {
+	protected void move(float delta) {
+		if (acceleration.x != 0 || acceleration.y != 0) {
+			velocity.x = velocity.x + acceleration.x * delta;
+			velocity.y = velocity.y + acceleration.y * delta;
+			float effectiveSpeed = (float) Math.hypot(velocity.x, velocity.y);
+			float angle = (float) Math.atan2(velocity.y, velocity.x);
+			if (effectiveSpeed > getMaxSpeed()) {
+				velocity.x = (float) (Math.cos(angle) * getMaxSpeed());
+				velocity.y = (float) (Math.sin(angle) * getMaxSpeed());
+			}
+		} else {
+			velocity.x *= 0.9f;
+			velocity.y *= 0.9f;
+		}
+
 		setX(x + velocity.x * delta);
 		setY(y + velocity.y * delta);
 	}

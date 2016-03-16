@@ -44,6 +44,8 @@ public class Bullet extends AbstractGameObject implements Collidable {
 				}
 			}
 		};
+		acceleration.x = EPSILON;
+		acceleration.y = EPSILON;
 		velocity.x = (float) (Math.cos(getRotation()) * speed);
 		velocity.y = (float) (Math.sin(getRotation()) * speed);
 	}
