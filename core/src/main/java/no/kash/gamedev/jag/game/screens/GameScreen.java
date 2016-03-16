@@ -17,19 +17,36 @@ import no.kash.gamedev.jag.JustAnotherGame;
 import no.kash.gamedev.jag.commons.network.JagReceiver;
 import no.kash.gamedev.jag.commons.network.packets.PlayerInput;
 import no.kash.gamedev.jag.game.gameobjects.players.Player;
+import no.kash.gamedev.jag.game.gamesettings.GameMode;
+import no.kash.gamedev.jag.game.gamesettings.GameSettings;
 import no.kash.gamedev.jag.game.levels.Level;
-import no.kash.gamedev.jag.game.levels.Spawner;
 
 public class GameScreen extends AbstractGameScreen {
 
+	// TODO setup gamesettings beforehand, using STD for testing
+	public static GameSettings STD;
+	static {
+		STD = new GameSettings();
+		STD.gameMode = GameMode.STANDARD_FFA;
+		STD.mapFilename = "maps/sumoarena1.tmx";
+		STD.startingHealth = 1000f;
+		STD.rounds = 3;
+		STD.roundTime = 60.0f;
+	}
+
+	GameSettings gameSettings;
 	Map<Integer, Player> players;
 	Level level;
-	Spawner spawnpoints;
 
+	// TODO quickfix for spawning players
 	float[][] spawnPoints;
 
+	// game)
 	public GameScreen(JustAnotherGame game) {
 		super(game);
+
+		// TODO add gamesettings to constructor (required by setup menu to start
+		this.gameSettings = STD;
 		players = new HashMap<>();
 	}
 
@@ -87,9 +104,11 @@ public class GameScreen extends AbstractGameScreen {
 
 	@Override
 	protected void onShow() {
-		level = new Level(getCamera(), batch, getGameContext());
+
+		level = new Level(gameSettings, batch, getGameContext());
 		gameContext.setLevel(level);
 
+		// Quick fix for spawning
 		MapObjects spawnPoints = level.map.getLayers().get("spawnpoints").getObjects();
 		this.spawnPoints = new float[spawnPoints.getCount()][];
 		for (int i = 0; i < spawnPoints.getCount(); i++) {
@@ -99,8 +118,7 @@ public class GameScreen extends AbstractGameScreen {
 			this.spawnPoints[i] = new float[] { x, y };
 		}
 
-
-		Player man = new Player(-1, "Dummy", 400, 400);
+		Player man = new Player(gameSettings, -1, "Dummy", 400, 400);
 		players.put(-666, man);
 		gameContext.spawn(man);
 
@@ -161,7 +179,7 @@ public class GameScreen extends AbstractGameScreen {
 						* GameScreen.this.spawnPoints.length)];
 				float spawnX = spawnPoint[0];
 				float spawnY = spawnPoint[1];
-				Player man = new Player(c.getID(), "Minge", spawnX, spawnY);
+				Player man = new Player(gameSettings, c.getID(), "Minge", spawnX, spawnY);
 				gameContext.spawn(man);
 				players.put(c.getID(), man);
 			}

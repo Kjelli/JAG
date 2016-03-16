@@ -1,4 +1,4 @@
-package no.kash.gamedev.jag.game.tilecollisions;
+package no.kash.gamedev.jag.game.gamecontext.physics.tilecollisions;
 
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObjects;
