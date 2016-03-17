@@ -53,6 +53,10 @@ public class JagServer {
 		}
 		while (eventQueue.size > 0) {
 			NetworkEvent next = eventQueue.removeFirst();
+			// THIS SHOULD NEVER HAPPEN BUT WHYYY !?? !? !? !?? ? ? ! !
+			if (next == null) {
+				continue;
+			}
 			switch (next.type) {
 			case NetworkEvent.CONNECT:
 				listener.connected(next.connection);
