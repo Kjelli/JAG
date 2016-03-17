@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.utils.Queue;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
@@ -15,10 +16,13 @@ public class JagServer {
 	private int port;
 	private NetworkListener listener;
 
+	private Queue<NetworkEvent> eventQueue;
+
 	public JagServer() {
 		server = new Server();
 		new HashMap<>();
 		init();
+		eventQueue = new Queue<NetworkEvent>();
 	}
 
 	private void init() {
@@ -26,25 +30,41 @@ public class JagServer {
 		server.addListener(new Listener() {
 			@Override
 			public void connected(Connection connection) {
-				if (listener != null) {
-					listener.connected(connection);
-				}
+				eventQueue.addLast(new NetworkEvent(NetworkEvent.CONNECT, connection));
 			}
 
 			@Override
 			public void disconnected(Connection connection) {
-				if (listener != null) {
-					listener.disconnected(connection);
-				}
+				eventQueue.addLast(new NetworkEvent(NetworkEvent.DISCONNECT, connection));
 			}
 
 			@Override
 			public void received(Connection connection, Object object) {
-				if (listener != null && object instanceof GamePacket) {
-					listener.receivedPacket(connection, (GamePacket) object);
+				if (object instanceof GamePacket) {
+					eventQueue.addLast(new NetworkEvent(NetworkEvent.PACKET, connection, (GamePacket) object));
 				}
 			}
 		});
+	}
+
+	public void update(float delta) {
+		if (listener == null) {
+			return;
+		}
+		while (eventQueue.size > 0) {
+			NetworkEvent next = eventQueue.removeFirst();
+			switch (next.type) {
+			case NetworkEvent.CONNECT:
+				listener.connected(next.connection);
+				break;
+			case NetworkEvent.DISCONNECT:
+				listener.disconnected(next.connection);
+				break;
+			case NetworkEvent.PACKET:
+				listener.receivedPacket(next.connection, next.packet);
+				break;
+			}
+		}
 	}
 
 	public void update(int timeout) throws IOException {
@@ -52,7 +72,7 @@ public class JagServer {
 	}
 
 	public void listen(int port) {
-		server.start();	
+		server.start();
 		this.port = port;
 		try {
 			server.bind(port);

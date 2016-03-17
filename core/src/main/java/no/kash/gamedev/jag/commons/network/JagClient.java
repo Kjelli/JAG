@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+import com.badlogic.gdx.utils.Queue;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
@@ -15,12 +16,15 @@ public class JagClient {
 	private int id;
 	private String connectionString;
 	private NetworkListener listener;
-	
+
+	private Queue<NetworkEvent> eventQueue;
+
 	private boolean connected = false;
 
 	public JagClient() {
 		client = new Client();
 		init();
+		eventQueue = new Queue<>();
 	}
 
 	private void init() {
@@ -30,26 +34,42 @@ public class JagClient {
 			public void connected(Connection connection) {
 				connected = true;
 				id = connection.getID();
-				if (listener != null) {
-					listener.connected(connection);
-				}
+				eventQueue.addLast(new NetworkEvent(NetworkEvent.CONNECT, connection));
 			}
 
 			@Override
 			public void received(Connection connection, Object object) {
-				if (listener != null && object instanceof GamePacket) {
-					listener.receivedPacket(connection, (GamePacket) object);
+				if (object instanceof GamePacket) {
+					eventQueue.addLast(new NetworkEvent(NetworkEvent.PACKET, connection, (GamePacket) object));
 				}
 			}
 
 			@Override
 			public void disconnected(Connection connection) {
 				connected = false;
-				if (listener != null) {
-					listener.disconnected(connection);
-				}
+				eventQueue.addLast(new NetworkEvent(NetworkEvent.DISCONNECT, connection));
 			}
 		});
+	}
+
+	public void update(float delta) {
+		if (listener == null) {
+			return;
+		}
+		while (eventQueue.size > 0) {
+			NetworkEvent next = eventQueue.removeFirst();
+			switch (next.type) {
+			case NetworkEvent.CONNECT:
+				listener.connected(next.connection);
+				break;
+			case NetworkEvent.DISCONNECT:
+				listener.disconnected(next.connection);
+				break;
+			case NetworkEvent.PACKET:
+				listener.receivedPacket(next.connection, next.packet);
+				break;
+			}
+		}
 	}
 
 	public void update(int timeout) throws IOException {
@@ -99,7 +119,7 @@ public class JagClient {
 	public boolean isConnected() {
 		return connected;
 	}
-	
+
 	public String getConnectionString() {
 		return connectionString;
 	}

@@ -26,12 +26,12 @@ public abstract class AbstractControllerScreen implements Screen {
 
 	protected final JustAnotherGameController game;
 
-	protected  OrthographicCamera camera;
-	protected  Stage stage;
+	protected OrthographicCamera camera;
+	protected Stage stage;
 	protected GameContext gameContext;
-	protected  InputMultiplexer inputMux;
+	protected InputMultiplexer inputMux;
 
-	protected  SpriteBatch batch;
+	protected SpriteBatch batch;
 
 	private Texture background;
 
@@ -39,9 +39,8 @@ public abstract class AbstractControllerScreen implements Screen {
 
 	private boolean paused;
 	private boolean disposed;
-	
-	// TODO is this dumb?
-	public Screen nextScreen;
+
+	private Screen nextScreen;
 
 	public AbstractControllerScreen(JustAnotherGameController game) {
 		this.game = game;
@@ -49,12 +48,13 @@ public abstract class AbstractControllerScreen implements Screen {
 
 	@Override
 	public void render(float delta) {
-		if(nextScreen != null){
-			game.setScreen(nextScreen);
+		if (getNextScreen() != null) {
+			game.setScreen(getNextScreen());
 		}
 		TweenGlobal.update(delta);
 		update(delta);
 		stage.act(delta);
+		game.getClient().update(delta);
 		Gdx.gl.glClearColor(bgcolor.r, bgcolor.g, bgcolor.b, bgcolor.a);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.setTransformMatrix(camera.view);
@@ -173,11 +173,19 @@ public abstract class AbstractControllerScreen implements Screen {
 		switch (sc.stateId) {
 		case JustAnotherGameController.PLAY_STATE:
 			System.out.println("Making controller");
-			nextScreen = new ControllerScreen(game);
+			queueNextScreen(new ControllerScreen(game));
 			break;
 		default:
 			game.getActionResolver().toast("Unknown gamestate: " + sc.stateId);
 		}
+	}
+
+	public Screen getNextScreen() {
+		return nextScreen;
+	}
+
+	public void queueNextScreen(Screen nextScreen) {
+		this.nextScreen = nextScreen;
 	}
 
 }

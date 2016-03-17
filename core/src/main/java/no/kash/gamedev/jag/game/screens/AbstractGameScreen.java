@@ -53,6 +53,7 @@ public abstract class AbstractGameScreen implements Screen {
 		TweenGlobal.update(delta);
 		update(delta);
 		stage.act(delta);
+		game.getServer().update(delta);
 
 		Gdx.gl.glClearColor(0.0f, 0.1f, 0.0f, 1.0f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);

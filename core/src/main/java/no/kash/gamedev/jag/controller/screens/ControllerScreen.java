@@ -124,7 +124,7 @@ public class ControllerScreen extends AbstractControllerScreen {
 
 			@Override
 			public void disconnected(Connection connection) {
-				nextScreen = new LoadingScreen(game, "Connection lost, retrying...");
+				queueNextScreen(new LoadingScreen(game, "Connection lost, retrying..."));
 			}
 
 			@Override
