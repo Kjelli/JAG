@@ -6,7 +6,6 @@ import no.kash.gamedev.jag.commons.network.packets.GamePacket;
 import no.kash.gamedev.jag.commons.network.packets.PlayerInput;
 
 public interface JagReceiver {
-	void handleConnection(Connection c);
 
 	void handleInput(PlayerInput input);
 

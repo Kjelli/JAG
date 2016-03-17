@@ -9,10 +9,10 @@ import no.kash.gamedev.jag.commons.network.JagReceiver;
 import no.kash.gamedev.jag.commons.network.JagServer;
 import no.kash.gamedev.jag.commons.network.NetworkListener;
 import no.kash.gamedev.jag.commons.network.packets.GamePacket;
-import no.kash.gamedev.jag.commons.network.packets.PlayerConnect;
 import no.kash.gamedev.jag.commons.network.packets.PlayerInput;
 import no.kash.gamedev.jag.commons.tweens.TweenGlobal;
 import no.kash.gamedev.jag.game.screens.GameScreen;
+import no.kash.gamedev.jag.game.screens.LobbyScreen;
 
 public class JustAnotherGame extends JagEndpoint {
 
@@ -28,7 +28,7 @@ public class JustAnotherGame extends JagEndpoint {
 	@Override
 	public void create() {
 		init();
-		setScreen(new GameScreen(this));
+		setScreen(new LobbyScreen(this));
 	}
 
 	private void init() {
@@ -64,6 +64,7 @@ public class JustAnotherGame extends JagEndpoint {
 			}
 		});
 
+		server.listen(13337);
 	}
 
 	@Override

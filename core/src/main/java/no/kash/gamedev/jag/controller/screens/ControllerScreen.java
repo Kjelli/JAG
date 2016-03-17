@@ -131,8 +131,6 @@ public class ControllerScreen extends AbstractControllerScreen {
 			public void connected(Connection c) {
 			}
 		});
-
-		game.getClient().broadcast(new PlayerStateChangeResponse(JustAnotherGameController.PLAY_STATE));
 	}
 
 	public void handlePlayerUpdate(PlayerUpdate m) {

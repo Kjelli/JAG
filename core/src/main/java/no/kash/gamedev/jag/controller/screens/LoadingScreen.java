@@ -33,12 +33,13 @@ public class LoadingScreen extends AbstractControllerScreen {
 		if ((retryTimer -= delta) < 0) {
 			retryTimer = RETRY_TIMER_MAX;
 			retryAttempts++;
-			loadingStatus = new GlyphLayout(Assets.fontSmall, "Connection lost, retrying("+retryAttempts+")...");
+
 			if (!game.getClient().isConnected()) {
 				try {
 					game.getClient().connect(game.getClient().getConnectionString());
 				} catch (Exception e) {
-					// Do nothing
+					loadingStatus = new GlyphLayout(Assets.fontSmall,
+							"Connection failed, retrying(" + retryAttempts + ")...");
 				}
 			} else {
 				game.getClient().broadcast(new PlayerConnect(game.getClient().getId(), "Svettleif"));
@@ -49,7 +50,8 @@ public class LoadingScreen extends AbstractControllerScreen {
 	@Override
 	protected void draw(float delta) {
 		Assets.font.draw(batch, loadingText, stage.getWidth() / 2 - loadingText.width / 2, stage.getHeight() / 2);
-		Assets.fontSmall.draw(batch, loadingStatus, stage.getWidth() / 2 - loadingStatus.width / 2, stage.getHeight() / 2 - loadingStatus.height * 2f);
+		Assets.fontSmall.draw(batch, loadingStatus, stage.getWidth() / 2 - loadingStatus.width / 2,
+				stage.getHeight() / 2 - loadingStatus.height * 2f);
 	}
 
 	@Override
@@ -66,12 +68,12 @@ public class LoadingScreen extends AbstractControllerScreen {
 
 			@Override
 			public void disconnected(Connection connection) {
-				setBackgroundColor(Color.RED);
+				loadingStatus.setText(Assets.fontSmall, "Connection lost :(");
 			}
 
 			@Override
 			public void connected(Connection c) {
-				setBackgroundColor(Color.WHITE);
+				loadingStatus.setText(Assets.fontSmall, "Connected! Waiting for gameserver...");
 			}
 		});
 

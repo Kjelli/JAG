@@ -126,8 +126,6 @@ public class GameScreen extends AbstractGameScreen {
 		Player man = new Player(gameSettings, -1, "Dummy", 400, 400);
 		players.put(-666, man);
 		gameContext.spawn(man);
-
-		game.getServer().listen(13337);
 		game.setReceiver(new JagReceiver() {
 
 			@Override
@@ -203,11 +201,6 @@ public class GameScreen extends AbstractGameScreen {
 				default:
 					System.out.println("Unknown input: " + input.inputId);
 				}
-
-			}
-
-			@Override
-			public void handleConnection(Connection c) {
 
 			}
 

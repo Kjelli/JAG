@@ -5,6 +5,7 @@ public class PlayerUpdate implements GamePacket {
 	public static final int HEALTH = 2;
 	public static final int AMMO = 3;
 	public static final int GUN = 4;
+	public static final int PLAYER_SETTINGS = 5;
 	
 	public int fields;
 	public int[] fieldId;

@@ -12,9 +12,11 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 import no.kash.gamedev.jag.commons.network.packets.PlayerStateChange;
+import no.kash.gamedev.jag.commons.network.packets.PlayerStateChangeResponse;
 import no.kash.gamedev.jag.commons.tweens.TweenGlobal;
 import no.kash.gamedev.jag.controller.JustAnotherGameController;
 import no.kash.gamedev.jag.game.gamecontext.GameContext;
+import no.kash.gamedev.jag.game.screens.LobbyScreen;
 
 public abstract class AbstractControllerScreen implements Screen {
 
@@ -170,13 +172,21 @@ public abstract class AbstractControllerScreen implements Screen {
 
 	protected void handleStateChange(PlayerStateChange sc) {
 		game.getActionResolver().toast("Changing state : " + sc.stateId);
+		boolean failed = false;
 		switch (sc.stateId) {
 		case JustAnotherGameController.PLAY_STATE:
-			System.out.println("Making controller");
 			queueNextScreen(new ControllerScreen(game));
+			break;
+		case JustAnotherGameController.LOBBY_STATE:
+			queueNextScreen(new LobbyControllerScreen(game));
 			break;
 		default:
 			game.getActionResolver().toast("Unknown gamestate: " + sc.stateId);
+			failed = true;
+		}
+		
+		if(!failed){
+			game.getClient().broadcast(new PlayerStateChangeResponse(sc.stateId));
 		}
 	}
 
