@@ -19,17 +19,16 @@ public class Assets {
 	public static Texture blood;
 	public static Texture grenade;
 
-	
-
-	//Collectibles
+	// Collectibles
 	public static Texture m4_ground;
 	public static Texture pistol_ground;
-	
-	public static Texture health_icon;
 
+	// Hud
+
+	public static Texture health_icon;
 	public static Texture health, health_bg, health_border, health_shine;
 
-
+	public static Texture card_border, card_bg;
 
 	public static Array<TextureRegion> explosion_frames;
 
@@ -45,17 +44,19 @@ public class Assets {
 		grenade = load("sprites/grenade.png");
 		blood = load("blood.png");
 
-
-		//Collectibles
+		// Collectibles
 		m4_ground = load("sprites/gun_m4.png");
 		pistol_ground = load("sprites/gun_pistol.png");
-		
-		health_icon = load("sprites/health_icon.png");
-		
 
+		// Hud
+		health_icon = load("sprites/health_icon.png");
 		health = load("hud/health.png");
 		health_bg = load("hud/health_bg.png");
 		health_border = load("hud/health_border.png");
+
+		card_bg = load("sprites/card_bg.png");
+		card_border = load("sprites/card_border.png");
+		// Animations
 
 		Texture explosionSheet = load("animations/explosion1.png");
 		explosion_frames = new Array<>();
@@ -64,20 +65,19 @@ public class Assets {
 			explosion_frames.add(region);
 		}
 
-
 		FreeTypeFontGenerator fontgen = new FreeTypeFontGenerator(Gdx.files.internal("pixelmix.ttf"));
 		FreeTypeFontParameter font20params = new FreeTypeFontParameter();
 		font20params.minFilter = Texture.TextureFilter.Nearest;
 		font20params.magFilter = Texture.TextureFilter.MipMapLinearNearest;
 		font20params.size = 20;
-		
+
 		font = fontgen.generateFont(font20params);
-		
+
 		FreeTypeFontParameter font12params = new FreeTypeFontParameter();
 		font12params.minFilter = Texture.TextureFilter.Nearest;
 		font12params.magFilter = Texture.TextureFilter.MipMapLinearNearest;
 		font12params.size = 12;
-		
+
 		fontSmall = fontgen.generateFont(font12params);
 	}
 
