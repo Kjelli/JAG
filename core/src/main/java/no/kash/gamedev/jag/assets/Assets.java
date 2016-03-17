@@ -23,6 +23,7 @@ public class Assets {
 
 	//Collectibles
 	public static Texture m4_ground;
+	public static Texture pistol_ground;
 	
 	public static Texture health_icon;
 
@@ -47,6 +48,7 @@ public class Assets {
 
 		//Collectibles
 		m4_ground = load("sprites/gun_m4.png");
+		pistol_ground = load("sprites/gun_pistol.png");
 		
 		health_icon = load("sprites/health_icon.png");
 		
