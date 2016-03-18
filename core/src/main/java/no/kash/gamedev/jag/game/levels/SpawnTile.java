@@ -22,7 +22,6 @@ public class SpawnTile extends AbstractGameObject {
 
 	private Cooldown cooldown;
 	
-	private WeaponSpawnEffect effect;
 	
 	private Weapon weapon;
 	int goldenGunDrop;
@@ -54,7 +53,6 @@ public class SpawnTile extends AbstractGameObject {
 			}
 		}
 		
-		System.out.println(occupied);
 
 		if (preStage == true && cooldown.getCooldownTimer() <= 0) {
 			preStage = false;
@@ -71,8 +69,7 @@ public class SpawnTile extends AbstractGameObject {
 	private void createWeapon(GunType type) {
 		weapon = new Weapon(getX(), getY(), type);
 		getGameContext().spawn(weapon);
-		
-		effect = new WeaponSpawnEffect(getX(),getY(),64,64,2);
+		//getGameContext().spawn(new WeaponSpawnEffect(getX(),getY(),64,64,2));
 	}
 
 	private void createGoldenGun() {
