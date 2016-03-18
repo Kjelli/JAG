@@ -17,6 +17,7 @@ public class Assets {
 	public static Texture pistol;
 	public static Texture m4;
 	public static Texture shotgun;
+	public static Texture goldengun;
 	public static Texture blood;
 	public static Texture grenade;
 
@@ -24,12 +25,14 @@ public class Assets {
 	public static Texture m4_ground;
 	public static Texture pistol_ground;
 	public static Texture shotgun_ground;
+	public static Texture goldengun_ground;
 	
 	public static Texture health_icon;
 	
 	//MapTiles
 	public static Texture spawntile_regular;
 	public static Texture spawntile_pre;
+	public static Texture spawntile_golden;
 
 	// Hud
 
@@ -49,6 +52,8 @@ public class Assets {
 		pistol = load("playerSprite/pistol.png");
 		m4 = load("playerSprite/m4.png");
 		shotgun = load("playerSprite/shotgun.png");
+		goldengun = load("playerSprite/goldengun.png");
+
 		grenade = load("sprites/grenade.png");
 		blood = load("blood.png");
 
@@ -56,11 +61,13 @@ public class Assets {
 		m4_ground = load("sprites/gun_m4.png");
 		pistol_ground = load("sprites/gun_pistol.png");
 		shotgun_ground = load("sprites/gun_shotgun.png");
+		goldengun_ground = load ("sprites/gun_goldengun.png");
 		health_icon = load("sprites/health_icon.png");
 		
 		//MapTiles
 		spawntile_regular = load("maps/sprites/spawner_regular.png");
 		spawntile_pre = load("maps/sprites/spawner_pre.png");
+		spawntile_golden = load("maps/sprites/spawner_golden.png");
 
 		// Hud
 		health_icon = load("sprites/health_icon.png");

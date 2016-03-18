@@ -20,7 +20,6 @@ public class Weapon extends AbstractGameObject implements Collectable, Collidabl
 
 		Sprite sprite = new Sprite(gun.getOnGroundTexture());
 		setSprite(sprite);
-
 		determineAmmo();
 	}
 
@@ -33,6 +32,11 @@ public class Weapon extends AbstractGameObject implements Collectable, Collidabl
 		 */
 
 		ammo = gun.getMaxAmmo();
+	}
+	
+	@Override
+	public void onSpawn() {
+		getGameContext().bringToFront(this);
 	}
 
 	@Override

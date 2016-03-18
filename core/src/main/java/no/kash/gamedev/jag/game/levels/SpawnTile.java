@@ -11,55 +11,72 @@ import no.kash.gamedev.jag.game.gameobjects.players.guns.GunType;
 
 public class SpawnTile extends AbstractGameObject {
 
+	public Cooldown reSpawnCooldown;
+	
 	private Sprite regular;
 	private Sprite pre;
+	private Sprite golden;
 
 	private boolean occupied;
 
 	private Cooldown cooldown;
 	
-	private Weapon weapon;
 	
+	private Weapon weapon;
+	int goldenGunDrop;
+	int dropChancegolden = 15;
 	private boolean preStage;
 
 	public SpawnTile(float x, float y) {
 		super(x, y, 32, 32);
 		cooldown = new Cooldown(3);
+		reSpawnCooldown = new Cooldown(5);;
 		occupied = false;
-		preStage = false; 
+		preStage = false;
 
 		regular = new Sprite(Assets.spawntile_regular);
 		setSprite(regular);
-
+		golden = new Sprite(Assets.spawntile_golden);
 		pre = new Sprite(Assets.spawntile_pre);
 	}
 
 	@Override
 	public void update(float delta) {
 		cooldown.update(delta);
-		
-		/*
-		if(!weapon.isAlive()){
-			occupied = true;
+
+		if (weapon != null) {
+				occupied = true;
 		}
-		*/
-		
-		if(preStage == true && cooldown.getCooldownTimer() <= 0){
+
+		if (preStage == true && cooldown.getCooldownTimer() <= 0) {
 			preStage = false;
 			occupied = true;
 			setSprite(regular);
-			createWeapon();
+			if (goldenGunDrop == 1) {
+				createGoldenGun();
+			} else {
+				createWeapon();
+			}
 		}
 	}
-	
-	
+
+	private void createGoldenGun() {
+		weapon = new Weapon(getX(), getY(), GunType.goldengun);
+		getGameContext().spawn(weapon);
+	}
+
 	private void createWeapon() {
 		weapon = new Weapon(getX(), getY(), randomGun());
 		getGameContext().spawn(weapon);
 	}
 
 	public void spawnWeapon() {
-		setSprite(pre);
+		goldenGunDrop = 1 + (int) (Math.random() * dropChancegolden);
+		if (goldenGunDrop == 1) {
+			setSprite(golden);
+		} else {
+			setSprite(pre);
+		}
 		cooldown.startCooldown();
 		preStage = true;
 	}
