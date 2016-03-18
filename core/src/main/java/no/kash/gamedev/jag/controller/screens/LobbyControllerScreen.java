@@ -3,8 +3,12 @@ package no.kash.gamedev.jag.controller.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.scenes.scene2d.Event;
+import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldListener;
 import com.esotericsoftware.kryonet.Connection;
 
 import no.kash.gamedev.jag.assets.Assets;
@@ -21,6 +25,7 @@ public class LobbyControllerScreen extends AbstractControllerScreen {
 	BitmapFont font;
 
 	TextField nameField;
+	TextButton updateNameButton;
 
 	public LobbyControllerScreen(JustAnotherGameController game) {
 		super(game);
@@ -44,7 +49,15 @@ public class LobbyControllerScreen extends AbstractControllerScreen {
 		nameField = new TextField("Minge", skin);
 		nameField.setX(0);
 		nameField.setY(stage.getHeight() - nameField.getHeight() * 3);
-		
+		nameField.setMaxLength(12);
+		nameField.setTextFieldListener(new TextFieldListener() {
+			
+			@Override
+			public void keyTyped(TextField textField, char c) {
+				sendUpdate();
+			}
+		});
+
 		stage.addActor(nameField);
 
 		font = Assets.font;
@@ -66,6 +79,13 @@ public class LobbyControllerScreen extends AbstractControllerScreen {
 
 			}
 		});
+
+		sendUpdate();
+	}
+
+	protected void sendUpdate() {
+		game.getClient().broadcast(new PlayerUpdate(1, new int[] { PlayerUpdate.PLAYER_SETTINGS }, new float[][] { {} },
+				new String[] { nameField.getText() }));
 	}
 
 }

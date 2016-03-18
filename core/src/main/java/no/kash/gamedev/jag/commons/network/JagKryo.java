@@ -20,5 +20,6 @@ public class JagKryo {
 		kryo.register(float[].class);
 		kryo.register(float[][].class);	
 		kryo.register(int[].class);
+		kryo.register(String[].class);
 	}
 }
