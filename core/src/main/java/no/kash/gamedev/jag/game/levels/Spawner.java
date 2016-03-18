@@ -15,7 +15,7 @@ public class Spawner {
 	private ArrayList<SpawnTile> weaponTiles;
 
 	private Cooldown timerInterval;
-	private float interval = 5;
+	private float interval = 6;
 
 	public Spawner(ArrayList<Vector2> wepSpawns, GameContext gameContext) {
 		this.gameContext = gameContext;
@@ -26,6 +26,7 @@ public class Spawner {
 			SpawnTile temp = new SpawnTile(points.x, points.y);
 			weaponTiles.add(temp);
 			gameContext.spawn(temp);
+			temp.reSpawnCooldown.startCooldown();
 		}
 
 	}
@@ -34,15 +35,15 @@ public class Spawner {
 		timerInterval.update(delta);
 		if (!timerInterval.isOnCooldown()) {
 			for (SpawnTile tile : weaponTiles) {
-				int randomNum = 1 + (int) (Math.random() * 4);
+				int randomNum = 1 + (int) (Math.random() * 2);
 				if (randomNum == 1) {
-					//if (!tile.isOccupied()){
+					if (!tile.isOccupied() && !tile.reSpawnCooldown.isOnCooldown()) {
 						tile.spawnWeapon();
-					//}
+						tile.reSpawnCooldown.startCooldown();
+					}
 				}
+				timerInterval.startCooldown();
 			}
-			timerInterval.startCooldown();
 		}
 	}
-
 }

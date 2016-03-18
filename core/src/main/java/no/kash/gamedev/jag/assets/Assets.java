@@ -19,6 +19,7 @@ public class Assets {
 	public static Texture shotgun;
 	public static Texture goldengun;
 	public static Texture blood;
+	public static Texture wepSpawnEffect;
 	public static Texture grenade;
 
 	// Collectibles
@@ -56,7 +57,7 @@ public class Assets {
 
 		grenade = load("sprites/grenade.png");
 		blood = load("blood.png");
-
+		wepSpawnEffect = load("sprites/spawnEffect.png");
 		// Collectibles
 		m4_ground = load("sprites/gun_m4.png");
 		pistol_ground = load("sprites/gun_pistol.png");

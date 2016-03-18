@@ -7,6 +7,7 @@ import no.kash.gamedev.jag.game.gamecontext.GameContext;
 import no.kash.gamedev.jag.game.gamecontext.functions.Cooldown;
 import no.kash.gamedev.jag.game.gameobjects.AbstractGameObject;
 import no.kash.gamedev.jag.game.gameobjects.collectables.weapons.Weapon;
+import no.kash.gamedev.jag.game.gameobjects.particles.WeaponSpawnEffect;
 import no.kash.gamedev.jag.game.gameobjects.players.guns.GunType;
 
 public class SpawnTile extends AbstractGameObject {
@@ -21,6 +22,7 @@ public class SpawnTile extends AbstractGameObject {
 
 	private Cooldown cooldown;
 	
+	private WeaponSpawnEffect effect;
 	
 	private Weapon weapon;
 	int goldenGunDrop;
@@ -30,7 +32,7 @@ public class SpawnTile extends AbstractGameObject {
 	public SpawnTile(float x, float y) {
 		super(x, y, 32, 32);
 		cooldown = new Cooldown(3);
-		reSpawnCooldown = new Cooldown(5);;
+		reSpawnCooldown = new Cooldown(8);;
 		occupied = false;
 		preStage = false;
 
@@ -43,10 +45,16 @@ public class SpawnTile extends AbstractGameObject {
 	@Override
 	public void update(float delta) {
 		cooldown.update(delta);
-
+		reSpawnCooldown.update(delta);
 		if (weapon != null) {
+			if(weapon.isAlive()){
 				occupied = true;
+			}else{
+				occupied = false;
+			}
 		}
+		
+		System.out.println(occupied);
 
 		if (preStage == true && cooldown.getCooldownTimer() <= 0) {
 			preStage = false;
@@ -55,19 +63,24 @@ public class SpawnTile extends AbstractGameObject {
 			if (goldenGunDrop == 1) {
 				createGoldenGun();
 			} else {
-				createWeapon();
+				createRegularWeapon();
 			}
 		}
 	}
 
-	private void createGoldenGun() {
-		weapon = new Weapon(getX(), getY(), GunType.goldengun);
+	private void createWeapon(GunType type) {
+		weapon = new Weapon(getX(), getY(), type);
 		getGameContext().spawn(weapon);
+		
+		effect = new WeaponSpawnEffect(getX(),getY(),64,64,2);
 	}
 
-	private void createWeapon() {
-		weapon = new Weapon(getX(), getY(), randomGun());
-		getGameContext().spawn(weapon);
+	private void createGoldenGun() {
+		createWeapon(GunType.goldengun);
+	}
+
+	private void createRegularWeapon() {
+		createWeapon(randomGun());
 	}
 
 	public void spawnWeapon() {

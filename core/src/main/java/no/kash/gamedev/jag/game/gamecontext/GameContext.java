@@ -63,7 +63,7 @@ public class GameContext {
 			GameObject n = add.removeFirst();
 			n.setGameContext(this);
 			newlySpawned.addFirst(n);
-			objects.add(0, n);
+			objects.add(n);
 		}
 		while ((remove.size > 0)) {
 			GameObject o = remove.removeFirst();

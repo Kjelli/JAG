@@ -9,7 +9,7 @@ public enum GunType {
 	pistol("pistol", 0.4f, 0.5f, Assets.pistol, -1, -1, Assets.pistol_ground, 20f, 300f, 0f),
 	m4("m4", 0.1f, 0.1f, Assets.m4, 60, 30,Assets.m4_ground, 10f, 400f, -Math.PI / 18),
 	shotgun("shotgun", 0.7f, 0.1f, Assets.shotgun, 16, 8,Assets.shotgun_ground, 10f, 400f, -Math.PI / 18),
-	goldengun("goldengun", 0.7f, 0.5f, Assets.goldengun, 3, 3, Assets.goldengun_ground, 1000f, 800f, 0f),;
+	goldengun("goldengun", 0.7f, 0.5f, Assets.goldengun, 3, 3, Assets.goldengun_ground, 1400f, 800f, 0f),;
 	
 
 	private String name;
