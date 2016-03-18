@@ -12,30 +12,33 @@ import no.kash.gamedev.jag.game.gameobjects.players.guns.GunType;
 public class Spawner {
 
 	private GameContext gameContext;
-	private ArrayList<Vector2> wepSpawns;
+	private ArrayList<SpawnTile> weaponTiles;
 
 	private Cooldown timerInterval;
 	private float interval = 5;
 
 	public Spawner(ArrayList<Vector2> wepSpawns, GameContext gameContext) {
 		this.gameContext = gameContext;
-		this.wepSpawns = wepSpawns;
 		timerInterval = new Cooldown(interval);
-	}
 
-	public void spawnWeapon(float x, float y, GunType type) {
-		Weapon temp = new Weapon(x, y, type);
-		gameContext.spawn(temp);
+		weaponTiles = new ArrayList<SpawnTile>();
+		for (Vector2 points : wepSpawns) {
+			SpawnTile temp = new SpawnTile(points.x, points.y);
+			weaponTiles.add(temp);
+			gameContext.spawn(temp);
+		}
 
 	}
 
 	public void update(float delta) {
 		timerInterval.update(delta);
 		if (!timerInterval.isOnCooldown()) {
-			for (int i = 0; i < wepSpawns.size(); i++) {
+			for (SpawnTile tile : weaponTiles) {
 				int randomNum = 1 + (int) (Math.random() * 4);
 				if (randomNum == 1) {
-					spawnWeapon(wepSpawns.get(i).x, wepSpawns.get(i).y, GunType.m4);
+					//if (!tile.isOccupied()){
+						tile.spawnWeapon();
+					//}
 				}
 			}
 			timerInterval.startCooldown();

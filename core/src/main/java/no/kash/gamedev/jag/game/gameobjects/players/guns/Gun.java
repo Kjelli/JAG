@@ -12,6 +12,8 @@ import no.kash.gamedev.jag.game.gameobjects.players.Player;
 
 public class Gun {
 
+	protected GunType type;
+	
 	protected int magazineAmmo;
 	protected int magazineSize;
 	protected int maxAmmo;
@@ -29,6 +31,7 @@ public class Gun {
 	private Cooldown reloadCooldown;
 
 	public Gun(GunType type) {
+		this.type = type;
 		this.maxAmmo = type.getMaxAmmo();
 		this.sprite = new Sprite(type.getGunTexture());
 		this.ammo = maxAmmo;
@@ -58,9 +61,24 @@ public class Gun {
 		}
 		if ((magazineAmmo == -1 || magazineAmmo > 0) && bulletCooldown.getCooldownTimer() == 0
 				&& reloadCooldown.getCooldownTimer() == 0) {
-			Bullet temp = new Bullet(player, player.getBulletOriginX(), player.getBulletOriginY(),
-					(float) (player.getRotation() + Math.PI / 2), damage, bulletSpeed);
-			player.getGameContext().spawn(temp);
+			
+			switch(type){
+			case shotgun:
+				for(int i = 0; i<6;i++){
+				Bullet temp = new Bullet(player, player.getBulletOriginX(), player.getBulletOriginY(),
+						(float) (player.getRotation() + (Math.PI /(16*(i-2))) +  Math.PI / 2), damage, bulletSpeed);
+				player.getGameContext().spawn(temp);
+				}
+			 
+				break;
+			default:
+				Bullet temp = new Bullet(player, player.getBulletOriginX(), player.getBulletOriginY(),
+						(float) (player.getRotation() + Math.PI / 2), damage, bulletSpeed);
+				player.getGameContext().spawn(temp);
+				break;
+			}
+			
+			
 			if (magazineAmmo != -1) {
 				magazineAmmo -= 1;
 				((JustAnotherGame) player.getGameContext().getGame()).getServer().send(player.getId(),
@@ -75,6 +93,7 @@ public class Gun {
 		}
 
 	}
+
 
 	public void reload() {
 		// If room in magazine, reloadtimer is over, ammo exists or unlimited
