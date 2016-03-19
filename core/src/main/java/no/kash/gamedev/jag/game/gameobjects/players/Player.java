@@ -94,7 +94,7 @@ public class Player extends AbstractGameObject implements Collidable {
 		nameLabel = new GlyphLayout(Assets.font, name);
 		healthHud = new HealthHud(this, getCenterX() - HealthHud.WIDTH / 2, getCenterY() - HealthHud.HEIGHT / 2 - 20f);
 
-		equipGun(GunType.shotgun);
+		equipGun(GunType.pistol);
 		grenadeCooldown = new Cooldown(grenadeCooldownDuration);
 	}
 
@@ -239,7 +239,6 @@ public class Player extends AbstractGameObject implements Collidable {
 
 	public void damage(Bullet bullet) {
 		damageHandler.onDamage(bullet);
-		System.out.println("Sending health update to " + id + " , " + health);
 		((JustAnotherGame) getGameContext().getGame()).getServer().send(id,
 				new PlayerUpdate(2, new int[] { PlayerUpdate.HEALTH, PlayerUpdate.FEEDBACK_VIBRATION },
 						new float[][] { { health }, { 100.0f } }));
@@ -247,7 +246,6 @@ public class Player extends AbstractGameObject implements Collidable {
 
 	public void damage(Explosion explosion) {
 		damageHandler.onDamage(explosion);
-		System.out.println("Sending health update to " + id + " , " + health);
 		((JustAnotherGame) getGameContext().getGame()).getServer().send(id,
 				new PlayerUpdate(2, new int[] { PlayerUpdate.HEALTH, PlayerUpdate.FEEDBACK_VIBRATION },
 						new float[][] { { health }, { 400.0f } }));

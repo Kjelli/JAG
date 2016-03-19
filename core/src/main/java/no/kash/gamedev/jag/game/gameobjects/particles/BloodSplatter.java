@@ -25,11 +25,12 @@ public class BloodSplatter extends AbstractParticle {
 		color = new Color(Color.WHITE);
 
 		getSprite().setColor(color);
-
 		this.direction = (float) direction;
 		velocity.x = (float) Math.cos(direction) * SPEED;
 		velocity.y = (float) Math.sin(direction) * SPEED;
 		setRotation(direction);
+
+		
 	}
 
 	@Override

@@ -117,6 +117,10 @@ public class GameContext {
 	    objects.remove(index);
 	    objects.add(go);
 	}
+	
+	public void bringToBack(GameObject go){
+		 objects.add(0,go);
+	}
 
 	public long getTicks() {
 		return ticks;

@@ -28,7 +28,9 @@ public class Assets {
 	public static Texture shotgun_ground;
 	public static Texture goldengun_ground;
 	
+	//Icons
 	public static Texture health_icon;
+	public static Texture icon_border;
 	
 	//MapTiles
 	public static Texture spawntile_regular;
@@ -44,6 +46,7 @@ public class Assets {
 	public static Array<TextureRegion> explosion_frames;
 
 	public static BitmapFont font, fontSmall;
+
 
 	public static void load() {
 		plain = load("plain.png");
@@ -63,6 +66,9 @@ public class Assets {
 		pistol_ground = load("sprites/gun_pistol.png");
 		shotgun_ground = load("sprites/gun_shotgun.png");
 		goldengun_ground = load ("sprites/gun_goldengun.png");
+		
+		//Icons
+		icon_border = load("sprites/health_icon.png");
 		health_icon = load("sprites/health_icon.png");
 		
 		//MapTiles
