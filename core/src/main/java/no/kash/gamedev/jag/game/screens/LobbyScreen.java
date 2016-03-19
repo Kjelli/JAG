@@ -15,7 +15,6 @@ import no.kash.gamedev.jag.commons.network.packets.GamePacket;
 import no.kash.gamedev.jag.commons.network.packets.PlayerConnect;
 import no.kash.gamedev.jag.commons.network.packets.PlayerInput;
 import no.kash.gamedev.jag.commons.network.packets.PlayerStateChange;
-import no.kash.gamedev.jag.commons.network.packets.PlayerStateChangeResponse;
 import no.kash.gamedev.jag.commons.network.packets.PlayerUpdate;
 import no.kash.gamedev.jag.controller.JustAnotherGameController;
 import no.kash.gamedev.jag.game.JustAnotherGame;
@@ -65,6 +64,7 @@ public class LobbyScreen extends AbstractGameScreen {
 					PlayerInfo info = new PlayerInfo();
 					info.name = update.info[0];
 					info.id = c.getID();
+					info.timesPlayed = (int)update.state[0][0];
 					if (!playerInfos.containsKey(c.getID())) {
 						PlayerInfoGUI pi = new PlayerInfoGUI(0,
 								stage.getHeight() - (playerInfos.size() + 1) * PlayerInfoGUI.HEIGHT, info);

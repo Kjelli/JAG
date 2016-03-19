@@ -27,10 +27,10 @@ public class Assets {
 	public static Texture pistol_ground;
 	public static Texture shotgun_ground;
 	public static Texture goldengun_ground;
-	
+
 	public static Texture health_icon;
-	
-	//MapTiles
+
+	// MapTiles
 	public static Texture spawntile_regular;
 	public static Texture spawntile_pre;
 	public static Texture spawntile_golden;
@@ -39,7 +39,7 @@ public class Assets {
 
 	public static Texture health, health_bg, health_border, health_shine;
 
-	public static Texture card_border, card_bg;
+	public static Texture card_long_border, card_long_bg, card_border, card_bg;
 
 	public static Array<TextureRegion> explosion_frames;
 
@@ -62,10 +62,10 @@ public class Assets {
 		m4_ground = load("sprites/gun_m4.png");
 		pistol_ground = load("sprites/gun_pistol.png");
 		shotgun_ground = load("sprites/gun_shotgun.png");
-		goldengun_ground = load ("sprites/gun_goldengun.png");
+		goldengun_ground = load("sprites/gun_goldengun.png");
 		health_icon = load("sprites/health_icon.png");
-		
-		//MapTiles
+
+		// MapTiles
 		spawntile_regular = load("maps/sprites/spawner_regular.png");
 		spawntile_pre = load("maps/sprites/spawner_pre.png");
 		spawntile_golden = load("maps/sprites/spawner_golden.png");
@@ -76,8 +76,11 @@ public class Assets {
 		health_bg = load("hud/health_bg.png");
 		health_border = load("hud/health_border.png");
 
-		card_bg = load("sprites/card_bg.png");
-		card_border = load("sprites/card_border.png");
+		card_long_bg = load("sprites/card_bg.png");
+		card_long_border = load("sprites/card_border.png");
+
+		card_bg = load("sprites/card_square_bg.png");
+		card_border = load("sprites/card.png");
 		// Animations
 
 		Texture explosionSheet = load("animations/explosion1.png");

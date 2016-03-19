@@ -12,6 +12,7 @@ import aurelienribon.tweenengine.BaseTween;
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenCallback;
 import no.kash.gamedev.jag.commons.defs.Defs;
+import no.kash.gamedev.jag.commons.defs.Prefs;
 import no.kash.gamedev.jag.commons.network.NetworkListener;
 import no.kash.gamedev.jag.commons.network.packets.GamePacket;
 import no.kash.gamedev.jag.commons.network.packets.PlayerUpdate;
@@ -48,6 +49,9 @@ public class ControllerScreen extends AbstractControllerScreen {
 
 	@Override
 	public void onShow() {
+		Prefs.get().putInteger(Defs.PREF_TIMES_PLAYED, Prefs.get().getInteger(Defs.PREF_TIMES_PLAYED, 0) + 1);
+		Prefs.get().flush();
+
 		hideUI();
 		hud = new InGameHud(0, stage.getHeight(), stage.getWidth() / 3, stage.getHeight() / 2);
 		bgColor = new Color(Color.GRAY);

@@ -1,7 +1,12 @@
 package no.kash.gamedev.jag.game.gamesettings;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import no.kash.gamedev.jag.game.lobby.PlayerInfo;
+
 public class GameSettings {
-	public GameMode gameMode;
+	public GameMode gameMode = GameMode.STANDARD_FFA;
 	public String mapFilename;
 
 	public boolean dropIn = true;
@@ -9,5 +14,11 @@ public class GameSettings {
 	public float startingHealth = 100f;
 	public float roundTime = 60.0f;
 	public int rounds = 3;
+
+	public Map<Integer, PlayerInfo> players;
+
+	public GameSettings() {
+		players = new HashMap<>();
+	}
 
 }

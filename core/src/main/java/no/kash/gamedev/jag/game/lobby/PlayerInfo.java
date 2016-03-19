@@ -6,4 +6,5 @@ public class PlayerInfo {
 	public int id;
 	public String name;
 	public Color color;
+	public int timesPlayed;
 }
