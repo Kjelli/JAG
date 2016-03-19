@@ -49,6 +49,11 @@ public class Bullet extends AbstractGameObject implements Collidable {
 		velocity.x = (float) (Math.cos(getRotation()) * speed);
 		velocity.y = (float) (Math.sin(getRotation()) * speed);
 	}
+	
+	@Override
+	public void onSpawn() {
+		getGameContext().bringToBack(this);
+	}
 
 	@Override
 	public void update(float delta) {

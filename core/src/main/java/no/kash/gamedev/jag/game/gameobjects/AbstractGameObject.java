@@ -25,6 +25,8 @@ public abstract class AbstractGameObject implements GameObject {
 	protected float rot = 0f;
 	protected float scale = 1.0f;
 
+	protected float aliveTime = 0;
+	
 	public AbstractGameObject(float x, float y, float width, float height) {
 		velocity = new Vector2();
 		acceleration = new Vector2();
@@ -237,6 +239,16 @@ public abstract class AbstractGameObject implements GameObject {
 	@Override
 	public boolean isAlive() {
 		return alive;
+	}
+	
+	@Override
+	public float getAliveTime() {
+		return aliveTime;
+	}
+	
+	@Override
+	public void updateAliveTime(float delta) {
+		aliveTime += delta;
 	}
 
 	public void setRotation(float rot) {

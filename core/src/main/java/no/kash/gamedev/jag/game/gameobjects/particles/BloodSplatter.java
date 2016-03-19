@@ -31,6 +31,11 @@ public class BloodSplatter extends AbstractParticle {
 		velocity.y = (float) Math.sin(direction) * SPEED;
 		setRotation(direction);
 	}
+	
+	@Override
+	public void onSpawn() {
+		getGameContext().bringToBack(this);
+	}
 
 	@Override
 	public void updateParticle(float delta) {

@@ -14,13 +14,13 @@ public interface GameObject {
 	public Vector2 acceleration();
 
 	public Vector2 maxAcceleration();
-	
+
 	public float getX();
 
 	public float getY();
-	
+
 	public void setX(float x);
-	
+
 	public void setY(float y);
 
 	public float getCenterX();
@@ -86,6 +86,10 @@ public interface GameObject {
 	public float getRotation();
 
 	public boolean isAlive();
+
+	public void updateAliveTime(float delta);
+
+	public float getAliveTime();
 
 	public void dispose();
 

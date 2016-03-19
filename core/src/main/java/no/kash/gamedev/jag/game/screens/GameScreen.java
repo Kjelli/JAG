@@ -21,13 +21,17 @@ import no.kash.gamedev.jag.commons.network.packets.PlayerStateChange;
 import no.kash.gamedev.jag.commons.network.packets.PlayerStateChangeResponse;
 import no.kash.gamedev.jag.controller.JustAnotherGameController;
 import no.kash.gamedev.jag.game.JustAnotherGame;
+import no.kash.gamedev.jag.game.gameobjects.GameObject;
+import no.kash.gamedev.jag.game.gameobjects.collectables.weapons.Weapon;
 import no.kash.gamedev.jag.game.gameobjects.players.Player;
 import no.kash.gamedev.jag.game.gamesettings.GameMode;
 import no.kash.gamedev.jag.game.gamesettings.GameSettings;
 import no.kash.gamedev.jag.game.levels.Level;
+import no.kash.gamedev.jag.game.levels.SpawnTile;
 
 public class GameScreen extends AbstractGameScreen {
 
+	private static final Class[] classes = new Class[] { Player.class, Weapon.class, SpawnTile.class };
 	// TODO setup gamesettings beforehand, using STD for testing
 	public static GameSettings STD;
 	static {
@@ -75,18 +79,27 @@ public class GameScreen extends AbstractGameScreen {
 			float rightMostX = 0;
 			float topMostY = 0;
 			float bottomMostY = Gdx.graphics.getHeight();
-			for (Player player : players.values()) {
-				if (player.getCenterX() < leftMostX) {
-					leftMostX = player.getCenterX();
+			for (GameObject object : gameContext.getByClass(classes)) {
+				if (object instanceof SpawnTile) {
+					if (!((SpawnTile) object).isSpawning()) {
+						continue;
+					}
+				} else if (object instanceof Weapon) {
+					if (((Weapon) object).getAliveTime() > 5.0f) {
+						continue;
+					}
 				}
-				if (player.getCenterX() > rightMostX) {
-					rightMostX = player.getCenterX();
+				if (object.getCenterX() < leftMostX) {
+					leftMostX = object.getCenterX();
 				}
-				if (player.getCenterY() > topMostY) {
-					topMostY = player.getCenterY();
+				if (object.getCenterX() > rightMostX) {
+					rightMostX = object.getCenterX();
 				}
-				if (player.getCenterY() < bottomMostY) {
-					bottomMostY = player.getCenterY();
+				if (object.getCenterY() > topMostY) {
+					topMostY = object.getCenterY();
+				}
+				if (object.getCenterY() < bottomMostY) {
+					bottomMostY = object.getCenterY();
 				}
 			}
 
@@ -136,7 +149,7 @@ public class GameScreen extends AbstractGameScreen {
 
 					PlayerStateChangeResponse resp = (PlayerStateChangeResponse) m;
 
-					if (resp.stateId == JustAnotherGameController.PLAY_STATE) {
+					if (resp.stateId == JustAnotherGameController.PLAY_STATE && !players.containsKey(c.getID())) {
 						log("Connection " + c.getID() + " made! [" + c.getRemoteAddressTCP() + "]");
 						float[] spawnPoint = GameScreen.this.spawnPoints[(int) (Math.random()
 								* GameScreen.this.spawnPoints.length)];
