@@ -16,7 +16,6 @@ import no.kash.gamedev.jag.commons.network.packets.PlayerStateChangeResponse;
 import no.kash.gamedev.jag.commons.tweens.TweenGlobal;
 import no.kash.gamedev.jag.controller.JustAnotherGameController;
 import no.kash.gamedev.jag.game.gamecontext.GameContext;
-import no.kash.gamedev.jag.game.screens.LobbyScreen;
 
 public abstract class AbstractControllerScreen implements Screen {
 
@@ -184,8 +183,8 @@ public abstract class AbstractControllerScreen implements Screen {
 			game.getActionResolver().toast("Unknown gamestate: " + sc.stateId);
 			failed = true;
 		}
-		
-		if(!failed){
+
+		if (!failed) {
 			game.getClient().broadcast(new PlayerStateChangeResponse(sc.stateId));
 		}
 	}

@@ -13,6 +13,8 @@ public class Weapon extends AbstractGameObject implements Collectable, Collidabl
 
 	public GunType gun;
 	private int ammo;
+	
+	float startingX, startingY;
 
 	public Weapon(float x, float y, GunType gun) {
 		super(x, y, 32, 32);
@@ -21,6 +23,9 @@ public class Weapon extends AbstractGameObject implements Collectable, Collidabl
 		Sprite sprite = new Sprite(gun.getOnGroundTexture());
 		setSprite(sprite);
 		determineAmmo();
+		
+		startingX = x;
+		startingY = y;
 	}
 
 	private void determineAmmo() {
@@ -41,7 +46,6 @@ public class Weapon extends AbstractGameObject implements Collectable, Collidabl
 
 	@Override
 	public boolean canCollect(Player player) {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
@@ -54,6 +58,8 @@ public class Weapon extends AbstractGameObject implements Collectable, Collidabl
 	@Override
 	public void update(float delta) {
 		setScale((float) (Math.sin(getGameContext().getElapsedTime() * 5.0f)) * 0.1f + 1.0f);
+		setX(startingX - getWidth() / 2);
+		setY(startingY - getHeight() / 2);
 	}
 
 	@Override

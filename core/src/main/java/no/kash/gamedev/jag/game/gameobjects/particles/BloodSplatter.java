@@ -32,6 +32,11 @@ public class BloodSplatter extends AbstractParticle {
 
 		
 	}
+	
+	@Override
+	public void onSpawn() {
+		getGameContext().bringToBack(this);
+	}
 
 	@Override
 	public void updateParticle(float delta) {

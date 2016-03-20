@@ -3,7 +3,6 @@ package no.kash.gamedev.jag.game.levels;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
 import no.kash.gamedev.jag.assets.Assets;
-import no.kash.gamedev.jag.game.gamecontext.GameContext;
 import no.kash.gamedev.jag.game.gamecontext.functions.Cooldown;
 import no.kash.gamedev.jag.game.gameobjects.AbstractGameObject;
 import no.kash.gamedev.jag.game.gameobjects.collectables.weapons.Weapon;
@@ -13,7 +12,7 @@ import no.kash.gamedev.jag.game.gameobjects.players.guns.GunType;
 public class SpawnTile extends AbstractGameObject {
 
 	public Cooldown reSpawnCooldown;
-	
+
 	private Sprite regular;
 	private Sprite pre;
 	private Sprite golden;
@@ -21,8 +20,7 @@ public class SpawnTile extends AbstractGameObject {
 	private boolean occupied;
 
 	private Cooldown cooldown;
-	
-	
+
 	private Weapon weapon;
 	int goldenGunDrop;
 	int dropChancegolden = 15;
@@ -30,15 +28,15 @@ public class SpawnTile extends AbstractGameObject {
 
 	public SpawnTile(float x, float y) {
 		super(x, y, 32, 32);
+		regular = new Sprite(Assets.spawntile_regular);
+		golden = new Sprite(Assets.spawntile_golden);
+		pre = new Sprite(Assets.spawntile_pre);
+		setSprite(regular);
 		cooldown = new Cooldown(3);
-		reSpawnCooldown = new Cooldown(8);;
+		reSpawnCooldown = new Cooldown(8);
 		occupied = false;
 		preStage = false;
 
-		regular = new Sprite(Assets.spawntile_regular);
-		setSprite(regular);
-		golden = new Sprite(Assets.spawntile_golden);
-		pre = new Sprite(Assets.spawntile_pre);
 	}
 
 	@Override
@@ -46,13 +44,12 @@ public class SpawnTile extends AbstractGameObject {
 		cooldown.update(delta);
 		reSpawnCooldown.update(delta);
 		if (weapon != null) {
-			if(weapon.isAlive()){
+			if (weapon.isAlive()) {
 				occupied = true;
-			}else{
+			} else {
 				occupied = false;
 			}
 		}
-		
 
 		if (preStage == true && cooldown.getCooldownTimer() <= 0) {
 			preStage = false;
@@ -67,9 +64,9 @@ public class SpawnTile extends AbstractGameObject {
 	}
 
 	private void createWeapon(GunType type) {
-		weapon = new Weapon(getX(), getY(), type);
+		weapon = new Weapon(getCenterX(), getCenterY(), type);
 		getGameContext().spawn(weapon);
-		//getGameContext().spawn(new WeaponSpawnEffect(getX(),getY(),64,64,2));
+		getGameContext().spawn(new WeaponSpawnEffect(getCenterX(), getCenterY()));
 	}
 
 	private void createGoldenGun() {
@@ -105,6 +102,10 @@ public class SpawnTile extends AbstractGameObject {
 
 	public boolean isOccupied() {
 		return occupied;
+	}
+
+	public boolean isSpawning() {
+		return preStage;
 	}
 
 }

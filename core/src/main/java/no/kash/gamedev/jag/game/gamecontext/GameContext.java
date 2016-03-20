@@ -58,6 +58,7 @@ public class GameContext {
 
 		for (GameObject object : objects) {
 			object.update(delta * timeModifier);
+			object.updateAliveTime(delta * timeModifier);
 		}
 		while ((add.size > 0)) {
 			GameObject n = add.removeFirst();
@@ -92,6 +93,20 @@ public class GameContext {
 		return objects;
 	}
 
+	public final List<GameObject> getByClass(Class<? extends GameObject>[] classes) {
+		List<GameObject> returnVals = new ArrayList<>();
+		obj: for (GameObject object : objects) {
+			for (int i = 0; i < classes.length; i++) {
+				if (object.getClass().equals(classes[i])) {
+					returnVals.add(object);
+					continue obj;
+				}
+			}
+		}
+		return returnVals;
+
+	}
+
 	public void spawn(GameObject object) {
 		add.addFirst(object);
 	}
@@ -111,16 +126,20 @@ public class GameContext {
 			object.dispose();
 		}
 	}
-	
-	public void bringToFront(GameObject go){
-	    int index = objects.indexOf(go);
-	    objects.remove(index);
-	    objects.add(go);
+
+	public void bringToFront(GameObject go) {
+		int index = objects.indexOf(go);
+		objects.remove(index);
+		objects.add(go);
+	}
+
+	public void bringToBack(GameObject go) {
+		int index = objects.indexOf(go);
+		objects.remove(index);
+		objects.add(0, go);
 	}
 	
-	public void bringToBack(GameObject go){
-		 objects.add(0,go);
-	}
+
 
 	public long getTicks() {
 		return ticks;

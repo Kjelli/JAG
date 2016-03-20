@@ -6,8 +6,6 @@ import com.badlogic.gdx.math.Vector2;
 
 import no.kash.gamedev.jag.game.gamecontext.GameContext;
 import no.kash.gamedev.jag.game.gamecontext.functions.Cooldown;
-import no.kash.gamedev.jag.game.gameobjects.collectables.weapons.Weapon;
-import no.kash.gamedev.jag.game.gameobjects.players.guns.GunType;
 
 public class Spawner {
 
@@ -25,7 +23,7 @@ public class Spawner {
 		for (Vector2 points : wepSpawns) {
 			SpawnTile temp = new SpawnTile(points.x, points.y);
 			weaponTiles.add(temp);
-			gameContext.spawn(temp);
+			this.gameContext.spawn(temp);
 			temp.reSpawnCooldown.startCooldown();
 		}
 
