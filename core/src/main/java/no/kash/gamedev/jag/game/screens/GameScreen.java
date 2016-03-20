@@ -9,8 +9,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.maps.MapObject;
-import com.badlogic.gdx.maps.MapObjects;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.Vector2;
 import com.esotericsoftware.kryonet.Connection;
 
 import no.kash.gamedev.jag.commons.network.JagReceiver;
@@ -23,39 +23,31 @@ import no.kash.gamedev.jag.controller.JustAnotherGameController;
 import no.kash.gamedev.jag.game.JustAnotherGame;
 import no.kash.gamedev.jag.game.gameobjects.GameObject;
 import no.kash.gamedev.jag.game.gameobjects.collectables.weapons.Weapon;
+import no.kash.gamedev.jag.game.gameobjects.grenades.Grenade;
+import no.kash.gamedev.jag.game.gameobjects.particles.Explosion;
 import no.kash.gamedev.jag.game.gameobjects.players.Player;
-import no.kash.gamedev.jag.game.gamesettings.GameMode;
+import no.kash.gamedev.jag.game.gameobjects.players.PlayerInfo;
 import no.kash.gamedev.jag.game.gamesettings.GameSettings;
 import no.kash.gamedev.jag.game.levels.Level;
 import no.kash.gamedev.jag.game.levels.SpawnTile;
 
 public class GameScreen extends AbstractGameScreen {
 
-	private static final Class[] classes = new Class[] { Player.class, Weapon.class, SpawnTile.class };
+	@SuppressWarnings("rawtypes")
+	private static final Class[] classes = new Class[] { Player.class, Weapon.class, SpawnTile.class, Grenade.class,
+			Explosion.class };
 	// TODO setup gamesettings beforehand, using STD for testing
-	public static GameSettings STD;
-	static {
-		STD = new GameSettings();
-		STD.gameMode = GameMode.STANDARD_FFA;
-		STD.mapFilename = "maps/sumoarena1.tmx";
-		STD.startingHealth = 100f;
-		STD.rounds = 3;
-		STD.roundTime = 60.0f;
-	}
 
 	GameSettings gameSettings;
 	Map<Integer, Player> players;
 	Level level;
 
-	// TODO quickfix for spawning players
-	float[][] spawnPoints;
-
 	// game)
-	public GameScreen(JustAnotherGame game) {
+	public GameScreen(JustAnotherGame game, GameSettings settings) {
 		super(game);
 
 		// TODO add gamesettings to constructor (required by setup menu to start
-		this.gameSettings = STD;
+		this.gameSettings = settings;
 		players = new HashMap<>();
 	}
 
@@ -73,6 +65,7 @@ public class GameScreen extends AbstractGameScreen {
 		gameContext.draw(batch);
 	}
 
+	@SuppressWarnings("unchecked")
 	private void handleCamera(float delta) {
 		if (players.size() > 0) {
 			float leftMostX = Gdx.graphics.getWidth();
@@ -126,19 +119,10 @@ public class GameScreen extends AbstractGameScreen {
 		level = new Level(gameSettings, batch, getGameContext());
 		gameContext.setLevel(level);
 
-		// Quick fix for spawning
-		MapObjects spawnPoints = level.map.getLayers().get("spawnpoints").getObjects();
-		this.spawnPoints = new float[spawnPoints.getCount()][];
-		for (int i = 0; i < spawnPoints.getCount(); i++) {
-			MapObject spawnPoint = spawnPoints.get(i);
-			float x = spawnPoint.getProperties().get("x", Float.class);
-			float y = spawnPoint.getProperties().get("y", Float.class);
-			this.spawnPoints[i] = new float[] { x, y };
+		for (PlayerInfo player : gameSettings.players.values()) {
+			spawnPlayer(player);
 		}
 
-		Player man = new Player(gameSettings, -1, "Dummy", 400, 400);
-		players.put(-666, man);
-		gameContext.spawn(man);
 		game.setReceiver(new JagReceiver() {
 
 			@Override
@@ -149,15 +133,14 @@ public class GameScreen extends AbstractGameScreen {
 
 					PlayerStateChangeResponse resp = (PlayerStateChangeResponse) m;
 
-					if (resp.stateId == JustAnotherGameController.PLAY_STATE && !players.containsKey(c.getID())) {
-						log("Connection " + c.getID() + " made! [" + c.getRemoteAddressTCP() + "]");
-						float[] spawnPoint = GameScreen.this.spawnPoints[(int) (Math.random()
-								* GameScreen.this.spawnPoints.length)];
-						float spawnX = spawnPoint[0];
-						float spawnY = spawnPoint[1];
-						Player man = new Player(gameSettings, c.getID(), "Minge", spawnX, spawnY);
-						gameContext.spawn(man);
-						players.put(c.getID(), man);
+					if (gameSettings.dropIn && resp.stateId == JustAnotherGameController.PLAY_STATE
+							&& !players.containsKey(c.getID())) {
+						PlayerInfo standard = new PlayerInfo();
+						standard.id = c.getID();
+						standard.name = "Minge_" + c.getID();
+						standard.timesPlayed = -1;
+						standard.color = new Color(Color.WHITE);
+						spawnPlayer(standard);
 					}
 				}
 
@@ -201,10 +184,9 @@ public class GameScreen extends AbstractGameScreen {
 					float power = (float) Math.hypot(velx, vely);
 					float dir = (float) (Math.atan2(vely, velx));
 					if (velx != 0 || vely != 0) {
-						p.setRotation((float) (dir + Math.PI / 2));
 						p.holdGrenade(power, (float) (dir + Math.PI));
 					} else {
-						p.releaseGrenade();
+							p.releaseGrenade();
 					}
 					break;
 
@@ -234,6 +216,20 @@ public class GameScreen extends AbstractGameScreen {
 			}
 		});
 
+	}
+
+	private void spawnPlayer(PlayerInfo player) {
+		Vector2 spawnPoint = level.playerSpawns.get((int) (Math.random() * level.playerSpawns.size()));
+		float spawnX = spawnPoint.x;
+		float spawnY = spawnPoint.y;
+		if (!gameSettings.players.containsKey(player.id)) {
+			gameSettings.players.put(player.id, player);
+		}
+		if (!players.containsKey(player.id)) {
+			Player newlyJoined = new Player(gameSettings, player.id, spawnX, spawnY);
+			players.put(player.id, newlyJoined);
+			gameContext.spawn(newlyJoined);
+		}
 	}
 
 	public void log(String s) {

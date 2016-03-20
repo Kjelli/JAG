@@ -5,6 +5,7 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 
 import no.kash.gamedev.jag.DesktopActionResolver;
 import no.kash.gamedev.jag.actionresolvers.ActionResolver;
+import no.kash.gamedev.jag.controller.JustAnotherGameController;
 import no.kash.gamedev.jag.game.JustAnotherGame;
 
 public class JustAnotherGameDesktop {

@@ -21,8 +21,9 @@ public class Level {
 
 	public OrthogonalTiledMapRenderer renderer;
 
-	public ArrayList<Vector2> wepSpawns;
-	Spawner spawn;
+	public ArrayList<Vector2> weaponSpawns;
+	public ArrayList<Vector2> playerSpawns;
+	Spawner spawner;
 
 	public Level(GameSettings settings, SpriteBatch batch, GameContext context) {
 		map = new TmxMapLoader().load(settings.mapFilename);
@@ -33,13 +34,14 @@ public class Level {
 		tileHeight = (Integer) map.getProperties().get("tileheight", -1, Integer.class);
 		renderer = new OrthogonalTiledMapRenderer(map, batch);
 
-		wepSpawns = deterimnePoints("weaponspawn");
-		spawn = new Spawner(wepSpawns, context);
+		weaponSpawns = determinePoints("weaponspawn");
+		playerSpawns = determinePoints("spawnpoints");
+		spawner = new Spawner(weaponSpawns, context);
 
 		renderer.setView(context.getStage().getCamera().projection, 0, 0, width * tileWidth, height * tileHeight);
 	}
 
-	private ArrayList<Vector2> deterimnePoints(String layer) {
+	private ArrayList<Vector2> determinePoints(String layer) {
 		MapObjects weaponSpawnPoints = map.getLayers().get(layer).getObjects();
 		ArrayList<Vector2> tempList = new ArrayList<Vector2>();
 		for (int i = 0; i < weaponSpawnPoints.getCount(); i++) {
@@ -63,6 +65,6 @@ public class Level {
 	}
 
 	public void update(float delta) {
-		spawn.update(delta);
+		spawner.update(delta);
 	}
 }

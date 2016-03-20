@@ -3,11 +3,11 @@ package no.kash.gamedev.jag.game.gamesettings;
 import java.util.HashMap;
 import java.util.Map;
 
-import no.kash.gamedev.jag.game.lobby.PlayerInfo;
+import no.kash.gamedev.jag.game.gameobjects.players.PlayerInfo;
 
 public class GameSettings {
 	public GameMode gameMode = GameMode.STANDARD_FFA;
-	public String mapFilename;
+	public String mapFilename = "maps/sumoarena2.tmx";
 
 	public boolean dropIn = true;
 

@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import no.kash.gamedev.jag.assets.Assets;
+import no.kash.gamedev.jag.game.gameobjects.players.PlayerInfo;
 
 public class PlayerInfoGUI {
 
@@ -18,7 +19,7 @@ public class PlayerInfoGUI {
 
 	float x, y, width, height;
 
-	Sprite card_border, card_bg;
+	Sprite card_border, card_bg, card_border_ready;
 	GlyphLayout nameLabel;
 	GlyphLayout idLabel;
 	GlyphLayout timesPlayedLabel;
@@ -38,6 +39,9 @@ public class PlayerInfoGUI {
 		card_border = new Sprite(Assets.card_long_border);
 		card_border.setX(x);
 		card_border.setY(y - HEIGHT);
+		card_border_ready = new Sprite(Assets.card_long_border_ready);
+		card_border_ready.setX(x);
+		card_border_ready.setY(y - HEIGHT);
 		card_bg = new Sprite(Assets.card_long_bg);
 		card_bg.setX(x);
 		card_bg.setY(y - HEIGHT);
@@ -48,7 +52,11 @@ public class PlayerInfoGUI {
 		float spacing = fontSmall.getLineHeight() + 2.0f;
 
 		card_bg.draw(batch);
-		card_border.draw(batch);
+		if (info.ready) {
+			card_border_ready.draw(batch);
+		} else {
+			card_border.draw(batch);
+		}
 		font.draw(batch, nameLabel, x + BORDER_WIDTH, y - nameLabel.height / 2);
 		fontSmall.draw(batch, idLabel, x + width - idLabel.width - BORDER_WIDTH, y - idLabel.height / 2);
 		fontSmall.draw(batch, timesPlayedLabel, x + BORDER_WIDTH, y - spacing * 5);
@@ -63,6 +71,11 @@ public class PlayerInfoGUI {
 		nameLabel.setText(font, info.name, Color.BLACK, -1, -1, false);
 		idLabel.setText(fontSmall, "ID: " + info.id, Color.BLACK, -1, -1, false);
 		timesPlayedLabel.setText(fontSmall, "Times played:    " + info.timesPlayed, Color.BLACK, -1, -1, false);
+		card_bg.setColor(info.color);
+	}
+
+	public PlayerInfo getInfo() {
+		return info;
 	}
 
 }

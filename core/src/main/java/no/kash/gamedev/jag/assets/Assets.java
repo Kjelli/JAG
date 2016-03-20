@@ -11,7 +11,7 @@ import com.badlogic.gdx.utils.Array;
 public class Assets {
 	public static Texture plain;
 
-	public static Texture man;
+	public static Texture man, man_holding_grenade;
 
 	public static Texture bullet;
 	public static Texture pistol;
@@ -39,7 +39,8 @@ public class Assets {
 
 	public static Texture health, health_bg, health_border, health_shine;
 
-	public static Texture card_long_border, card_long_bg, card_border, card_bg;
+	public static Texture card_long_border, card_long_border_ready, card_long_bg, card_square_border, card_square_bg,
+			card_square_border_selected;
 
 	public static Array<TextureRegion> explosion_frames;
 
@@ -48,6 +49,7 @@ public class Assets {
 	public static void load() {
 		plain = load("plain.png");
 		man = load("playerSprite/player.png");
+		man_holding_grenade = load("playerSprite/holding_grenade.png");
 
 		bullet = load("bullet.png");
 		pistol = load("playerSprite/pistol.png");
@@ -76,11 +78,13 @@ public class Assets {
 		health_bg = load("hud/health_bg.png");
 		health_border = load("hud/health_border.png");
 
-		card_long_bg = load("sprites/card_bg.png");
-		card_long_border = load("sprites/card_border.png");
+		card_long_bg = load("sprites/card_long_bg.png");
+		card_long_border = load("sprites/card_long_border.png");
+		card_long_border_ready = load("sprites/card_long_border_ready.png");
 
-		card_bg = load("sprites/card_square_bg.png");
-		card_border = load("sprites/card.png");
+		card_square_bg = load("sprites/card_square_bg.png");
+		card_square_border = load("sprites/card_square_border.png");
+		card_square_border_selected = load("sprites/card_square_border_selected.png");
 		// Animations
 
 		Texture explosionSheet = load("animations/explosion1.png");

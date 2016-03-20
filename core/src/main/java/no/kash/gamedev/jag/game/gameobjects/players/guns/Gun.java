@@ -13,7 +13,7 @@ import no.kash.gamedev.jag.game.gameobjects.players.Player;
 public class Gun {
 
 	protected GunType type;
-	
+
 	protected int magazineAmmo;
 	protected int magazineSize;
 	protected int maxAmmo;
@@ -61,15 +61,16 @@ public class Gun {
 		}
 		if ((magazineAmmo == -1 || magazineAmmo > 0) && bulletCooldown.getCooldownTimer() == 0
 				&& reloadCooldown.getCooldownTimer() == 0) {
-			
-			switch(type){
+
+			switch (type) {
 			case shotgun:
-				for(int i = 0; i<6;i++){
-				Bullet temp = new Bullet(player, player.getBulletOriginX(), player.getBulletOriginY(),
-						(float) (player.getRotation() + (Math.PI /(16*(i-2))) +  Math.PI / 2), damage, bulletSpeed);
-				player.getGameContext().spawn(temp);
+				for (int i = 0; i < 6; i++) {
+					Bullet temp = new Bullet(player, player.getBulletOriginX(), player.getBulletOriginY(),
+							(float) (player.getRotation() + Math.PI / 32.0f * (i - 2) + Math.PI / 2), damage,
+							bulletSpeed);
+					player.getGameContext().spawn(temp);
 				}
-			 
+
 				break;
 			default:
 				Bullet temp = new Bullet(player, player.getBulletOriginX(), player.getBulletOriginY(),
@@ -77,13 +78,11 @@ public class Gun {
 				player.getGameContext().spawn(temp);
 				break;
 			}
-			
-			
+
 			if (magazineAmmo != -1) {
 				magazineAmmo -= 1;
-				((JustAnotherGame) player.getGameContext().getGame()).getServer().send(player.getId(),
-						new PlayerUpdate(1, new int[] { PlayerUpdate.AMMO },
-								new float[][] { { magazineAmmo, magazineSize, ammo } }));
+				((JustAnotherGame) player.getGameContext().getGame()).getServer().send(player.getId(), new PlayerUpdate(
+						1, new int[] { PlayerUpdate.AMMO }, new float[][] { { magazineAmmo, magazineSize, ammo } }));
 			}
 			bulletCooldown.startCooldown();
 			// TODO Shoot sfx?
@@ -93,7 +92,6 @@ public class Gun {
 		}
 
 	}
-
 
 	public void reload() {
 		// If room in magazine, reloadtimer is over, ammo exists or unlimited
