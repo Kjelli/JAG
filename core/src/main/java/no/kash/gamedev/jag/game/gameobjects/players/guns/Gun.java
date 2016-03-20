@@ -97,13 +97,13 @@ public class Gun {
 		// If room in magazine, reloadtimer is over, ammo exists or unlimited
 		// ammo
 		if (magazineAmmo < magazineSize && reloadCooldown.getCooldownTimer() == 0 && (ammo > 0 || maxAmmo == -1)) {
-			int bulletsLeft = (int) Math.min(magazineSize, ammo);
 			// Update ammo if not unlimited
+			int newBullets = Math.min(magazineSize - magazineAmmo, ammo);
 			if (maxAmmo != -1) {
-				setAmmo(ammo - (bulletsLeft - magazineAmmo));
+				setAmmo(ammo - newBullets);
 
 			}
-			magazineAmmo = bulletsLeft;
+			magazineAmmo = magazineAmmo + newBullets;
 			reloadCooldown.startCooldown();
 
 			((JustAnotherGame) player.getGameContext().getGame()).getServer().send(player.getId(), new PlayerUpdate(1,
