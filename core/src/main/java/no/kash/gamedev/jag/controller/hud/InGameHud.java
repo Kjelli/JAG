@@ -38,7 +38,7 @@ public class InGameHud extends AbstractGameObject {
 		weaponImg.setY(y - healthImg.getHeight() - weaponImg.getHeight());
 
 		healthLabel = new GlyphLayout(font, "" + health);
-		ammoLabel = new GlyphLayout(font, magazineAmmo + " / " + magazineSize + " (" + ammo + ")");
+		ammoLabel = new GlyphLayout(font, magazineAmmo + " / " + ammo);
 
 	}
 
@@ -91,7 +91,7 @@ public class InGameHud extends AbstractGameObject {
 		setMagazineAmmo(magAmmo);
 		setMagazineSize(magSize);
 		setAmmo(ammo);
-		ammoLabel.setText(font, magazineAmmo + " / " + magazineSize + " (" + ammo + ")");
+		ammoLabel.setText(font, magazineAmmo + " / " + ammo);
 	}
 
 	public void updateGun(int gunTypeIndex) {
