@@ -52,7 +52,6 @@ public class Bullet extends AbstractGameObject implements Collidable {
 	
 	@Override
 	public void onSpawn() {
-		getGameContext().bringToBack(this);
 	}
 
 	@Override

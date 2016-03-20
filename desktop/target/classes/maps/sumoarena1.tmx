@@ -6,7 +6,7 @@
  <tileset firstgid="33" name="obstaclesSheet" tilewidth="16" tileheight="16" tilecount="128" columns="16">
   <image source="sprites/obstaclesSheet.png" width="256" height="128"/>
  </tileset>
- <layer name="Ground" width="50" height="50">
+ <layer name="ground" width="50" height="50">
   <data encoding="base64" compression="zlib">
    eJzVmbuOE0EQRXvkyJpoNZHlj4A/gJyFJSdxjoQ2JyEn2Zznp2JLLun4zC3vrkQAQas94+563np0z36MsTmPPeYZY4O5/l8077XW/y2i4/cL1pOv31NOrpnHpfzc28lt2gt4UyfynbHW9tpof/G1DInWov3LWMvE/+ewZ4Nn+4V8aPdkv0Wz39N/+0CX9rJu1t8+saz2MWWYw17KtRlrfY0N+9H0ydv+NE4oE3Uxhvg/sWd8mK79n+KA9K75x7a2bUnbfiS2ky1pU+tJ3ZI+ltFYI9+EDdtt3/DvdDQGEi6s8yI+XSzvAx/j3L5P8e59yZaL3iedOptRZuprH1h273cc0taeO91sq7mhl2ybcrnnVI/sizn8Z5lS3k92W0TXa5NdSDPVhFQ3a7w5jrfn8e447o7j9srztf/u9O6pdLz+Nux9Lz0dcx+O49N/MA7ylWP343ndi+P4/g+MH8fx8zh+nZ9fnuW7h9zOM6fxGfpuj+PmPO/Ov2ucnieMWrPFvhu934HODut2et5qXfE6PRdevox1PWIcf4Uetdey1u8JfIsn5y0G99+E9dRzG2gWvdLjYazzFuODelCWZK8JPKaxtm3JP41LnSw3/UTb1X7yKtwfpIfrFPXoeFNm2iphK+lQNBLe6P/ks8L9/ehreYoPYsI2t48cF9vwnnFl/ZNtuOc0Mz5Szi297A/K7HigneiLSf9bb/tjq31dfFCPw1jXffYQ9Ad5T+PSZglnSW7GfIcb+sP5oMtXhat0DrA/GHddXiUfYzrFjHHU5bpOL+KKcrvPpj+sA2n62digbo4h+tZ+4rNzIfV4GOvejT0//WGfO+Y6zDsfG3+un9NY65awOo3L+EhnjNLH+Yo8rUeqxcaW9Ug+tV9SrnK+qr4knR1cBy0f9bHtXTO41/utk/2U8nbp7bzLOKd/HB/OWammeKRczb2O5yQ/9aU+zrvpbL2Mdf1I/UHiYRnoly4ndL2B44f8E66cr04z+xfHnGuC8dz1Usx5KUdPomO/cTjvdmd19i9dLDhPUQZjyvHV1R3XHPJkrDHv+rzPs3Ph6l70nE8c9+5RnBNcux07zm1cS1s4PlzTa05517H5WJ/CeLGdvd7vjFPXYMeH70dLL+dd14LUo9o3KS+l+E8xlOKbe30eTPdCPJ8fQIt27uqXc5Lx5pgwVl03Ew4Y54exvnskttzvGu9dL9XJdK1up5pivDlXE1fd+TydP2yflKPM0/rZZ86lKX+7ThZt1/N0X3maiauuX0j9KHmlem3MWP6kP2nXep/Pfd9TuhBXpmnbE2fE81NrpHsD+zj5k/WN96G+F/c5yvY1Xsgv1XL3XI6tLmfZVs67h3F5N+176fLb/ehtlbB0rfe1T0jPPrW9nCson7878Ln89mqs75ufO27/0ig5TvPrsT7Xpu8vhat/fVR/xTMt4+TbuLwb5m/P6R75uc/du8f2/h6XecrfzFjf0zcePqdzvnMHa6zPC+blb4Tc6zO4+8L0/eix76zuM+ewpzurbfA+6e/vU3y/Ee8kk3tG6+zeMn03sxz2n79XkGb6brfof2PB9vKdImnZrvPo7d59w0z9j8+htq1xl+5E0j27deU7Y84+4TP5O+ZsJ+PRtZl48P/W135KeLePuzXG2yz+xoxzP/X1fuPatjO9RNOYTvko0XMMpXk/su4pNp3bEnbtc+Kjw3KKB9vCODBeunij75J9zOsPSwMqeQ==
   </data>
@@ -92,7 +92,7 @@
   </object>
  </objectgroup>
  <objectgroup name="weaponspawn">
-  <object id="42" name="weaponspawn" x="384.5" y="254.5" width="30.5" height="31"/>
+  <object id="42" name="weaponspawn" x="384" y="256" width="30.5" height="31"/>
   <object id="50" name="weaponspawn" x="384.083" y="544.5" width="30.5" height="31"/>
  </objectgroup>
 </map>

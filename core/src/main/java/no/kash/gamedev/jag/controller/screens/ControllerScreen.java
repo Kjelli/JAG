@@ -12,6 +12,7 @@ import aurelienribon.tweenengine.BaseTween;
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenCallback;
 import no.kash.gamedev.jag.commons.defs.Defs;
+import no.kash.gamedev.jag.commons.defs.Prefs;
 import no.kash.gamedev.jag.commons.network.NetworkListener;
 import no.kash.gamedev.jag.commons.network.packets.GamePacket;
 import no.kash.gamedev.jag.commons.network.packets.PlayerUpdate;
@@ -48,6 +49,9 @@ public class ControllerScreen extends AbstractControllerScreen {
 
 	@Override
 	public void onShow() {
+		Prefs.get().putInteger(Defs.PREF_TIMES_PLAYED, Prefs.get().getInteger(Defs.PREF_TIMES_PLAYED, 0) + 1);
+		Prefs.get().flush();
+
 		hideUI();
 		hud = new InGameHud(0, stage.getHeight(), stage.getWidth() / 3, stage.getHeight() / 2);
 		bgColor = new Color(Color.GRAY);
@@ -80,7 +84,17 @@ public class ControllerScreen extends AbstractControllerScreen {
 		stage.addActor(reload);
 
 		InputScheme scheme = new InputScheme() {
-
+			/*
+			 * TODO
+			 * 
+			 * Remove InputScheme and replace with listeners sending packets
+			 * manually.
+			 * 
+			 * Reason: Reload button does not work using the given
+			 * eventlisteners, requiring a clicklistener which is not suitable
+			 * universally (i.e. for joysticks)
+			 * 
+			 */
 			@Override
 			protected void handleInputEvent(InputEvent event) {
 				switch (event.getId()) {
@@ -98,8 +112,10 @@ public class ControllerScreen extends AbstractControllerScreen {
 							new float[] { stick_mid.getXValue(), stick_mid.getYValue() }));
 					break;
 				case BUTTON_RELOAD:
-					game.getClient().broadcast(new PlayerInput(game.getClient().getId(), BUTTON_RELOAD,
-							new float[] { reload.isPressed() ? 1 : 0 }));
+					if (!((TextButton) event.getSource()).isOver()) {
+						game.getClient().broadcast(new PlayerInput(game.getClient().getId(), BUTTON_RELOAD,
+								new float[] { reload.isPressed() ? 1 : 0 }));
+					}
 					break;
 				default:
 					game.getActionResolver().toast("Unknown input: " + event.getId());

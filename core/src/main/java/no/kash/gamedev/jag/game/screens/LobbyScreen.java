@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
@@ -15,11 +16,11 @@ import no.kash.gamedev.jag.commons.network.packets.GamePacket;
 import no.kash.gamedev.jag.commons.network.packets.PlayerConnect;
 import no.kash.gamedev.jag.commons.network.packets.PlayerInput;
 import no.kash.gamedev.jag.commons.network.packets.PlayerStateChange;
-import no.kash.gamedev.jag.commons.network.packets.PlayerStateChangeResponse;
 import no.kash.gamedev.jag.commons.network.packets.PlayerUpdate;
 import no.kash.gamedev.jag.controller.JustAnotherGameController;
 import no.kash.gamedev.jag.game.JustAnotherGame;
-import no.kash.gamedev.jag.game.lobby.PlayerInfo;
+import no.kash.gamedev.jag.game.gameobjects.players.PlayerInfo;
+import no.kash.gamedev.jag.game.gamesettings.GameSettings;
 import no.kash.gamedev.jag.game.lobby.PlayerInfoGUI;
 
 public class LobbyScreen extends AbstractGameScreen {
@@ -29,13 +30,31 @@ public class LobbyScreen extends AbstractGameScreen {
 
 	Map<Integer, PlayerInfoGUI> playerInfos;
 
+	GameSettings settings;
+
 	public LobbyScreen(JustAnotherGame game) {
 		super(game);
+		settings = new GameSettings();
 	}
 
 	@Override
 	protected void update(float delta) {
-
+		if (playerInfos.size() > 0) {
+			boolean allReady = true;
+			for (PlayerInfoGUI playerInfoGUI : playerInfos.values()) {
+				if (!playerInfoGUI.getInfo().ready) {
+					allReady = false;
+				}
+			}
+			if (allReady) {
+				for (PlayerInfoGUI playerInfoGUI : playerInfos.values()) {
+					PlayerInfo info = playerInfoGUI.getInfo();
+					settings.players.put(info.id, info);
+					game.getServer().send(info.id, new PlayerStateChange(JustAnotherGameController.PLAY_STATE));
+				}
+				game.setScreen(new GameScreen(game, settings));
+			}
+		}
 	}
 
 	@Override
@@ -65,6 +84,9 @@ public class LobbyScreen extends AbstractGameScreen {
 					PlayerInfo info = new PlayerInfo();
 					info.name = update.info[0];
 					info.id = c.getID();
+					info.timesPlayed = (int) update.state[0][0];
+					info.ready = update.state[2][0] > 0;
+					info.color = new Color(update.state[1][0], update.state[1][1], update.state[1][2], 1);
 					if (!playerInfos.containsKey(c.getID())) {
 						PlayerInfoGUI pi = new PlayerInfoGUI(0,
 								stage.getHeight() - (playerInfos.size() + 1) * PlayerInfoGUI.HEIGHT, info);

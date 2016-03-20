@@ -1,12 +1,16 @@
 package no.kash.gamedev.jag.game.gameobjects.players;
 
+import java.util.List;
+
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 
 import no.kash.gamedev.jag.assets.Assets;
+import no.kash.gamedev.jag.commons.graphics.Draw;
 import no.kash.gamedev.jag.commons.network.packets.PlayerUpdate;
 import no.kash.gamedev.jag.game.JustAnotherGame;
 import no.kash.gamedev.jag.game.gamecontext.functions.Cooldown;
@@ -26,6 +30,7 @@ import no.kash.gamedev.jag.game.gameobjects.players.guns.Gun;
 import no.kash.gamedev.jag.game.gameobjects.players.guns.GunType;
 import no.kash.gamedev.jag.game.gameobjects.players.hud.HealthHud;
 import no.kash.gamedev.jag.game.gamesettings.GameSettings;
+import no.kash.gamedev.jag.game.screens.GameScreen;
 
 public class Player extends AbstractGameObject implements Collidable {
 
@@ -35,8 +40,7 @@ public class Player extends AbstractGameObject implements Collidable {
 
 	private final TileCollisionListener tileCollisionListener;
 
-	private final int id;
-	private final String name;
+	private final PlayerInfo info;
 
 	private boolean firing;
 
@@ -54,14 +58,18 @@ public class Player extends AbstractGameObject implements Collidable {
 	private GlyphLayout nameLabel;
 
 	private DamageHandler damageHandler;
+	private boolean holdingGrenade;
 
-	public Player(GameSettings gameSettings, int id, String name, float x, float y) {
+	private Sprite holding_grenade;
+	
+	private GameScreen gamescreen;
+	
+	public Player(GameSettings gameSettings, int id, float x, float y, GameScreen gameScreen) {
 		super(x, y, WIDTH, HEIGHT);
-
+		this.gamescreen = gameScreen;
 		init(gameSettings);
 
-		this.id = id;
-		this.name = name;
+		this.info = gameSettings.players.get(id);
 		this.tileCollisionListener = new TileCollisionListener() {
 			@Override
 			public void onCollide(MapObject rectangleObject, Rectangle intersection) {
@@ -80,8 +88,11 @@ public class Player extends AbstractGameObject implements Collidable {
 		// Set sprite
 		Sprite sprite = new Sprite(Assets.man);
 		sprite.setOrigin(getWidth() / 2, getHeight() / 2);
+		sprite.setColor(info.color);
 		setSprite(sprite);
 
+		holding_grenade = new Sprite(Assets.man_holding_grenade);
+		holding_grenade.setOrigin(getWidth() / 2, getHeight() / 2);
 		maxAcceleration().x = ACCELERATION;
 		maxAcceleration().y = ACCELERATION;
 		setMaxSpeed(MAX_SPEED);
@@ -91,11 +102,13 @@ public class Player extends AbstractGameObject implements Collidable {
 		// TODO choose damagehandler according to game mode
 		setDamageHandler(new VanillaDamageHandler(this));
 
-		nameLabel = new GlyphLayout(Assets.font, name);
+		nameLabel = new GlyphLayout(Assets.font, info.name);
 		healthHud = new HealthHud(this, getCenterX() - HealthHud.WIDTH / 2, getCenterY() - HealthHud.HEIGHT / 2 - 20f);
 
 		equipGun(GunType.pistol);
 		grenadeCooldown = new Cooldown(grenadeCooldownDuration);
+
+		getGameContext().bringToFront(this);
 	}
 
 	@Override
@@ -117,9 +130,12 @@ public class Player extends AbstractGameObject implements Collidable {
 	@Override
 	public void draw(SpriteBatch batch) {
 		super.draw(batch);
-		if (!gun.isReloading()) {
+		if (!gun.isReloading() && !holdingGrenade) {
 			gun.draw(batch);
+		} else if (holdingGrenade) {
+			Draw.sprite(batch, holding_grenade, getX(), getY(), getWidth(), getHeight(), getRotation());
 		}
+
 		Assets.font.draw(batch, nameLabel, getX() + getWidth() / 2 - nameLabel.width / 2,
 				getY() + getHeight() + nameLabel.height);
 
@@ -138,21 +154,27 @@ public class Player extends AbstractGameObject implements Collidable {
 	public void equipGun(GunType type) {
 		gun = new Gun(type);
 		gun.equip(this);
-		((JustAnotherGame) getGameContext().getGame()).getServer().send(id, new PlayerUpdate(2,
+		((JustAnotherGame) getGameContext().getGame()).getServer().send(info.id, new PlayerUpdate(2,
 				new int[] { PlayerUpdate.GUN, PlayerUpdate.AMMO },
 				new float[][] { { type.ordinal() }, { gun.getMagasineAmmo(), gun.getMagasineSize(), gun.getAmmo() } }));
 	}
 
 	public int getId() {
-		return id;
+		return info.id;
 	}
 
 	public String getName() {
-		return name;
+		return info.name;
 	}
 
 	public void fireBullet() {
-		gun.shoot();
+		if (!isHoldingGrenade()) {
+			gun.shoot();
+		}
+	}
+
+	private boolean isHoldingGrenade() {
+		return holdingGrenade;
 	}
 
 	public void reload() {
@@ -183,9 +205,11 @@ public class Player extends AbstractGameObject implements Collidable {
 	}
 
 	public void holdGrenade(float power, float dir) {
-		if (!grenadeCooldown.isOnCooldown()) {
+		if (!grenadeCooldown.isOnCooldown() && !isFiring()) {
 			this.grenadeDirection = dir;
 			this.grenadePower = power;
+			setRotation((float) (dir - Math.PI / 2));
+			holdingGrenade = true;
 		}
 	}
 
@@ -204,9 +228,16 @@ public class Player extends AbstractGameObject implements Collidable {
 			getGameContext()
 					.spawn(new BloodSplatter(getCenterX(), getCenterY(), (float) (Math.random() * 2 * Math.PI)));
 		}
+		/*
 		setHealth(healthMax);
-		setX(400);
-		setY(400);
+		List<Vector2> respawnPoints = getGameContext().getLevel().playerSpawns;
+		Vector2 random = respawnPoints.get((int) (respawnPoints.size() * Math.random()));
+		setX(random.x);
+		setY(random.y);
+		 * 
+		 */
+		destroy();
+		gamescreen.roundHandler.checkWinCondition();
 	}
 
 	public float getHealth() {
@@ -218,9 +249,11 @@ public class Player extends AbstractGameObject implements Collidable {
 	}
 
 	public void releaseGrenade() {
-		if (!grenadeCooldown.isOnCooldown()) {
+		if (!grenadeCooldown.isOnCooldown() && holdingGrenade) {
 			getGameContext().spawn(new Grenade(this, getCenterX(), getCenterY(), grenadeDirection, grenadePower));
 			grenadeCooldown.startCooldown();
+
+			holdingGrenade = false;
 		}
 	}
 
@@ -239,14 +272,15 @@ public class Player extends AbstractGameObject implements Collidable {
 
 	public void damage(Bullet bullet) {
 		damageHandler.onDamage(bullet);
-		((JustAnotherGame) getGameContext().getGame()).getServer().send(id,
+		((JustAnotherGame) getGameContext().getGame()).getServer().send(info.id,
 				new PlayerUpdate(2, new int[] { PlayerUpdate.HEALTH, PlayerUpdate.FEEDBACK_VIBRATION },
 						new float[][] { { health }, { 100.0f } }));
 	}
 
 	public void damage(Explosion explosion) {
 		damageHandler.onDamage(explosion);
-		((JustAnotherGame) getGameContext().getGame()).getServer().send(id,
+		System.out.println("Sending health update to " + info.id + " , " + health);
+		((JustAnotherGame) getGameContext().getGame()).getServer().send(info.id,
 				new PlayerUpdate(2, new int[] { PlayerUpdate.HEALTH, PlayerUpdate.FEEDBACK_VIBRATION },
 						new float[][] { { health }, { 400.0f } }));
 	}
