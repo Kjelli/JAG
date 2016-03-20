@@ -84,7 +84,17 @@ public class ControllerScreen extends AbstractControllerScreen {
 		stage.addActor(reload);
 
 		InputScheme scheme = new InputScheme() {
-
+			/*
+			 * TODO
+			 * 
+			 * Remove InputScheme and replace with listeners sending packets
+			 * manually.
+			 * 
+			 * Reason: Reload button does not work using the given
+			 * eventlisteners, requiring a clicklistener which is not suitable
+			 * universally (i.e. for joysticks)
+			 * 
+			 */
 			@Override
 			protected void handleInputEvent(InputEvent event) {
 				switch (event.getId()) {
@@ -102,8 +112,10 @@ public class ControllerScreen extends AbstractControllerScreen {
 							new float[] { stick_mid.getXValue(), stick_mid.getYValue() }));
 					break;
 				case BUTTON_RELOAD:
-					game.getClient().broadcast(new PlayerInput(game.getClient().getId(), BUTTON_RELOAD,
-							new float[] { reload.isPressed() ? 1 : 0 }));
+					if (!((TextButton) event.getSource()).isOver()) {
+						game.getClient().broadcast(new PlayerInput(game.getClient().getId(), BUTTON_RELOAD,
+								new float[] { reload.isPressed() ? 1 : 0 }));
+					}
 					break;
 				default:
 					game.getActionResolver().toast("Unknown input: " + event.getId());
