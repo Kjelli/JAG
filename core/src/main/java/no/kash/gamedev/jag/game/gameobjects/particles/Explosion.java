@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import no.kash.gamedev.jag.assets.Assets;
 import no.kash.gamedev.jag.game.gamecontext.physics.Collidable;
 import no.kash.gamedev.jag.game.gamecontext.physics.Collision;
+import no.kash.gamedev.jag.game.gameobjects.grenades.Grenade;
 import no.kash.gamedev.jag.game.gameobjects.players.Player;
 
 public class Explosion extends AbstractParticle implements Collidable {
@@ -18,14 +19,14 @@ public class Explosion extends AbstractParticle implements Collidable {
 	private static final float FRAME_SECONDS = 0.045f;
 	private static final float TIME_TO_LIVE = FRAMES * FRAME_SECONDS;
 
-	private float time = 0;
-
 	Animation explosion_animation;
 
+	Grenade grenade;
 	List<Player> damaged;
 
-	public Explosion(float x, float y) {
+	public Explosion(Grenade grenade, float x, float y) {
 		super(x, y, 128, 128, TIME_TO_LIVE);
+		this.grenade = grenade;
 		explosion_animation = new Animation(FRAME_SECONDS, Assets.explosion_frames);
 		explosion_animation.setPlayMode(PlayMode.NORMAL);
 		setRotation((float) (Math.random() * 2 * Math.PI));
@@ -34,8 +35,8 @@ public class Explosion extends AbstractParticle implements Collidable {
 
 	@Override
 	public void draw(SpriteBatch batch) {
-		batch.draw(explosion_animation.getKeyFrame(time), getX(), getY(), getWidth() / 2, getHeight() / 2, getWidth(),
-				getHeight(), 1.0f, 1.0f, getRotation());
+		batch.draw(explosion_animation.getKeyFrame(getAliveTime()), getX(), getY(), getWidth() / 2, getHeight() / 2,
+				getWidth(), getHeight(), 1.0f, 1.0f, getRotation());
 	}
 
 	@Override
@@ -45,7 +46,6 @@ public class Explosion extends AbstractParticle implements Collidable {
 
 	@Override
 	public void updateParticle(float delta) {
-		time += delta;
 	}
 
 	@Override
@@ -57,6 +57,10 @@ public class Explosion extends AbstractParticle implements Collidable {
 				player.damage(this);
 			}
 		}
+	}
+	
+	public Grenade getSourceGrenade() {
+		return grenade;
 	}
 
 }

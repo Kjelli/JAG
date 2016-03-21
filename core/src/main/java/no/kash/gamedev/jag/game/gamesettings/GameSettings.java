@@ -16,6 +16,7 @@ public class GameSettings {
 	public int rounds = 3;
 
 	public Map<Integer, PlayerInfo> players;
+	public RoundHandler roundHandler;
 
 	public GameSettings() {
 		players = new HashMap<>();

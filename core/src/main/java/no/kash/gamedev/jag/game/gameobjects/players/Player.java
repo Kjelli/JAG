@@ -1,13 +1,10 @@
 package no.kash.gamedev.jag.game.gameobjects.players;
 
-import java.util.List;
-
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
 
 import no.kash.gamedev.jag.assets.Assets;
 import no.kash.gamedev.jag.commons.graphics.Draw;
@@ -30,7 +27,6 @@ import no.kash.gamedev.jag.game.gameobjects.players.guns.Gun;
 import no.kash.gamedev.jag.game.gameobjects.players.guns.GunType;
 import no.kash.gamedev.jag.game.gameobjects.players.hud.HealthHud;
 import no.kash.gamedev.jag.game.gamesettings.GameSettings;
-import no.kash.gamedev.jag.game.screens.GameScreen;
 
 public class Player extends AbstractGameObject implements Collidable {
 
@@ -43,6 +39,8 @@ public class Player extends AbstractGameObject implements Collidable {
 	private final PlayerInfo info;
 
 	private boolean firing;
+	private boolean holdingGrenade;
+	private boolean blockInput = false;
 
 	private Gun gun;
 	private Hitbox hitbox;
@@ -58,15 +56,13 @@ public class Player extends AbstractGameObject implements Collidable {
 	private GlyphLayout nameLabel;
 
 	private DamageHandler damageHandler;
-	private boolean holdingGrenade;
 
 	private Sprite holding_grenade;
-	
-	private GameScreen gamescreen;
-	
-	public Player(GameSettings gameSettings, int id, float x, float y, GameScreen gameScreen) {
+
+	private GameSettings gameSettings;
+
+	public Player(GameSettings gameSettings, int id, float x, float y) {
 		super(x, y, WIDTH, HEIGHT);
-		this.gamescreen = gameScreen;
 		init(gameSettings);
 
 		this.info = gameSettings.players.get(id);
@@ -79,8 +75,20 @@ public class Player extends AbstractGameObject implements Collidable {
 	}
 
 	private void init(GameSettings gameSettings) {
+		this.gameSettings = gameSettings;
 		this.healthMax = gameSettings.startingHealth;
 		this.health = healthMax;
+
+		switch (gameSettings.gameMode) {
+		case STANDARD_FFA:
+		case STANDARD_TEAM:
+			setDamageHandler(new VanillaDamageHandler(this));
+		case SMASH_FFA:
+		case SMASH_TEAM:
+			break;
+		default:
+			break;
+		}
 	}
 
 	@Override
@@ -99,9 +107,6 @@ public class Player extends AbstractGameObject implements Collidable {
 
 		hitbox = new Hitbox(getX() + getWidth() / 2 - 8, getY() + getHeight() / 2 - 8, 16, 16);
 
-		// TODO choose damagehandler according to game mode
-		setDamageHandler(new VanillaDamageHandler(this));
-
 		nameLabel = new GlyphLayout(Assets.font, info.name);
 		healthHud = new HealthHud(this, getCenterX() - HealthHud.WIDTH / 2, getCenterY() - HealthHud.HEIGHT / 2 - 20f);
 
@@ -115,6 +120,9 @@ public class Player extends AbstractGameObject implements Collidable {
 	public void update(float delta) {
 		gun.update(delta);
 		grenadeCooldown.update(delta);
+		if (blockInput) {
+			accelerate(0, 0);
+		}
 		move(delta);
 		hitbox.update(getX() + getWidth() / 2 - 8, getY() + getHeight() / 2 - 8);
 		healthHud.setX(getCenterX() - HealthHud.WIDTH / 2);
@@ -215,29 +223,19 @@ public class Player extends AbstractGameObject implements Collidable {
 
 	public void setHealth(float health) {
 		this.health = health;
-		if (health <= 0) {
-			onDeath();
-		}
 		healthHud.display();
 
 	}
 
-	private void onDeath() {
+	public void death(Player killer) {
 		// TODO make sense
 		for (int i = 0; i < 200; i++) {
 			getGameContext()
 					.spawn(new BloodSplatter(getCenterX(), getCenterY(), (float) (Math.random() * 2 * Math.PI)));
 		}
-		/*
-		setHealth(healthMax);
-		List<Vector2> respawnPoints = getGameContext().getLevel().playerSpawns;
-		Vector2 random = respawnPoints.get((int) (respawnPoints.size() * Math.random()));
-		setX(random.x);
-		setY(random.y);
-		 * 
-		 */
-		destroy();
-		gamescreen.roundHandler.checkWinCondition();
+
+		gameSettings.roundHandler.playerKilled(killer, this);
+
 	}
 
 	public float getHealth() {
@@ -283,6 +281,19 @@ public class Player extends AbstractGameObject implements Collidable {
 		((JustAnotherGame) getGameContext().getGame()).getServer().send(info.id,
 				new PlayerUpdate(2, new int[] { PlayerUpdate.HEALTH, PlayerUpdate.FEEDBACK_VIBRATION },
 						new float[][] { { health }, { 400.0f } }));
+	}
+
+	@Override
+	public String toString() {
+		return String.format("Player %s (%d)", info.name, info.id);
+	}
+
+	public void blockInput(boolean block) {
+		this.blockInput = block;
+	}
+
+	public boolean isInputBlocked() {
+		return blockInput;
 	}
 
 }

@@ -50,7 +50,6 @@ public abstract class AbstractGameScreen implements Screen {
 
 	@Override
 	public void render(float delta) {
-		TweenGlobal.update(delta);
 		update(delta);
 		stage.act(delta);
 		game.getServer().update(delta);
@@ -152,6 +151,11 @@ public abstract class AbstractGameScreen implements Screen {
 
 	public OrthographicCamera getCamera() {
 		return camera;
+	}
+	
+
+	public JustAnotherGame getGame() {
+		return game;
 	}
 
 }

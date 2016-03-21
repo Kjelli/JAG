@@ -19,6 +19,7 @@ import no.kash.gamedev.jag.commons.network.packets.PlayerUpdate;
 import no.kash.gamedev.jag.commons.tweens.TweenGlobal;
 import no.kash.gamedev.jag.commons.tweens.accessors.ColorAccessor;
 import no.kash.gamedev.jag.commons.network.packets.PlayerInput;
+import no.kash.gamedev.jag.commons.network.packets.PlayerStateChange;
 import no.kash.gamedev.jag.commons.network.packets.PlayerStateChangeResponse;
 import no.kash.gamedev.jag.controller.JustAnotherGameController;
 import no.kash.gamedev.jag.controller.hud.InGameHud;
@@ -135,6 +136,9 @@ public class ControllerScreen extends AbstractControllerScreen {
 				if (m instanceof PlayerUpdate) {
 					PlayerUpdate pf = (PlayerUpdate) m;
 					handlePlayerUpdate(pf);
+				} else if (m instanceof PlayerStateChange) {
+					PlayerStateChange sc = (PlayerStateChange) m;
+					handleStateChange(sc);
 				}
 			}
 

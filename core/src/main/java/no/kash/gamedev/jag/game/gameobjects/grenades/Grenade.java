@@ -19,8 +19,8 @@ public class Grenade extends AbstractGameObject {
 	public float timeToLive = TIME_TO_LIVE_MAX;
 	public final float direction;
 	public final float power;
-	
-	
+
+	public final Player thrower;
 
 	public Grenade(Player thrower, float x, float y, float direction, float power) {
 		super(x, y, 16, 16);
@@ -28,11 +28,11 @@ public class Grenade extends AbstractGameObject {
 		getSprite().setOrigin(getWidth() / 2, getHeight() / 2);
 		this.direction = direction;
 		this.power = power;
+		this.thrower = thrower;
 		velocity().x = (float) (thrower.velocity().x + Math.cos(direction) * power * SPEED);
 		velocity().y = (float) (thrower.velocity().y + Math.sin(direction) * power * SPEED);
 		TweenGlobal.start(Tween.to(velocity, Vector2Accessor.TYPE_XY, AIR_TIME).target(0, 0));
-		
-		
+
 	}
 
 	@Override
@@ -41,14 +41,20 @@ public class Grenade extends AbstractGameObject {
 			blowUp();
 		}
 
-		setRotation((Math.max(timeToLive - TIME_TO_LIVE_MAX / 2, 0) / TIME_TO_LIVE_MAX) * power * 10 + power * direction );
+		setRotation(
+				(Math.max(timeToLive - TIME_TO_LIVE_MAX / 2, 0) / TIME_TO_LIVE_MAX) * power * 10 + power * direction);
 
 		move(delta);
 	}
 
 	private void blowUp() {
-		getGameContext().spawn(new Explosion(getCenterX() - Explosion.WIDTH / 2, getCenterY() - Explosion.HEIGHT / 2));
+		getGameContext()
+				.spawn(new Explosion(this, getCenterX() - Explosion.WIDTH / 2, getCenterY() - Explosion.HEIGHT / 2));
 		destroy();
+	}
+	
+	public Player getThrower() {
+		return thrower;
 	}
 
 }

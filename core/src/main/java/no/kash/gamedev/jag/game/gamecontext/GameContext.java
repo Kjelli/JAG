@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Queue;
 
+import no.kash.gamedev.jag.commons.tweens.TweenGlobal;
 import no.kash.gamedev.jag.game.gamecontext.physics.BruteForcePhysicsHandler;
 import no.kash.gamedev.jag.game.gamecontext.physics.PhysicsHandler;
 import no.kash.gamedev.jag.game.gameobjects.GameObject;
@@ -55,6 +56,8 @@ public class GameContext {
 		}
 		ticks++;
 		elapsedTime += delta;
+
+		TweenGlobal.update(delta * timeModifier);
 
 		for (GameObject object : objects) {
 			object.update(delta * timeModifier);
@@ -138,8 +141,6 @@ public class GameContext {
 		objects.remove(index);
 		objects.add(0, go);
 	}
-	
-
 
 	public long getTicks() {
 		return ticks;
@@ -171,6 +172,16 @@ public class GameContext {
 
 	public Level getLevel() {
 		return level;
+	}
+
+	public void setTimeModifier(float timeModifier) {
+		this.timeModifier = timeModifier;
+	}
+
+	public void clear() {
+		add.clear();
+		remove.clear();
+		objects.clear();
 	}
 
 }

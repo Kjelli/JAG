@@ -13,22 +13,29 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.esotericsoftware.kryonet.Connection;
 
+import aurelienribon.tweenengine.BaseTween;
+import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.TweenCallback;
 import no.kash.gamedev.jag.commons.network.JagReceiver;
 import no.kash.gamedev.jag.commons.network.packets.GamePacket;
 import no.kash.gamedev.jag.commons.network.packets.PlayerConnect;
 import no.kash.gamedev.jag.commons.network.packets.PlayerInput;
 import no.kash.gamedev.jag.commons.network.packets.PlayerStateChange;
 import no.kash.gamedev.jag.commons.network.packets.PlayerStateChangeResponse;
+import no.kash.gamedev.jag.commons.tweens.TweenGlobal;
+import no.kash.gamedev.jag.commons.tweens.TweenableFloat;
+import no.kash.gamedev.jag.commons.tweens.accessors.FloatAccessor;
 import no.kash.gamedev.jag.controller.JustAnotherGameController;
 import no.kash.gamedev.jag.game.JustAnotherGame;
-import no.kash.gamedev.jag.game.gamecontext.functions.Cooldown;
 import no.kash.gamedev.jag.game.gameobjects.GameObject;
 import no.kash.gamedev.jag.game.gameobjects.collectables.weapons.Weapon;
 import no.kash.gamedev.jag.game.gameobjects.grenades.Grenade;
 import no.kash.gamedev.jag.game.gameobjects.particles.Explosion;
 import no.kash.gamedev.jag.game.gameobjects.players.Player;
 import no.kash.gamedev.jag.game.gameobjects.players.PlayerInfo;
+import no.kash.gamedev.jag.game.gamesettings.FFARoundHandler;
 import no.kash.gamedev.jag.game.gamesettings.GameSettings;
+import no.kash.gamedev.jag.game.gamesettings.RoundHandler;
 import no.kash.gamedev.jag.game.levels.Level;
 import no.kash.gamedev.jag.game.levels.SpawnTile;
 
@@ -37,22 +44,27 @@ public class GameScreen extends AbstractGameScreen {
 	@SuppressWarnings("rawtypes")
 	private static final Class[] classes = new Class[] { Player.class, Weapon.class, SpawnTile.class, Grenade.class,
 			Explosion.class };
-	// TODO setup gamesettings beforehand, using STD for testing
 
 	GameSettings gameSettings;
 	Map<Integer, Player> players;
 	Level level;
-	
-	public RoundsHandler roundHandler;
-	
+
+	public RoundHandler roundHandler;
+
 	// game)
 	public GameScreen(JustAnotherGame game, GameSettings settings) {
 		super(game);
-
-		// TODO add gamesettings to constructor (required by setup menu to start
-		this.gameSettings = settings;
 		players = new HashMap<>();
-		roundHandler = new RoundsHandler(players,this,settings);
+		this.gameSettings = settings;
+		this.gameSettings.roundHandler = new FFARoundHandler(gameContext, settings, players);
+	}
+
+	@Override
+	protected void onShow() {
+		initInputReceiver();
+		loadLevel();
+		start();
+
 	}
 
 	@Override
@@ -60,13 +72,65 @@ public class GameScreen extends AbstractGameScreen {
 		gameContext.update(delta);
 		handleCamera(delta);
 		level.update(delta);
-		roundHandler.update(delta);
+
+		checkWinCondition();
 	}
 
 	@Override
 	protected void draw(float delta) {
 		level.render();
 		gameContext.draw(batch);
+	}
+
+	public void start() {
+		for (PlayerInfo player : gameSettings.players.values()) {
+			spawnPlayer(player);
+			players.get(player.id).blockInput(true);
+		}
+		// No op
+		TweenableFloat f = new TweenableFloat(0);
+		TweenGlobal.start(Tween.from(f, FloatAccessor.TYPE_VALUE, 3.0f).target(1).setCallback(new TweenCallback() {
+			@Override
+			public void onEvent(int arg0, BaseTween<?> arg1) {
+				if (arg0 == TweenCallback.COMPLETE) {
+					for (PlayerInfo player : gameSettings.players.values()) {
+						players.get(player.id).blockInput(false);
+					}
+				}
+			}
+		}));
+
+		// TODO flashy starting effects on screen, countdown etc
+
+	}
+
+	public void restart() {
+		getGameContext().clear();
+		players.clear();
+		start();
+	}
+
+	public void spawnPlayer(PlayerInfo player) {
+
+		// TODO No randomization
+		Vector2 spawnPoint = level.playerSpawns.get((int) (Math.random() * level.playerSpawns.size()));
+		float spawnX = spawnPoint.x;
+		float spawnY = spawnPoint.y;
+		if (!gameSettings.players.containsKey(player.id)) {
+			gameSettings.players.put(player.id, player);
+		}
+		if (!players.containsKey(player.id)) {
+			Player newlyJoined = new Player(gameSettings, player.id, spawnX, spawnY);
+			players.put(player.id, newlyJoined);
+			gameContext.spawn(newlyJoined);
+		}
+	}
+
+	private void checkWinCondition() {
+		Player winner = gameSettings.roundHandler.winner();
+		if (winner != null) {
+			gameSettings.roundHandler.win(this);
+		}
 	}
 
 	@SuppressWarnings("unchecked")
@@ -117,27 +181,18 @@ public class GameScreen extends AbstractGameScreen {
 
 	}
 
-	@Override
-	protected void onShow() {
-
-		level = new Level(gameSettings, batch, getGameContext());
-		gameContext.setLevel(level);
-
-		for (PlayerInfo player : gameSettings.players.values()) {
-			spawnPlayer(player);
-		}
+	private void initInputReceiver() {
 
 		game.setReceiver(new JagReceiver() {
 
 			@Override
 			public void handlePacket(Connection c, GamePacket m) {
-				System.out.println("GamePacket received: " + m);
-
 				if (m instanceof PlayerStateChangeResponse) {
 
 					PlayerStateChangeResponse resp = (PlayerStateChangeResponse) m;
 
-					if (gameSettings.dropIn && resp.stateId == JustAnotherGameController.PLAY_STATE
+					if (gameSettings.dropIn && gameSettings.roundHandler.canJoin()
+							&& resp.stateId == JustAnotherGameController.PLAY_STATE
 							&& !players.containsKey(c.getID())) {
 						PlayerInfo standard = new PlayerInfo();
 						standard.id = c.getID();
@@ -164,7 +219,7 @@ public class GameScreen extends AbstractGameScreen {
 				// printInput(input);
 
 				Player p = players.getOrDefault(input.senderId, null);
-				if (p == null) {
+				if (p == null || p.isInputBlocked()) {
 					return;
 				}
 
@@ -190,7 +245,7 @@ public class GameScreen extends AbstractGameScreen {
 					if (velx != 0 || vely != 0) {
 						p.holdGrenade(power, (float) (dir + Math.PI));
 					} else {
-							p.releaseGrenade();
+						p.releaseGrenade();
 					}
 					break;
 
@@ -222,21 +277,11 @@ public class GameScreen extends AbstractGameScreen {
 
 	}
 
-	public void spawnPlayer(PlayerInfo player) {
-		Vector2 spawnPoint = level.playerSpawns.get((int) (Math.random() * level.playerSpawns.size()));
-		float spawnX = spawnPoint.x;
-		float spawnY = spawnPoint.y;
-		if (!gameSettings.players.containsKey(player.id)) {
-			gameSettings.players.put(player.id, player);
-		}
-		if (!players.containsKey(player.id)) {
-			Player newlyJoined = new Player(gameSettings, player.id, spawnX, spawnY,this);
-			players.put(player.id, newlyJoined);
-			gameContext.spawn(newlyJoined);
-		}
+	private void loadLevel() {
+		level = new Level(gameSettings, batch, getGameContext());
+		gameContext.setLevel(level);
 	}
-	
-	
+
 	public void log(String s) {
 		System.out.println(s);
 	}
