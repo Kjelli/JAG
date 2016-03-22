@@ -6,7 +6,7 @@ import aurelienribon.tweenengine.TweenAccessor;
 
 public class ColorAccessor implements TweenAccessor<Color> {
 
-	public static final int TYPE_RGBA = 0;
+	public static final int TYPE_RGBA = 1, TYPE_A = 2;
 
 	@Override
 	public int getValues(Color c, int type, float[] returnVals) {
@@ -17,6 +17,9 @@ public class ColorAccessor implements TweenAccessor<Color> {
 			returnVals[2] = c.b;
 			returnVals[3] = c.a;
 			return 4;
+		case TYPE_A:
+			returnVals[0] = c.a;
+			return 1;
 		}
 		return 0;
 	}
@@ -29,6 +32,9 @@ public class ColorAccessor implements TweenAccessor<Color> {
 			c.g = newVals[1];
 			c.b = newVals[2];
 			c.a = newVals[3];
+			break;
+		case TYPE_A:
+			c.a = newVals[0];
 			break;
 		}
 	}

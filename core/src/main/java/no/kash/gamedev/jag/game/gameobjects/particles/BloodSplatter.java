@@ -2,6 +2,8 @@ package no.kash.gamedev.jag.game.gameobjects.particles;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.math.Rectangle;
 
 import aurelienribon.tweenengine.BaseTween;
 import aurelienribon.tweenengine.Tween;
@@ -9,30 +11,46 @@ import aurelienribon.tweenengine.TweenCallback;
 import no.kash.gamedev.jag.assets.Assets;
 import no.kash.gamedev.jag.commons.tweens.TweenGlobal;
 import no.kash.gamedev.jag.commons.tweens.accessors.ColorAccessor;
+import no.kash.gamedev.jag.game.gamecontext.physics.tilecollisions.TileCollisionDetector;
+import no.kash.gamedev.jag.game.gamecontext.physics.tilecollisions.TileCollisionListener;
+import no.kash.gamedev.jag.game.gameobjects.GameObject;
+import no.kash.gamedev.jag.game.gameobjects.players.Player;
 
 public class BloodSplatter extends AbstractParticle {
-	public static final int SPEED = 200;
+
+	public TileCollisionListener tileCollisionListener = new TileCollisionListener() {
+		@Override
+		public void onCollide(MapObject rectangleObject, Rectangle intersection) {
+			velocity.x = 0;
+			velocity.y = 0;
+			stopped = true;
+		}
+	};
+
+	public static final int SPEED = 20;
 	public static final float TIME_TO_LIVE = 0.5f;
-	private static final float FADE_OUT_TIME = 10f;
+	private static final float FADE_OUT_TIME = 60f;
 	public float direction;
+	public float power;
+	public boolean stopped = false;
 
 	private Color color;
 
-	public BloodSplatter(float x, float y, float direction) {
+	public BloodSplatter(float x, float y, float direction, float power) {
 		super(x, y, 8, 8, (float) (TIME_TO_LIVE * Math.random()));
 		setSprite(new Sprite(Assets.blood));
 
-		color = new Color(Color.WHITE);
+		this.color = new Color(Color.WHITE);
+		this.power = power;
+		this.direction = (float) direction;
 
 		getSprite().setColor(color);
-		this.direction = (float) direction;
-		velocity.x = (float) Math.cos(direction) * SPEED;
-		velocity.y = (float) Math.sin(direction) * SPEED;
+		velocity.x = (float) Math.cos(direction) * SPEED * power;
+		velocity.y = (float) Math.sin(direction) * SPEED * power;
 		setRotation(direction);
 
-		
 	}
-	
+
 	@Override
 	public void onSpawn() {
 		getGameContext().bringToBack(this);
@@ -41,9 +59,10 @@ public class BloodSplatter extends AbstractParticle {
 	@Override
 	public void updateParticle(float delta) {
 		move(delta);
-		if (!timedOut) {
-			velocity.x = (float) Math.cos(direction) * SPEED * getTimeToLive() / TIME_TO_LIVE;
-			velocity.y = (float) Math.sin(direction) * SPEED * getTimeToLive() / TIME_TO_LIVE;
+		if (!timedOut && !stopped) {
+			velocity.x = (float) Math.cos(direction) * SPEED * power * getTimeToLive() / TIME_TO_LIVE;
+			velocity.y = (float) Math.sin(direction) * SPEED * power * getTimeToLive() / TIME_TO_LIVE;
+			TileCollisionDetector.checkTileCollisions(getGameContext().getLevel(), this, tileCollisionListener);
 		}
 		getSprite().setColor(color);
 	}

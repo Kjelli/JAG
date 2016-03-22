@@ -1,4 +1,4 @@
-package no.kash.gamedev.jag.game.gamesettings;
+package no.kash.gamedev.jag.game.gamesettings.roundhandlers;
 
 import java.util.Map;
 
@@ -13,6 +13,7 @@ import no.kash.gamedev.jag.controller.JustAnotherGameController;
 import no.kash.gamedev.jag.game.JustAnotherGame;
 import no.kash.gamedev.jag.game.gamecontext.GameContext;
 import no.kash.gamedev.jag.game.gameobjects.players.Player;
+import no.kash.gamedev.jag.game.gamesettings.GameSettings;
 import no.kash.gamedev.jag.game.screens.GameScreen;
 import no.kash.gamedev.jag.game.screens.LobbyScreen;
 
@@ -41,8 +42,12 @@ public class FFARoundHandler implements RoundHandler {
 	}
 
 	@Override
+	public int currentRound() {
+		return currentRound;
+	}
+
+	@Override
 	public Player winner() {
-		System.out.println(players.size() + "  //  " + gameSettings.players.size());
 		if (players.size() == 1 && gameSettings.players.size() > 1) {
 			Player winner = players.values().iterator().next();
 			System.out.println("Winner: " + winner);
@@ -53,27 +58,31 @@ public class FFARoundHandler implements RoundHandler {
 
 	@Override
 	public void win(final GameScreen screen) {
-		currentRound++;
-		if (currentRound < gameSettings.rounds) {
-			screen.restart();
-		} else {
-			gameContext.setTimeModifier(0.33f);
 
-			// No op
-			TweenableFloat f = new TweenableFloat(0);
-			TweenGlobal.start(Tween.from(f, FloatAccessor.TYPE_VALUE, 2.0f).target(1).setCallback(new TweenCallback() {
-				@Override
-				public void onEvent(int arg0, BaseTween<?> arg1) {
-					if (arg0 == TweenCallback.COMPLETE) {
+		gameContext.setTimeModifier(0.33f);
+
+		// No op
+		TweenableFloat f = new TweenableFloat(0);
+		TweenGlobal.start(Tween.from(f, FloatAccessor.TYPE_VALUE, 2.0f).target(1).setCallback(new TweenCallback() {
+			@Override
+			public void onEvent(int arg0, BaseTween<?> arg1) {
+				if (arg0 == TweenCallback.COMPLETE) {
+					gameContext.setTimeModifier(1.0f);
+					currentRound++;
+					if (currentRound < gameSettings.rounds) {
+						screen.restart();
+					} else {
+						System.out.println("Going back to lobby...");
 						JustAnotherGame game = screen.getGame();
 						game.setScreen(new LobbyScreen(game));
 						game.getServer().broadcast(new PlayerStateChange(JustAnotherGameController.LOBBY_STATE));
 					}
 				}
-			}));
+			}
+		}));
 
-			// TODO flashy effects on winner
-		}
+		// TODO flashy effects on winner
+
 	}
 
 	@Override

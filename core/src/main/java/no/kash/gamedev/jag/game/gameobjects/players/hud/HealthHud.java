@@ -16,33 +16,41 @@ import no.kash.gamedev.jag.game.gameobjects.players.Player;
 
 public class HealthHud extends AbstractGameObject {
 
-	public static final int WIDTH = 16, HEIGHT = 4;
+	public static final int WIDTH = 20, HEIGHT = 4;
 
 	private final Player player;
 	private boolean visible;
 
-	private final Sprite health, health_bg, health_border;
+	private final Sprite health, health_lost, health_bg, health_border;
 	private Color color;
 
 	private Tween tween = newFadeOutTween();
+
+	private float movingHealthPercentage;
 
 	public HealthHud(Player player, float x, float y) {
 		super(x, y, WIDTH, HEIGHT);
 		this.player = player;
 		this.color = new Color(1, 1, 1, 0);
 		health = new Sprite(Assets.health);
+		health_lost = new Sprite(Assets.health_lost);
 		health_bg = new Sprite(Assets.health_bg);
 		health_border = new Sprite(Assets.health_border);
+		movingHealthPercentage = player.getHealthPercentage();
 	}
+
+	static float factor = 0.90f;
 
 	@Override
 	public void update(float delta) {
-
+		movingHealthPercentage = factor * movingHealthPercentage + (1 - factor) * player.getHealthPercentage();
 	}
 
 	@Override
 	public void draw(SpriteBatch batch) {
 		Draw.sprite(batch, health_bg, getX(), getY(), getWidth(), getHeight(), 1.0f, 1.0f, getRotation(), color, false);
+		Draw.sprite(batch, health_lost, getX(), getY(), getWidth() * movingHealthPercentage, getHeight(), 1.0f, 1.0f,
+				getRotation(), color, false);
 		Draw.sprite(batch, health, getX(), getY(), getWidth() * player.getHealthPercentage(), getHeight(), 1.0f, 1.0f,
 				getRotation(), color, false);
 		Draw.sprite(batch, health_border, getX(), getY(), getWidth(), getHeight(), 1.0f, 1.0f, getRotation(), color,

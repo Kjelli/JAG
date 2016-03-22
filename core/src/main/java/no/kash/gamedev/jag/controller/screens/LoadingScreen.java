@@ -1,9 +1,5 @@
 package no.kash.gamedev.jag.controller.screens;
 
-import java.io.IOException;
-import java.net.UnknownHostException;
-
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.esotericsoftware.kryonet.Connection;
 

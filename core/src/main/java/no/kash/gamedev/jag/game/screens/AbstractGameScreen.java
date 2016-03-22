@@ -12,26 +12,21 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
 
-import no.kash.gamedev.jag.commons.tweens.TweenGlobal;
+import no.kash.gamedev.jag.commons.defs.Defs;
 import no.kash.gamedev.jag.game.JustAnotherGame;
 import no.kash.gamedev.jag.game.gamecontext.GameContext;
 
 public abstract class AbstractGameScreen implements Screen {
 
-	protected abstract void update(float delta);
-
-	protected abstract void draw(float delta);
-
-	protected abstract void onShow();
-
 	protected final JustAnotherGame game;
 
 	protected final OrthographicCamera camera;
+	protected final OrthographicCamera hudCamera;
 	protected final Stage stage;
 	protected GameContext gameContext;
 	protected final InputMultiplexer inputMux;
 
-	protected final SpriteBatch batch;
+	private final SpriteBatch batch, hudBatch;
 
 	private Texture background;
 
@@ -42,8 +37,11 @@ public abstract class AbstractGameScreen implements Screen {
 	public AbstractGameScreen(JustAnotherGame game) {
 		this.game = game;
 		camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		stage = new Stage(new ScalingViewport(Scaling.fill, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), camera));
+		hudCamera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		stage = new Stage(new ScalingViewport(Scaling.stretch, Defs.WIDTH, Defs.HEIGHT, camera));
 		batch = new SpriteBatch();
+		hudBatch = new SpriteBatch();
+		hudBatch.enableBlending();
 		gameContext = new GameContext(game);
 		inputMux = new InputMultiplexer(stage);
 	}
@@ -59,14 +57,30 @@ public abstract class AbstractGameScreen implements Screen {
 		camera.update();
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
-		draw(delta);
+		draw(batch, delta);
 		batch.end();
+		hudCamera.lookAt(camera.position);
+		hudCamera.zoom = camera.zoom;
+		hudCamera.update();
+		hudBatch.begin();
+		drawHud(hudBatch, delta);
+		hudBatch.end();
 		stage.draw();
 	}
+
+	protected abstract void update(float delta);
+
+	protected abstract void draw(SpriteBatch batch, float delta);
+
+	protected abstract void drawHud(SpriteBatch hudBatch, float delta);
+
+	protected abstract void onShow();
 
 	@Override
 	public void resize(int width, int height) {
 		stage.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
+		camera.update();
+		hudCamera.update();
 	}
 
 	@Override
@@ -112,6 +126,7 @@ public abstract class AbstractGameScreen implements Screen {
 	public void dispose() {
 		stage.dispose();
 		batch.dispose();
+		hudBatch.dispose();
 		gameContext.dispose();
 		Gdx.input.setInputProcessor(null);
 	}
@@ -152,10 +167,13 @@ public abstract class AbstractGameScreen implements Screen {
 	public OrthographicCamera getCamera() {
 		return camera;
 	}
-	
 
 	public JustAnotherGame getGame() {
 		return game;
+	}
+
+	protected SpriteBatch getSpriteBatch() {
+		return batch;
 	}
 
 }

@@ -1,4 +1,4 @@
-package no.kash.gamedev.jag.game.gamecontext.functions;
+package no.kash.gamedev.jag.game.commons.utils;
 
 public class Cooldown {
 	

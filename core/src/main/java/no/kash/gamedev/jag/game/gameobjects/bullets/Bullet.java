@@ -49,7 +49,7 @@ public class Bullet extends AbstractGameObject implements Collidable {
 		velocity.x = (float) (Math.cos(getRotation()) * speed);
 		velocity.y = (float) (Math.sin(getRotation()) * speed);
 	}
-	
+
 	@Override
 	public void onSpawn() {
 	}
@@ -79,9 +79,9 @@ public class Bullet extends AbstractGameObject implements Collidable {
 
 			for (int i = 0; i < 20; i++) {
 				BloodSplatter temp = new BloodSplatter(getCenterX(), getCenterY(),
-						(float) (getRotation() + (Math.random() * 0.5f - 0.25f)));
+						(float) (getRotation() + (Math.random() * 0.5f - 0.25f)), damage);
 				getGameContext().spawn(temp);
-				//getGameContext().bringToBack(temp);
+				// getGameContext().bringToBack(temp);
 			}
 			// Vibration
 			target.damage(this);

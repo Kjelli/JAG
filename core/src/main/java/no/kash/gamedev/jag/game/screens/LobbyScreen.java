@@ -7,10 +7,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.esotericsoftware.kryonet.Connection;
 
 import no.kash.gamedev.jag.assets.Assets;
+import no.kash.gamedev.jag.commons.defs.Defs;
 import no.kash.gamedev.jag.commons.network.JagReceiver;
 import no.kash.gamedev.jag.commons.network.packets.GamePacket;
 import no.kash.gamedev.jag.commons.network.packets.PlayerConnect;
@@ -58,7 +60,7 @@ public class LobbyScreen extends AbstractGameScreen {
 	}
 
 	@Override
-	protected void draw(float delta) {
+	protected void draw(SpriteBatch batch, float delta) {
 		font.draw(batch, lobbyLabel, stage.getWidth() / 2 - lobbyLabel.width / 2,
 				stage.getHeight() - lobbyLabel.height);
 
@@ -68,11 +70,16 @@ public class LobbyScreen extends AbstractGameScreen {
 	}
 
 	@Override
+	protected void drawHud(SpriteBatch batch, float delta) {
+
+	}
+
+	@Override
 	protected void onShow() {
 		font = Assets.font;
 		playerInfos = new HashMap<>();
 		lobbyLabel = new GlyphLayout(font, "Lobby");
-		stage.setViewport(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), camera));
+		stage.setViewport(new StretchViewport(Defs.WIDTH,Defs.HEIGHT, camera));
 
 		game.setReceiver(new JagReceiver() {
 			@Override
