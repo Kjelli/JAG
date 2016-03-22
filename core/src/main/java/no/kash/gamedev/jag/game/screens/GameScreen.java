@@ -94,7 +94,7 @@ public class GameScreen extends AbstractGameScreen {
 			public void onEvent(int arg0, BaseTween<?> arg1) {
 				if (arg0 == TweenCallback.COMPLETE) {
 					for (PlayerInfo player : gameSettings.players.values()) {
-						players.get(player.id).blockInput(false);
+						players.get(player.id).blockInput(	false);
 					}
 				}
 			}
@@ -107,6 +107,7 @@ public class GameScreen extends AbstractGameScreen {
 	public void restart() {
 		getGameContext().clear();
 		players.clear();
+		level.spawnWeaponSpawns();
 		start();
 	}
 

@@ -19,13 +19,16 @@ public class Level {
 	public int tileWidth, tileHeight;
 	public float x, y;
 
+	private GameContext conext;
 	public OrthogonalTiledMapRenderer renderer;
 
 	public ArrayList<Vector2> weaponSpawns;
 	public ArrayList<Vector2> playerSpawns;
-	Spawner spawner;
+	public Spawner spawner;
 
 	public Level(GameSettings settings, SpriteBatch batch, GameContext context) {
+		this.conext = context;
+		
 		map = new TmxMapLoader().load(settings.mapFilename);
 
 		width = (Integer) map.getProperties().get("width", -1, Integer.class);
@@ -34,9 +37,9 @@ public class Level {
 		tileHeight = (Integer) map.getProperties().get("tileheight", -1, Integer.class);
 		renderer = new OrthogonalTiledMapRenderer(map, batch);
 
-		weaponSpawns = determinePoints("weaponspawn");
+		spawnWeaponSpawns();
 		playerSpawns = determinePoints("spawnpoints");
-		spawner = new Spawner(weaponSpawns, context);
+		
 
 		renderer.setView(context.getStage().getCamera().projection, 0, 0, width * tileWidth, height * tileHeight);
 	}
@@ -55,6 +58,12 @@ public class Level {
 
 	public void dispose() {
 		map.dispose();
+	}
+	
+	public void spawnWeaponSpawns(){
+		GameContext context = this.conext;
+		weaponSpawns = determinePoints("weaponspawn");
+		spawner = new Spawner(weaponSpawns, context);
 	}
 
 	public void render() {
