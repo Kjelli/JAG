@@ -31,6 +31,7 @@ import no.kash.gamedev.jag.controller.lobby.ColorPicker.ColorOption;
 
 public class LobbyControllerScreen extends AbstractControllerScreen {
 
+	// TODO implement gamesetting changer aka gameMaster
 	private boolean gameMaster;
 
 	GlyphLayout lobbyLabel;

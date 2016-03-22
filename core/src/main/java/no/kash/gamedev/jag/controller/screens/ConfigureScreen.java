@@ -19,7 +19,6 @@ import aurelienribon.tweenengine.BaseTween;
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenCallback;
 import no.kash.gamedev.jag.commons.defs.Defs;
-import no.kash.gamedev.jag.commons.network.packets.PlayerConnect;
 import no.kash.gamedev.jag.commons.tweens.TweenGlobal;
 import no.kash.gamedev.jag.commons.tweens.accessors.ColorAccessor;
 import no.kash.gamedev.jag.controller.JustAnotherGameController;

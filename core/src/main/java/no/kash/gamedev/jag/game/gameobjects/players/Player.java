@@ -10,7 +10,7 @@ import no.kash.gamedev.jag.assets.Assets;
 import no.kash.gamedev.jag.commons.graphics.Draw;
 import no.kash.gamedev.jag.commons.network.packets.PlayerUpdate;
 import no.kash.gamedev.jag.game.JustAnotherGame;
-import no.kash.gamedev.jag.game.gamecontext.functions.Cooldown;
+import no.kash.gamedev.jag.game.commons.utils.Cooldown;
 import no.kash.gamedev.jag.game.gamecontext.physics.Collidable;
 import no.kash.gamedev.jag.game.gamecontext.physics.Collision;
 import no.kash.gamedev.jag.game.gamecontext.physics.tilecollisions.TileCollisionDetector;
@@ -127,6 +127,7 @@ public class Player extends AbstractGameObject implements Collidable {
 		hitbox.update(getX() + getWidth() / 2 - 8, getY() + getHeight() / 2 - 8);
 		healthHud.setX(getCenterX() - HealthHud.WIDTH / 2);
 		healthHud.setY(getCenterY() - HealthHud.HEIGHT / 2 - 20f);
+		healthHud.update(delta);
 
 		if (isFiring()) {
 			gun.shoot();
@@ -165,6 +166,7 @@ public class Player extends AbstractGameObject implements Collidable {
 		((JustAnotherGame) getGameContext().getGame()).getServer().send(info.id, new PlayerUpdate(2,
 				new int[] { PlayerUpdate.GUN, PlayerUpdate.AMMO },
 				new float[][] { { type.ordinal() }, { gun.getMagasineAmmo(), gun.getMagasineSize(), gun.getAmmo() } }));
+
 	}
 
 	public int getId() {
@@ -178,6 +180,7 @@ public class Player extends AbstractGameObject implements Collidable {
 	public void fireBullet() {
 		if (!isHoldingGrenade()) {
 			gun.shoot();
+
 		}
 	}
 
@@ -228,12 +231,12 @@ public class Player extends AbstractGameObject implements Collidable {
 	}
 
 	public void death(Player killer) {
-		// TODO make sense
-		for (int i = 0; i < 200; i++) {
+		for (int i = 0; i < 400; i++) {
 			getGameContext()
-					.spawn(new BloodSplatter(getCenterX(), getCenterY(), (float) (Math.random() * 2 * Math.PI)));
+					.spawn(new BloodSplatter(getCenterX(), getCenterY(), (float) (Math.random() * 2 * Math.PI), 30.0f));
 		}
 
+		getGameContext().getAnnouncer().announce(killer + " killed " + this, 3.0f);
 		gameSettings.roundHandler.playerKilled(killer, this);
 
 	}
@@ -277,7 +280,6 @@ public class Player extends AbstractGameObject implements Collidable {
 
 	public void damage(Explosion explosion) {
 		damageHandler.onDamage(explosion);
-		System.out.println("Sending health update to " + info.id + " , " + health);
 		((JustAnotherGame) getGameContext().getGame()).getServer().send(info.id,
 				new PlayerUpdate(2, new int[] { PlayerUpdate.HEALTH, PlayerUpdate.FEEDBACK_VIBRATION },
 						new float[][] { { health }, { 400.0f } }));
@@ -285,7 +287,7 @@ public class Player extends AbstractGameObject implements Collidable {
 
 	@Override
 	public String toString() {
-		return String.format("Player %s (%d)", info.name, info.id);
+		return getName();
 	}
 
 	public void blockInput(boolean block) {

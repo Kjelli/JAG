@@ -8,14 +8,16 @@ import static no.kash.gamedev.jag.controller.screens.ControllerScreen.JOYSTICK_R
 import java.util.HashMap;
 import java.util.Map;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.esotericsoftware.kryonet.Connection;
 
 import aurelienribon.tweenengine.BaseTween;
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenCallback;
+import no.kash.gamedev.jag.commons.defs.Defs;
 import no.kash.gamedev.jag.commons.network.JagReceiver;
 import no.kash.gamedev.jag.commons.network.packets.GamePacket;
 import no.kash.gamedev.jag.commons.network.packets.PlayerConnect;
@@ -33,21 +35,23 @@ import no.kash.gamedev.jag.game.gameobjects.grenades.Grenade;
 import no.kash.gamedev.jag.game.gameobjects.particles.Explosion;
 import no.kash.gamedev.jag.game.gameobjects.players.Player;
 import no.kash.gamedev.jag.game.gameobjects.players.PlayerInfo;
-import no.kash.gamedev.jag.game.gamesettings.FFARoundHandler;
 import no.kash.gamedev.jag.game.gamesettings.GameSettings;
-import no.kash.gamedev.jag.game.gamesettings.RoundHandler;
+import no.kash.gamedev.jag.game.gamesettings.roundhandlers.FFARoundHandler;
+import no.kash.gamedev.jag.game.gamesettings.roundhandlers.RoundHandler;
 import no.kash.gamedev.jag.game.levels.Level;
 import no.kash.gamedev.jag.game.levels.SpawnTile;
 
 public class GameScreen extends AbstractGameScreen {
 
-	@SuppressWarnings("rawtypes")
-	private static final Class[] classes = new Class[] { Player.class, Weapon.class, SpawnTile.class, Grenade.class,
-			Explosion.class };
+	@SuppressWarnings({ "rawtypes", "unused" })
+	private static final Class[] focusCameraOnPOIs = new Class[] { Player.class, Weapon.class, SpawnTile.class,
+			Grenade.class, Explosion.class }, focusCameraOnWinner = new Class[] { Player.class };
 
 	GameSettings gameSettings;
 	Map<Integer, Player> players;
 	Level level;
+
+	boolean gameOver = false;
 
 	public RoundHandler roundHandler;
 
@@ -61,8 +65,8 @@ public class GameScreen extends AbstractGameScreen {
 
 	@Override
 	protected void onShow() {
+		stage.setViewport(new StretchViewport(Defs.WIDTH, Defs.HEIGHT, camera));
 		initInputReceiver();
-		loadLevel();
 		start();
 
 	}
@@ -77,12 +81,25 @@ public class GameScreen extends AbstractGameScreen {
 	}
 
 	@Override
-	protected void draw(float delta) {
+	protected void draw(SpriteBatch batch, float delta) {
 		level.render();
 		gameContext.draw(batch);
 	}
 
+	@Override
+	protected void drawHud(SpriteBatch hudBatch, float delta) {
+		getGameContext().getAnnouncer().draw(hudBatch);
+	}
+
 	public void start() {
+		gameOver = false;
+
+		loadLevel();
+
+		if (gameSettings.testMode) {
+			spawnPlayer(new PlayerInfo());
+		}
+
 		for (PlayerInfo player : gameSettings.players.values()) {
 			spawnPlayer(player);
 			players.get(player.id).blockInput(true);
@@ -99,6 +116,8 @@ public class GameScreen extends AbstractGameScreen {
 				}
 			}
 		}));
+
+		getGameContext().getAnnouncer().announceRoundStart(gameSettings.roundHandler.currentRound(), 3);
 
 		// TODO flashy starting effects on screen, countdown etc
 
@@ -128,19 +147,26 @@ public class GameScreen extends AbstractGameScreen {
 
 	private void checkWinCondition() {
 		Player winner = gameSettings.roundHandler.winner();
-		if (winner != null) {
+		if (winner != null && !gameOver) {
+			gameOver = true;
 			gameSettings.roundHandler.win(this);
 		}
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void handleCamera(float delta) {
 		if (players.size() > 0) {
-			float leftMostX = Gdx.graphics.getWidth();
+			float leftMostX = Defs.WIDTH;
 			float rightMostX = 0;
 			float topMostY = 0;
-			float bottomMostY = Gdx.graphics.getHeight();
-			for (GameObject object : gameContext.getByClass(classes)) {
+			float bottomMostY = Defs.HEIGHT;
+			Class[] focusClasses;
+			if (gameOver) {
+				focusClasses = focusCameraOnWinner;
+			} else {
+				focusClasses = focusCameraOnPOIs;
+			}
+			for (GameObject object : gameContext.getByClass(focusClasses)) {
 				if (object instanceof SpawnTile) {
 					if (!((SpawnTile) object).isSpawning()) {
 						continue;
@@ -278,7 +304,7 @@ public class GameScreen extends AbstractGameScreen {
 	}
 
 	private void loadLevel() {
-		level = new Level(gameSettings, batch, getGameContext());
+		level = new Level(gameSettings, getSpriteBatch(), getGameContext());
 		gameContext.setLevel(level);
 	}
 

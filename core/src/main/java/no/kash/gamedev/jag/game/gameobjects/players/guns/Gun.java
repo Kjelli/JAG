@@ -6,7 +6,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import no.kash.gamedev.jag.commons.graphics.Draw;
 import no.kash.gamedev.jag.commons.network.packets.PlayerUpdate;
 import no.kash.gamedev.jag.game.JustAnotherGame;
-import no.kash.gamedev.jag.game.gamecontext.functions.Cooldown;
+import no.kash.gamedev.jag.game.announcer.Announcement;
+import no.kash.gamedev.jag.game.commons.utils.Cooldown;
 import no.kash.gamedev.jag.game.gameobjects.bullets.Bullet;
 import no.kash.gamedev.jag.game.gameobjects.players.Player;
 
@@ -61,7 +62,6 @@ public class Gun {
 		}
 		if ((magazineAmmo == -1 || magazineAmmo > 0) && bulletCooldown.getCooldownTimer() == 0
 				&& reloadCooldown.getCooldownTimer() == 0) {
-
 			switch (type) {
 			case shotgun:
 				for (int i = 0; i < 6; i++) {

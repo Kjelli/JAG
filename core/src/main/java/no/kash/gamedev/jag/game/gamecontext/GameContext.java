@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Queue;
 
 import no.kash.gamedev.jag.commons.tweens.TweenGlobal;
+import no.kash.gamedev.jag.game.announcer.Announcer;
 import no.kash.gamedev.jag.game.gamecontext.physics.BruteForcePhysicsHandler;
 import no.kash.gamedev.jag.game.gamecontext.physics.PhysicsHandler;
 import no.kash.gamedev.jag.game.gameobjects.GameObject;
@@ -26,6 +28,7 @@ public class GameContext {
 
 	private Stage stage;
 	private PhysicsHandler physics;
+	private Announcer announcer;
 	private long ticks = 0;
 	private double elapsedTime = 0;
 
@@ -45,6 +48,7 @@ public class GameContext {
 		newlyDespawned = new Queue<>();
 
 		stage = new Stage();
+		announcer = new Announcer(stage.getWidth() / 2, stage.getHeight());
 
 		// TODO Optimize in the future
 		physics = new BruteForcePhysicsHandler();
@@ -55,7 +59,8 @@ public class GameContext {
 			return;
 		}
 		ticks++;
-		elapsedTime += delta;
+		elapsedTime += delta * timeModifier;
+		announcer.update(delta * timeModifier);
 
 		TweenGlobal.update(delta * timeModifier);
 
@@ -182,6 +187,10 @@ public class GameContext {
 		add.clear();
 		remove.clear();
 		objects.clear();
+	}
+
+	public Announcer getAnnouncer() {
+		return announcer;
 	}
 
 }

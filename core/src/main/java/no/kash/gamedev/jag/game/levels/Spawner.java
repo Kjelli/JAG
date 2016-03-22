@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.math.Vector2;
 
+import no.kash.gamedev.jag.game.commons.utils.Cooldown;
 import no.kash.gamedev.jag.game.gamecontext.GameContext;
-import no.kash.gamedev.jag.game.gamecontext.functions.Cooldown;
 
 public class Spawner {
 

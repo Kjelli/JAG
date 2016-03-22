@@ -41,14 +41,14 @@ public class Assets {
 
 	// Hud
 
-	public static Texture health, health_bg, health_border, health_shine;
+	public static Texture health, health_lost, health_bg, health_border, health_shine;
 
 	public static Texture card_long_border, card_long_border_ready, card_long_bg, card_square_border, card_square_bg,
 			card_square_border_selected;
 
 	public static Array<TextureRegion> explosion_frames;
 
-	public static BitmapFont font, fontSmall;
+	public static BitmapFont font, fontSmall, fontLarge;
 
 
 	public static void load() {
@@ -83,6 +83,7 @@ public class Assets {
 		// Hud
 		health_icon = load("sprites/health_icon.png");
 		health = load("hud/health.png");
+		health_lost = load("hud/health_lost.png");
 		health_bg = load("hud/health_bg.png");
 		health_border = load("hud/health_border.png");
 
@@ -116,6 +117,13 @@ public class Assets {
 		font12params.size = 12;
 
 		fontSmall = fontgen.generateFont(font12params);
+		
+		FreeTypeFontParameter font62params = new FreeTypeFontParameter();
+		font62params.minFilter = Texture.TextureFilter.Nearest;
+		font62params.magFilter = Texture.TextureFilter.MipMapLinearNearest;
+		font62params.size = 62;
+
+		fontLarge = fontgen.generateFont(font62params);
 	}
 
 	private static Texture load(String filename) {

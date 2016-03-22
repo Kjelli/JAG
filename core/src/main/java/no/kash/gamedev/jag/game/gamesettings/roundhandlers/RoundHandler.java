@@ -1,4 +1,4 @@
-package no.kash.gamedev.jag.game.gamesettings;
+package no.kash.gamedev.jag.game.gamesettings.roundhandlers;
 
 import no.kash.gamedev.jag.game.gameobjects.players.Player;
 import no.kash.gamedev.jag.game.screens.GameScreen;
@@ -7,9 +7,11 @@ public interface RoundHandler {
 	public void playerKilled(Player killer, Player killed);
 
 	public Player winner();
-	
+
 	public boolean canJoin();
 
 	public void win(GameScreen gameScreen);
+
+	public int currentRound();
 
 }

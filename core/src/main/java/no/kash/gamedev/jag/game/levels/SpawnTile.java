@@ -3,7 +3,7 @@ package no.kash.gamedev.jag.game.levels;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
 import no.kash.gamedev.jag.assets.Assets;
-import no.kash.gamedev.jag.game.gamecontext.functions.Cooldown;
+import no.kash.gamedev.jag.game.commons.utils.Cooldown;
 import no.kash.gamedev.jag.game.gameobjects.AbstractGameObject;
 import no.kash.gamedev.jag.game.gameobjects.collectables.weapons.Weapon;
 import no.kash.gamedev.jag.game.gameobjects.particles.WeaponSpawnEffect;
