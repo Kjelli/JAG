@@ -77,12 +77,6 @@ public class Bullet extends AbstractGameObject implements Collidable {
 				return;
 			}
 
-			for (int i = 0; i < 20; i++) {
-				BloodSplatter temp = new BloodSplatter(getCenterX(), getCenterY(),
-						(float) (getRotation() + (Math.random() * 0.5f - 0.25f)), damage);
-				getGameContext().spawn(temp);
-				// getGameContext().bringToBack(temp);
-			}
 			// Vibration
 			target.damage(this);
 			destroy();

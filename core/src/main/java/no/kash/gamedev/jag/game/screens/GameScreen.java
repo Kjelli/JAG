@@ -32,35 +32,38 @@ import no.kash.gamedev.jag.game.JustAnotherGame;
 import no.kash.gamedev.jag.game.gameobjects.GameObject;
 import no.kash.gamedev.jag.game.gameobjects.collectables.weapons.Weapon;
 import no.kash.gamedev.jag.game.gameobjects.grenades.Grenade;
+import no.kash.gamedev.jag.game.gameobjects.particles.Confetti;
 import no.kash.gamedev.jag.game.gameobjects.particles.Explosion;
 import no.kash.gamedev.jag.game.gameobjects.players.Player;
 import no.kash.gamedev.jag.game.gameobjects.players.PlayerInfo;
-import no.kash.gamedev.jag.game.gamesettings.GameSettings;
-import no.kash.gamedev.jag.game.gamesettings.roundhandlers.FFARoundHandler;
-import no.kash.gamedev.jag.game.gamesettings.roundhandlers.RoundHandler;
+import no.kash.gamedev.jag.game.gamesession.GameSession;
+import no.kash.gamedev.jag.game.gamesession.roundhandlers.FFARoundHandler;
+import no.kash.gamedev.jag.game.gamesession.roundhandlers.RoundHandler;
+import no.kash.gamedev.jag.game.gamesession.roundhandlers.RoundResult;
 import no.kash.gamedev.jag.game.levels.Level;
 import no.kash.gamedev.jag.game.levels.SpawnTile;
 
 public class GameScreen extends AbstractGameScreen {
 
-	@SuppressWarnings({ "rawtypes", "unused" })
+	@SuppressWarnings({ "rawtypes" })
 	private static final Class[] focusCameraOnPOIs = new Class[] { Player.class, Weapon.class, SpawnTile.class,
 			Grenade.class, Explosion.class }, focusCameraOnWinner = new Class[] { Player.class };
 
-	GameSettings gameSettings;
+	GameSession gameSession;
 	Map<Integer, Player> players;
 	Level level;
 
 	boolean gameOver = false;
 
 	public RoundHandler roundHandler;
+	public RoundResult result;
 
 	// game)
-	public GameScreen(JustAnotherGame game, GameSettings settings) {
+	public GameScreen(JustAnotherGame game, GameSession session) {
 		super(game);
 		players = new HashMap<>();
-		this.gameSettings = settings;
-		this.gameSettings.roundHandler = new FFARoundHandler(gameContext, settings, players);
+		this.gameSession = session;
+		this.gameSession.roundHandler = new FFARoundHandler(gameContext, session, players);
 	}
 
 	@Override
@@ -80,6 +83,15 @@ public class GameScreen extends AbstractGameScreen {
 		checkWinCondition();
 	}
 
+	public void spawnConfetti() {
+		for (int i = 0; i < 2; i++) {
+			float x = (float) (Math.random()
+					* (camera.position.x + camera.viewportWidth * camera.zoom + 2 * Confetti.WIDTH) - Confetti.WIDTH);
+			float y = camera.position.y + camera.viewportHeight * camera.zoom;
+			gameContext.spawn(new Confetti(x, y));
+		}
+	}
+
 	@Override
 	protected void draw(SpriteBatch batch, float delta) {
 		level.render();
@@ -96,11 +108,11 @@ public class GameScreen extends AbstractGameScreen {
 
 		loadLevel();
 
-		if (gameSettings.testMode) {
+		if (gameSession.testMode) {
 			spawnPlayer(new PlayerInfo());
 		}
 
-		for (PlayerInfo player : gameSettings.players.values()) {
+		for (PlayerInfo player : gameSession.players.values()) {
 			spawnPlayer(player);
 			players.get(player.id).blockInput(true);
 		}
@@ -110,14 +122,14 @@ public class GameScreen extends AbstractGameScreen {
 			@Override
 			public void onEvent(int arg0, BaseTween<?> arg1) {
 				if (arg0 == TweenCallback.COMPLETE) {
-					for (PlayerInfo player : gameSettings.players.values()) {
+					for (PlayerInfo player : gameSession.players.values()) {
 						players.get(player.id).blockInput(false);
 					}
 				}
 			}
 		}));
 
-		getGameContext().getAnnouncer().announceRoundStart(gameSettings.roundHandler.currentRound(), 3);
+		getGameContext().getAnnouncer().announceRoundStart(gameSession.roundHandler.currentRound(), 3);
 
 		// TODO flashy starting effects on screen, countdown etc
 
@@ -133,23 +145,27 @@ public class GameScreen extends AbstractGameScreen {
 
 		// TODO No randomization
 		Vector2 spawnPoint = level.playerSpawns.get((int) (Math.random() * level.playerSpawns.size()));
-		float spawnX = spawnPoint.x;
-		float spawnY = spawnPoint.y;
-		if (!gameSettings.players.containsKey(player.id)) {
-			gameSettings.players.put(player.id, player);
+		float spawnX = spawnPoint.x - Player.WIDTH / 2;
+		float spawnY = spawnPoint.y - Player.HEIGHT / 2;
+		if (!gameSession.players.containsKey(player.id)) {
+			gameSession.players.put(player.id, player);
 		}
 		if (!players.containsKey(player.id)) {
-			Player newlyJoined = new Player(gameSettings, player.id, spawnX, spawnY);
+			Player newlyJoined = new Player(gameSession, player.id, spawnX, spawnY);
 			players.put(player.id, newlyJoined);
 			gameContext.spawn(newlyJoined);
 		}
 	}
 
 	private void checkWinCondition() {
-		Player winner = gameSettings.roundHandler.winner();
-		if (winner != null && !gameOver) {
-			gameOver = true;
-			gameSettings.roundHandler.win(this);
+		if (!gameOver) {
+			result = gameSession.roundHandler.roundEnded();
+			if (result != null) {
+				gameOver = true;
+				gameSession.roundHandler.proceed(this);
+			}
+		} else if (result.gameEnding) {
+			spawnConfetti();
 		}
 	}
 
@@ -217,7 +233,7 @@ public class GameScreen extends AbstractGameScreen {
 
 					PlayerStateChangeResponse resp = (PlayerStateChangeResponse) m;
 
-					if (gameSettings.dropIn && gameSettings.roundHandler.canJoin()
+					if (gameSession.dropIn && gameSession.roundHandler.canJoin()
 							&& resp.stateId == JustAnotherGameController.PLAY_STATE
 							&& !players.containsKey(c.getID())) {
 						PlayerInfo standard = new PlayerInfo();
@@ -230,7 +246,7 @@ public class GameScreen extends AbstractGameScreen {
 				}
 
 				if (m instanceof PlayerConnect) {
-					if (gameSettings.dropIn) {
+					if (gameSession.dropIn) {
 						game.getServer().send(c.getID(), new PlayerStateChange(JustAnotherGameController.PLAY_STATE));
 					} else {
 						// TODO send message to wait for next game
@@ -304,7 +320,7 @@ public class GameScreen extends AbstractGameScreen {
 	}
 
 	private void loadLevel() {
-		level = new Level(gameSettings, getSpriteBatch(), getGameContext());
+		level = new Level(gameSession, getSpriteBatch(), getGameContext());
 		gameContext.setLevel(level);
 	}
 

@@ -3,7 +3,6 @@ package no.kash.gamedev.jag.game.screens;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
@@ -22,7 +21,7 @@ import no.kash.gamedev.jag.commons.network.packets.PlayerUpdate;
 import no.kash.gamedev.jag.controller.JustAnotherGameController;
 import no.kash.gamedev.jag.game.JustAnotherGame;
 import no.kash.gamedev.jag.game.gameobjects.players.PlayerInfo;
-import no.kash.gamedev.jag.game.gamesettings.GameSettings;
+import no.kash.gamedev.jag.game.gamesession.GameSession;
 import no.kash.gamedev.jag.game.lobby.PlayerInfoGUI;
 
 public class LobbyScreen extends AbstractGameScreen {
@@ -32,11 +31,11 @@ public class LobbyScreen extends AbstractGameScreen {
 
 	Map<Integer, PlayerInfoGUI> playerInfos;
 
-	GameSettings settings;
+	GameSession session;
 
 	public LobbyScreen(JustAnotherGame game) {
 		super(game);
-		settings = new GameSettings();
+		session = new GameSession();
 	}
 
 	@Override
@@ -51,10 +50,10 @@ public class LobbyScreen extends AbstractGameScreen {
 			if (allReady) {
 				for (PlayerInfoGUI playerInfoGUI : playerInfos.values()) {
 					PlayerInfo info = playerInfoGUI.getInfo();
-					settings.players.put(info.id, info);
+					session.players.put(info.id, info);
 					game.getServer().send(info.id, new PlayerStateChange(JustAnotherGameController.PLAY_STATE));
 				}
-				game.setScreen(new GameScreen(game, settings));
+				game.setScreen(new GameScreen(game, session));
 			}
 		}
 	}
@@ -79,7 +78,7 @@ public class LobbyScreen extends AbstractGameScreen {
 		font = Assets.font;
 		playerInfos = new HashMap<>();
 		lobbyLabel = new GlyphLayout(font, "Lobby");
-		stage.setViewport(new StretchViewport(Defs.WIDTH,Defs.HEIGHT, camera));
+		stage.setViewport(new StretchViewport(Defs.WIDTH, Defs.HEIGHT, camera));
 
 		game.setReceiver(new JagReceiver() {
 			@Override

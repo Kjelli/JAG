@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="20" height="10" tilewidth="16" tileheight="16" nextobjectid="52">
+ <tileset firstgid="1" name="obstaclesSheet" tilewidth="16" tileheight="16" tilecount="128" columns="16">
+  <image source="sprites/obstaclesSheet.png" width="256" height="128"/>
+ </tileset>
+ <tileset firstgid="129" name="landscapetextures" tilewidth="16" tileheight="16" tilecount="32" columns="8">
+  <image source="sprites/landscapetextures.png" width="128" height="64"/>
+  <tile id="0" probability="0.25"/>
+  <tile id="8" probability="0.25"/>
+  <tile id="16" probability="0.25"/>
+  <tile id="24" probability="0.25"/>
+ </tileset>
+ <layer name="ground" width="20" height="10">
+  <data encoding="base64" compression="zlib">
+   eJx9krEOACEIQ/vrjIyM/O05aPKsekPjBaGl9VpSTcRAD+QEa4G+mjXer7lAr3O0aaw7nyNXWX+i1vgOcKXxcv+0ftboibqEey/t+4dOX9RkreykT+dwz9T392vtnm7+mQF387nWuXvrnuVLx/+jl9Yfp2fDXmYTF11qUZPZlmmu+Q8QE26J
+  </data>
+ </layer>
+ <objectgroup name="spawnpoints">
+  <object id="28" name="spawn1" type="spawn" x="224" y="48" width="16" height="16">
+   <ellipse/>
+  </object>
+  <object id="38" name="spawn1" type="spawn" x="80" y="48" width="16" height="16">
+   <ellipse/>
+  </object>
+  <object id="39" name="spawn1" type="spawn" x="96" y="96" width="16" height="16">
+   <ellipse/>
+  </object>
+  <object id="40" name="spawn1" type="spawn" x="208" y="96" width="16" height="16">
+   <ellipse/>
+  </object>
+ </objectgroup>
+ <layer name="obstacles" width="20" height="10">
+  <data encoding="base64" compression="zlib">
+   eJzLZ2BgiKMizgdifiCuJRPXAXE9EAtAzbMHYgcGyoE1ENtQ0TxvEsxzBGInAmqwuQ+XvkAgDiJgD8x9/kAcQEAfLoCsHuQ+HyCOB+IEEszABUDui2GApBd5INYlE+sBsT4QKzAg0h810zMA9fIlZw==
+  </data>
+ </layer>
+ <objectgroup name="collision">
+  <object id="45" name="collision" type="collision_full" x="0" y="0" width="32" height="128">
+   <properties>
+    <property name="collision_level" value="2"/>
+   </properties>
+  </object>
+  <object id="46" name="collision" type="collision_full" x="32" y="0" width="288" height="32">
+   <properties>
+    <property name="collision_level" value="2"/>
+   </properties>
+  </object>
+  <object id="47" name="collision" type="collision_full" x="0" y="128" width="288" height="32">
+   <properties>
+    <property name="collision_level" value="2"/>
+   </properties>
+  </object>
+  <object id="48" name="collision" type="collision_full" x="288" y="32" width="32" height="128">
+   <properties>
+    <property name="collision_level" value="2"/>
+   </properties>
+  </object>
+  <object id="49" name="collision" type="collision_full" x="48" y="80" width="32" height="32">
+   <properties>
+    <property name="collision_level" value="2"/>
+   </properties>
+  </object>
+  <object id="50" name="collision" type="collision_full" x="144" y="64" width="32" height="32">
+   <properties>
+    <property name="collision_level" value="2"/>
+   </properties>
+  </object>
+  <object id="51" name="collision" type="collision_full" x="240" y="80" width="32" height="32">
+   <properties>
+    <property name="collision_level" value="2"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup name="weaponspawn">
+  <object id="41" name="weaponspawn" x="32" y="32" width="32" height="32"/>
+  <object id="42" name="weaponspawn" x="112" y="96" width="32" height="32"/>
+  <object id="43" name="weaponspawn" x="256" y="32" width="32" height="32"/>
+  <object id="44" name="weaponspawn" x="176" y="96" width="32" height="32"/>
+ </objectgroup>
+</map>

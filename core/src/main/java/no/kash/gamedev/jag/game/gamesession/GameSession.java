@@ -1,26 +1,26 @@
-package no.kash.gamedev.jag.game.gamesettings;
+package no.kash.gamedev.jag.game.gamesession;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import no.kash.gamedev.jag.game.gameobjects.players.PlayerInfo;
-import no.kash.gamedev.jag.game.gamesettings.roundhandlers.RoundHandler;
+import no.kash.gamedev.jag.game.gamesession.roundhandlers.RoundHandler;
 
-public class GameSettings {
+public class GameSession {
 	public GameMode gameMode = GameMode.STANDARD_FFA;
-	public String mapFilename = "maps/sumoarena2.tmx";
+	public String mapFilename = "maps/sumoarena1.tmx";
 
 	public boolean dropIn = true;
 	public boolean testMode = true;
 
 	public float startingHealth = 100f;
 	public float roundTime = 60.0f;
-	public int rounds = 3;
+	public int roundsToWin = 5;
 
 	public Map<Integer, PlayerInfo> players;
 	public RoundHandler roundHandler;
 
-	public GameSettings() {
+	public GameSession() {
 		players = new HashMap<>();
 	}
 

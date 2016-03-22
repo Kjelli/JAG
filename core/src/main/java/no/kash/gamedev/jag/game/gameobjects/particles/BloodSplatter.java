@@ -27,7 +27,7 @@ public class BloodSplatter extends AbstractParticle {
 		}
 	};
 
-	public static final int SPEED = 20;
+	public static final int BASE_SPEED = 20;
 	public static final float TIME_TO_LIVE = 0.5f;
 	private static final float FADE_OUT_TIME = 60f;
 	public float direction;
@@ -45,8 +45,8 @@ public class BloodSplatter extends AbstractParticle {
 		this.direction = (float) direction;
 
 		getSprite().setColor(color);
-		velocity.x = (float) Math.cos(direction) * SPEED * power;
-		velocity.y = (float) Math.sin(direction) * SPEED * power;
+		velocity.x = (float) Math.cos(direction) * BASE_SPEED * power;
+		velocity.y = (float) Math.sin(direction) * BASE_SPEED * power;
 		setRotation(direction);
 
 	}
@@ -60,8 +60,8 @@ public class BloodSplatter extends AbstractParticle {
 	public void updateParticle(float delta) {
 		move(delta);
 		if (!timedOut && !stopped) {
-			velocity.x = (float) Math.cos(direction) * SPEED * power * getTimeToLive() / TIME_TO_LIVE;
-			velocity.y = (float) Math.sin(direction) * SPEED * power * getTimeToLive() / TIME_TO_LIVE;
+			velocity.x = (float) Math.cos(direction) * BASE_SPEED * power * getTimeToLive() / TIME_TO_LIVE;
+			velocity.y = (float) Math.sin(direction) * BASE_SPEED * power * getTimeToLive() / TIME_TO_LIVE;
 			TileCollisionDetector.checkTileCollisions(getGameContext().getLevel(), this, tileCollisionListener);
 		}
 		getSprite().setColor(color);

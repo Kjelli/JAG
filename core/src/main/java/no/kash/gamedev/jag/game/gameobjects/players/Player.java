@@ -21,12 +21,13 @@ import no.kash.gamedev.jag.game.gameobjects.collectables.weapons.Weapon;
 import no.kash.gamedev.jag.game.gameobjects.grenades.Grenade;
 import no.kash.gamedev.jag.game.gameobjects.particles.BloodSplatter;
 import no.kash.gamedev.jag.game.gameobjects.particles.Explosion;
+import no.kash.gamedev.jag.game.gameobjects.particles.Star;
 import no.kash.gamedev.jag.game.gameobjects.players.damagehandlers.DamageHandler;
 import no.kash.gamedev.jag.game.gameobjects.players.damagehandlers.VanillaDamageHandler;
 import no.kash.gamedev.jag.game.gameobjects.players.guns.Gun;
 import no.kash.gamedev.jag.game.gameobjects.players.guns.GunType;
 import no.kash.gamedev.jag.game.gameobjects.players.hud.HealthHud;
-import no.kash.gamedev.jag.game.gamesettings.GameSettings;
+import no.kash.gamedev.jag.game.gamesession.GameSession;
 
 public class Player extends AbstractGameObject implements Collidable {
 
@@ -41,6 +42,7 @@ public class Player extends AbstractGameObject implements Collidable {
 	private boolean firing;
 	private boolean holdingGrenade;
 	private boolean blockInput = false;
+	private boolean invincible = false;
 
 	private Gun gun;
 	private Hitbox hitbox;
@@ -59,9 +61,9 @@ public class Player extends AbstractGameObject implements Collidable {
 
 	private Sprite holding_grenade;
 
-	private GameSettings gameSettings;
+	private GameSession gameSettings;
 
-	public Player(GameSettings gameSettings, int id, float x, float y) {
+	public Player(GameSession gameSettings, int id, float x, float y) {
 		super(x, y, WIDTH, HEIGHT);
 		init(gameSettings);
 
@@ -74,7 +76,7 @@ public class Player extends AbstractGameObject implements Collidable {
 		};
 	}
 
-	private void init(GameSettings gameSettings) {
+	private void init(GameSession gameSettings) {
 		this.gameSettings = gameSettings;
 		this.healthMax = gameSettings.startingHealth;
 		this.health = healthMax;
@@ -129,11 +131,22 @@ public class Player extends AbstractGameObject implements Collidable {
 		healthHud.setY(getCenterY() - HealthHud.HEIGHT / 2 - 20f);
 		healthHud.update(delta);
 
+		if (isInvincible()) {
+			spawnStars();
+		}
+
 		if (isFiring()) {
 			gun.shoot();
 		}
 
 		TileCollisionDetector.checkTileCollisions(getGameContext().getLevel(), this, tileCollisionListener);
+	}
+
+	private void spawnStars() {
+		if (Math.random() < 0.2f) {
+			getGameContext().spawn(new Star(getCenterX() + (float) ((Math.random() - 0.5f) * hitbox.rect.width * 2),
+					getCenterY() + (float) ((Math.random() - 0.5f) * hitbox.rect.height * 2)));
+		}
 	}
 
 	@Override
@@ -231,14 +244,14 @@ public class Player extends AbstractGameObject implements Collidable {
 	}
 
 	public void death(Player killer) {
-		for (int i = 0; i < 400; i++) {
-			getGameContext()
-					.spawn(new BloodSplatter(getCenterX(), getCenterY(), (float) (Math.random() * 2 * Math.PI), 30.0f));
+		if (isAlive()) {
+			for (int i = 0; i < 200; i++) {
+				getGameContext().spawn(
+						new BloodSplatter(getCenterX(), getCenterY(), (float) (Math.random() * 2 * Math.PI), 40.0f));
+			}
+
+			gameSettings.roundHandler.playerKilled(killer, this);
 		}
-
-		getGameContext().getAnnouncer().announce(killer + " killed " + this, 3.0f);
-		gameSettings.roundHandler.playerKilled(killer, this);
-
 	}
 
 	public float getHealth() {
@@ -272,6 +285,14 @@ public class Player extends AbstractGameObject implements Collidable {
 	}
 
 	public void damage(Bullet bullet) {
+		if (isInvincible()) {
+			return;
+		}
+		for (int i = 0; i < bullet.getDamage(); i++) {
+			getGameContext().spawn(new BloodSplatter(bullet.getCenterX(), bullet.getCenterY(),
+					(float) (bullet.getRotation() + (Math.random() * 0.5f - 0.25f)), bullet.getDamage()));
+			// getGameContext().bringToBack(temp);
+		}
 		damageHandler.onDamage(bullet);
 		((JustAnotherGame) getGameContext().getGame()).getServer().send(info.id,
 				new PlayerUpdate(2, new int[] { PlayerUpdate.HEALTH, PlayerUpdate.FEEDBACK_VIBRATION },
@@ -279,6 +300,9 @@ public class Player extends AbstractGameObject implements Collidable {
 	}
 
 	public void damage(Explosion explosion) {
+		if (isInvincible()) {
+			return;
+		}
 		damageHandler.onDamage(explosion);
 		((JustAnotherGame) getGameContext().getGame()).getServer().send(info.id,
 				new PlayerUpdate(2, new int[] { PlayerUpdate.HEALTH, PlayerUpdate.FEEDBACK_VIBRATION },
@@ -288,6 +312,14 @@ public class Player extends AbstractGameObject implements Collidable {
 	@Override
 	public String toString() {
 		return getName();
+	}
+
+	public void setInvincible(boolean invincible) {
+		this.invincible = invincible;
+	}
+
+	public boolean isInvincible() {
+		return invincible;
 	}
 
 	public void blockInput(boolean block) {

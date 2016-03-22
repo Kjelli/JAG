@@ -11,7 +11,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 
 import no.kash.gamedev.jag.game.gamecontext.GameContext;
-import no.kash.gamedev.jag.game.gamesettings.GameSettings;
+import no.kash.gamedev.jag.game.gamesession.GameSession;
 
 public class Level {
 	public TiledMap map;
@@ -25,7 +25,7 @@ public class Level {
 	public ArrayList<Vector2> playerSpawns;
 	Spawner spawner;
 
-	public Level(GameSettings settings, SpriteBatch batch, GameContext context) {
+	public Level(GameSession settings, SpriteBatch batch, GameContext context) {
 		map = new TmxMapLoader().load(settings.mapFilename);
 
 		width = (Integer) map.getProperties().get("width", -1, Integer.class);
