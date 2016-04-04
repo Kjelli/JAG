@@ -123,9 +123,10 @@ public class LobbyControllerScreen extends AbstractControllerScreen {
 
 			@Override
 			public void handleConnection(Connection c) {
-
 			}
 		});
+		
+		sendUpdate();
 
 	}
 
