@@ -136,7 +136,7 @@ public class Player extends AbstractGameObject implements Collidable {
 		}
 
 		if (isFiring()) {
-			gun.shoot();
+			fireBullet();
 		}
 
 		TileCollisionDetector.checkTileCollisions(getGameContext().getLevel(), this, tileCollisionListener);
@@ -192,6 +192,9 @@ public class Player extends AbstractGameObject implements Collidable {
 
 	public void fireBullet() {
 		if (!isHoldingGrenade()) {
+			if(gun.getMagasineAmmo() == 0){
+				reload();
+			}
 			gun.shoot();
 
 		}
