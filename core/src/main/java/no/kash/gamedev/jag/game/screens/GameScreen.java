@@ -20,7 +20,7 @@ import aurelienribon.tweenengine.BaseTween;
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenCallback;
 import no.kash.gamedev.jag.commons.defs.Defs;
-import no.kash.gamedev.jag.commons.network.JagReceiver;
+import no.kash.gamedev.jag.commons.network.JagServerPacketHandler;
 import no.kash.gamedev.jag.commons.network.packets.GamePacket;
 import no.kash.gamedev.jag.commons.network.packets.PlayerConnect;
 import no.kash.gamedev.jag.commons.network.packets.PlayerInput;
@@ -245,7 +245,7 @@ public class GameScreen extends AbstractGameScreen {
 
 	private void initInputReceiver() {
 
-		game.setReceiver(new JagReceiver() {
+		game.setReceiver(new JagServerPacketHandler() {
 
 			@Override
 			public void handlePacket(Connection c, GamePacket m) {

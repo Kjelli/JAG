@@ -17,21 +17,16 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
-import com.esotericsoftware.kryonet.Connection;
 
 import no.kash.gamedev.jag.assets.Assets;
 import no.kash.gamedev.jag.commons.defs.Defs;
 import no.kash.gamedev.jag.commons.defs.Prefs;
-import no.kash.gamedev.jag.commons.network.NetworkListener;
-import no.kash.gamedev.jag.commons.network.packets.GamePacket;
-import no.kash.gamedev.jag.commons.network.packets.PlayerStateChange;
 import no.kash.gamedev.jag.commons.network.packets.PlayerUpdate;
 import no.kash.gamedev.jag.commons.utils.Callback;
 import no.kash.gamedev.jag.controller.JustAnotherGameController;
 import no.kash.gamedev.jag.controller.lobby.ColorPicker;
 import no.kash.gamedev.jag.controller.lobby.ColorPicker.ColorOption;
 import no.kash.gamedev.jag.controller.lobby.GameSessionControls;
-import no.kash.gamedev.jag.game.gamesession.GameSession;
 
 public class LobbyControllerScreen extends AbstractControllerScreen {
 
@@ -47,6 +42,10 @@ public class LobbyControllerScreen extends AbstractControllerScreen {
 
 	Label nameLabel;
 	TextField nameField;
+
+	GlyphLayout levelLabel;
+	GlyphLayout expLabel;
+
 	TextButton updateNameButton;
 	TextButton newColors;
 	CheckBox ready;
@@ -81,6 +80,8 @@ public class LobbyControllerScreen extends AbstractControllerScreen {
 	protected void draw(float delta) {
 		font.draw(batch, lobbyLabel, stage.getWidth() / 2 - lobbyLabel.width / 2,
 				stage.getHeight() - lobbyLabel.height);
+		font.draw(batch, levelLabel, 0, stage.getHeight() / 2 - levelLabel.height);
+		font.draw(batch, expLabel, 0, (float) (stage.getHeight() / 2.5 - expLabel.height));
 	}
 
 	@Override
@@ -94,27 +95,6 @@ public class LobbyControllerScreen extends AbstractControllerScreen {
 		// Testing purposes:
 		initSettingsView();
 		setSettingsView();
-		game.getClient().setListener(new NetworkListener() {
-
-			@Override
-			public void receivedPacket(Connection c, GamePacket m) {
-				if (m instanceof PlayerStateChange) {
-					PlayerStateChange sc = (PlayerStateChange) m;
-					handleStateChange(sc);
-				}
-			}
-
-			@Override
-			public void disconnected(Connection connection) {
-				queueNextScreen(new LoadingScreen(game, "Connection lost, retrying..."));
-			}
-
-			@Override
-			public void connected(Connection c) {
-
-			}
-		});
-
 	}
 
 	private void initSettingsView() {
@@ -233,11 +213,12 @@ public class LobbyControllerScreen extends AbstractControllerScreen {
 
 	protected void sendUpdate() {
 		Color c = picker.getSelectedColor(new Color(Color.WHITE));
-		game.getClient()
-				.broadcast(new PlayerUpdate(1, new int[] { PlayerUpdate.PLAYER_SETTINGS },
-						new float[][] { { Prefs.get().getInteger(Defs.PREF_TIMES_PLAYED) }, { c.r, c.g, c.b },
-								{ ready.isChecked() ? 1 : 0 } },
-						new String[] { nameField.getText() }));
+		int tp = Prefs.get().getInteger(Defs.PREF_TIMES_PLAYED, 0);
+		int level = Prefs.get().getInteger(Defs.PREF_PLAYER_LEVEL, 1);
+		float xp = Prefs.get().getInteger(Defs.PREF_PLAYER_XP, 0);
+		int rdy = ready.isChecked() ? 1 : 0;
+		game.getClient().broadcast(new PlayerUpdate(1, new int[] { PlayerUpdate.PLAYER_INFO },
+				new float[][] { { tp, level, xp }, { c.r, c.g, c.b }, { rdy } }, new String[] { nameField.getText() }));
 	}
 
 }

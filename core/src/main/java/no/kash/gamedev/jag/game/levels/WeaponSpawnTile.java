@@ -89,12 +89,14 @@ public class WeaponSpawnTile extends AbstractGameObject {
 	}
 
 	private GunType randomGun() {
-		int randomNum = 1 + (int) (Math.random() * 2);
+		int randomNum = 1 + (int) (Math.random() * 3);
 		switch (randomNum) {
 		case 1:
 			return GunType.m4;
 		case 2:
 			return GunType.shotgun;
+		case 3:
+			return GunType.mac10;
 		default:
 			return GunType.m4;
 		}

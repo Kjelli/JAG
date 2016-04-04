@@ -72,15 +72,21 @@ public class Gun {
 				}
 				break;
 			case mac10:
-				for(int i = 0; i < 2; i++){
-					Bullet temp = new Bullet(player, player.getBulletOriginX()-(i*5), player.getBulletOriginY(),
-							(float) (player.getRotation() + Math.PI / 2), damage, bulletSpeed);
-					player.getGameContext().spawn(temp);
-				}
-			default:
-				Bullet temp = new Bullet(player, player.getBulletOriginX(), player.getBulletOriginY(),
+				float offset = (float) (Math.PI/4);
+				float bullWidth = Bullet.WIDTH;
+				Bullet temp = new Bullet(player, player.getBulletOriginX() + (float) Math.cos(player.getRotation() + offset + Math.PI/2) * bullWidth,
+						player.getBulletOriginY() + (float) Math.sin(player.getRotation() + offset + Math.PI/2) * bullWidth,
 						(float) (player.getRotation() + Math.PI / 2), damage, bulletSpeed);
 				player.getGameContext().spawn(temp);
+				temp = new Bullet(player, player.getBulletOriginX() + (float) Math.cos(player.getRotation() - offset + Math.PI/2) * bullWidth,
+						player.getBulletOriginY() + (float) Math.sin(player.getRotation() - offset + Math.PI/2) * bullWidth,
+						(float) (player.getRotation() + Math.PI / 2), damage, bulletSpeed);
+				player.getGameContext().spawn(temp);
+				break;
+			default:
+				Bullet tempo = new Bullet(player, player.getBulletOriginX(), player.getBulletOriginY(),
+						(float) (player.getRotation() + Math.PI / 2), damage, bulletSpeed);
+				player.getGameContext().spawn(tempo);
 				break;
 			}
 

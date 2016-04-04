@@ -9,6 +9,7 @@ import com.esotericsoftware.kryonet.Connection;
 import aurelienribon.tweenengine.Tween;
 import no.kash.gamedev.jag.commons.defs.Defs;
 import no.kash.gamedev.jag.commons.defs.Prefs;
+import no.kash.gamedev.jag.commons.network.JagClientPacketHandler;
 import no.kash.gamedev.jag.commons.network.NetworkListener;
 import no.kash.gamedev.jag.commons.network.packets.GamePacket;
 import no.kash.gamedev.jag.commons.network.packets.PlayerInput;
@@ -124,26 +125,24 @@ public class ControllerScreen extends AbstractControllerScreen {
 		scheme.addInputElement(JOYSTICK_MID, stick_mid.getTouchpad());
 		scheme.addInputElement(BUTTON_RELOAD, reload);
 
-		game.getClient().setListener(new NetworkListener() {
+		game.setReceiver(new JagClientPacketHandler() {
 
 			@Override
-			public void receivedPacket(Connection c, GamePacket m) {
+			public void handlePacket(Connection c, GamePacket m) {
 				if (m instanceof PlayerUpdate) {
 					PlayerUpdate pf = (PlayerUpdate) m;
 					handlePlayerUpdate(pf);
-				} else if (m instanceof PlayerStateChange) {
-					PlayerStateChange sc = (PlayerStateChange) m;
-					handleStateChange(sc);
 				}
 			}
 
 			@Override
-			public void disconnected(Connection connection) {
-				queueNextScreen(new LoadingScreen(game, "Connection lost, retrying..."));
+			public void handleDisconnection(Connection c) {
 			}
 
 			@Override
-			public void connected(Connection c) {
+			public void handleConnection(Connection c) {
+				// TODO Auto-generated method stub
+
 			}
 		});
 	}

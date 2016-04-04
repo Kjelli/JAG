@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.esotericsoftware.kryonet.Connection;
 
 import no.kash.gamedev.jag.assets.Assets;
+import no.kash.gamedev.jag.commons.network.JagClientPacketHandler;
 import no.kash.gamedev.jag.commons.network.NetworkListener;
 import no.kash.gamedev.jag.commons.network.packets.GamePacket;
 import no.kash.gamedev.jag.commons.network.packets.PlayerConnect;
@@ -53,22 +54,19 @@ public class LoadingScreen extends AbstractControllerScreen {
 	@Override
 	protected void onShow() {
 
-		game.getClient().setListener(new NetworkListener() {
+		game.setReceiver(new JagClientPacketHandler() {
+
 			@Override
-			public void receivedPacket(Connection c, GamePacket m) {
-				if (m instanceof PlayerStateChange) {
-					PlayerStateChange sc = (PlayerStateChange) m;
-					handleStateChange(sc);
-				}
+			public void handlePacket(Connection c, GamePacket m) {
 			}
 
 			@Override
-			public void disconnected(Connection connection) {
+			public void handleDisconnection(Connection c) {
 				loadingStatus.setText(Assets.fontSmall, "Connection lost :(");
 			}
 
 			@Override
-			public void connected(Connection c) {
+			public void handleConnection(Connection c) {
 				loadingStatus.setText(Assets.fontSmall, "Connected! Waiting for gameserver...");
 			}
 		});
