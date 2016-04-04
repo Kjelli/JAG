@@ -27,6 +27,7 @@ import no.kash.gamedev.jag.commons.network.packets.PlayerStateChange;
 import no.kash.gamedev.jag.commons.network.packets.PlayerUpdate;
 import no.kash.gamedev.jag.commons.utils.Callback;
 import no.kash.gamedev.jag.controller.JustAnotherGameController;
+import no.kash.gamedev.jag.controller.Player;
 import no.kash.gamedev.jag.controller.lobby.ColorPicker;
 import no.kash.gamedev.jag.controller.lobby.ColorPicker.ColorOption;
 import no.kash.gamedev.jag.game.gamesession.roundhandlers.PlayerNewStats;
@@ -48,6 +49,8 @@ public class LobbyControllerScreen extends AbstractControllerScreen {
 	TextButton newColors;
 	CheckBox ready;
 	ColorPicker picker;
+	
+	
 
 	boolean firstFrame = true;
 
@@ -73,6 +76,7 @@ public class LobbyControllerScreen extends AbstractControllerScreen {
 
 	@Override
 	protected void onShow() {
+		Player.load();
 		Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
 
 		Label label = new Label("Name", skin);
@@ -80,7 +84,7 @@ public class LobbyControllerScreen extends AbstractControllerScreen {
 		label.setAlignment(Align.left | Align.top);
 		label.setY(stage.getHeight() - label.getHeight() * 1.5f);
 
-		nameField = new TextField(Prefs.get().getString(Defs.PREF_PLAYER_NAME, "Minge"), skin);
+		nameField = new TextField(Player.getName(), skin);
 		nameField.setX(0);
 		nameField.setSize(250, 100);
 		nameField.setY(stage.getHeight() - label.getHeight() * 1.5f - nameField.getHeight());
@@ -89,8 +93,8 @@ public class LobbyControllerScreen extends AbstractControllerScreen {
 
 			@Override
 			public void keyTyped(TextField textField, char c) {
-				Prefs.get().putString(Defs.PREF_PLAYER_NAME, nameField.getText());
-				Prefs.get().flush();
+				Player.setName(textField.getText());
+				Player.save();
 				sendUpdate();
 			}
 		});
@@ -101,13 +105,13 @@ public class LobbyControllerScreen extends AbstractControllerScreen {
 					@Override
 					public void callback() {
 						Color c = picker.getSelectedColor(Color.WHITE);
-						Prefs.get().putString(Defs.PREF_PLAYER_COLOR, c.toString());
-						Prefs.get().flush();
+						Player.setColor(c);
+						Player.save();
 						sendUpdate();
 					}
 				});
 		picker.setInitialSelection(
-				Color.valueOf(Prefs.get().getString(Defs.PREF_PLAYER_COLOR, Color.WHITE.toString())));
+				Player.getColor());
 
 		newColors = new TextButton("More colors", skin);
 		newColors.setX(picker.getX());
@@ -143,8 +147,8 @@ public class LobbyControllerScreen extends AbstractControllerScreen {
 		font = Assets.font;
 		lobbyLabel = new GlyphLayout(font, "Lobby");
 
-		levelLabel = new GlyphLayout(font, "Level: " + Prefs.get().getInteger(Defs.PREF_PLAYER_LEVEL, 1));
-		expLabel = new GlyphLayout(font, "Exp: " + Prefs.get().getInteger(Defs.PREF_PLAYER_XP) + "/100");
+		levelLabel = new GlyphLayout(font, "Level: " + Player.getLevel());
+		expLabel = new GlyphLayout(font, "Exp: " + Player.getExp() + "/" + Player.expReq());
 
 		game.setReceiver(new JagClientPacketHandler() {
 
@@ -165,12 +169,14 @@ public class LobbyControllerScreen extends AbstractControllerScreen {
 
 		sendUpdate();
 	}
+	
+	
 
 	protected void sendUpdate() {
 		Color c = picker.getSelectedColor(new Color(Color.WHITE));
-		int tp = Prefs.get().getInteger(Defs.PREF_TIMES_PLAYED, 0);
-		int level = Prefs.get().getInteger(Defs.PREF_PLAYER_LEVEL, 1);
-		float xp = Prefs.get().getInteger(Defs.PREF_PLAYER_XP, 0);
+		int tp = Player.getTimesPlayed();
+		int level = Player.getLevel();
+		float xp = Player.getExp();
 		int rdy = ready.isChecked() ? 1 : 0;
 		game.getClient().broadcast(new PlayerUpdate(1, new int[] { PlayerUpdate.PLAYER_INFO },
 				new float[][] { { tp, level, xp }, { c.r, c.g, c.b }, { rdy } }, new String[] { nameField.getText() }));
