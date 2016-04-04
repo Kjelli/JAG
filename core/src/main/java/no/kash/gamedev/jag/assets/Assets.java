@@ -16,8 +16,10 @@ public class Assets {
 
 	// Weapons
 	public static Texture bullet;
+	
 	public static Texture pistol;
 	public static Texture m4;
+	public static Texture mac10;
 	public static Texture shotgun;
 	public static Texture goldengun;
 	public static Texture grenade;
@@ -34,8 +36,9 @@ public class Assets {
 	public static Texture pistol_ground;
 	public static Texture shotgun_ground;
 	public static Texture goldengun_ground;
-
-	// Icons
+	public static Texture mac10_ground;
+	
+	//Icons
 	public static Texture health_icon;
 	public static Texture icon_border;
 
@@ -63,6 +66,8 @@ public class Assets {
 		m4 = load("playerSprite/m4.png");
 		shotgun = load("playerSprite/shotgun.png");
 		goldengun = load("playerSprite/goldengun.png");
+		mac10 = load("playerSprite/mac10.png");
+		
 		grenade = load("sprites/grenade.png");
 
 		// Particles
@@ -78,6 +83,9 @@ public class Assets {
 		goldengun_ground = load("sprites/gun_goldengun.png");
 
 		// Icons
+		goldengun_ground = load ("sprites/gun_goldengun.png");
+		mac10_ground = load("sprites/gun_mac10.png");
+		
 		icon_border = load("sprites/health_icon.png");
 		health_icon = load("sprites/health_icon.png");
 
