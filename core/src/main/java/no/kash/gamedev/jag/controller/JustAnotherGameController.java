@@ -48,9 +48,9 @@ public class JustAnotherGameController extends JagEndpoint {
 						handleStateChange(sc);
 					} else if (m instanceof PlayerNewStats) {
 						PlayerNewStats stats = (PlayerNewStats) m;
-						Prefs.get().putInteger(Defs.PREF_PLAYER_XP,
-								Prefs.get().getInteger(Defs.PREF_PLAYER_XP, 0) + stats.xp);
-						Prefs.get().flush();
+						Player.setExp(Player.getExp() + stats.xp);
+						Player.setTimesPlayed(Player.getTimesPlayed() + 1);
+						Player.save();
 
 					} else {
 						getReceiver().handlePacket(c, m);

@@ -82,4 +82,11 @@ public class PlayerInfoGUI {
 		return info;
 	}
 
+	public void nudgeUp() {
+		y = y + height;
+		card_bg.setY(y - HEIGHT);
+		card_border.setY(y - HEIGHT);
+		card_border_ready.setY(y - HEIGHT);
+	}
+
 }

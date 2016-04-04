@@ -38,11 +38,12 @@ public class LobbyScreen extends AbstractGameScreen {
 		session = new GameSession();
 	}
 
-	public LobbyScreen(JustAnotherGame game, Map<Integer, PlayerInfo> playerInfos) {
+	public LobbyScreen(JustAnotherGame game, GameSession session) {
 		super(game);
-		session = new GameSession();
+		this.session = session;
+		session.reset();
 	}
-	
+
 	@Override
 	protected void update(float delta) {
 		if (playerInfos.size() > 0) {
@@ -126,7 +127,23 @@ public class LobbyScreen extends AbstractGameScreen {
 			public void handleDisconnection(Connection c) {
 				System.out.println("Disconnected: " + c);
 
-				playerInfos.remove(c.getID());
+				PlayerInfoGUI dced = playerInfos.remove(c.getID());
+
+				if (dced.getInfo().gameMaster) {
+					if (!playerInfos.isEmpty()) {
+						PlayerInfo nextGameMaster = playerInfos.values().iterator().next().getInfo();
+
+						nextGameMaster.gameMaster = true;
+						game.getServer().send(nextGameMaster.id,
+								new PlayerUpdate(1, new int[] { PlayerUpdate.GAME_MASTER }, null));
+					}
+				}
+
+				for (PlayerInfoGUI gui : playerInfos.values()) {
+					if (gui.getInfo().id > c.getID()) {
+						gui.nudgeUp();
+					}
+				}
 			}
 
 		});

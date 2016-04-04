@@ -14,4 +14,6 @@ public interface RoundHandler {
 
 	public int currentRound();
 
+	public void reset();
+
 }

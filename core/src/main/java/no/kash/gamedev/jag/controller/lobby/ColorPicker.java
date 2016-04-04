@@ -85,7 +85,7 @@ public class ColorPicker {
 			}
 		}
 	}
-
+	
 	public void setInitialSelection(Color color) {
 		colors[0][0].sprite.setColor(color);
 		colors[0][0].select();

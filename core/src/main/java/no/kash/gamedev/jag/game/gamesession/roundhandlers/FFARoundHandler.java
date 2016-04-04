@@ -100,7 +100,7 @@ public class FFARoundHandler implements RoundHandler {
 							} else {
 								statsHandler();
 								JustAnotherGame game = screen.getGame();
-								game.setScreen(new LobbyScreen(game));
+								game.setScreen(new LobbyScreen(game, gameSession));
 								game.getServer()
 										.broadcast(new PlayerStateChange(JustAnotherGameController.LOBBY_STATE));
 							}
@@ -135,6 +135,11 @@ public class FFARoundHandler implements RoundHandler {
 	public boolean canJoin() {
 		// If no one has died yet
 		return players.size() == gameSession.players.size();
+	}
+
+	@Override
+	public void reset() {
+		currentRound = 0;
 	}
 
 }

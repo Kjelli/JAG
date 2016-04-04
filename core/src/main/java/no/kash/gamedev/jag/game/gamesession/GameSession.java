@@ -24,4 +24,11 @@ public class GameSession {
 		players = new HashMap<>();
 	}
 
+	public void reset() {
+		for(PlayerInfo info : players.values()){
+			info.resetSession();
+		}
+		roundHandler.reset();
+	}
+
 }
