@@ -54,6 +54,7 @@ public class JagClient {
 
 	public void update(float delta) {
 		if (listener == null) {
+			eventQueue.clear();
 			return;
 		}
 		while (eventQueue.size > 0) {

@@ -11,6 +11,9 @@
 		},
 		chat-font: {
 			file: utf-font.fnt
+		},
+		Testing: {
+			file: utf-font.fnt
 		}
 	},
 	com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle: {
@@ -36,6 +39,9 @@
 			checkboxOff: check-off, 
 			font: default-font, 
 			fontColor: white }
+	},
+	com.badlogic.gdx.scenes.scene2d.ui.ScrollPane$ScrollPaneStyle: {
+		default: { vScroll: default-scroll, hScrollKnob: default-round-large, background: default-rect, hScroll: default-scroll, vScrollKnob: default-round-large }
 	},
 	
 	com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {

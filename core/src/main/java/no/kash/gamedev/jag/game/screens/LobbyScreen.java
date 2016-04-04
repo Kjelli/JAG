@@ -38,6 +38,11 @@ public class LobbyScreen extends AbstractGameScreen {
 		session = new GameSession();
 	}
 
+	public LobbyScreen(JustAnotherGame game, Map<Integer, PlayerInfo> playerInfos) {
+		super(game);
+		session = new GameSession();
+	}
+	
 	@Override
 	protected void update(float delta) {
 		if (playerInfos.size() > 0) {
@@ -93,6 +98,11 @@ public class LobbyScreen extends AbstractGameScreen {
 					info.timesPlayed = (int) update.state[0][0];
 					info.ready = update.state[2][0] > 0;
 					info.color = new Color(update.state[1][0], update.state[1][1], update.state[1][2], 1);
+					if (playerInfos.isEmpty()) {
+						info.gameMaster = true;
+						game.getServer().send(info.id,
+								new PlayerUpdate(1, new int[] { PlayerUpdate.GAME_MASTER }, null));
+					}
 					if (!playerInfos.containsKey(c.getID())) {
 						PlayerInfoGUI pi = new PlayerInfoGUI(0,
 								stage.getHeight() - (playerInfos.size() + 1) * PlayerInfoGUI.HEIGHT, info);

@@ -85,22 +85,24 @@ public class FFARoundHandler implements RoundHandler {
 		// No op
 		TweenableFloat f = new TweenableFloat(0);
 		final boolean gameOver = gameOver();
-		TweenGlobal.start(Tween.from(f, FloatAccessor.TYPE_VALUE, gameOver ? 3.75f : 1.25f).target(1).setCallback(new TweenCallback() {
-			@Override
-			public void onEvent(int arg0, BaseTween<?> arg1) {
-				if (arg0 == TweenCallback.COMPLETE) {
-					gameContext.setTimeModifier(1.0f);
-					currentRound++;
-					if (!gameOver) {
-						screen.restart();
-					} else {
-						JustAnotherGame game = screen.getGame();
-						game.setScreen(new LobbyScreen(game));
-						game.getServer().broadcast(new PlayerStateChange(JustAnotherGameController.LOBBY_STATE));
+		TweenGlobal.start(Tween.from(f, FloatAccessor.TYPE_VALUE, gameOver ? 3.75f : 1.25f).target(1)
+				.setCallback(new TweenCallback() {
+					@Override
+					public void onEvent(int arg0, BaseTween<?> arg1) {
+						if (arg0 == TweenCallback.COMPLETE) {
+							gameContext.setTimeModifier(1.0f);
+							currentRound++;
+							if (!gameOver) {
+								screen.restart();
+							} else {
+								JustAnotherGame game = screen.getGame();
+								game.setScreen(new LobbyScreen(game));
+								game.getServer()
+										.broadcast(new PlayerStateChange(JustAnotherGameController.LOBBY_STATE));
+							}
+						}
 					}
-				}
-			}
-		}));
+				}));
 
 		// TODO flashy effects on winner
 

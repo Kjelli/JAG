@@ -49,6 +49,7 @@ public class JagServer {
 
 	public void update(float delta) {
 		if (listener == null) {
+			eventQueue.clear();
 			return;
 		}
 		while (eventQueue.size > 0) {
@@ -91,6 +92,10 @@ public class JagServer {
 
 	public void broadcast(GamePacket packet) {
 		server.sendToAllTCP(packet);
+	}
+	
+	public void broadcastExcept(int id, GamePacket packet){
+		server.sendToAllExceptTCP(id, packet);
 	}
 
 	public NetworkListener getListener() {

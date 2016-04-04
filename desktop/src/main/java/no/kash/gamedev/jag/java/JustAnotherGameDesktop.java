@@ -9,11 +9,15 @@ import no.kash.gamedev.jag.controller.JustAnotherGameController;
 import no.kash.gamedev.jag.game.JustAnotherGame;
 
 public class JustAnotherGameDesktop {
-	public static void main (String[] args) {
+	public static void main(String[] args) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.width = 800;
 		config.height = 600;
 		ActionResolver resolver = new DesktopActionResolver();
-		new LwjglApplication(new JustAnotherGame(resolver), config);
+		if (args.length == 0) {
+			new LwjglApplication(new JustAnotherGame(resolver), config);
+		} else {
+			new LwjglApplication(new JustAnotherGameController(resolver), config);
+		}
 	}
 }

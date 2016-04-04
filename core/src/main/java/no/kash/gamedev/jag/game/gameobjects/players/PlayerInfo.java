@@ -11,6 +11,7 @@ public class PlayerInfo {
 	public Color color = new Color(Color.WHITE);
 	public int timesPlayed = -1;
 	public boolean ready = false;
+	public boolean gameMaster = false;
 
 	// session specific information
 	public int roundsWon = 0;

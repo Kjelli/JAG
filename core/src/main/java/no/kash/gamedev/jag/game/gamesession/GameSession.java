@@ -8,7 +8,7 @@ import no.kash.gamedev.jag.game.gamesession.roundhandlers.RoundHandler;
 
 public class GameSession {
 	public GameMode gameMode = GameMode.STANDARD_FFA;
-	public String mapFilename = "maps/sumoarena1.tmx";
+	public String mapFilename = "maps/sumoarena2.tmx";
 
 	public boolean dropIn = true;
 	public boolean testMode = true;
