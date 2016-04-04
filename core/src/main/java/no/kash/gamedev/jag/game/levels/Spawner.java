@@ -10,7 +10,7 @@ import no.kash.gamedev.jag.game.gamecontext.GameContext;
 public class Spawner {
 
 	private GameContext gameContext;
-	private ArrayList<SpawnTile> weaponTiles;
+	private ArrayList<WeaponSpawnTile> weaponTiles;
 
 	private Cooldown timerInterval;
 	private float interval = 6;
@@ -19,9 +19,9 @@ public class Spawner {
 		this.gameContext = gameContext;
 		timerInterval = new Cooldown(interval);
 
-		weaponTiles = new ArrayList<SpawnTile>();
+		weaponTiles = new ArrayList<WeaponSpawnTile>();
 		for (Vector2 points : wepSpawns) {
-			SpawnTile temp = new SpawnTile(points.x, points.y);
+			WeaponSpawnTile temp = new WeaponSpawnTile(points.x, points.y);
 			weaponTiles.add(temp);
 			this.gameContext.spawn(temp);
 			temp.reSpawnCooldown.startCooldown();
@@ -32,7 +32,7 @@ public class Spawner {
 	public void update(float delta) {
 		timerInterval.update(delta);
 		if (!timerInterval.isOnCooldown()) {
-			for (SpawnTile tile : weaponTiles) {
+			for (WeaponSpawnTile tile : weaponTiles) {
 				int randomNum = 1 + (int) (Math.random() * 2);
 				if (randomNum == 1) {
 					if (!tile.isOccupied() && !tile.reSpawnCooldown.isOnCooldown()) {

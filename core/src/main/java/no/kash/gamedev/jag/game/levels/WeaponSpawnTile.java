@@ -9,7 +9,7 @@ import no.kash.gamedev.jag.game.gameobjects.collectables.weapons.Weapon;
 import no.kash.gamedev.jag.game.gameobjects.particles.WeaponSpawnEffect;
 import no.kash.gamedev.jag.game.gameobjects.players.guns.GunType;
 
-public class SpawnTile extends AbstractGameObject {
+public class WeaponSpawnTile extends AbstractGameObject {
 
 	public Cooldown reSpawnCooldown;
 
@@ -26,7 +26,7 @@ public class SpawnTile extends AbstractGameObject {
 	int dropChancegolden = 15;
 	private boolean preStage;
 
-	public SpawnTile(float x, float y) {
+	public WeaponSpawnTile(float x, float y) {
 		super(x, y, 32, 32);
 		regular = new Sprite(Assets.spawntile_regular);
 		golden = new Sprite(Assets.spawntile_golden);

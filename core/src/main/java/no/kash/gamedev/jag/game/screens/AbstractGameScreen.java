@@ -1,5 +1,7 @@
 package no.kash.gamedev.jag.game.screens;
 
+import javax.swing.JOptionPane;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
@@ -59,13 +61,14 @@ public abstract class AbstractGameScreen implements Screen {
 		batch.begin();
 		draw(batch, delta);
 		batch.end();
-		hudCamera.lookAt(camera.position);
+		// hudCamera.lookAt(camera.position);
 		hudCamera.zoom = camera.zoom;
 		hudCamera.update();
 		hudBatch.begin();
 		drawHud(hudBatch, delta);
 		hudBatch.end();
 		stage.draw();
+
 	}
 
 	protected abstract void update(float delta);
@@ -78,8 +81,10 @@ public abstract class AbstractGameScreen implements Screen {
 
 	@Override
 	public void resize(int width, int height) {
-		stage.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
+		stage.getViewport().update(width, height, true);
+		camera.setToOrtho(false, Defs.WIDTH, Defs.HEIGHT);
 		camera.update();
+		hudCamera.setToOrtho(false, width, height);
 		hudCamera.update();
 	}
 

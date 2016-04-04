@@ -5,7 +5,9 @@ import static no.kash.gamedev.jag.controller.screens.ControllerScreen.JOYSTICK_L
 import static no.kash.gamedev.jag.controller.screens.ControllerScreen.JOYSTICK_MID;
 import static no.kash.gamedev.jag.controller.screens.ControllerScreen.JOYSTICK_RIGHT;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.badlogic.gdx.graphics.Color;
@@ -41,12 +43,13 @@ import no.kash.gamedev.jag.game.gamesession.roundhandlers.FFARoundHandler;
 import no.kash.gamedev.jag.game.gamesession.roundhandlers.RoundHandler;
 import no.kash.gamedev.jag.game.gamesession.roundhandlers.RoundResult;
 import no.kash.gamedev.jag.game.levels.Level;
-import no.kash.gamedev.jag.game.levels.SpawnTile;
+import no.kash.gamedev.jag.game.levels.PlayerSpawnPoint;
+import no.kash.gamedev.jag.game.levels.WeaponSpawnTile;
 
 public class GameScreen extends AbstractGameScreen {
 
 	@SuppressWarnings({ "rawtypes" })
-	private static final Class[] focusCameraOnPOIs = new Class[] { Player.class, Weapon.class, SpawnTile.class,
+	private static final Class[] focusCameraOnPOIs = new Class[] { Player.class, Weapon.class, WeaponSpawnTile.class,
 			Grenade.class, Explosion.class }, focusCameraOnWinner = new Class[] { Player.class };
 
 	GameSession gameSession;
@@ -55,7 +58,6 @@ public class GameScreen extends AbstractGameScreen {
 
 	boolean gameOver = false;
 
-	public RoundHandler roundHandler;
 	public RoundResult result;
 
 	// game)
@@ -70,6 +72,7 @@ public class GameScreen extends AbstractGameScreen {
 	protected void onShow() {
 		stage.setViewport(new StretchViewport(Defs.WIDTH, Defs.HEIGHT, camera));
 		initInputReceiver();
+		loadLevel();
 		start();
 
 	}
@@ -106,15 +109,15 @@ public class GameScreen extends AbstractGameScreen {
 	public void start() {
 		gameOver = false;
 
-		loadLevel();
-
-		if (gameSession.testMode) {
+		if (gameSession.testMode && gameSession.players.size() < 2) {
 			spawnPlayer(new PlayerInfo());
 		}
 
 		for (PlayerInfo player : gameSession.players.values()) {
 			spawnPlayer(player);
-			players.get(player.id).blockInput(true);
+			if (players.containsKey(player.id)) {
+				players.get(player.id).blockInput(true);
+			}
 		}
 		// No op
 		TweenableFloat f = new TweenableFloat(0);
@@ -131,30 +134,47 @@ public class GameScreen extends AbstractGameScreen {
 
 		getGameContext().getAnnouncer().announceRoundStart(gameSession.roundHandler.currentRound(), 3);
 
-		// TODO flashy starting effects on screen, countdown etc
-
 	}
 
 	public void restart() {
 		getGameContext().clear();
 		players.clear();
+		level.resetPlayerSpawns();
+		level.spawnWeaponSpawns();
 		start();
 	}
 
 	public void spawnPlayer(PlayerInfo player) {
 
-		// TODO No randomization
-		Vector2 spawnPoint = level.playerSpawns.get((int) (Math.random() * level.playerSpawns.size()));
-		float spawnX = spawnPoint.x - Player.WIDTH / 2;
-		float spawnY = spawnPoint.y - Player.HEIGHT / 2;
-		if (!gameSession.players.containsKey(player.id)) {
-			gameSession.players.put(player.id, player);
+		int index = 0;
+		while (true) {
+			if (index >= level.playerSpawns.size()) {
+				break;
+			}
+
+			PlayerSpawnPoint spawnPoint = level.playerSpawns.get(index);
+			if (spawnPoint.taken) {
+				index++;
+				continue;
+			}
+
+			float spawnX = spawnPoint.position.x - Player.WIDTH / 2;
+			float spawnY = spawnPoint.position.y - Player.HEIGHT / 2;
+			if (!gameSession.players.containsKey(player.id)) {
+				gameSession.players.put(player.id, player);
+			}
+			if (!players.containsKey(player.id)) {
+				Player newlyJoined = new Player(gameSession, player.id, spawnX, spawnY);
+				players.put(player.id, newlyJoined);
+				gameContext.spawn(newlyJoined);
+
+				spawnPoint.taken = true;
+				index++;
+			}
+			return;
 		}
-		if (!players.containsKey(player.id)) {
-			Player newlyJoined = new Player(gameSession, player.id, spawnX, spawnY);
-			players.put(player.id, newlyJoined);
-			gameContext.spawn(newlyJoined);
-		}
+		gameContext.getAnnouncer().announce("Too many players! (max " + level.playerSpawns.size() + ")");
+
 	}
 
 	private void checkWinCondition() {
@@ -183,8 +203,8 @@ public class GameScreen extends AbstractGameScreen {
 				focusClasses = focusCameraOnPOIs;
 			}
 			for (GameObject object : gameContext.getByClass(focusClasses)) {
-				if (object instanceof SpawnTile) {
-					if (!((SpawnTile) object).isSpawning()) {
+				if (object instanceof WeaponSpawnTile) {
+					if (!((WeaponSpawnTile) object).isSpawning()) {
 						continue;
 					}
 				} else if (object instanceof Weapon) {

@@ -19,13 +19,15 @@ public class Level {
 	public int tileWidth, tileHeight;
 	public float x, y;
 
+	private GameContext context;
 	public OrthogonalTiledMapRenderer renderer;
 
 	public ArrayList<Vector2> weaponSpawns;
-	public ArrayList<Vector2> playerSpawns;
-	Spawner spawner;
+	public ArrayList<PlayerSpawnPoint> playerSpawns;
+	public Spawner spawner;
 
 	public Level(GameSession settings, SpriteBatch batch, GameContext context) {
+		this.context = context;
 		map = new TmxMapLoader().load(settings.mapFilename);
 
 		width = (Integer) map.getProperties().get("width", -1, Integer.class);
@@ -34,16 +36,27 @@ public class Level {
 		tileHeight = (Integer) map.getProperties().get("tileheight", -1, Integer.class);
 		renderer = new OrthogonalTiledMapRenderer(map, batch);
 
-		weaponSpawns = determinePoints("weaponspawn");
-		playerSpawns = determinePoints("spawnpoints");
-		spawner = new Spawner(weaponSpawns, context);
+		spawnWeaponSpawns();
+		playerSpawns = determinePlayerSpawnPoints("spawnpoints");
 
 		renderer.setView(context.getStage().getCamera().projection, 0, 0, width * tileWidth, height * tileHeight);
 	}
 
-	private ArrayList<Vector2> determinePoints(String layer) {
+	private ArrayList<PlayerSpawnPoint> determinePlayerSpawnPoints(String layer) {
 		MapObjects weaponSpawnPoints = map.getLayers().get(layer).getObjects();
-		ArrayList<Vector2> tempList = new ArrayList<Vector2>();
+		ArrayList<PlayerSpawnPoint> tempList = new ArrayList<>();
+		for (int i = 0; i < weaponSpawnPoints.getCount(); i++) {
+			MapObject temp = weaponSpawnPoints.get(i);
+			tempList.add(new PlayerSpawnPoint(temp.getProperties().get("x", Float.class),
+					temp.getProperties().get("y", Float.class)));
+			;
+		}
+		return tempList;
+	}
+
+	private ArrayList<Vector2> determineWeaponSpawnPoints(String layer) {
+		MapObjects weaponSpawnPoints = map.getLayers().get(layer).getObjects();
+		ArrayList<Vector2> tempList = new ArrayList<>();
 		for (int i = 0; i < weaponSpawnPoints.getCount(); i++) {
 			MapObject temp = weaponSpawnPoints.get(i);
 			tempList.add(new Vector2(temp.getProperties().get("x", Float.class),
@@ -57,6 +70,12 @@ public class Level {
 		map.dispose();
 	}
 
+	public void spawnWeaponSpawns() {
+		GameContext context = this.context;
+		weaponSpawns = determineWeaponSpawnPoints("weaponspawn");
+		spawner = new Spawner(weaponSpawns, context);
+	}
+
 	public void render() {
 
 		renderer.getBatch().end();
@@ -66,5 +85,11 @@ public class Level {
 
 	public void update(float delta) {
 		spawner.update(delta);
+	}
+
+	public void resetPlayerSpawns() {
+		for(PlayerSpawnPoint spawn : playerSpawns){
+			spawn.taken = false;
+		}
 	}
 }
