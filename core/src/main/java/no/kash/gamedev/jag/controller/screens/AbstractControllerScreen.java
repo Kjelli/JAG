@@ -169,26 +169,6 @@ public abstract class AbstractControllerScreen implements Screen {
 		return camera;
 	}
 
-	protected void handleStateChange(PlayerStateChange sc) {
-		game.getActionResolver().toast("Changing state : " + sc.stateId);
-		boolean failed = false;
-		switch (sc.stateId) {
-		case JustAnotherGameController.PLAY_STATE:
-			queueNextScreen(new ControllerScreen(game));
-			break;
-		case JustAnotherGameController.LOBBY_STATE:
-			queueNextScreen(new LobbyControllerScreen(game));
-			break;
-		default:
-			game.getActionResolver().toast("Unknown gamestate: " + sc.stateId);
-			failed = true;
-		}
-
-		if (!failed) {
-			game.getClient().broadcast(new PlayerStateChangeResponse(sc.stateId));
-		}
-	}
-
 	public Screen getNextScreen() {
 		return nextScreen;
 	}

@@ -8,4 +8,6 @@ public class Defs {
 	public static final String PREF_TIMES_PLAYED = "TIMES_PLAYED";
 	public static final String PREF_PLAYER_NAME = "PLAYER_NAME";
 	public static final String PREF_PLAYER_COLOR = "PLAYER_COLOR";
+	public static final String PREF_PLAYER_LEVEL = "PLAYER_LEVEL";
+	public static final String PREF_PLAYER_XP = "PLAYER_XP";
 }

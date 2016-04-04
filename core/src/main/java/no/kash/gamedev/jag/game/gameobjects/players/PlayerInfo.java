@@ -9,11 +9,15 @@ public class PlayerInfo {
 	public int id = -1;
 	public String name = "Minge";
 	public Color color = new Color(Color.WHITE);
-	public int timesPlayed = -1;
-	public boolean ready = false;
 
+	public int timesPlayed = -1;
+	public int level;
+	public int xp;
+	
 	// session specific information
+	public boolean ready = false;
 	public int roundsWon = 0;
+	
 	public List<PlayerInfo> killed;
 	public List<PlayerInfo> killedBy;
 

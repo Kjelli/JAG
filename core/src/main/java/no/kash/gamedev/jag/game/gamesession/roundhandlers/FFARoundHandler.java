@@ -5,6 +5,8 @@ import java.util.Map;
 import aurelienribon.tweenengine.BaseTween;
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenCallback;
+import no.kash.gamedev.jag.commons.defs.Defs;
+import no.kash.gamedev.jag.commons.defs.Prefs;
 import no.kash.gamedev.jag.commons.network.packets.PlayerStateChange;
 import no.kash.gamedev.jag.commons.tweens.TweenGlobal;
 import no.kash.gamedev.jag.commons.tweens.TweenableFloat;
@@ -85,7 +87,7 @@ public class FFARoundHandler implements RoundHandler {
 		// No op
 		TweenableFloat f = new TweenableFloat(0);
 		final boolean gameOver = gameOver();
-		TweenGlobal.start(Tween.from(f, FloatAccessor.TYPE_VALUE, gameOver ? 3.75f : 1.25f).target(1).setCallback(new TweenCallback() {
+		TweenGlobal.start(Tween.from(f, FloatAccessor.TYPE_VALUE, gameOver ? 0.75f : 1.25f).target(1).setCallback(new TweenCallback() {
 			@Override
 			public void onEvent(int arg0, BaseTween<?> arg1) {
 				if (arg0 == TweenCallback.COMPLETE) {
@@ -94,16 +96,28 @@ public class FFARoundHandler implements RoundHandler {
 					if (!gameOver) {
 						screen.restart();
 					} else {
+						statsHandler();
 						JustAnotherGame game = screen.getGame();
 						game.setScreen(new LobbyScreen(game));
 						game.getServer().broadcast(new PlayerStateChange(JustAnotherGameController.LOBBY_STATE));
 					}
 				}
 			}
+
 		}));
 
-		// TODO flashy effects on winner
 
+	}
+	
+	private void statsHandler() {
+		JustAnotherGame game = (JustAnotherGame)gameContext.getGame();
+		for(PlayerInfo info : gameSession.players.values()){
+			int expEarned = 10;
+			expEarned += info.killed.size()*5;
+			expEarned += info.roundsWon*7;
+			game.getServer().send(info.id, new PlayerNewStats(expEarned));
+		}
+		
 	}
 
 	protected boolean gameOver() {

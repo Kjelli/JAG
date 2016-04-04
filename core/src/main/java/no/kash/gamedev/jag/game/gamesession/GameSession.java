@@ -15,7 +15,7 @@ public class GameSession {
 
 	public float startingHealth = 100f;
 	public float roundTime = 60.0f;
-	public int roundsToWin = 5;
+	public int roundsToWin = 2;
 
 	public Map<Integer, PlayerInfo> players;
 	public RoundHandler roundHandler;

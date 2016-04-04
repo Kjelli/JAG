@@ -12,7 +12,7 @@ import com.esotericsoftware.kryonet.Connection;
 
 import no.kash.gamedev.jag.assets.Assets;
 import no.kash.gamedev.jag.commons.defs.Defs;
-import no.kash.gamedev.jag.commons.network.JagReceiver;
+import no.kash.gamedev.jag.commons.network.JagServerPacketHandler;
 import no.kash.gamedev.jag.commons.network.packets.GamePacket;
 import no.kash.gamedev.jag.commons.network.packets.PlayerConnect;
 import no.kash.gamedev.jag.commons.network.packets.PlayerInput;
@@ -80,7 +80,7 @@ public class LobbyScreen extends AbstractGameScreen {
 		lobbyLabel = new GlyphLayout(font, "Lobby");
 		stage.setViewport(new StretchViewport(Defs.WIDTH, Defs.HEIGHT, camera));
 
-		game.setReceiver(new JagReceiver() {
+		game.setReceiver(new JagServerPacketHandler() {
 			@Override
 			public void handlePacket(Connection c, GamePacket m) {
 				if (m instanceof PlayerConnect) {
@@ -91,6 +91,8 @@ public class LobbyScreen extends AbstractGameScreen {
 					info.name = update.info[0];
 					info.id = c.getID();
 					info.timesPlayed = (int) update.state[0][0];
+					info.level = (int) update.state[0][1];
+					info.xp = (int) update.state[0][2];
 					info.ready = update.state[2][0] > 0;
 					info.color = new Color(update.state[1][0], update.state[1][1], update.state[1][2], 1);
 					if (!playerInfos.containsKey(c.getID())) {

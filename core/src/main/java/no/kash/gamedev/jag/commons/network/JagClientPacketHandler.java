@@ -5,9 +5,9 @@ import com.esotericsoftware.kryonet.Connection;
 import no.kash.gamedev.jag.commons.network.packets.GamePacket;
 import no.kash.gamedev.jag.commons.network.packets.PlayerInput;
 
-public interface JagReceiver {
-
-	void handleInput(PlayerInput input);
+public interface JagClientPacketHandler {
+	
+	void handleConnection(Connection c);
 
 	void handleDisconnection(Connection c);
 

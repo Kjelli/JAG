@@ -5,7 +5,7 @@ import com.esotericsoftware.kryonet.Connection;
 import no.kash.gamedev.jag.JagEndpoint;
 import no.kash.gamedev.jag.actionresolvers.ActionResolver;
 import no.kash.gamedev.jag.assets.Assets;
-import no.kash.gamedev.jag.commons.network.JagReceiver;
+import no.kash.gamedev.jag.commons.network.JagServerPacketHandler;
 import no.kash.gamedev.jag.commons.network.JagServer;
 import no.kash.gamedev.jag.commons.network.NetworkListener;
 import no.kash.gamedev.jag.commons.network.packets.GamePacket;
@@ -16,7 +16,7 @@ import no.kash.gamedev.jag.game.screens.LobbyScreen;
 
 public class JustAnotherGame extends JagEndpoint {
 
-	private JagReceiver receiver;
+	private JagServerPacketHandler receiver;
 	public static long ticks = 0;
 
 	public JustAnotherGame(ActionResolver resolver) {
@@ -77,11 +77,11 @@ public class JustAnotherGame extends JagEndpoint {
 		return server;
 	}
 
-	public JagReceiver getReceiver() {
+	public JagServerPacketHandler getReceiver() {
 		return receiver;
 	}
 
-	public void setReceiver(JagReceiver receiver) {
+	public void setReceiver(JagServerPacketHandler receiver) {
 		this.receiver = receiver;
 	}
 
