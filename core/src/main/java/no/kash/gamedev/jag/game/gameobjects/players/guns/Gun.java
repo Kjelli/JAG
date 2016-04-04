@@ -70,8 +70,13 @@ public class Gun {
 							bulletSpeed);
 					player.getGameContext().spawn(temp);
 				}
-
 				break;
+			case mac10:
+				for(int i = 0; i < 2; i++){
+					Bullet temp = new Bullet(player, player.getBulletOriginX()-(i*5), player.getBulletOriginY(),
+							(float) (player.getRotation() + Math.PI / 2), damage, bulletSpeed);
+					player.getGameContext().spawn(temp);
+				}
 			default:
 				Bullet temp = new Bullet(player, player.getBulletOriginX(), player.getBulletOriginY(),
 						(float) (player.getRotation() + Math.PI / 2), damage, bulletSpeed);

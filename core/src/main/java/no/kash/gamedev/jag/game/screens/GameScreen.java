@@ -5,6 +5,7 @@ import static no.kash.gamedev.jag.controller.screens.ControllerScreen.JOYSTICK_L
 import static no.kash.gamedev.jag.controller.screens.ControllerScreen.JOYSTICK_MID;
 import static no.kash.gamedev.jag.controller.screens.ControllerScreen.JOYSTICK_RIGHT;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -61,6 +62,7 @@ public class GameScreen extends AbstractGameScreen {
 		players = new HashMap<>();
 		this.gameSettings = settings;
 		this.gameSettings.roundHandler = new FFARoundHandler(gameContext, settings, players);
+		takenPoints = new ArrayList<Vector2>();
 	}
 
 	@Override
@@ -129,13 +131,18 @@ public class GameScreen extends AbstractGameScreen {
 		level.spawnWeaponSpawns();
 		start();
 	}
-
+	
+	private ArrayList<Vector2> takenPoints; 
+	
 	public void spawnPlayer(PlayerInfo player) {
 
 		// TODO No randomization
-		Vector2 spawnPoint = level.playerSpawns.get((int) (Math.random() * level.playerSpawns.size()));
+		
+		Vector2 spawnPoint = findFreeSpot();
+		
 		float spawnX = spawnPoint.x;
 		float spawnY = spawnPoint.y;
+		
 		if (!gameSettings.players.containsKey(player.id)) {
 			gameSettings.players.put(player.id, player);
 		}
@@ -144,6 +151,18 @@ public class GameScreen extends AbstractGameScreen {
 			players.put(player.id, newlyJoined);
 			gameContext.spawn(newlyJoined);
 		}
+	}
+
+	private Vector2 findFreeSpot() {
+		Vector2 spawnPoint = level.playerSpawns.get((int) (Math.random() * level.playerSpawns.size()));
+		for(Vector2 points:takenPoints){
+			if(spawnPoint.x == points.x && spawnPoint.y == points.y){
+				findFreeSpot();
+			}else{
+				points.add(spawnPoint);
+			}
+		}
+		return spawnPoint;
 	}
 
 	private void checkWinCondition() {
