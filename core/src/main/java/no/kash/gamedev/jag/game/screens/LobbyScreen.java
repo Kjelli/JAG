@@ -14,6 +14,7 @@ import no.kash.gamedev.jag.assets.Assets;
 import no.kash.gamedev.jag.commons.defs.Defs;
 import no.kash.gamedev.jag.commons.network.JagServerPacketHandler;
 import no.kash.gamedev.jag.commons.network.packets.GamePacket;
+import no.kash.gamedev.jag.commons.network.packets.GameSessionUpdate;
 import no.kash.gamedev.jag.commons.network.packets.PlayerConnect;
 import no.kash.gamedev.jag.commons.network.packets.PlayerInput;
 import no.kash.gamedev.jag.commons.network.packets.PlayerStateChange;
@@ -21,6 +22,7 @@ import no.kash.gamedev.jag.commons.network.packets.PlayerUpdate;
 import no.kash.gamedev.jag.controller.JustAnotherGameController;
 import no.kash.gamedev.jag.game.JustAnotherGame;
 import no.kash.gamedev.jag.game.gameobjects.players.PlayerInfo;
+import no.kash.gamedev.jag.game.gamesession.GameMode;
 import no.kash.gamedev.jag.game.gamesession.GameSession;
 import no.kash.gamedev.jag.game.lobby.PlayerInfoGUI;
 
@@ -115,6 +117,15 @@ public class LobbyScreen extends AbstractGameScreen {
 						playerInfos.get(c.getID()).setInfo(info);
 					}
 
+				} else if (m instanceof GameSessionUpdate) {
+					GameSessionUpdate update = (GameSessionUpdate) m;
+					session.dropIn = update.dropIn;
+					session.gameMode = GameMode.values()[update.gameModeIndex];
+					session.roundsToWin = update.roundsToWin;
+					session.roundTime = update.roundTime;
+					session.testMode = update.testMode;
+					session.startingHealth = update.startingHealth;
+					System.out.println("Changed gamesession settings");
 				}
 			}
 

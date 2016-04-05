@@ -13,15 +13,16 @@ import no.kash.gamedev.jag.commons.network.JagServerPacketHandler;
 import no.kash.gamedev.jag.commons.network.NetworkListener;
 import no.kash.gamedev.jag.commons.network.packets.GamePacket;
 import no.kash.gamedev.jag.commons.network.packets.PlayerInput;
+import no.kash.gamedev.jag.commons.network.packets.PlayerNewStats;
 import no.kash.gamedev.jag.commons.network.packets.PlayerStateChange;
 import no.kash.gamedev.jag.commons.network.packets.PlayerStateChangeResponse;
 import no.kash.gamedev.jag.commons.tweens.TweenGlobal;
+import no.kash.gamedev.jag.controller.preferences.PlayerPreferences;
 import no.kash.gamedev.jag.controller.screens.AbstractControllerScreen;
 import no.kash.gamedev.jag.controller.screens.ConfigureScreen;
 import no.kash.gamedev.jag.controller.screens.ControllerScreen;
 import no.kash.gamedev.jag.controller.screens.LoadingScreen;
 import no.kash.gamedev.jag.controller.screens.LobbyControllerScreen;
-import no.kash.gamedev.jag.game.gamesession.roundhandlers.PlayerNewStats;
 
 public class JustAnotherGameController extends JagEndpoint {
 	public static final int PLAY_STATE = 1, LOBBY_STATE = 2;
@@ -48,9 +49,9 @@ public class JustAnotherGameController extends JagEndpoint {
 						handleStateChange(sc);
 					} else if (m instanceof PlayerNewStats) {
 						PlayerNewStats stats = (PlayerNewStats) m;
-						Player.setExp(Player.getExp() + stats.xp);
-						Player.setTimesPlayed(Player.getTimesPlayed() + 1);
-						Player.save();
+						PlayerPreferences.setExp(PlayerPreferences.getExp() + stats.xp);
+						PlayerPreferences.setTimesPlayed(PlayerPreferences.getTimesPlayed() + 1);
+						PlayerPreferences.save();
 
 					} else {
 						getReceiver().handlePacket(c, m);

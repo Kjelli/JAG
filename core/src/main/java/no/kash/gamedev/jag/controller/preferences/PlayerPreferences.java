@@ -1,11 +1,11 @@
-package no.kash.gamedev.jag.controller;
+package no.kash.gamedev.jag.controller.preferences;
 
 import com.badlogic.gdx.graphics.Color;
 
 import no.kash.gamedev.jag.commons.defs.Defs;
 import no.kash.gamedev.jag.commons.defs.Prefs;
 
-public class Player {
+public class PlayerPreferences {
 	
 	private static String name;
 	private static Color color;
@@ -47,7 +47,7 @@ public class Player {
 	}
 
 	public static void setName(String name) {
-		Player.name = name;
+		PlayerPreferences.name = name;
 		save();
 	}
 
@@ -56,7 +56,7 @@ public class Player {
 	}
 
 	public static void setColor(Color color) {
-		Player.color = color;
+		PlayerPreferences.color = color;
 		save();
 	}
 
@@ -65,7 +65,7 @@ public class Player {
 	}
 
 	public static void setLevel(int level) {
-		Player.level = level;
+		PlayerPreferences.level = level;
 		save();
 	}
 
@@ -78,7 +78,7 @@ public class Player {
 			exp-=expReq();
 			levelUp();
 		}
-		Player.exp = exp;
+		PlayerPreferences.exp = exp;
 		save();
 	}
 
@@ -87,7 +87,7 @@ public class Player {
 	}
 
 	public static void setTimesPlayed(int timesPlayed) {
-		Player.timesPlayed = timesPlayed;
+		PlayerPreferences.timesPlayed = timesPlayed;
 	}
 	
 }

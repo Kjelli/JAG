@@ -13,8 +13,8 @@ public class GameSession {
 	public boolean dropIn = true;
 	public boolean testMode = true;
 
-	public float startingHealth = 100f;
-	public float roundTime = 60.0f;
+	public int startingHealth = 100;
+	public int roundTime = 60;
 	public int roundsToWin = 2;
 
 	public Map<Integer, PlayerInfo> players;
