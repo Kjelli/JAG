@@ -2,6 +2,7 @@ package no.kash.gamedev.jag.game.gameobjects.players.status;
 
 import no.kash.gamedev.jag.game.commons.utils.Cooldown;
 import no.kash.gamedev.jag.game.gameobjects.particles.Burn;
+import no.kash.gamedev.jag.game.gameobjects.particles.Poison;
 import no.kash.gamedev.jag.game.gameobjects.players.Player;
 
 public class Status {
@@ -30,6 +31,13 @@ public class Status {
 			player.getGameContext()
 					.spawn(new Burn(player.getCenterX() + (float) (Math.random() * Player.WIDTH / 2 - Player.WIDTH / 4),
 							player.getCenterY() + (float) (Math.random() * Player.HEIGHT / 2 - Player.HEIGHT / 4)));
+			player.damage(this);
+			break;
+		case poison:
+			System.out.println("#POISON");
+			player.getGameContext()
+			.spawn(new Poison(player.getCenterX() + (float) (Math.random() * Player.WIDTH / 2 - Player.WIDTH / 4),
+					player.getCenterY() + (float) (Math.random() * Player.HEIGHT / 2 - Player.HEIGHT / 4)));
 			player.damage(this);
 			break;
 		case slow:

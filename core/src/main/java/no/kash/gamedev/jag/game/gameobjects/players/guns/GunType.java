@@ -6,12 +6,14 @@ import no.kash.gamedev.jag.assets.Assets;
 
 public enum GunType {
 
-	pistol("pistol", 0, 0.4f, -1, Assets.pistol, -1, -1, Assets.pistol_ground, 15f, 300f, 0f, 0f),
-	m4("m4", 1, 0.05f, 0.7f, Assets.m4, 60, 30,Assets.m4_ground, 10f, 460f, -Math.PI / 18, 0.1f),
-	shotgun("shotgun", 1, 0.7f, 0.6f, Assets.shotgun, 16, 8,Assets.shotgun_ground, 10f, 400f, -Math.PI / 18, 0.2f),
-	goldengun("goldengun", 3, 0.7f, 1.2f, Assets.goldengun, 3, 3, Assets.goldengun_ground, 1400f, 800f, 0f, 0.01f),
-	mac10("mac10", 1, 0.1f, 0.7f, Assets.mac10, 60, 60,Assets.mac10_ground, 8f, 400f, 0, 0.2f),
-	flamethrower("flamethrower", 2, 0.005f, 0.7f, Assets.flamethrower, 0, 500,Assets.flamethrower_ground, 10f, 100f, -Math.PI / 18, 0.1f);
+	pistol("pistol", 0, 0.4f, -1, Assets.pistol, -1, -1, Assets.pistol_ground, 15f, 300f, 0f, 0f,true),
+	m4("m4", 1, 0.05f, 0.7f, Assets.m4, 60, 30,Assets.m4_ground, 10f, 460f, -Math.PI / 18, 0.2f,true),
+	shotgun("shotgun", 1, 0.7f, 0.6f, Assets.shotgun, 16, 8,Assets.shotgun_ground, 10f, 400f, -Math.PI / 18, 0.2f,true),
+	goldengun("goldengun", 3, 0.7f, 1.2f, Assets.goldengun, 3, 3, Assets.goldengun_ground, 1400f, 800f, 0f, 0.02f,false),
+	mac10("mac10", 1, 0.1f, 0.7f, Assets.mac10, 60, 60,Assets.mac10_ground, 8f, 400f, 0, 0.2f,true),
+	flamethrower("flamethrower", 2, 0.005f, 0.7f, Assets.flamethrower, 0, 200,Assets.flamethrower_ground, 10f, 100f, -Math.PI / 18, 0.1f,true),
+	crossbow("goldengun", 2, 0.5f, 1.2f, Assets.crossbow, 0, 8, Assets.crossbow_ground, 10f, 800f,  -Math.PI / 18, 0.1f,false),;
+
 	
 	public static GunType random(){
 		return pistol;
@@ -30,9 +32,11 @@ public enum GunType {
 	
 	private float probability;
 	private int tier;
+	
+	private boolean holdToShoot;
 
 	GunType(String name, int tier, float cooldown, float reloadTime, Texture gunTexture, int maxAmmo, int magazineSize,
-			Texture onGroundTexture, float damage, float bulletSpeed, double angleOffset, float probability) {
+			Texture onGroundTexture, float damage, float bulletSpeed, double angleOffset, float probability, boolean holdToShoot) {
 		this.name = name;
 		this.tier = tier;
 		this.cooldown = cooldown;
@@ -45,6 +49,7 @@ public enum GunType {
 		this.bulletSpeed = bulletSpeed;
 		this.angleOffset = angleOffset;
 		this.probability = probability;
+		this.holdToShoot = holdToShoot;
 	}
 
 	public int getMaxAmmo() {
@@ -95,4 +100,9 @@ public enum GunType {
 		return probability;
 	}
 
+	public boolean isHoldToShoot() {
+		return holdToShoot;
+	}
+
+	
 }
