@@ -1,7 +1,5 @@
 package no.kash.gamedev.jag.assets;
 
-import java.awt.datatransfer.FlavorMap;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -26,7 +24,6 @@ public class Assets {
 	public static Texture goldengun;
 	public static Texture flamethrower;
 	public static Texture grenade;
-	
 
 	// Particles
 	public static Texture blood;
@@ -43,7 +40,6 @@ public class Assets {
 	public static Texture goldengun_ground;
 	public static Texture mac10_ground;
 	public static Texture flamethrower_ground;
-	
 
 	// Icons
 	public static Texture health_icon;
@@ -58,12 +54,11 @@ public class Assets {
 	// Hud
 	public static Texture health, health_lost, health_bg, health_border, health_shine;
 	public static Texture card_long_border, card_long_border_ready, card_long_bg, card_square_border, card_square_bg,
-			card_square_border_selected;
+			card_square_border_selected, card_xl_border, card_xl_bg;
 
 	// Fonts
 	public static BitmapFont font, fontSmall, fontLarge;
 	public static BitmapFont announcerFont;
-
 
 	public static void load() {
 		plain = load("plain.png");
@@ -93,9 +88,8 @@ public class Assets {
 		shotgun_ground = load("sprites/gun_shotgun.png");
 		goldengun_ground = load("sprites/gun_goldengun.png");
 		flamethrower_ground = load("sprites/gun_flamethrower.png");
-		goldengun_ground = load ("sprites/gun_goldengun.png");
+		goldengun_ground = load("sprites/gun_goldengun.png");
 
-		
 		// Icons
 
 		mac10_ground = load("sprites/gun_mac10.png");
@@ -123,6 +117,9 @@ public class Assets {
 		card_square_bg = load("sprites/card_square_bg.png");
 		card_square_border = load("sprites/card_square_border.png");
 		card_square_border_selected = load("sprites/card_square_border_selected.png");
+		
+		card_xl_bg = load("sprites/card_xl_bg.png");
+		card_xl_border = load("sprites/card_xl_border.png");
 		// Animations
 
 		Texture explosionSheet = load("animations/explosion1.png");
@@ -132,32 +129,32 @@ public class Assets {
 			explosion_frames.add(region);
 		}
 
-		FreeTypeFontGenerator fontgen = new FreeTypeFontGenerator(Gdx.files.internal("pixelmix.ttf"));
+		FreeTypeFontGenerator fontgen = new FreeTypeFontGenerator(Gdx.files.internal("novamono.ttf"));
 		FreeTypeFontParameter font20params = new FreeTypeFontParameter();
 		font20params.minFilter = Texture.TextureFilter.Nearest;
 		font20params.magFilter = Texture.TextureFilter.MipMapLinearNearest;
-		font20params.size = 20;
+		font20params.size = 35;
 
 		font = fontgen.generateFont(font20params);
 
 		FreeTypeFontParameter font12params = new FreeTypeFontParameter();
 		font12params.minFilter = Texture.TextureFilter.Nearest;
 		font12params.magFilter = Texture.TextureFilter.MipMapLinearNearest;
-		font12params.size = 12;
+		font12params.size = 24;
 
 		fontSmall = fontgen.generateFont(font12params);
 
 		FreeTypeFontParameter font62params = new FreeTypeFontParameter();
 		font62params.minFilter = Texture.TextureFilter.Nearest;
 		font62params.magFilter = Texture.TextureFilter.MipMapLinearNearest;
-		font62params.size = 62;
+		font62params.size = 80;
 
 		fontLarge = fontgen.generateFont(font62params);
-		
+
 		FreeTypeFontParameter font40params = new FreeTypeFontParameter();
 		font40params.minFilter = Texture.TextureFilter.Nearest;
 		font40params.magFilter = Texture.TextureFilter.MipMapLinearNearest;
-		font40params.size = 12;
+		font40params.size = 24;
 
 		announcerFont = fontgen.generateFont(font40params);
 	}

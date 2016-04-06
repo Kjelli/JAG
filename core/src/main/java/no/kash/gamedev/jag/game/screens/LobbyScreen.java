@@ -25,6 +25,7 @@ import no.kash.gamedev.jag.game.JustAnotherGame;
 import no.kash.gamedev.jag.game.gameobjects.players.PlayerInfo;
 import no.kash.gamedev.jag.game.gamesession.GameMode;
 import no.kash.gamedev.jag.game.gamesession.GameSession;
+import no.kash.gamedev.jag.game.lobby.GameSessionInfoGUI;
 import no.kash.gamedev.jag.game.lobby.PlayerInfoGUI;
 
 public class LobbyScreen extends AbstractGameScreen {
@@ -33,6 +34,7 @@ public class LobbyScreen extends AbstractGameScreen {
 	BitmapFont font;
 
 	Map<Integer, PlayerInfoGUI> playerInfos;
+	GameSessionInfoGUI sessionGUI;
 
 	GameSession session;
 
@@ -40,6 +42,12 @@ public class LobbyScreen extends AbstractGameScreen {
 		super(game);
 		session = new GameSession();
 		playerInfos = new HashMap<>();
+		init();
+	}
+
+	private void init() {
+		sessionGUI = new GameSessionInfoGUI(stage.getWidth() - GameSessionInfoGUI.WIDTH,
+				stage.getHeight() - PlayerInfoGUI.HEIGHT , session);
 	}
 
 	public LobbyScreen(JustAnotherGame game, GameSession session) {
@@ -53,6 +61,7 @@ public class LobbyScreen extends AbstractGameScreen {
 					stage.getHeight() - (playerInfos.size() + 1) * PlayerInfoGUI.HEIGHT, pi);
 			playerInfos.put(pi.id, pis);
 		}
+		init();
 	}
 
 	@Override
@@ -68,7 +77,7 @@ public class LobbyScreen extends AbstractGameScreen {
 				for (PlayerInfoGUI playerInfoGUI : playerInfos.values()) {
 					PlayerInfo info = playerInfoGUI.getInfo();
 					session.players.put(info.id, info);
-					game.getServer().send(info.id, new PlayerStateChange(JustAnotherGameController.PLAY_STATE));
+					game.getServer().send(info.id, new PlayerStateChange(JustAnotherGameController.VOTE_MAP));
 				}
 				game.setScreen(new PlayScreen(game, session));
 			}
@@ -77,6 +86,7 @@ public class LobbyScreen extends AbstractGameScreen {
 
 	@Override
 	protected void draw(SpriteBatch batch, float delta) {
+		sessionGUI.draw(batch);
 		font.draw(batch, lobbyLabel, stage.getWidth() / 2 - lobbyLabel.width / 2,
 				stage.getHeight() - lobbyLabel.height);
 
@@ -149,6 +159,7 @@ public class LobbyScreen extends AbstractGameScreen {
 					session.startingHealth = update.startingHealth;
 					session.friendlyFire = update.friendlyFire;
 					session.drawNames = update.drawNames;
+					sessionGUI.refresh();
 
 					game.getServer().broadcast(update);
 

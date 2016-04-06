@@ -37,7 +37,7 @@ public class PlayerInfoGUI {
 		this.idLabel = new GlyphLayout(fontSmall, "ID: " + info.id, Color.BLACK, -1, -1, false);
 		this.timesPlayedLabel = new GlyphLayout(fontSmall, "Times played:    " + info.timesPlayed, Color.BLACK, -1, -1,
 				false);
-		this.levelLabel = new GlyphLayout(fontSmall, "Level:      " + info.level, Color.BLACK, -1, -1, false);
+		this.levelLabel = new GlyphLayout(fontSmall, "Level:           " + info.level, Color.BLACK, -1, -1, false);
 		card_border = new Sprite(Assets.card_long_border);
 		card_border.setX(x);
 		card_border.setY(y - HEIGHT);
@@ -51,7 +51,7 @@ public class PlayerInfoGUI {
 
 	public void draw(SpriteBatch batch) {
 
-		float spacing = fontSmall.getLineHeight() + 2.0f;
+		float spacing = fontSmall.getCapHeight() + 2.0f;
 
 		card_bg.draw(batch);
 		if (info.ready) {
@@ -61,8 +61,8 @@ public class PlayerInfoGUI {
 		}
 		font.draw(batch, nameLabel, x + BORDER_WIDTH, y - nameLabel.height / 2);
 		fontSmall.draw(batch, idLabel, x + width - idLabel.width - BORDER_WIDTH, y - idLabel.height / 2);
-		fontSmall.draw(batch, timesPlayedLabel, x + BORDER_WIDTH, y - spacing * 4);
-		fontSmall.draw(batch, levelLabel, x + BORDER_WIDTH, y - spacing * 3);
+		fontSmall.draw(batch, timesPlayedLabel, x + BORDER_WIDTH, y - spacing * 3);
+		fontSmall.draw(batch, levelLabel, x + BORDER_WIDTH, y - spacing * 2);
 	}
 
 	public void setInfo(PlayerInfo info) {
@@ -75,7 +75,7 @@ public class PlayerInfoGUI {
 		idLabel.setText(fontSmall, "ID: " + info.id, Color.BLACK, -1, -1, false);
 		timesPlayedLabel.setText(fontSmall, "Times played:    " + info.timesPlayed, Color.BLACK, -1, -1, false);
 		card_bg.setColor(info.color);
-		levelLabel.setText(fontSmall, "Level:      " + info.level, Color.BLACK, -1, -1, false);
+		levelLabel.setText(fontSmall, "Level:           " + info.level, Color.BLACK, -1, -1, false);
 	}
 
 	public PlayerInfo getInfo() {

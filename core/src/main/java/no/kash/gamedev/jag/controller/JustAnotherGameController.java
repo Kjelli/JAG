@@ -25,7 +25,7 @@ import no.kash.gamedev.jag.controller.screens.LoadingScreen;
 import no.kash.gamedev.jag.controller.screens.LobbyControllerScreen;
 
 public class JustAnotherGameController extends JagEndpoint {
-	public static final int PLAY_STATE = 1, LOBBY_STATE = 2;
+	public static final int VOTE_MAP = 1, LOBBY_STATE = 2, PLAY_STATE = 3;
 
 	ActionResolver resolver;
 	JagClient client;
@@ -87,7 +87,7 @@ public class JustAnotherGameController extends JagEndpoint {
 		getActionResolver().toast("Changing state : " + sc.stateId);
 		boolean failed = false;
 		switch (sc.stateId) {
-		case JustAnotherGameController.PLAY_STATE:
+		case JustAnotherGameController.VOTE_MAP:
 			((AbstractControllerScreen) getScreen()).queueNextScreen(new ControllerScreen(this));
 			break;
 		case JustAnotherGameController.LOBBY_STATE:

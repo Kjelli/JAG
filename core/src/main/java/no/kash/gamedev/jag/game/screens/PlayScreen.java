@@ -44,10 +44,10 @@ import no.kash.gamedev.jag.game.gamesession.GameSession;
 import no.kash.gamedev.jag.game.gamesession.roundhandlers.FFARoundHandler;
 import no.kash.gamedev.jag.game.gamesession.roundhandlers.RoundHandler;
 import no.kash.gamedev.jag.game.gamesession.roundhandlers.RoundResult;
-import no.kash.gamedev.jag.game.gamesession.roundhandlers.FFARoundResult;
 import no.kash.gamedev.jag.game.levels.Level;
 import no.kash.gamedev.jag.game.levels.PlayerSpawnPoint;
 import no.kash.gamedev.jag.game.levels.WeaponSpawnTile;
+import no.kash.gamedev.jag.game.gamesession.roundhandlers.FFARoundResult;
 
 public class PlayScreen extends AbstractGameScreen {
 
@@ -248,7 +248,7 @@ public class PlayScreen extends AbstractGameScreen {
 
 				if (m instanceof PlayerConnect) {
 					if (gameSession.dropIn) {
-						game.getServer().send(c.getID(), new PlayerStateChange(JustAnotherGameController.PLAY_STATE));
+						game.getServer().send(c.getID(), new PlayerStateChange(JustAnotherGameController.VOTE_MAP));
 					} else {
 						// TODO send message to wait for next game
 					}

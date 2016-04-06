@@ -73,10 +73,6 @@ public class JagClient {
 		}
 	}
 
-	public void update(int timeout) throws IOException {
-		client.update(timeout);
-	}
-
 	public void connect(String address, int port) throws UnknownHostException, IOException {
 		connect(InetAddress.getByName(address), port);
 	}
@@ -88,6 +84,11 @@ public class JagClient {
 
 	public void broadcast(GamePacket packet) {
 		client.sendTCP(packet);
+		try {
+			client.update(20);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public NetworkListener getListener() {

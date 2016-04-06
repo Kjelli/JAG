@@ -7,6 +7,7 @@ import java.util.Map;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
+import com.badlogic.gdx.maps.objects.TextureMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -42,7 +43,6 @@ public class Level {
 
 	public void init() {
 		map = new TmxMapLoader().load(session.mapFilename);
-
 		width = (Integer) map.getProperties().get("width", -1, Integer.class);
 		height = (Integer) map.getProperties().get("height", -1, Integer.class);
 		tileWidth = (Integer) map.getProperties().get("tilewidth", -1, Integer.class);
