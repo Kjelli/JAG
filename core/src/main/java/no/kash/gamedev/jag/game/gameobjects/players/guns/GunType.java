@@ -11,7 +11,7 @@ public enum GunType {
 	shotgun("shotgun", 0.7f, 0.6f, Assets.shotgun, 16, 8,Assets.shotgun_ground, 10f, 400f, -Math.PI / 18),
 	goldengun("goldengun", 0.7f, 1.2f, Assets.goldengun, 3, 3, Assets.goldengun_ground, 1400f, 800f, 0f),
 	mac10("mac10", 0.1f, 0.7f, Assets.mac10, 60, 60,Assets.mac10_ground, 8f, 400f, 0),
-	flamethrower("flamethrower", 0.05f, 0.7f, Assets.flamethrower, 0, 200,Assets.flamethrower_ground, 10f, 700f, -Math.PI / 18);
+	flamethrower("flamethrower", 0.005f, 0.7f, Assets.flamethrower, 0, 500,Assets.flamethrower_ground, 10f, 700f, -Math.PI / 18);
 	
 	
 

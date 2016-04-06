@@ -85,12 +85,14 @@ public class Gun {
 				player.getGameContext().spawn(temp);
 				break;
 			case flamethrower:
-				int amountOfFire = 10 + (int)(Math.random() * 20); 
-				for (int i = 0; i < amountOfFire; i++) {
+				float amountFire = 2 + (int)(Math.random() * 4);
+				for (int i = 0; i < amountFire; i++) {
+					float randDir = 1 + (int)(Math.random() * 8); 
 					Fire fire = new Fire(player,player.getBulletOriginX(), player.getBulletOriginY(),
-							(float) (player.getRotation() + Math.PI / 32.0f * (i - 2) + Math.PI / 2),
+							(float) (player.getRotation() + Math.PI / 32.0f * (randDir - 1) + Math.PI / 2),
 							bulletSpeed);
 					player.getGameContext().spawn(fire);
+					
 				}
 				break;
 			default:
