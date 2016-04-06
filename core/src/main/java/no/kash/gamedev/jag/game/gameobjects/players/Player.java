@@ -48,6 +48,8 @@ public class Player extends AbstractGameObject implements Collidable {
 
 	private boolean firing;
 	private boolean holdingGrenade;
+	private boolean aiming;
+	
 	private boolean blockInput = false;
 	private boolean invincible = false;
 
@@ -71,7 +73,7 @@ public class Player extends AbstractGameObject implements Collidable {
 
 	private GameSession gameSession;
 	
-	private GunType startingGun = GunType.flamethrower;
+	private GunType startingGun = GunType.pistol;
 
 	public Player(GameSession gameSession, PlayerInfo info, float x, float y) {
 		super(x, y, WIDTH, HEIGHT);
@@ -148,12 +150,26 @@ public class Player extends AbstractGameObject implements Collidable {
 		if (isInvincible()) {
 			spawnStars();
 		}
-
-		if (isFiring()) {
-			fireBullet();
-		}
+		
+		fireingLogic();
+		
 
 		TileCollisionDetector.checkTileCollisions(getGameContext().getLevel(), this, tileCollisionListener);
+	}
+
+	private void fireingLogic() {
+		if(!isFiring() && aiming){
+			fireBullet();
+			aiming = false;
+			gun.checkOutOfAmmo();
+		}
+		if (isFiring()) {
+			if(gun.isHoldToShoot()){
+				fireBullet();
+			}else{
+				aiming = true;
+			}
+		}
 	}
 
 	private void spawnStars() {

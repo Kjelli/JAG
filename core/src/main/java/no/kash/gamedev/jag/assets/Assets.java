@@ -16,6 +16,7 @@ public class Assets {
 
 	// Weapons
 	public static Texture bullet;
+	public static Texture dart;
 
 	public static Texture pistol;
 	public static Texture m4;
@@ -24,10 +25,13 @@ public class Assets {
 	public static Texture goldengun;
 	public static Texture flamethrower;
 	public static Texture grenade;
+	public static Texture crossbow;
+	
 
 	// Particles
 	public static Texture blood;
 	public static Texture fire;
+	public static Texture poison;
 	public static Texture star;
 	public static Texture confetti;
 	public static Texture wepSpawnEffect;
@@ -40,6 +44,8 @@ public class Assets {
 	public static Texture goldengun_ground;
 	public static Texture mac10_ground;
 	public static Texture flamethrower_ground;
+	public static Texture crossbow_ground;
+	
 
 	// Icons
 	public static Texture health_icon;
@@ -67,17 +73,20 @@ public class Assets {
 
 		// Weapons
 		bullet = load("bullet.png");
+		dart = load("dart.png");
 		pistol = load("playerSprite/pistol.png");
 		m4 = load("playerSprite/m4.png");
 		shotgun = load("playerSprite/shotgun.png");
 		goldengun = load("playerSprite/goldengun.png");
 		mac10 = load("playerSprite/mac10.png");
 		flamethrower = load("playerSprite/flamethrower.png");
+		crossbow = load("playerSprite/crossbow.png");
 		grenade = load("sprites/grenade.png");
 
 		// Particles
 		blood = load("blood.png");
 		fire = load("fire.png");
+		poison = load("poison.png");
 		wepSpawnEffect = load("sprites/spawnEffect.png");
 		star = load("sprites/star.png");
 		confetti = load("sprites/confetti.png");
@@ -88,7 +97,10 @@ public class Assets {
 		shotgun_ground = load("sprites/gun_shotgun.png");
 		goldengun_ground = load("sprites/gun_goldengun.png");
 		flamethrower_ground = load("sprites/gun_flamethrower.png");
-		goldengun_ground = load("sprites/gun_goldengun.png");
+
+		goldengun_ground = load ("sprites/gun_goldengun.png");
+		crossbow_ground = load ("sprites/gun_crossbow.png");
+
 
 		// Icons
 

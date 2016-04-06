@@ -7,6 +7,7 @@ import no.kash.gamedev.jag.commons.graphics.Draw;
 import no.kash.gamedev.jag.commons.network.packets.PlayerUpdate;
 import no.kash.gamedev.jag.game.JustAnotherGame;
 import no.kash.gamedev.jag.game.commons.utils.Cooldown;
+import no.kash.gamedev.jag.game.gameobjects.bullets.Dart;
 import no.kash.gamedev.jag.game.gameobjects.bullets.Fire;
 import no.kash.gamedev.jag.game.gameobjects.bullets.NormalBullet;
 import no.kash.gamedev.jag.game.gameobjects.players.Player;
@@ -21,6 +22,8 @@ public class Gun {
 	protected int ammo;
 	protected float damage;
 	protected float bulletSpeed;
+	
+	protected boolean holdToShoot;
 
 	protected double angleOffset;
 
@@ -41,7 +44,9 @@ public class Gun {
 		this.damage = type.getDamage();
 		this.bulletSpeed = type.getBulletSpeed();
 		this.angleOffset = type.getAngleOffset();
+		this.holdToShoot = type.isHoldToShoot();
 
+		
 		bulletCooldown = new Cooldown(type.getCooldown());
 		reloadCooldown = new Cooldown(type.getReloadTime());
 	}
@@ -55,11 +60,15 @@ public class Gun {
 		this.player = player;
 		sprite.setOrigin(player.getWidth() / 2, player.getHeight() / 2);
 	}
-
-	public void shoot() {
+	
+	public void checkOutOfAmmo(){
 		if (ammo == 0 && magazineAmmo == 0) {
 			player.equipGun(GunType.pistol);
 		}
+	}
+
+	public void shoot() {
+		checkOutOfAmmo();
 		if ((magazineAmmo == -1 || magazineAmmo > 0) && bulletCooldown.getCooldownTimer() == 0
 				&& reloadCooldown.getCooldownTimer() == 0) {
 			switch (type) {
@@ -99,6 +108,11 @@ public class Gun {
 					player.getGameContext().spawn(fire);
 
 				}
+				break;
+			case crossbow:
+				Dart dart = new Dart(player, player.getBulletOriginX(), player.getBulletOriginY(),
+						(float) (player.getRotation() + Math.PI / 2), damage, bulletSpeed);
+				player.getGameContext().spawn(dart);
 				break;
 			default:
 				NormalBullet tempo = new NormalBullet(player, player.getBulletOriginX(), player.getBulletOriginY(),
@@ -176,4 +190,8 @@ public class Gun {
 		return magazineAmmo;
 	}
 
+	public boolean isHoldToShoot() {
+		return holdToShoot;
+	}
+	
 }

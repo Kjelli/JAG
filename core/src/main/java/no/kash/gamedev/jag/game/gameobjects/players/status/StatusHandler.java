@@ -36,5 +36,6 @@ public class StatusHandler {
 			}
 		}
 		statuses.add(status);
+		status.duration.startCooldown();
 	}
 }
