@@ -14,23 +14,26 @@ public class WeaponSpawnTile extends AbstractGameObject {
 	public Cooldown reSpawnCooldown;
 
 	private Sprite regular;
-	private Sprite pre;
-	private Sprite golden;
+	private Sprite common, rare, epic;
 
 	private boolean occupied;
 
 	private Cooldown cooldown;
 
 	private Weapon weapon;
-	int goldenGunDrop;
-	int dropChancegolden = 15;
 	private boolean preStage;
 
-	public WeaponSpawnTile(float x, float y) {
+	public GunType nextWeapon;
+
+	public WeaponSpawner spawner;
+
+	public WeaponSpawnTile(WeaponSpawner spawner, float x, float y) {
 		super(x, y, 32, 32);
+		this.spawner = spawner;
 		regular = new Sprite(Assets.spawntile_regular);
-		golden = new Sprite(Assets.spawntile_golden);
-		pre = new Sprite(Assets.spawntile_pre);
+		epic = new Sprite(Assets.spawntile_epic);
+		rare = new Sprite(Assets.spawntile_rare);
+		common = new Sprite(Assets.spawntile_common);
 		setSprite(regular);
 		cooldown = new Cooldown(3);
 		reSpawnCooldown = new Cooldown(8);
@@ -55,51 +58,48 @@ public class WeaponSpawnTile extends AbstractGameObject {
 			preStage = false;
 			occupied = true;
 			setSprite(regular);
-			if (goldenGunDrop == 1) {
-				createGoldenGun();
-			} else {
-				createRegularWeapon();
-			}
+			spawnWeapon();
 		}
 	}
 
-	private void createWeapon(GunType type) {
-		weapon = new Weapon(getCenterX(), getCenterY(), type);
+	private void spawnWeapon() {
+		weapon = new Weapon(getCenterX(), getCenterY(), nextWeapon);
 		getGameContext().spawn(weapon);
 		getGameContext().spawn(new WeaponSpawnEffect(getCenterX(), getCenterY()));
 	}
 
-	private void createGoldenGun() {
-		createWeapon(GunType.goldengun);
-	}
-
-	private void createRegularWeapon() {
-		createWeapon(randomGun());
-	}
-
-	public void spawnWeapon() {
-		goldenGunDrop = 1 + (int) (Math.random() * dropChancegolden);
-		if (goldenGunDrop == 1) {
-			setSprite(golden);
-		} else {
-			setSprite(pre);
+	public void preSpawnWeapon() {
+		nextWeapon = randomGun();
+		switch(nextWeapon.getTier()){
+		default:
+		case 1:
+			setSprite(common);
+			break;
+		case 2:
+			setSprite(rare);
+			break;
+		case 3:
+			setSprite(epic);
+			break;
 		}
 		cooldown.startCooldown();
 		preStage = true;
 	}
 
 	private GunType randomGun() {
-		int randomNum = 1 + (int) (Math.random() * 3);
-		switch (randomNum) {
-		case 1:
-			return GunType.m4;
-		case 2:
-			return GunType.shotgun;
-		case 3:
-			return GunType.mac10;
-		default:
-			return GunType.m4;
+		GunType next = null;
+		double random = Math.random() * spawner.cumProbs;
+		double oldTreshold = 0;
+		double treshold = 0;
+		for (GunType type : GunType.values()) {
+			treshold += type.getProbability();
+			if (random > oldTreshold && random < treshold) {
+				next = type;
+				break;
+			}
+			oldTreshold = treshold;
 		}
+		return next;
 	}
 
 	public boolean isOccupied() {

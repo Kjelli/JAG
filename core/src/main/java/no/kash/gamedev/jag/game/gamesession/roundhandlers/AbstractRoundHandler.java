@@ -15,6 +15,7 @@ import no.kash.gamedev.jag.game.JustAnotherGame;
 import no.kash.gamedev.jag.game.gamecontext.GameContext;
 import no.kash.gamedev.jag.game.gameobjects.players.Player;
 import no.kash.gamedev.jag.game.gameobjects.players.PlayerInfo;
+import no.kash.gamedev.jag.game.gameobjects.players.status.Status;
 import no.kash.gamedev.jag.game.gamesession.GameSession;
 import no.kash.gamedev.jag.game.screens.PlayScreen;
 import no.kash.gamedev.jag.game.screens.LobbyScreen;
@@ -48,7 +49,23 @@ public abstract class AbstractRoundHandler<T> implements RoundHandler<T> {
 		killer.getInfo().killed.add(killed.getInfo());
 		killed.getInfo().killedBy.add(killer.getInfo());
 		players.remove(killed.getId());
-		System.out.println(players.size() + " / " + gameSession.players.size() + " left");
+	}
+
+	@Override
+	public void playerKilled(Player killed, Status status) {
+		killed.destroy();
+
+		if (status.causer != null) {
+			// Status was caused by someone else
+			status.causer.getInfo().killed.add(killed.getInfo());
+			killed.getInfo().killedBy.add(status.causer.getInfo());
+			gameContext.getAnnouncer()
+					.announce(killed + " " + status.type.killMessage + " " + status.causer.getInfo().name);
+		} else {
+			// SUICIDE OTHERWISE
+			killed.getInfo().killedBy.add(killed.getInfo());
+		}
+		players.remove(killed.getId());
 	}
 
 	@Override

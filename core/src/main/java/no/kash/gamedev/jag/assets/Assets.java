@@ -51,8 +51,9 @@ public class Assets {
 
 	// MapTiles
 	public static Texture spawntile_regular;
-	public static Texture spawntile_pre;
-	public static Texture spawntile_golden;
+	public static Texture spawntile_common;
+	public static Texture spawntile_rare;
+	public static Texture spawntile_epic;
 
 	// Hud
 	public static Texture health, health_lost, health_bg, health_border, health_shine;
@@ -62,6 +63,7 @@ public class Assets {
 	// Fonts
 	public static BitmapFont font, fontSmall, fontLarge;
 	public static BitmapFont announcerFont;
+
 
 	public static void load() {
 		plain = load("plain.png");
@@ -103,8 +105,9 @@ public class Assets {
 
 		// MapTiles
 		spawntile_regular = load("maps/sprites/spawner_regular.png");
-		spawntile_pre = load("maps/sprites/spawner_pre.png");
-		spawntile_golden = load("maps/sprites/spawner_golden.png");
+		spawntile_common = load("maps/sprites/spawner_common.png");
+		spawntile_rare = load("maps/sprites/spawner_rare.png");
+		spawntile_epic = load("maps/sprites/spawner_epic.png");
 
 		// Hud
 		health_icon = load("sprites/health_icon.png");

@@ -6,10 +6,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import no.kash.gamedev.jag.commons.graphics.Draw;
 import no.kash.gamedev.jag.commons.network.packets.PlayerUpdate;
 import no.kash.gamedev.jag.game.JustAnotherGame;
-import no.kash.gamedev.jag.game.announcer.Announcement;
 import no.kash.gamedev.jag.game.commons.utils.Cooldown;
-import no.kash.gamedev.jag.game.gameobjects.bullets.NormalBullet;
 import no.kash.gamedev.jag.game.gameobjects.bullets.Fire;
+import no.kash.gamedev.jag.game.gameobjects.bullets.NormalBullet;
 import no.kash.gamedev.jag.game.gameobjects.players.Player;
 
 public class Gun {
@@ -73,26 +72,32 @@ public class Gun {
 				}
 				break;
 			case mac10:
-				float offset = (float) (Math.PI/4);
+				float offset = (float) (Math.PI / 4);
 				float bullWidth = NormalBullet.WIDTH;
-				NormalBullet temp = new NormalBullet(player, player.getBulletOriginX() + (float) Math.cos(player.getRotation() + offset + Math.PI/2) * bullWidth,
-						player.getBulletOriginY() + (float) Math.sin(player.getRotation() + offset + Math.PI/2) * bullWidth,
+				NormalBullet temp = new NormalBullet(player,
+						player.getBulletOriginX()
+								+ (float) Math.cos(player.getRotation() + offset + Math.PI / 2) * bullWidth,
+						player.getBulletOriginY()
+								+ (float) Math.sin(player.getRotation() + offset + Math.PI / 2) * bullWidth,
 						(float) (player.getRotation() + Math.PI / 2), damage, bulletSpeed);
 				player.getGameContext().spawn(temp);
-				temp = new NormalBullet(player, player.getBulletOriginX() + (float) Math.cos(player.getRotation() - offset + Math.PI/2) * bullWidth,
-						player.getBulletOriginY() + (float) Math.sin(player.getRotation() - offset + Math.PI/2) * bullWidth,
+				temp = new NormalBullet(player,
+						player.getBulletOriginX()
+								+ (float) Math.cos(player.getRotation() - offset + Math.PI / 2) * bullWidth,
+						player.getBulletOriginY()
+								+ (float) Math.sin(player.getRotation() - offset + Math.PI / 2) * bullWidth,
 						(float) (player.getRotation() + Math.PI / 2), damage, bulletSpeed);
 				player.getGameContext().spawn(temp);
 				break;
 			case flamethrower:
-				float amountFire = 2 + (int)(Math.random() * 4);
+				float amountFire = 2 + (int) (Math.random() * 4);
 				for (int i = 0; i < amountFire; i++) {
-					float randDir = 1 + (int)(Math.random() * 8); 
-					Fire fire = new Fire(player,player.getBulletOriginX(), player.getBulletOriginY(),
-							(float) (player.getRotation() + Math.PI / 32.0f * (randDir - 1) + Math.PI / 2),
+					float randDir = -4 + (int) (Math.random() * 8);
+					Fire fire = new Fire(player, player.getBulletOriginX(), player.getBulletOriginY(),
+							(float) (player.getRotation() + Math.PI / 32.0f * randDir + Math.PI / 2),
 							bulletSpeed);
 					player.getGameContext().spawn(fire);
-					
+
 				}
 				break;
 			default:

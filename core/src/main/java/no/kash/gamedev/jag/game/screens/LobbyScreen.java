@@ -125,7 +125,6 @@ public class LobbyScreen extends AbstractGameScreen {
 					info.ready = update.state[2][0] > 0;
 					info.teamId = session.gameMode.teamBased ? (int) update.state[2][1] : -1;
 					info.color = new Color(update.state[1][0], update.state[1][1], update.state[1][2], 1);
-					System.out.println(info.name + " selected " + info.color);
 					if (playerInfos.isEmpty()) {
 						info.gameMaster = true;
 						game.getServer().send(info.id,
@@ -135,7 +134,6 @@ public class LobbyScreen extends AbstractGameScreen {
 						PlayerInfoGUI pi = new PlayerInfoGUI(0,
 								stage.getHeight() - (playerInfos.size() + 1) * PlayerInfoGUI.HEIGHT, info);
 						playerInfos.put(c.getID(), pi);
-						System.out.println("Adding player " + c.getID());
 					} else {
 						info.gameMaster = playerInfos.get(c.getID()).getInfo().gameMaster;
 						playerInfos.get(c.getID()).setInfo(info);
@@ -154,13 +152,11 @@ public class LobbyScreen extends AbstractGameScreen {
 
 					game.getServer().broadcast(update);
 
-					System.out.println("Changed gamesession settings");
 				}
 			}
 
 			@Override
 			public void handleInput(PlayerInput input) {
-				System.out.println("PlayerInput: " + input);
 			}
 
 			@Override

@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 
 import no.kash.gamedev.jag.game.commons.utils.Cooldown;
 import no.kash.gamedev.jag.game.gamecontext.GameContext;
+import no.kash.gamedev.jag.game.gameobjects.players.guns.GunType;
 
 public class WeaponSpawner {
 
@@ -16,17 +17,26 @@ public class WeaponSpawner {
 	private Cooldown timerInterval;
 	private float interval = 6;
 
+	public final float cumProbs;
+
 	public WeaponSpawner(ArrayList<Vector2> wepSpawns, GameContext gameContext) {
 		this.gameContext = gameContext;
 		this.wepSpawns = wepSpawns;
 		timerInterval = new Cooldown(interval);
 
 		weaponTiles = new ArrayList<WeaponSpawnTile>();
+
+		float realProbs = 0;
+		for (GunType type : GunType.values()) {
+			realProbs += type.getProbability();
+		}
+		cumProbs = realProbs;
+
 	}
 
 	public void spawnWeaponTiles() {
 		for (Vector2 points : wepSpawns) {
-			WeaponSpawnTile temp = new WeaponSpawnTile(points.x, points.y);
+			WeaponSpawnTile temp = new WeaponSpawnTile(this, points.x, points.y);
 			weaponTiles.add(temp);
 			this.gameContext.spawn(temp);
 			temp.reSpawnCooldown.startCooldown();
@@ -40,7 +50,7 @@ public class WeaponSpawner {
 				int randomNum = 1 + (int) (Math.random() * 2);
 				if (randomNum == 1) {
 					if (!tile.isOccupied() && !tile.reSpawnCooldown.isOnCooldown()) {
-						tile.spawnWeapon();
+						tile.preSpawnWeapon();
 						tile.reSpawnCooldown.startCooldown();
 					}
 				}

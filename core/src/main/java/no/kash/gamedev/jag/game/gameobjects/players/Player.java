@@ -16,7 +16,6 @@ import no.kash.gamedev.jag.game.gamecontext.physics.Collision;
 import no.kash.gamedev.jag.game.gamecontext.physics.tilecollisions.TileCollisionDetector;
 import no.kash.gamedev.jag.game.gamecontext.physics.tilecollisions.TileCollisionListener;
 import no.kash.gamedev.jag.game.gameobjects.AbstractGameObject;
-import no.kash.gamedev.jag.game.gameobjects.bullets.AbstractBullet;
 import no.kash.gamedev.jag.game.gameobjects.bullets.Bullet;
 import no.kash.gamedev.jag.game.gameobjects.bullets.NormalBullet;
 import no.kash.gamedev.jag.game.gameobjects.collectables.weapons.Weapon;
@@ -29,6 +28,8 @@ import no.kash.gamedev.jag.game.gameobjects.players.damagehandlers.VanillaDamage
 import no.kash.gamedev.jag.game.gameobjects.players.guns.Gun;
 import no.kash.gamedev.jag.game.gameobjects.players.guns.GunType;
 import no.kash.gamedev.jag.game.gameobjects.players.hud.HealthHud;
+import no.kash.gamedev.jag.game.gameobjects.players.status.Status;
+import no.kash.gamedev.jag.game.gameobjects.players.status.StatusHandler;
 import no.kash.gamedev.jag.game.gamesession.GameSession;
 
 public class Player extends AbstractGameObject implements Collidable {
@@ -64,10 +65,13 @@ public class Player extends AbstractGameObject implements Collidable {
 	private GlyphLayout nameLabel;
 
 	private DamageHandler damageHandler;
+	private StatusHandler statusHandler;
 
 	private Sprite holding_grenade;
 
 	private GameSession gameSession;
+	
+	private GunType startingGun = GunType.flamethrower;
 
 	public Player(GameSession gameSession, PlayerInfo info, float x, float y) {
 		super(x, y, WIDTH, HEIGHT);
@@ -86,6 +90,7 @@ public class Player extends AbstractGameObject implements Collidable {
 		this.gameSession = gameSettings;
 		this.healthMax = gameSettings.startingHealth;
 		this.health = healthMax;
+		this.statusHandler = new StatusHandler(this);
 
 		switch (gameSettings.gameMode) {
 		case STANDARD_FFA:
@@ -115,20 +120,21 @@ public class Player extends AbstractGameObject implements Collidable {
 		nameLabel = new GlyphLayout(Assets.font, info.name);
 		healthHud = new HealthHud(this, getCenterX() - HealthHud.WIDTH / 2, getCenterY() - HealthHud.HEIGHT / 2 - 20f);
 
-		equipGun(GunType.flamethrower);
+		equipGun(startingGun);
 		grenadeCooldown = new Cooldown(grenadeCooldownDuration);
 
 		getGameContext().bringToFront(this);
 
 		((JustAnotherGame) getGameContext().getGame()).getServer().send(info.id,
 				new PlayerUpdate(3, new int[] { PlayerUpdate.GUN, PlayerUpdate.AMMO, PlayerUpdate.HEALTH },
-						new float[][] { { GunType.pistol.ordinal() },
+						new float[][] { { startingGun.ordinal() },
 								{ gun.getMagasineAmmo(), gun.getMagasineSize(), gun.getAmmo() }, { health } }));
 	}
 
 	@Override
 	public void update(float delta) {
 		gun.update(delta);
+		statusHandler.update(delta);
 		grenadeCooldown.update(delta);
 		if (blockInput) {
 			accelerate(0, 0);
@@ -344,6 +350,28 @@ public class Player extends AbstractGameObject implements Collidable {
 
 	public boolean isInputBlocked() {
 		return blockInput;
+	}
+
+	public void damage(Status status) {
+		damageHandler.onDamage(status);
+		((JustAnotherGame) getGameContext().getGame()).getServer().send(info.id,
+				new PlayerUpdate(2, new int[] { PlayerUpdate.HEALTH, PlayerUpdate.FEEDBACK_VIBRATION },
+						new float[][] { { health }, { 50.0f } }));
+	}
+
+	public void death(Status status) {
+		if (isAlive()) {
+			for (int i = 0; i < 200; i++) {
+				getGameContext().spawn(
+						new BloodSplatter(getCenterX(), getCenterY(), (float) (Math.random() * 2 * Math.PI), 40.0f));
+			}
+
+			gameSession.roundHandler.playerKilled(this, status);
+		}
+	}
+
+	public void applyStatus(Status status) {
+		statusHandler.apply(status);
 	}
 
 }

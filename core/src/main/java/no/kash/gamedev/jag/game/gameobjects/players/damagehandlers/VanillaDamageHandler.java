@@ -4,6 +4,7 @@ import no.kash.gamedev.jag.game.gameobjects.bullets.Bullet;
 import no.kash.gamedev.jag.game.gameobjects.bullets.NormalBullet;
 import no.kash.gamedev.jag.game.gameobjects.particles.Explosion;
 import no.kash.gamedev.jag.game.gameobjects.players.Player;
+import no.kash.gamedev.jag.game.gameobjects.players.status.Status;
 
 public class VanillaDamageHandler implements DamageHandler {
 
@@ -27,6 +28,14 @@ public class VanillaDamageHandler implements DamageHandler {
 		player.setHealth(player.getHealth() - damage);
 		if (player.getHealth() <= 0) {
 			player.death(explosion.getSourceGrenade().getThrower());
+		}
+	}
+
+	@Override
+	public void onDamage(Status status) {
+		player.setHealth(player.getHealth() - status.getDamage());
+		if (player.getHealth() <= 0) {
+			player.death(status);
 		}
 	}
 
