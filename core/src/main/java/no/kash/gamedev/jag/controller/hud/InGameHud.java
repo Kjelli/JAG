@@ -14,6 +14,7 @@ public class InGameHud extends AbstractGameObject {
 
 	private Sprite weaponImg, healthImg;
 	private int ammo, magazineAmmo, magazineSize, health;
+
 	private BitmapFont font;
 
 	private GlyphLayout healthLabel;
@@ -21,7 +22,7 @@ public class InGameHud extends AbstractGameObject {
 
 	public InGameHud(float x, float y, float width, float height) {
 		super(x, y, width, height);
-		health = 100;
+		health = 0;
 		ammo = 0;
 		magazineAmmo = 0;
 		magazineSize = 0;
@@ -80,6 +81,10 @@ public class InGameHud extends AbstractGameObject {
 	public void setHealth(int health) {
 		this.health = health;
 		healthLabel.setText(font, health + "");
+	}
+
+	public int getHealth() {
+		return health;
 	}
 
 	@Override

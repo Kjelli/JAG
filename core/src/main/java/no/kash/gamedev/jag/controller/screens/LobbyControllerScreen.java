@@ -66,7 +66,9 @@ public class LobbyControllerScreen extends AbstractControllerScreen {
 	TextButton roundTime;
 	TextButton roundsToWin;
 	TextButton testMode;
+	TextButton friendlyFire;
 	TextButton startingHealth;
+	TextButton drawNames;
 	// TextButton suddenDeath;
 
 	Label preferenceLabel;
@@ -117,6 +119,7 @@ public class LobbyControllerScreen extends AbstractControllerScreen {
 						gameMaster = true;
 						initSettingsView();
 						setStandardView();
+						sendGameSessionUpdate();
 					}
 				}
 			}
@@ -148,11 +151,11 @@ public class LobbyControllerScreen extends AbstractControllerScreen {
 			gameMasterLabel = new Label("Game settings", skin);
 
 			// Game mode option
-			gameMode = new TextButton("Game mode: " + sessionControls.session.gameMode, skin);
+			gameMode = new TextButton("Game mode: " + sessionControls.session.gameMode.displayName, skin);
 			gameMode.addListener(new ClickListener() {
 				@Override
 				public void clicked(InputEvent event, float x, float y) {
-					gameMode.setText("Game mode: " + sessionControls.nextOptionGameMode());
+					gameMode.setText("Game mode: " + sessionControls.nextOptionGameMode().displayName);
 					sendGameSessionUpdate();
 				}
 			});
@@ -188,21 +191,43 @@ public class LobbyControllerScreen extends AbstractControllerScreen {
 			});
 
 			// Drop in option
-			dropIn = new TextButton("Enable drop in: " + (sessionControls.session.dropIn ? "yes" : "no"), skin);
+			dropIn = new TextButton("Drop in: " + (sessionControls.session.dropIn ? "on" : "off"), skin);
 			dropIn.addListener(new ClickListener() {
 				@Override
 				public void clicked(InputEvent event, float x, float y) {
-					dropIn.setText("Enable drop in: " + (sessionControls.nextOptionDropIn() ? "yes" : "no"));
+					dropIn.setText("Drop in: " + (sessionControls.nextOptionDropIn() ? "on" : "off"));
 					sendGameSessionUpdate();
 				}
 			});
 
 			// Test mode option
-			testMode = new TextButton("Enable test mode: " + (sessionControls.session.testMode ? "yes" : "no"), skin);
+			testMode = new TextButton("Test mode: " + (sessionControls.session.testMode ? "on" : "off"), skin);
 			testMode.addListener(new ClickListener() {
 				@Override
 				public void clicked(InputEvent event, float x, float y) {
-					testMode.setText("Enable test mode: " + (sessionControls.nextOptionTestMode() ? "yes" : "no"));
+					testMode.setText("Test mode: " + (sessionControls.nextOptionTestMode() ? "on" : "off"));
+					sendGameSessionUpdate();
+				}
+			});
+
+			// Friendly fire option
+			friendlyFire = new TextButton("Friendly fire: " + (sessionControls.session.friendlyFire ? "on" : "off"),
+					skin);
+			friendlyFire.addListener(new ClickListener() {
+				@Override
+				public void clicked(InputEvent event, float x, float y) {
+					friendlyFire.setText("Friendly fire: " + (sessionControls.nextOptionFriendlyFire() ? "on" : "off"));
+					sendGameSessionUpdate();
+				}
+			});
+
+			// Draw names option
+			drawNames = new TextButton("Show names: " + (sessionControls.session.drawNames ? "on" : "off"),
+					skin);
+			drawNames.addListener(new ClickListener() {
+				@Override
+				public void clicked(InputEvent event, float x, float y) {
+					drawNames.setText("Show names: " + (sessionControls.nextOptionDrawNames() ? "on" : "off"));
 					sendGameSessionUpdate();
 				}
 			});
@@ -212,6 +237,8 @@ public class LobbyControllerScreen extends AbstractControllerScreen {
 			scrollingTable.add(roundTime).row();
 			scrollingTable.add(roundsToWin).row();
 			scrollingTable.add(startingHealth).row();
+			scrollingTable.add(friendlyFire).row();
+			scrollingTable.add(drawNames).row();
 			scrollingTable.add(dropIn).row();
 			scrollingTable.add(testMode).row();
 		}
@@ -353,6 +380,8 @@ public class LobbyControllerScreen extends AbstractControllerScreen {
 		update.roundsToWin = sessionControls.session.roundsToWin;
 		update.startingHealth = sessionControls.session.startingHealth;
 		update.testMode = sessionControls.session.testMode;
+		update.friendlyFire = sessionControls.session.friendlyFire;
+		update.drawNames = sessionControls.session.drawNames;
 		game.getClient().broadcast(update);
 	}
 

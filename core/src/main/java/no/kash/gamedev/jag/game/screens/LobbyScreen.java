@@ -43,6 +43,7 @@ public class LobbyScreen extends AbstractGameScreen {
 	public LobbyScreen(JustAnotherGame game, GameSession session) {
 		super(game);
 		this.session = session;
+
 		session.reset();
 	}
 
@@ -61,7 +62,7 @@ public class LobbyScreen extends AbstractGameScreen {
 					session.players.put(info.id, info);
 					game.getServer().send(info.id, new PlayerStateChange(JustAnotherGameController.PLAY_STATE));
 				}
-				game.setScreen(new GameScreen(game, session));
+				game.setScreen(new PlayScreen(game, session));
 			}
 		}
 	}
@@ -125,6 +126,8 @@ public class LobbyScreen extends AbstractGameScreen {
 					session.roundTime = update.roundTime;
 					session.testMode = update.testMode;
 					session.startingHealth = update.startingHealth;
+					session.friendlyFire = update.friendlyFire;
+					session.drawNames = update.drawNames;
 					System.out.println("Changed gamesession settings");
 				}
 			}
@@ -138,21 +141,23 @@ public class LobbyScreen extends AbstractGameScreen {
 			public void handleDisconnection(Connection c) {
 				System.out.println("Disconnected: " + c);
 
-				PlayerInfoGUI dced = playerInfos.remove(c.getID());
+				if (playerInfos.containsKey(c.getID())) {
+					PlayerInfoGUI dced = playerInfos.remove(c.getID());
 
-				if (dced.getInfo().gameMaster) {
-					if (!playerInfos.isEmpty()) {
-						PlayerInfo nextGameMaster = playerInfos.values().iterator().next().getInfo();
+					if (dced.getInfo().gameMaster) {
+						if (!playerInfos.isEmpty()) {
+							PlayerInfo nextGameMaster = playerInfos.values().iterator().next().getInfo();
 
-						nextGameMaster.gameMaster = true;
-						game.getServer().send(nextGameMaster.id,
-								new PlayerUpdate(1, new int[] { PlayerUpdate.GAME_MASTER }, null));
+							nextGameMaster.gameMaster = true;
+							game.getServer().send(nextGameMaster.id,
+									new PlayerUpdate(1, new int[] { PlayerUpdate.GAME_MASTER }, null));
+						}
 					}
-				}
 
-				for (PlayerInfoGUI gui : playerInfos.values()) {
-					if (gui.getInfo().id > c.getID()) {
-						gui.nudgeUp();
+					for (PlayerInfoGUI gui : playerInfos.values()) {
+						if (gui.getInfo().id > c.getID()) {
+							gui.nudgeUp();
+						}
 					}
 				}
 			}

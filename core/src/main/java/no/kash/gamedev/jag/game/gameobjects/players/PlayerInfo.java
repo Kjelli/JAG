@@ -14,11 +14,13 @@ public class PlayerInfo {
 	public int timesPlayed = -1;
 	public int level;
 	public int xp;
-	
+
 	// session specific information
 	public boolean ready = false;
+	public int teamId = -1;
 	public int roundsWon = 0;
-	
+	public boolean temporary = false;
+
 	public List<PlayerInfo> killed;
 	public List<PlayerInfo> killedBy;
 

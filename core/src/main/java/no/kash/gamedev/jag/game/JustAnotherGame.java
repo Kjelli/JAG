@@ -11,7 +11,7 @@ import no.kash.gamedev.jag.commons.network.NetworkListener;
 import no.kash.gamedev.jag.commons.network.packets.GamePacket;
 import no.kash.gamedev.jag.commons.network.packets.PlayerInput;
 import no.kash.gamedev.jag.commons.tweens.TweenGlobal;
-import no.kash.gamedev.jag.game.screens.GameScreen;
+import no.kash.gamedev.jag.game.screens.PlayScreen;
 import no.kash.gamedev.jag.game.screens.LobbyScreen;
 
 public class JustAnotherGame extends JagEndpoint {

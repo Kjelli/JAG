@@ -18,6 +18,7 @@ public class GameSessionControls {
 		session.startingHealth = GameSessionPreferences.startingHealth;
 		session.dropIn = GameSessionPreferences.dropIn;
 		session.testMode = GameSessionPreferences.testMode;
+		session.friendlyFire = GameSessionPreferences.friendlyFire;
 	}
 
 	public boolean nextOptionDropIn() {
@@ -98,5 +99,17 @@ public class GameSessionControls {
 		}
 
 		return -1;
+	}
+
+	public boolean nextOptionFriendlyFire() {
+		session.friendlyFire = !session.friendlyFire;
+		GameSessionPreferences.setFriendlyFire(session.friendlyFire);
+		return session.friendlyFire;
+	}
+
+	public boolean nextOptionDrawNames() {
+		session.drawNames = !session.drawNames;
+		GameSessionPreferences.setDrawNames(session.drawNames);
+		return session.drawNames;
 	}
 }

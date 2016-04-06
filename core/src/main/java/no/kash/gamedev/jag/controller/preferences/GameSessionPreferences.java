@@ -11,6 +11,8 @@ public class GameSessionPreferences {
 
 	public static boolean dropIn;
 	public static boolean testMode;
+	public static boolean friendlyFire;
+	public static boolean drawNames;
 
 	public static void load() {
 		gameModeIndex = Prefs.get().getInteger(Defs.PREF_SESSION_GM_INDEX, 0);
@@ -19,6 +21,8 @@ public class GameSessionPreferences {
 		startingHealth = Prefs.get().getInteger(Defs.PREF_SESSION_START_HP, Defs.STARTING_HEALTH_OPTIONS[3]);
 		dropIn = Prefs.get().getBoolean(Defs.PREF_SESSION_DROP_IN, true);
 		testMode = Prefs.get().getBoolean(Defs.PREF_SESSION_TEST_MODE, false);
+		friendlyFire = Prefs.get().getBoolean(Defs.PREF_SESSION_FRIENDLY_FIRE, false);
+		drawNames = Prefs.get().getBoolean(Defs.PREF_SESSION_DRAW_NAMES, true);
 	}
 
 	public static void save() {
@@ -28,6 +32,8 @@ public class GameSessionPreferences {
 		Prefs.get().putInteger(Defs.PREF_SESSION_START_HP, startingHealth);
 		Prefs.get().putBoolean(Defs.PREF_SESSION_DROP_IN, dropIn);
 		Prefs.get().putBoolean(Defs.PREF_SESSION_TEST_MODE, testMode);
+		Prefs.get().putBoolean(Defs.PREF_SESSION_FRIENDLY_FIRE, friendlyFire);
+		Prefs.get().putBoolean(Defs.PREF_SESSION_DRAW_NAMES, drawNames);
 		Prefs.get().flush();
 	}
 
@@ -84,6 +90,15 @@ public class GameSessionPreferences {
 		GameSessionPreferences.testMode = testMode;
 		save();
 	}
-	
-	
+
+	public static void setFriendlyFire(boolean friendlyFire) {
+		GameSessionPreferences.friendlyFire = friendlyFire;
+		save();
+	}
+
+	public static void setDrawNames(boolean drawNames) {
+		GameSessionPreferences.drawNames = drawNames;
+		save();
+	}
+
 }

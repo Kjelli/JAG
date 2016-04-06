@@ -2,67 +2,25 @@ package no.kash.gamedev.jag.game.gamesession.roundhandlers;
 
 import java.util.Map;
 
-import aurelienribon.tweenengine.BaseTween;
-import aurelienribon.tweenengine.Tween;
-import aurelienribon.tweenengine.TweenCallback;
-import no.kash.gamedev.jag.commons.defs.Defs;
-import no.kash.gamedev.jag.commons.defs.Prefs;
-import no.kash.gamedev.jag.commons.network.packets.PlayerNewStats;
-import no.kash.gamedev.jag.commons.network.packets.PlayerStateChange;
-import no.kash.gamedev.jag.commons.tweens.TweenGlobal;
-import no.kash.gamedev.jag.commons.tweens.TweenableFloat;
-import no.kash.gamedev.jag.commons.tweens.accessors.FloatAccessor;
-import no.kash.gamedev.jag.controller.JustAnotherGameController;
-import no.kash.gamedev.jag.game.JustAnotherGame;
 import no.kash.gamedev.jag.game.gamecontext.GameContext;
 import no.kash.gamedev.jag.game.gameobjects.players.Player;
 import no.kash.gamedev.jag.game.gameobjects.players.PlayerInfo;
 import no.kash.gamedev.jag.game.gamesession.GameSession;
-import no.kash.gamedev.jag.game.screens.GameScreen;
-import no.kash.gamedev.jag.game.screens.LobbyScreen;
+import no.kash.gamedev.jag.game.screens.PlayScreen;
 
-public class FFARoundHandler implements RoundHandler {
+public class FFARoundHandler extends AbstractRoundHandler<Player> {
 
-	public Map<Integer, Player> players;
-	public GameContext gameContext;
-	public GameSession gameSession;
-
-	public int currentRound = 0;
-
-	public FFARoundHandler(GameContext gameContext, GameSession gameSession, Map<Integer, Player> players) {
-		this.players = players;
-		this.gameContext = gameContext;
-		this.gameSession = gameSession;
+	public FFARoundHandler(PlayScreen gameScreen, GameContext gameContext, GameSession gameSession,
+			Map<Integer, Player> players) {
+		super(gameScreen, gameContext, gameSession, players);
 	}
 
 	@Override
-	public void playerKilled(Player killer, Player killed) {
-		killed.destroy();
-		if (killer.equals(killed)) {
-			gameContext.getAnnouncer().announce(killer + " committed suicide", 3.0f);
-		} else {
-			gameContext.getAnnouncer().announce(killer + " killed " + killed, 3.0f);
-		}
-
-		PlayerInfo killerInfo = gameSession.players.get(killer.getId());
-		PlayerInfo killedInfo = gameSession.players.get(killed.getId());
-		killerInfo.killed.add(killedInfo);
-		killedInfo.killedBy.add(killerInfo);
-
-		players.remove(killed.getId());
-	}
-
-	@Override
-	public int currentRound() {
-		return currentRound;
-	}
-
-	@Override
-	public RoundResult roundEnded() {
+	public RoundResult<Player> roundEnded() {
 		if (players.size() == 1 && gameSession.players.size() > 1) {
 			Player winner = players.values().iterator().next();
 			winner.setInvincible(true);
-			PlayerInfo winnerInfo = gameSession.players.get(winner.getId());
+			PlayerInfo winnerInfo = winner.getInfo();
 			winnerInfo.roundsWon++;
 			boolean gameEnding;
 			if (winnerInfo.roundsWon < gameSession.roundsToWin) {
@@ -72,75 +30,21 @@ public class FFARoundHandler implements RoundHandler {
 				gameContext.getAnnouncer().announce(String.format("*** %s WINS THE MATCH ***", winner));
 				gameEnding = true;
 			}
-			return new RoundResult(false, winner, gameEnding);
+			return new FFARoundResult(false, winner, gameEnding);
 		} else if (players.size() == 0) {
 			gameContext.getAnnouncer().announce("--- DRAW ---");
-			return RoundResult.NO_RESULT;
+			return FFARoundResult.NO_RESULT;
 		}
 		return null;
 	}
 
 	@Override
-	public void proceed(final GameScreen screen) {
-
-		gameContext.setTimeModifier(0.25f);
-
-		// No op
-		TweenableFloat f = new TweenableFloat(0);
-		final boolean gameOver = gameOver();
-
-		TweenGlobal.start(Tween.from(f, FloatAccessor.TYPE_VALUE, gameOver ? 0.75f : 1.25f).target(1)
-				.setCallback(new TweenCallback() {
-					@Override
-					public void onEvent(int arg0, BaseTween<?> arg1) {
-						if (arg0 == TweenCallback.COMPLETE) {
-							gameContext.setTimeModifier(1.0f);
-							currentRound++;
-							if (!gameOver) {
-								screen.restart();
-							} else {
-								statsHandler();
-								JustAnotherGame game = screen.getGame();
-								game.setScreen(new LobbyScreen(game, gameSession));
-								game.getServer()
-										.broadcast(new PlayerStateChange(JustAnotherGameController.LOBBY_STATE));
-							}
-						}
-					}
-
-				}));
-
-	}
-
-	private void statsHandler() {
-		JustAnotherGame game = (JustAnotherGame) gameContext.getGame();
-		for (PlayerInfo info : gameSession.players.values()) {
-			int expEarned = 10;
-			expEarned += info.killed.size() * 5;
-			expEarned += info.roundsWon * 7;
-			game.getServer().send(info.id, new PlayerNewStats(expEarned));
+	public void setup() {
+		if (gameSession.testMode) {
+			PlayerInfo dummyPlayer = new PlayerInfo();
+			dummyPlayer.temporary = true;
+			gameSession.players.put(-500, dummyPlayer);
 		}
-
-	}
-
-	protected boolean gameOver() {
-		for (PlayerInfo info : gameSession.players.values()) {
-			if (info.roundsWon >= gameSession.roundsToWin) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	@Override
-	public boolean canJoin() {
-		// If no one has died yet
-		return players.size() == gameSession.players.size();
-	}
-
-	@Override
-	public void reset() {
-		currentRound = 0;
 	}
 
 }

@@ -9,6 +9,8 @@ public class GameSessionUpdate implements GamePacket {
 
 	public boolean dropIn;
 	public boolean testMode;
+	public boolean friendlyFire;
+	public boolean drawNames;
 
 	public GameSessionUpdate() {
 
