@@ -12,7 +12,7 @@ public enum GunType {
 	goldengun("goldengun", 3, 0.7f, 1.2f, Assets.goldengun, 3, 3, Assets.goldengun_ground, 1400f, 800f, 0f, 0.02f,false),
 	mac10("mac10", 1, 0.1f, 0.7f, Assets.mac10, 60, 60,Assets.mac10_ground, 8f, 400f, 0, 0.2f,true),
 	flamethrower("flamethrower", 2, 0.005f, 0.7f, Assets.flamethrower, 0, 200,Assets.flamethrower_ground, 10f, 100f, -Math.PI / 18, 0.1f,true),
-	crossbow("goldengun", 2, 0.5f, 1.2f, Assets.crossbow, 0, 8, Assets.crossbow_ground, 10f, 800f,  -Math.PI / 18, 0.1f,false),;
+	crossbow("goldengun", 2, 0.5f, 1.2f, Assets.crossbow, 0, 8, Assets.crossbow_ground, 20f, 800f,  -Math.PI / 18, 0.1f,false),;
 
 	
 	public static GunType random(){

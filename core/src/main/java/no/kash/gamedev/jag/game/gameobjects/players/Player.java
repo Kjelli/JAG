@@ -73,7 +73,7 @@ public class Player extends AbstractGameObject implements Collidable {
 
 	private GameSession gameSession;
 	
-	private GunType startingGun = GunType.pistol;
+	private GunType startingGun = GunType.crossbow;
 
 	public Player(GameSession gameSession, PlayerInfo info, float x, float y) {
 		super(x, y, WIDTH, HEIGHT);
