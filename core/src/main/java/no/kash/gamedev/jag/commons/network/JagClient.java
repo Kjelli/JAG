@@ -125,4 +125,8 @@ public class JagClient {
 		return connectionString;
 	}
 
+	public void disconnect() {
+		client.close();
+	}
+
 }

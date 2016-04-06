@@ -125,6 +125,7 @@ public abstract class AbstractControllerScreen implements Screen {
 		stage.dispose();
 		batch.dispose();
 		gameContext.dispose();
+		game.getClient().disconnect();
 		Gdx.input.setInputProcessor(null);
 	}
 

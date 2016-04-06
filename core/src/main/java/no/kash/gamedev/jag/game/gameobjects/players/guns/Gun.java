@@ -8,7 +8,7 @@ import no.kash.gamedev.jag.commons.network.packets.PlayerUpdate;
 import no.kash.gamedev.jag.game.JustAnotherGame;
 import no.kash.gamedev.jag.game.announcer.Announcement;
 import no.kash.gamedev.jag.game.commons.utils.Cooldown;
-import no.kash.gamedev.jag.game.gameobjects.bullets.Bullet;
+import no.kash.gamedev.jag.game.gameobjects.bullets.NormalBullet;
 import no.kash.gamedev.jag.game.gameobjects.bullets.Fire;
 import no.kash.gamedev.jag.game.gameobjects.players.Player;
 
@@ -66,7 +66,7 @@ public class Gun {
 			switch (type) {
 			case shotgun:
 				for (int i = 0; i < 6; i++) {
-					Bullet temp = new Bullet(player, player.getBulletOriginX(), player.getBulletOriginY(),
+					NormalBullet temp = new NormalBullet(player, player.getBulletOriginX(), player.getBulletOriginY(),
 							(float) (player.getRotation() + Math.PI / 32.0f * (i - 2) + Math.PI / 2), damage,
 							bulletSpeed);
 					player.getGameContext().spawn(temp);
@@ -74,12 +74,12 @@ public class Gun {
 				break;
 			case mac10:
 				float offset = (float) (Math.PI/4);
-				float bullWidth = Bullet.WIDTH;
-				Bullet temp = new Bullet(player, player.getBulletOriginX() + (float) Math.cos(player.getRotation() + offset + Math.PI/2) * bullWidth,
+				float bullWidth = NormalBullet.WIDTH;
+				NormalBullet temp = new NormalBullet(player, player.getBulletOriginX() + (float) Math.cos(player.getRotation() + offset + Math.PI/2) * bullWidth,
 						player.getBulletOriginY() + (float) Math.sin(player.getRotation() + offset + Math.PI/2) * bullWidth,
 						(float) (player.getRotation() + Math.PI / 2), damage, bulletSpeed);
 				player.getGameContext().spawn(temp);
-				temp = new Bullet(player, player.getBulletOriginX() + (float) Math.cos(player.getRotation() - offset + Math.PI/2) * bullWidth,
+				temp = new NormalBullet(player, player.getBulletOriginX() + (float) Math.cos(player.getRotation() - offset + Math.PI/2) * bullWidth,
 						player.getBulletOriginY() + (float) Math.sin(player.getRotation() - offset + Math.PI/2) * bullWidth,
 						(float) (player.getRotation() + Math.PI / 2), damage, bulletSpeed);
 				player.getGameContext().spawn(temp);
@@ -89,7 +89,7 @@ public class Gun {
 				player.getGameContext().spawn(fire);
 				break;
 			default:
-				Bullet tempo = new Bullet(player, player.getBulletOriginX(), player.getBulletOriginY(),
+				NormalBullet tempo = new NormalBullet(player, player.getBulletOriginX(), player.getBulletOriginY(),
 						(float) (player.getRotation() + Math.PI / 2), damage, bulletSpeed);
 				player.getGameContext().spawn(tempo);
 				break;

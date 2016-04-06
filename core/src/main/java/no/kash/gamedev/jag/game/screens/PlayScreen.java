@@ -124,7 +124,7 @@ public class PlayScreen extends AbstractGameScreen {
 		players.clear();
 		level.resetPlayerSpawns();
 		start();
-		
+
 	}
 
 	public void spawnPlayer(PlayerInfo playerInfo) {
@@ -304,6 +304,7 @@ public class PlayScreen extends AbstractGameScreen {
 			@Override
 			public void handleDisconnection(Connection c) {
 				log("Connection " + c.getID() + " lost");
+				gameSession.players.remove(c.getID());
 				gameContext.despawn(players.remove(c.getID()));
 			}
 

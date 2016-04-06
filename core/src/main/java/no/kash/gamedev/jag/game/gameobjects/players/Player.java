@@ -16,7 +16,9 @@ import no.kash.gamedev.jag.game.gamecontext.physics.Collision;
 import no.kash.gamedev.jag.game.gamecontext.physics.tilecollisions.TileCollisionDetector;
 import no.kash.gamedev.jag.game.gamecontext.physics.tilecollisions.TileCollisionListener;
 import no.kash.gamedev.jag.game.gameobjects.AbstractGameObject;
+import no.kash.gamedev.jag.game.gameobjects.bullets.AbstractBullet;
 import no.kash.gamedev.jag.game.gameobjects.bullets.Bullet;
+import no.kash.gamedev.jag.game.gameobjects.bullets.NormalBullet;
 import no.kash.gamedev.jag.game.gameobjects.collectables.weapons.Weapon;
 import no.kash.gamedev.jag.game.gameobjects.grenades.Grenade;
 import no.kash.gamedev.jag.game.gameobjects.particles.BloodSplatter;
@@ -217,12 +219,12 @@ public class Player extends AbstractGameObject implements Collidable {
 
 	public float getBulletOriginX() {
 		return (float) (getCenterX() + Math.cos((rot) + (Math.PI / 2) + gun.getAngleOffset()) * getWidth() / 2
-				- Bullet.WIDTH / 2);
+				- NormalBullet.WIDTH / 2);
 	}
 
 	public float getBulletOriginY() {
 		return (float) (getCenterY() + Math.sin((rot) + (Math.PI / 2) + gun.getAngleOffset()) * getHeight() / 2
-				- Bullet.HEIGHT / 2);
+				- NormalBullet.HEIGHT / 2);
 	}
 
 	@Override
