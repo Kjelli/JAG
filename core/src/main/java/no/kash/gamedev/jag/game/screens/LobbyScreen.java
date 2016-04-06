@@ -14,6 +14,7 @@ import no.kash.gamedev.jag.assets.Assets;
 import no.kash.gamedev.jag.commons.defs.Defs;
 import no.kash.gamedev.jag.commons.network.JagServerPacketHandler;
 import no.kash.gamedev.jag.commons.network.packets.GamePacket;
+import no.kash.gamedev.jag.commons.network.packets.GameSessionUpdate;
 import no.kash.gamedev.jag.commons.network.packets.PlayerConnect;
 import no.kash.gamedev.jag.commons.network.packets.PlayerInput;
 import no.kash.gamedev.jag.commons.network.packets.PlayerStateChange;
@@ -21,6 +22,7 @@ import no.kash.gamedev.jag.commons.network.packets.PlayerUpdate;
 import no.kash.gamedev.jag.controller.JustAnotherGameController;
 import no.kash.gamedev.jag.game.JustAnotherGame;
 import no.kash.gamedev.jag.game.gameobjects.players.PlayerInfo;
+import no.kash.gamedev.jag.game.gamesession.GameMode;
 import no.kash.gamedev.jag.game.gamesession.GameSession;
 import no.kash.gamedev.jag.game.lobby.PlayerInfoGUI;
 
@@ -41,6 +43,7 @@ public class LobbyScreen extends AbstractGameScreen {
 	public LobbyScreen(JustAnotherGame game, GameSession session) {
 		super(game);
 		this.session = session;
+
 		session.reset();
 	}
 
@@ -59,7 +62,7 @@ public class LobbyScreen extends AbstractGameScreen {
 					session.players.put(info.id, info);
 					game.getServer().send(info.id, new PlayerStateChange(JustAnotherGameController.PLAY_STATE));
 				}
-				game.setScreen(new GameScreen(game, session));
+				game.setScreen(new PlayScreen(game, session));
 			}
 		}
 	}
@@ -115,6 +118,17 @@ public class LobbyScreen extends AbstractGameScreen {
 						playerInfos.get(c.getID()).setInfo(info);
 					}
 
+				} else if (m instanceof GameSessionUpdate) {
+					GameSessionUpdate update = (GameSessionUpdate) m;
+					session.dropIn = update.dropIn;
+					session.gameMode = GameMode.values()[update.gameModeIndex];
+					session.roundsToWin = update.roundsToWin;
+					session.roundTime = update.roundTime;
+					session.testMode = update.testMode;
+					session.startingHealth = update.startingHealth;
+					session.friendlyFire = update.friendlyFire;
+					session.drawNames = update.drawNames;
+					System.out.println("Changed gamesession settings");
 				}
 			}
 
@@ -127,21 +141,23 @@ public class LobbyScreen extends AbstractGameScreen {
 			public void handleDisconnection(Connection c) {
 				System.out.println("Disconnected: " + c);
 
-				PlayerInfoGUI dced = playerInfos.remove(c.getID());
+				if (playerInfos.containsKey(c.getID())) {
+					PlayerInfoGUI dced = playerInfos.remove(c.getID());
 
-				if (dced.getInfo().gameMaster) {
-					if (!playerInfos.isEmpty()) {
-						PlayerInfo nextGameMaster = playerInfos.values().iterator().next().getInfo();
+					if (dced.getInfo().gameMaster) {
+						if (!playerInfos.isEmpty()) {
+							PlayerInfo nextGameMaster = playerInfos.values().iterator().next().getInfo();
 
-						nextGameMaster.gameMaster = true;
-						game.getServer().send(nextGameMaster.id,
-								new PlayerUpdate(1, new int[] { PlayerUpdate.GAME_MASTER }, null));
+							nextGameMaster.gameMaster = true;
+							game.getServer().send(nextGameMaster.id,
+									new PlayerUpdate(1, new int[] { PlayerUpdate.GAME_MASTER }, null));
+						}
 					}
-				}
 
-				for (PlayerInfoGUI gui : playerInfos.values()) {
-					if (gui.getInfo().id > c.getID()) {
-						gui.nudgeUp();
+					for (PlayerInfoGUI gui : playerInfos.values()) {
+						if (gui.getInfo().id > c.getID()) {
+							gui.nudgeUp();
+						}
 					}
 				}
 			}

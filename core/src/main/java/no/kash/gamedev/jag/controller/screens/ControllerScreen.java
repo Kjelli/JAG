@@ -154,14 +154,18 @@ public class ControllerScreen extends AbstractControllerScreen {
 				Gdx.input.vibrate((int) m.state[i][0]);
 				break;
 			case PlayerUpdate.HEALTH:
-				hud.setHealth((int) m.state[i][0]);
+				int oldHealth = hud.getHealth();
+				int newHealth = (int) (m.state[i][0]);
+				hud.setHealth(newHealth);
 
-				bgColor.r = Color.GRAY.r;
-				bgColor.g = Color.GRAY.g;
-				bgColor.b = Color.GRAY.b;
-				bgFadeTween.kill();
-				bgFadeTween = newFadeFromTween();
-				TweenGlobal.start(bgFadeTween);
+				if (newHealth < oldHealth) {
+					bgColor.r = Color.GRAY.r;
+					bgColor.g = Color.GRAY.g;
+					bgColor.b = Color.GRAY.b;
+					bgFadeTween.kill();
+					bgFadeTween = newFadeFromTween();
+					TweenGlobal.start(bgFadeTween);
+				}
 				break;
 			case PlayerUpdate.AMMO:
 				int magAmmo = (int) m.state[i][0];

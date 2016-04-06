@@ -39,6 +39,10 @@ public class Player extends AbstractGameObject implements Collidable {
 
 	private final PlayerInfo info;
 
+	public PlayerInfo getInfo() {
+		return info;
+	}
+
 	private boolean firing;
 	private boolean holdingGrenade;
 	private boolean blockInput = false;
@@ -61,13 +65,13 @@ public class Player extends AbstractGameObject implements Collidable {
 
 	private Sprite holding_grenade;
 
-	private GameSession gameSettings;
+	private GameSession gameSession;
 
-	public Player(GameSession gameSettings, int id, float x, float y) {
+	public Player(GameSession gameSession, PlayerInfo info, float x, float y) {
 		super(x, y, WIDTH, HEIGHT);
-		init(gameSettings);
+		init(gameSession);
 
-		this.info = gameSettings.players.get(id);
+		this.info = info;
 		this.tileCollisionListener = new TileCollisionListener() {
 			@Override
 			public void onCollide(MapObject rectangleObject, Rectangle intersection) {
@@ -77,7 +81,7 @@ public class Player extends AbstractGameObject implements Collidable {
 	}
 
 	private void init(GameSession gameSettings) {
-		this.gameSettings = gameSettings;
+		this.gameSession = gameSettings;
 		this.healthMax = gameSettings.startingHealth;
 		this.health = healthMax;
 
@@ -116,6 +120,11 @@ public class Player extends AbstractGameObject implements Collidable {
 		grenadeCooldown = new Cooldown(grenadeCooldownDuration);
 
 		getGameContext().bringToFront(this);
+
+		((JustAnotherGame) getGameContext().getGame()).getServer().send(info.id,
+				new PlayerUpdate(3, new int[] { PlayerUpdate.GUN, PlayerUpdate.AMMO, PlayerUpdate.HEALTH },
+						new float[][] { { GunType.pistol.ordinal() },
+								{ gun.getMagasineAmmo(), gun.getMagasineSize(), gun.getAmmo() }, { health } }));
 	}
 
 	@Override
@@ -158,9 +167,10 @@ public class Player extends AbstractGameObject implements Collidable {
 			Draw.sprite(batch, holding_grenade, getX(), getY(), getWidth(), getHeight(), getRotation());
 		}
 
-		Assets.font.draw(batch, nameLabel, getX() + getWidth() / 2 - nameLabel.width / 2,
-				getY() + getHeight() + nameLabel.height);
-
+		if (gameSession.drawNames) {
+			Assets.font.draw(batch, nameLabel, getX() + getWidth() / 2 - nameLabel.width / 2,
+					getY() + getHeight() + nameLabel.height);
+		}
 		healthHud.draw(batch);
 	}
 
@@ -192,7 +202,7 @@ public class Player extends AbstractGameObject implements Collidable {
 
 	public void fireBullet() {
 		if (!isHoldingGrenade()) {
-			if(gun.getMagasineAmmo() == 0){
+			if (gun.getMagasineAmmo() == 0) {
 				reload();
 			}
 			gun.shoot();
@@ -253,7 +263,7 @@ public class Player extends AbstractGameObject implements Collidable {
 						new BloodSplatter(getCenterX(), getCenterY(), (float) (Math.random() * 2 * Math.PI), 40.0f));
 			}
 
-			gameSettings.roundHandler.playerKilled(killer, this);
+			gameSession.roundHandler.playerKilled(killer, this);
 		}
 	}
 
@@ -315,6 +325,10 @@ public class Player extends AbstractGameObject implements Collidable {
 	@Override
 	public String toString() {
 		return getName();
+	}
+
+	public GameSession getGameSession() {
+		return gameSession;
 	}
 
 	public void setInvincible(boolean invincible) {

@@ -1,18 +1,11 @@
 package no.kash.gamedev.jag.game.gamesession.roundhandlers;
 
-import no.kash.gamedev.jag.game.gameobjects.players.Player;
+public interface RoundResult<T> {
 
-public class RoundResult {
-	public static RoundResult NO_RESULT = new RoundResult(true, null, false);
+	boolean isDraw();
 
-	public boolean draw = false;
-	public boolean gameEnding = false;
-	public Player winner;
+	boolean isGameEnding();
 
-	public RoundResult(boolean draw, Player winner, boolean gameEnding) {
-		this.draw = draw;
-		this.winner = winner;
-		this.gameEnding = gameEnding;
-	}
+	T winner();
 
 }

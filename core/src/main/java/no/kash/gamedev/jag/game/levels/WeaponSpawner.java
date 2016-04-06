@@ -7,26 +7,30 @@ import com.badlogic.gdx.math.Vector2;
 import no.kash.gamedev.jag.game.commons.utils.Cooldown;
 import no.kash.gamedev.jag.game.gamecontext.GameContext;
 
-public class Spawner {
+public class WeaponSpawner {
 
 	private GameContext gameContext;
 	private ArrayList<WeaponSpawnTile> weaponTiles;
+	private ArrayList<Vector2> wepSpawns;
 
 	private Cooldown timerInterval;
 	private float interval = 6;
 
-	public Spawner(ArrayList<Vector2> wepSpawns, GameContext gameContext) {
+	public WeaponSpawner(ArrayList<Vector2> wepSpawns, GameContext gameContext) {
 		this.gameContext = gameContext;
+		this.wepSpawns = wepSpawns;
 		timerInterval = new Cooldown(interval);
 
 		weaponTiles = new ArrayList<WeaponSpawnTile>();
+	}
+
+	public void spawnWeaponTiles() {
 		for (Vector2 points : wepSpawns) {
 			WeaponSpawnTile temp = new WeaponSpawnTile(points.x, points.y);
 			weaponTiles.add(temp);
 			this.gameContext.spawn(temp);
 			temp.reSpawnCooldown.startCooldown();
 		}
-
 	}
 
 	public void update(float delta) {

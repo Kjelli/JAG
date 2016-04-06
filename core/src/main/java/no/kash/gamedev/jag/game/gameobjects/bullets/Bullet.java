@@ -5,6 +5,7 @@ import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.math.Rectangle;
 
 import no.kash.gamedev.jag.assets.Assets;
+import no.kash.gamedev.jag.game.gamecontext.GameContext;
 import no.kash.gamedev.jag.game.gamecontext.physics.Collidable;
 import no.kash.gamedev.jag.game.gamecontext.physics.Collision;
 import no.kash.gamedev.jag.game.gamecontext.physics.tilecollisions.TileCollisionDetector;
@@ -74,6 +75,13 @@ public class Bullet extends AbstractGameObject implements Collidable {
 		if (collision.getTarget() instanceof Player) {
 			Player target = (Player) collision.getTarget();
 			if (isAlive() && getShooter().equals(target)) {
+				return;
+			}
+
+			boolean friendlyFireDisabled = !target.getGameSession().friendlyFire;
+			boolean sameTeam = getShooter().getInfo().teamId == target.getInfo().teamId;
+			boolean teamBasedGame = target.getGameSession().gameMode.teamBased;
+			if (teamBasedGame && sameTeam && friendlyFireDisabled) {
 				return;
 			}
 

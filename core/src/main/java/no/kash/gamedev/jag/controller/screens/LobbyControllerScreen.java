@@ -20,21 +20,19 @@ import com.badlogic.gdx.utils.Align;
 import com.esotericsoftware.kryonet.Connection;
 
 import no.kash.gamedev.jag.assets.Assets;
-import no.kash.gamedev.jag.commons.defs.Defs;
-import no.kash.gamedev.jag.commons.defs.Prefs;
 import no.kash.gamedev.jag.commons.network.JagClientPacketHandler;
 import no.kash.gamedev.jag.commons.network.packets.GamePacket;
+import no.kash.gamedev.jag.commons.network.packets.GameSessionUpdate;
 import no.kash.gamedev.jag.commons.network.packets.PlayerUpdate;
 import no.kash.gamedev.jag.commons.utils.Callback;
 import no.kash.gamedev.jag.controller.JustAnotherGameController;
-import no.kash.gamedev.jag.controller.Player;
 import no.kash.gamedev.jag.controller.lobby.ColorPicker;
 import no.kash.gamedev.jag.controller.lobby.ColorPicker.ColorOption;
 import no.kash.gamedev.jag.controller.lobby.GameSessionControls;
+import no.kash.gamedev.jag.controller.preferences.PlayerPreferences;
 
 public class LobbyControllerScreen extends AbstractControllerScreen {
 
-	// TODO implement gamesetting changer aka gameMaster
 	private boolean gameMaster = false;
 	GameSessionControls sessionControls;
 
@@ -60,13 +58,21 @@ public class LobbyControllerScreen extends AbstractControllerScreen {
 	// SettingsView
 	ScrollPane container;
 	Table scrollingTable;
+
+	// (GameMaster settings)
+	Label gameMasterLabel;
 	TextButton gameMode;
 	TextButton dropIn;
 	TextButton roundTime;
 	TextButton roundsToWin;
-	TextButton suddenDeath;
 	TextButton testMode;
+	TextButton friendlyFire;
 	TextButton startingHealth;
+	TextButton drawNames;
+	// TextButton suddenDeath;
+
+	Label preferenceLabel;
+
 	TextButton back;
 
 	boolean firstFrame = true;
@@ -91,7 +97,7 @@ public class LobbyControllerScreen extends AbstractControllerScreen {
 
 	@Override
 	protected void onShow() {
-		Player.load();
+		PlayerPreferences.load();
 		skin = new Skin(Gdx.files.internal("uiskin.json"));
 		font = Assets.font;
 
@@ -113,6 +119,7 @@ public class LobbyControllerScreen extends AbstractControllerScreen {
 						gameMaster = true;
 						initSettingsView();
 						setStandardView();
+						sendGameSessionUpdate();
 					}
 				}
 			}
@@ -123,9 +130,10 @@ public class LobbyControllerScreen extends AbstractControllerScreen {
 
 			@Override
 			public void handleConnection(Connection c) {
-
 			}
 		});
+
+		sendUpdate();
 
 	}
 
@@ -138,24 +146,104 @@ public class LobbyControllerScreen extends AbstractControllerScreen {
 		container.setSize(stage.getWidth(), stage.getHeight() - 200);
 
 		if (gameMaster) {
-			gameMode = new TextButton("Gamemode: ", skin);
+			sessionControls = new GameSessionControls();
+
+			gameMasterLabel = new Label("Game settings", skin);
+
+			// Game mode option
+			gameMode = new TextButton("Game mode: " + sessionControls.session.gameMode.displayName, skin);
 			gameMode.addListener(new ClickListener() {
 				@Override
 				public void clicked(InputEvent event, float x, float y) {
-					if (gameMode.getText().equals("Gamemode: STANDARD")) {
-						gameMode.setText("Gamemode: SMASH");
-					} else {
-						gameMode.setText("Gamemode: STANDARD");
-					}
-					gameMode.setText("WALLA");
+					gameMode.setText("Game mode: " + sessionControls.nextOptionGameMode().displayName);
+					sendGameSessionUpdate();
 				}
 			});
-			roundTime = new TextButton("Round time: 30s", skin);
-			suddenDeath = new TextButton("Sudden death: ON", skin);
+
+			// Round time option
+			roundTime = new TextButton("Round time:" + sessionControls.session.roundTime + "s", skin);
+			roundTime.addListener(new ClickListener() {
+				@Override
+				public void clicked(InputEvent event, float x, float y) {
+					roundTime.setText("Round time: " + sessionControls.nextOptionRoundTime() + "s");
+					sendGameSessionUpdate();
+				}
+			});
+
+			// Rounds to win option
+			roundsToWin = new TextButton("Win limit: " + sessionControls.session.roundsToWin + " rounds", skin);
+			roundsToWin.addListener(new ClickListener() {
+				@Override
+				public void clicked(InputEvent event, float x, float y) {
+					roundsToWin.setText("Win limit: " + sessionControls.nextOptionRoundsToWin() + " rounds");
+					sendGameSessionUpdate();
+				}
+			});
+
+			// Starting health option
+			startingHealth = new TextButton("Starting health: " + sessionControls.session.startingHealth, skin);
+			startingHealth.addListener(new ClickListener() {
+				@Override
+				public void clicked(InputEvent event, float x, float y) {
+					startingHealth.setText("Starting health:  " + sessionControls.nextOptionStartingHealth());
+					sendGameSessionUpdate();
+				}
+			});
+
+			// Drop in option
+			dropIn = new TextButton("Drop in: " + (sessionControls.session.dropIn ? "on" : "off"), skin);
+			dropIn.addListener(new ClickListener() {
+				@Override
+				public void clicked(InputEvent event, float x, float y) {
+					dropIn.setText("Drop in: " + (sessionControls.nextOptionDropIn() ? "on" : "off"));
+					sendGameSessionUpdate();
+				}
+			});
+
+			// Test mode option
+			testMode = new TextButton("Test mode: " + (sessionControls.session.testMode ? "on" : "off"), skin);
+			testMode.addListener(new ClickListener() {
+				@Override
+				public void clicked(InputEvent event, float x, float y) {
+					testMode.setText("Test mode: " + (sessionControls.nextOptionTestMode() ? "on" : "off"));
+					sendGameSessionUpdate();
+				}
+			});
+
+			// Friendly fire option
+			friendlyFire = new TextButton("Friendly fire: " + (sessionControls.session.friendlyFire ? "on" : "off"),
+					skin);
+			friendlyFire.addListener(new ClickListener() {
+				@Override
+				public void clicked(InputEvent event, float x, float y) {
+					friendlyFire.setText("Friendly fire: " + (sessionControls.nextOptionFriendlyFire() ? "on" : "off"));
+					sendGameSessionUpdate();
+				}
+			});
+
+			// Draw names option
+			drawNames = new TextButton("Show names: " + (sessionControls.session.drawNames ? "on" : "off"),
+					skin);
+			drawNames.addListener(new ClickListener() {
+				@Override
+				public void clicked(InputEvent event, float x, float y) {
+					drawNames.setText("Show names: " + (sessionControls.nextOptionDrawNames() ? "on" : "off"));
+					sendGameSessionUpdate();
+				}
+			});
+
+			scrollingTable.add(gameMasterLabel).row();
 			scrollingTable.add(gameMode).row();
 			scrollingTable.add(roundTime).row();
-			scrollingTable.add(suddenDeath).row();
+			scrollingTable.add(roundsToWin).row();
+			scrollingTable.add(startingHealth).row();
+			scrollingTable.add(friendlyFire).row();
+			scrollingTable.add(drawNames).row();
+			scrollingTable.add(dropIn).row();
+			scrollingTable.add(testMode).row();
 		}
+
+		preferenceLabel = new Label("Preferences (TODO)", skin);
 
 		back = new TextButton("Back", skin);
 		back.setX(0);
@@ -166,6 +254,7 @@ public class LobbyControllerScreen extends AbstractControllerScreen {
 				setStandardView();
 			}
 		});
+		scrollingTable.add(preferenceLabel);
 
 		container.setWidget(scrollingTable);
 	}
@@ -209,15 +298,15 @@ public class LobbyControllerScreen extends AbstractControllerScreen {
 		nameLabel.setAlignment(Align.left | Align.top);
 		nameLabel.setY(stage.getHeight() - nameLabel.getHeight() * 1.5f);
 
-		levelLabel = new Label("Level: " + Player.getLevel(), skin);
+		levelLabel = new Label("Level: " + PlayerPreferences.getLevel(), skin);
 		levelLabel.setX(0);
 		levelLabel.setY(stage.getHeight() / 2 - levelLabel.getHeight());
 
-		expLabel = new Label("Exp: " + Player.getExp() + "/" + Player.expReq(), skin);
+		expLabel = new Label("Exp: " + PlayerPreferences.getExp() + "/" + PlayerPreferences.expReq(), skin);
 		expLabel.setX(0);
 		expLabel.setY((float) (stage.getHeight() / 2.5 - expLabel.getHeight()));
 
-		nameField = new TextField(Player.getName(), skin);
+		nameField = new TextField(PlayerPreferences.getName(), skin);
 		nameField.setX(0);
 		nameField.setSize(250, 100);
 		nameField.setY(stage.getHeight() - nameLabel.getHeight() * 1.5f - nameField.getHeight());
@@ -226,8 +315,8 @@ public class LobbyControllerScreen extends AbstractControllerScreen {
 
 			@Override
 			public void keyTyped(TextField textField, char c) {
-				Player.setName(textField.getText());
-				Player.save();
+				PlayerPreferences.setName(textField.getText());
+				PlayerPreferences.save();
 				sendUpdate();
 			}
 		});
@@ -238,12 +327,12 @@ public class LobbyControllerScreen extends AbstractControllerScreen {
 					@Override
 					public void callback() {
 						Color c = picker.getSelectedColor(Color.WHITE);
-						Player.setColor(c);
-						Player.save();
+						PlayerPreferences.setColor(c);
+						PlayerPreferences.save();
 						sendUpdate();
 					}
 				});
-		picker.setInitialSelection(Player.getColor());
+		picker.setInitialSelection(PlayerPreferences.getColor());
 
 		newColors = new TextButton("More colors", skin);
 		newColors.setX(picker.getX());
@@ -275,12 +364,25 @@ public class LobbyControllerScreen extends AbstractControllerScreen {
 
 	protected void sendUpdate() {
 		Color c = picker.getSelectedColor(new Color(Color.WHITE));
-		int tp = Player.getTimesPlayed();
-		int level = Player.getLevel();
-		float xp = Player.getExp();
+		int tp = PlayerPreferences.getTimesPlayed();
+		int level = PlayerPreferences.getLevel();
+		float xp = PlayerPreferences.getExp();
 		int rdy = ready.isChecked() ? 1 : 0;
-		game.getClient().broadcast(new PlayerUpdate(1, new int[] { PlayerUpdate.PLAYER_INFO },
-				new float[][] { { tp, level, xp }, { c.r, c.g, c.b }, { rdy } }, new String[] { nameField.getText() }));
+		PlayerUpdate update = new PlayerUpdate(1, new int[] { PlayerUpdate.PLAYER_INFO },
+				new float[][] { { tp, level, xp }, { c.r, c.g, c.b }, { rdy } }, new String[] { nameField.getText() });
+		game.getClient().broadcast(update);
+	}
+
+	protected void sendGameSessionUpdate() {
+		GameSessionUpdate update = new GameSessionUpdate();
+		update.dropIn = sessionControls.session.dropIn;
+		update.gameModeIndex = sessionControls.getGameModeIndex();
+		update.roundsToWin = sessionControls.session.roundsToWin;
+		update.startingHealth = sessionControls.session.startingHealth;
+		update.testMode = sessionControls.session.testMode;
+		update.friendlyFire = sessionControls.session.friendlyFire;
+		update.drawNames = sessionControls.session.drawNames;
+		game.getClient().broadcast(update);
 	}
 
 }

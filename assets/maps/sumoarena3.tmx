@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" renderorder="right-down" width="20" height="10" tilewidth="16" tileheight="16" nextobjectid="52">
+ <properties>
+  <property name="ffa" type="bool" value="true"/>
+  <property name="team" type="bool" value="false"/>
+ </properties>
  <tileset firstgid="1" name="obstaclesSheet" tilewidth="16" tileheight="16" tilecount="128" columns="16">
   <image source="sprites/obstaclesSheet.png" width="256" height="128"/>
  </tileset>

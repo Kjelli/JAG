@@ -3,10 +3,11 @@ package no.kash.gamedev.jag.commons.network;
 import com.esotericsoftware.kryo.Kryo;
 
 import no.kash.gamedev.jag.commons.network.packets.PlayerUpdate;
-import no.kash.gamedev.jag.game.gamesession.roundhandlers.PlayerNewStats;
 import no.kash.gamedev.jag.commons.network.packets.GamePacket;
+import no.kash.gamedev.jag.commons.network.packets.GameSessionUpdate;
 import no.kash.gamedev.jag.commons.network.packets.PlayerConnect;
 import no.kash.gamedev.jag.commons.network.packets.PlayerInput;
+import no.kash.gamedev.jag.commons.network.packets.PlayerNewStats;
 import no.kash.gamedev.jag.commons.network.packets.PlayerStateChange;
 import no.kash.gamedev.jag.commons.network.packets.PlayerStateChangeResponse;
 
@@ -19,8 +20,9 @@ public class JagKryo {
 		kryo.register(PlayerStateChange.class);
 		kryo.register(PlayerStateChangeResponse.class);
 		kryo.register(PlayerNewStats.class);
+		kryo.register(GameSessionUpdate.class);
 		kryo.register(float[].class);
-		kryo.register(float[][].class);	
+		kryo.register(float[][].class);
 		kryo.register(int[].class);
 		kryo.register(String[].class);
 	}

@@ -12,6 +12,7 @@ import java.util.Map;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.esotericsoftware.kryonet.Connection;
@@ -38,15 +39,17 @@ import no.kash.gamedev.jag.game.gameobjects.particles.Confetti;
 import no.kash.gamedev.jag.game.gameobjects.particles.Explosion;
 import no.kash.gamedev.jag.game.gameobjects.players.Player;
 import no.kash.gamedev.jag.game.gameobjects.players.PlayerInfo;
+import no.kash.gamedev.jag.game.gamesession.GameMode;
 import no.kash.gamedev.jag.game.gamesession.GameSession;
 import no.kash.gamedev.jag.game.gamesession.roundhandlers.FFARoundHandler;
 import no.kash.gamedev.jag.game.gamesession.roundhandlers.RoundHandler;
 import no.kash.gamedev.jag.game.gamesession.roundhandlers.RoundResult;
+import no.kash.gamedev.jag.game.gamesession.roundhandlers.FFARoundResult;
 import no.kash.gamedev.jag.game.levels.Level;
 import no.kash.gamedev.jag.game.levels.PlayerSpawnPoint;
 import no.kash.gamedev.jag.game.levels.WeaponSpawnTile;
 
-public class GameScreen extends AbstractGameScreen {
+public class PlayScreen extends AbstractGameScreen {
 
 	@SuppressWarnings({ "rawtypes" })
 	private static final Class[] focusCameraOnPOIs = new Class[] { Player.class, Weapon.class, WeaponSpawnTile.class,
@@ -61,20 +64,25 @@ public class GameScreen extends AbstractGameScreen {
 	public RoundResult result;
 
 	// game)
-	public GameScreen(JustAnotherGame game, GameSession session) {
+	public PlayScreen(JustAnotherGame game, GameSession session) {
 		super(game);
 		players = new HashMap<>();
 		this.gameSession = session;
-		this.gameSession.roundHandler = new FFARoundHandler(gameContext, session, players);
+		session.reset();
 	}
 
 	@Override
 	protected void onShow() {
 		stage.setViewport(new StretchViewport(Defs.WIDTH, Defs.HEIGHT, camera));
 		initInputReceiver();
+		initSession();
 		loadLevel();
 		start();
 
+	}
+
+	private void initSession() {
+		gameSession.init(this, gameContext, players);
 	}
 
 	@Override
@@ -108,45 +116,34 @@ public class GameScreen extends AbstractGameScreen {
 
 	public void start() {
 		gameOver = false;
-
-		if (gameSession.testMode && gameSession.players.size() < 2) {
-			spawnPlayer(new PlayerInfo());
-		}
-
-		for (PlayerInfo player : gameSession.players.values()) {
-			spawnPlayer(player);
-			if (players.containsKey(player.id)) {
-				players.get(player.id).blockInput(true);
-			}
-		}
-		// No op
-		TweenableFloat f = new TweenableFloat(0);
-		TweenGlobal.start(Tween.from(f, FloatAccessor.TYPE_VALUE, 3.0f).target(1).setCallback(new TweenCallback() {
-			@Override
-			public void onEvent(int arg0, BaseTween<?> arg1) {
-				if (arg0 == TweenCallback.COMPLETE) {
-					for (PlayerInfo player : gameSession.players.values()) {
-						players.get(player.id).blockInput(false);
-					}
-				}
-			}
-		}));
-
-		getGameContext().getAnnouncer().announceRoundStart(gameSession.roundHandler.currentRound(), 3);
-
+		level.spawnWeaponTiles();
+		gameSession.roundHandler.start();
 	}
 
 	public void restart() {
 		getGameContext().clear();
 		players.clear();
 		level.resetPlayerSpawns();
-		level.spawnWeaponSpawns();
 		start();
+		
 	}
 
-	public void spawnPlayer(PlayerInfo player) {
+	public void spawnPlayer(PlayerInfo playerInfo) {
 
-		int index = 0;
+		if (gameSession.gameMode == GameMode.STANDARD_TEAM) {
+			Rectangle spawnZone = level.teamSpawnZones.get(playerInfo.teamId);
+
+			float spawnX = (float) (spawnZone.x + Player.WIDTH / 2 + Math.random() * (spawnZone.width - Player.WIDTH));
+			float spawnY = (float) (spawnZone.y + Player.HEIGHT / 2
+					+ Math.random() * (spawnZone.height - Player.HEIGHT));
+
+			Player player = new Player(gameSession, playerInfo, spawnX, spawnY);
+			players.put(playerInfo.id, player);
+			gameContext.spawn(player);
+			return;
+		}
+
+		int index = (int) (Math.random() * level.playerSpawns.size());
 		while (true) {
 			if (index >= level.playerSpawns.size()) {
 				break;
@@ -160,17 +157,13 @@ public class GameScreen extends AbstractGameScreen {
 
 			float spawnX = spawnPoint.position.x - Player.WIDTH / 2;
 			float spawnY = spawnPoint.position.y - Player.HEIGHT / 2;
-			if (!gameSession.players.containsKey(player.id)) {
-				gameSession.players.put(player.id, player);
-			}
-			if (!players.containsKey(player.id)) {
-				Player newlyJoined = new Player(gameSession, player.id, spawnX, spawnY);
-				players.put(player.id, newlyJoined);
-				gameContext.spawn(newlyJoined);
+			Player player = new Player(gameSession, playerInfo, spawnX, spawnY);
+			players.put(playerInfo.id, player);
+			gameContext.spawn(player);
 
-				spawnPoint.taken = true;
-				index++;
-			}
+			spawnPoint.taken = true;
+			index++;
+
 			return;
 		}
 		gameContext.getAnnouncer().announce("Too many players! (max " + level.playerSpawns.size() + ")");
@@ -182,9 +175,9 @@ public class GameScreen extends AbstractGameScreen {
 			result = gameSession.roundHandler.roundEnded();
 			if (result != null) {
 				gameOver = true;
-				gameSession.roundHandler.proceed(this);
+				gameSession.roundHandler.proceed();
 			}
-		} else if (result.gameEnding) {
+		} else if (result.isGameEnding()) {
 			spawnConfetti();
 		}
 	}
@@ -250,19 +243,8 @@ public class GameScreen extends AbstractGameScreen {
 			@Override
 			public void handlePacket(Connection c, GamePacket m) {
 				if (m instanceof PlayerStateChangeResponse) {
-
 					PlayerStateChangeResponse resp = (PlayerStateChangeResponse) m;
-
-					if (gameSession.dropIn && gameSession.roundHandler.canJoin()
-							&& resp.stateId == JustAnotherGameController.PLAY_STATE
-							&& !players.containsKey(c.getID())) {
-						PlayerInfo standard = new PlayerInfo();
-						standard.id = c.getID();
-						standard.name = "Minge_" + c.getID();
-						standard.timesPlayed = -1;
-						standard.color = new Color(Color.WHITE);
-						spawnPlayer(standard);
-					}
+					// TODO handle proper dropin
 				}
 
 				if (m instanceof PlayerConnect) {

@@ -1,6 +1,4 @@
-package no.kash.gamedev.jag.game.gamesession.roundhandlers;
-
-import no.kash.gamedev.jag.commons.network.packets.GamePacket;
+package no.kash.gamedev.jag.commons.network.packets;
 
 public class PlayerNewStats implements GamePacket {
 	public int xp;
