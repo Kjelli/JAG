@@ -25,14 +25,20 @@ public class Fire extends AbstractGameObject{
 		this.direction = direction;
 		this.speed = speed;
 		setSprite(sprite);
-		
-		livetime = new Cooldown(1);
+		setRotation(direction * (10 + ((int)(Math.random() * 20))));
+		livetime = new Cooldown(0.2f);
 		livetime.startCooldown();
 		
+		
+		acceleration.x = EPSILON;
+		acceleration.y = EPSILON;
+		velocity.x = (float) (Math.cos(direction) * speed);
+		velocity.y = (float) (Math.sin(direction) * speed);
 	}
 
 	@Override
 	public void update(float delta) {
+		move(delta);
 		livetime.update(delta);
 		if(!livetime.isOnCooldown()){
 			destroy();
