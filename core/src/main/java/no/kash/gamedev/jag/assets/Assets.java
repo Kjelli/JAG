@@ -18,7 +18,7 @@ public class Assets {
 
 	// Weapons
 	public static Texture bullet;
-	
+
 	public static Texture pistol;
 	public static Texture m4;
 	public static Texture mac10;
@@ -44,7 +44,8 @@ public class Assets {
 	public static Texture mac10_ground;
 	public static Texture flamethrower_ground;
 	
-	//Icons
+
+	// Icons
 	public static Texture health_icon;
 	public static Texture icon_border;
 
@@ -60,6 +61,7 @@ public class Assets {
 
 	// Fonts
 	public static BitmapFont font, fontSmall, fontLarge;
+	public static BitmapFont announcerFont;
 
 	public static void load() {
 		plain = load("plain.png");
@@ -74,7 +76,6 @@ public class Assets {
 		goldengun = load("playerSprite/goldengun.png");
 		mac10 = load("playerSprite/mac10.png");
 		flamethrower = load("playerSprite/flamethrower.png");
-		
 		grenade = load("sprites/grenade.png");
 
 		// Particles
@@ -83,7 +84,7 @@ public class Assets {
 		wepSpawnEffect = load("sprites/spawnEffect.png");
 		star = load("sprites/star.png");
 		confetti = load("sprites/confetti.png");
-		
+
 		// Collectibles
 		m4_ground = load("sprites/gun_m4.png");
 		pistol_ground = load("sprites/gun_pistol.png");
@@ -94,8 +95,9 @@ public class Assets {
 
 		
 		// Icons
+
 		mac10_ground = load("sprites/gun_mac10.png");
-		
+
 		icon_border = load("sprites/health_icon.png");
 		health_icon = load("sprites/health_icon.png");
 
@@ -148,6 +150,13 @@ public class Assets {
 		font62params.size = 62;
 
 		fontLarge = fontgen.generateFont(font62params);
+		
+		FreeTypeFontParameter font40params = new FreeTypeFontParameter();
+		font40params.minFilter = Texture.TextureFilter.Nearest;
+		font40params.magFilter = Texture.TextureFilter.MipMapLinearNearest;
+		font40params.size = 12;
+
+		announcerFont = fontgen.generateFont(font40params);
 	}
 
 	private static Texture load(String filename) {

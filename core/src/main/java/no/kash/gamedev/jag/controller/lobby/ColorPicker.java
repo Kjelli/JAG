@@ -17,20 +17,30 @@ public class ColorPicker {
 
 	ColorOption[][] colors;
 	float x, y;
-	int width, height;
+	int horizontal, vertical;
 	Stage stage;
 
 	ColorOption selected;
 	Callback onSelectCb;
 
-	public ColorPicker(float x, float y, int width, int height, Callback cb) {
+	public ColorPicker(float x, float y, int horizontal, int vertical, Callback cb) {
 		this.x = x;
 		this.y = y;
-		this.width = width;
-		this.height = height;
-		generate();
+		this.horizontal = horizontal;
+		this.vertical = vertical;
 		onSelectCb = cb;
+		generate();
+	}
 
+	public int getSelectedIndex() {
+		for (int i = 0; i < horizontal; i++) {
+			for (int j = 0; j < vertical; j++) {
+				if (colors[i][j].equals(selected)) {
+					return i + j * vertical;
+				}
+			}
+		}
+		return -1;
 	}
 
 	public Color getSelectedColor(Color defaultColor) {
@@ -42,9 +52,9 @@ public class ColorPicker {
 	}
 
 	public void generate() {
-		colors = new ColorOption[width][height];
-		for (int i = 0; i < width; i++) {
-			for (int j = 0; j < height; j++) {
+		colors = new ColorOption[horizontal][vertical];
+		for (int i = 0; i < horizontal; i++) {
+			for (int j = 0; j < vertical; j++) {
 				colors[i][j] = new ColorOption(
 						new Color((float) Math.random(), (float) Math.random(), (float) Math.random(), 1),
 						x + i * ColorOption.WIDTH, y + j * ColorOption.HEIGHT);
@@ -52,9 +62,6 @@ public class ColorPicker {
 					@Override
 					public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 						ColorOption source = (ColorOption) event.getTarget();
-						if (selected != null) {
-							selected.deselect();
-						}
 						source.select();
 						onSelectCb.callback();
 						return true;
@@ -68,7 +75,7 @@ public class ColorPicker {
 	public void shuffle() {
 		for (ColorOption[] optionRow : colors) {
 			for (ColorOption color : optionRow) {
-				if(color == selected){
+				if (color == selected) {
 					continue;
 				}
 				color.randomize();
@@ -85,7 +92,7 @@ public class ColorPicker {
 			}
 		}
 	}
-	
+
 	public void setInitialSelection(Color color) {
 		colors[0][0].sprite.setColor(color);
 		colors[0][0].select();
@@ -111,8 +118,12 @@ public class ColorPicker {
 		}
 
 		public void select() {
+			if (ColorPicker.this.selected != null) {
+				ColorPicker.this.selected.deselect();
+			}
 			ColorPicker.this.selected = this;
 			selected = true;
+			System.out.println(sprite.getColor());
 		}
 
 		public void deselect() {
@@ -159,6 +170,10 @@ public class ColorPicker {
 
 	public float getHeight() {
 		return ColorOption.HEIGHT * colors[0].length;
+	}
+
+	public void setInitialSelection(int i) {
+		colors[i % horizontal][i / horizontal].select();
 	}
 
 }

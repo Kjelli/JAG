@@ -18,6 +18,7 @@ import no.kash.gamedev.jag.commons.network.packets.GameSessionUpdate;
 import no.kash.gamedev.jag.commons.network.packets.PlayerConnect;
 import no.kash.gamedev.jag.commons.network.packets.PlayerInput;
 import no.kash.gamedev.jag.commons.network.packets.PlayerStateChange;
+import no.kash.gamedev.jag.commons.network.packets.PlayerStateChangeResponse;
 import no.kash.gamedev.jag.commons.network.packets.PlayerUpdate;
 import no.kash.gamedev.jag.controller.JustAnotherGameController;
 import no.kash.gamedev.jag.game.JustAnotherGame;
@@ -38,13 +39,20 @@ public class LobbyScreen extends AbstractGameScreen {
 	public LobbyScreen(JustAnotherGame game) {
 		super(game);
 		session = new GameSession();
+		playerInfos = new HashMap<>();
 	}
 
 	public LobbyScreen(JustAnotherGame game, GameSession session) {
 		super(game);
 		this.session = session;
-
 		session.reset();
+		playerInfos = new HashMap<>();
+
+		for (PlayerInfo pi : session.players.values()) {
+			PlayerInfoGUI pis = new PlayerInfoGUI(0,
+					stage.getHeight() - (playerInfos.size() + 1) * PlayerInfoGUI.HEIGHT, pi);
+			playerInfos.put(pi.id, pis);
+		}
 	}
 
 	@Override
@@ -85,7 +93,6 @@ public class LobbyScreen extends AbstractGameScreen {
 	@Override
 	protected void onShow() {
 		font = Assets.font;
-		playerInfos = new HashMap<>();
 		lobbyLabel = new GlyphLayout(font, "Lobby");
 		stage.setViewport(new StretchViewport(Defs.WIDTH, Defs.HEIGHT, camera));
 
@@ -94,6 +101,19 @@ public class LobbyScreen extends AbstractGameScreen {
 			public void handlePacket(Connection c, GamePacket m) {
 				if (m instanceof PlayerConnect) {
 					game.getServer().send(c.getID(), new PlayerStateChange(JustAnotherGameController.LOBBY_STATE));
+				} else if (m instanceof PlayerStateChangeResponse) {
+					PlayerStateChangeResponse resp = (PlayerStateChangeResponse) m;
+					if (resp.stateId == JustAnotherGameController.LOBBY_STATE) {
+						if (playerInfos.size() > 0) {
+							GameSessionUpdate sessionUpdate = buildGameSessionUpdate();
+							game.getServer().send(c.getID(), sessionUpdate);
+						}
+					}
+					if (session.players.containsKey(c.getID()) && session.players.get(c.getID()).gameMaster) {
+						game.getServer().send(c.getID(),
+								new PlayerUpdate(1, new int[] { PlayerUpdate.GAME_MASTER }, null));
+					}
+
 				} else if (m instanceof PlayerUpdate) {
 					PlayerUpdate update = (PlayerUpdate) m;
 					PlayerInfo info = new PlayerInfo();
@@ -103,7 +123,9 @@ public class LobbyScreen extends AbstractGameScreen {
 					info.level = (int) update.state[0][1];
 					info.xp = (int) update.state[0][2];
 					info.ready = update.state[2][0] > 0;
+					info.teamId = session.gameMode.teamBased ? (int) update.state[2][1] : -1;
 					info.color = new Color(update.state[1][0], update.state[1][1], update.state[1][2], 1);
+					System.out.println(info.name + " selected " + info.color);
 					if (playerInfos.isEmpty()) {
 						info.gameMaster = true;
 						game.getServer().send(info.id,
@@ -115,6 +137,7 @@ public class LobbyScreen extends AbstractGameScreen {
 						playerInfos.put(c.getID(), pi);
 						System.out.println("Adding player " + c.getID());
 					} else {
+						info.gameMaster = playerInfos.get(c.getID()).getInfo().gameMaster;
 						playerInfos.get(c.getID()).setInfo(info);
 					}
 
@@ -128,6 +151,9 @@ public class LobbyScreen extends AbstractGameScreen {
 					session.startingHealth = update.startingHealth;
 					session.friendlyFire = update.friendlyFire;
 					session.drawNames = update.drawNames;
+
+					game.getServer().broadcast(update);
+
 					System.out.println("Changed gamesession settings");
 				}
 			}
@@ -163,6 +189,19 @@ public class LobbyScreen extends AbstractGameScreen {
 			}
 
 		});
+	}
+
+	protected GameSessionUpdate buildGameSessionUpdate() {
+		GameSessionUpdate sessionUpdate = new GameSessionUpdate();
+		sessionUpdate.dropIn = session.dropIn;
+		sessionUpdate.gameModeIndex = session.gameMode.ordinal();
+		sessionUpdate.roundsToWin = session.roundsToWin;
+		sessionUpdate.roundTime = session.roundTime;
+		sessionUpdate.testMode = session.testMode;
+		sessionUpdate.startingHealth = session.startingHealth;
+		sessionUpdate.friendlyFire = session.friendlyFire;
+		sessionUpdate.drawNames = session.drawNames;
+		return sessionUpdate;
 	}
 
 }

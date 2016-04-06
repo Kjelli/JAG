@@ -30,6 +30,7 @@ public class PlayerInfo {
 	}
 
 	public void resetSession() {
+		ready = false;
 		killed.clear();
 		killedBy.clear();
 	}
