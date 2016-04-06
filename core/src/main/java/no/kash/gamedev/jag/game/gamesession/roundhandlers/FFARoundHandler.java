@@ -88,7 +88,7 @@ public class FFARoundHandler implements RoundHandler {
 		TweenableFloat f = new TweenableFloat(0);
 		final boolean gameOver = gameOver();
 
-		TweenGlobal.start(Tween.from(f, FloatAccessor.TYPE_VALUE, gameOver ? 0.75f : 1.25f).target(1)
+		TweenGlobal.start(Tween.from(f, FloatAccessor.TYPE_VALUE, gameOver ? 2.75f : 1.25f).target(1)
 				.setCallback(new TweenCallback() {
 					@Override
 					public void onEvent(int arg0, BaseTween<?> arg1) {
