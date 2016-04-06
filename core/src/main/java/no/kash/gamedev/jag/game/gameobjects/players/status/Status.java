@@ -34,7 +34,6 @@ public class Status {
 			player.damage(this);
 			break;
 		case poison:
-			System.out.println("#POISON");
 			player.getGameContext()
 			.spawn(new Poison(player.getCenterX() + (float) (Math.random() * Player.WIDTH / 2 - Player.WIDTH / 4),
 					player.getCenterY() + (float) (Math.random() * Player.HEIGHT / 2 - Player.HEIGHT / 4)));
