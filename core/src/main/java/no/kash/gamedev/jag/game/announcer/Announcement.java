@@ -19,7 +19,7 @@ import no.kash.gamedev.jag.commons.tweens.accessors.ColorAccessor;
 import no.kash.gamedev.jag.commons.tweens.accessors.Vector2Accessor;
 
 public class Announcement {
-	public static final BitmapFont font = Assets.fontLarge;
+	public static final BitmapFont font = Assets.announcerFont;
 
 	public static final float FADE_AWAY_TIME = 0.1f;
 	public static final float FADE_IN_TIME = 0.1f;

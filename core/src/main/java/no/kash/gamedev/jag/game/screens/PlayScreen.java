@@ -61,7 +61,7 @@ public class PlayScreen extends AbstractGameScreen {
 
 	boolean gameOver = false;
 
-	public RoundResult result;
+	public RoundResult<?> result;
 
 	// game)
 	public PlayScreen(JustAnotherGame game, GameSession session) {
@@ -78,7 +78,6 @@ public class PlayScreen extends AbstractGameScreen {
 		initSession();
 		loadLevel();
 		start();
-
 	}
 
 	private void initSession() {

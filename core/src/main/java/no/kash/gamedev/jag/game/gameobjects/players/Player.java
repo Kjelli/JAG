@@ -89,9 +89,6 @@ public class Player extends AbstractGameObject implements Collidable {
 		case STANDARD_FFA:
 		case STANDARD_TEAM:
 			setDamageHandler(new VanillaDamageHandler(this));
-		case SMASH_FFA:
-		case SMASH_TEAM:
-			break;
 		default:
 			break;
 		}

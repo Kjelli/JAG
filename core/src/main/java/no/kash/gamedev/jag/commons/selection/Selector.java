@@ -1,45 +1,54 @@
 package no.kash.gamedev.jag.commons.selection;
 
 import java.util.ArrayList;
+import java.util.List;
 
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 
-public class Selector {
-	
-	private SelectOption s1,s2,s3;
-	private ArrayList<SelectOption> choices;
-	
-	public Selector(Texture t1, Texture t2, Texture t3){
-		choices = new ArrayList<SelectOption>();
-		
-		s1 = new SelectOption(t1,0,0);
-		choices.add(s1);
-		
-		s2 = new SelectOption(t2,t1.getWidth(),0);
-		choices.add(s2);
-		
-		s3 = new SelectOption(t3,t1.getWidth()+t2.getWidth(),0);
-		choices.add(s3);
-		
-		generate();
+public class Selector<T extends SelectOption> extends Actor {
+
+	private static final float SPACING = 0f;
+
+	float x, y;
+	List<T> options;
+
+	public Selector(float x, float y) {
+		options = new ArrayList<>();
+		this.x = x;
+		this.y = y;
 	}
 
-	private void generate() {
-		for(SelectOption choices:choices){
-			choices.addListener(new ClickListener(){
-				@Override
-				public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-					// TODO Auto-generated method stub
-					return super.touchDown(event, x, y, pointer, button);
-				}
-			});
+	public void add(T t) {
+		int newIndex = options.size();
+		options.add(t);
+
+		if (newIndex > 0) {
+			t.setSize(options.get(newIndex - 1).x + options.get(newIndex - 1).getSprite().getWidth() + SPACING, y,
+					t.getSprite().getWidth(), t.getSprite().getHeight());
+		} else {
+			t.setSize(x, y, t.getSprite().getWidth(), t.getSprite().getHeight());
+		}
+
+	}
+
+	public void draw(Batch batch, float parentAlpha) {
+		for (T t : options) {
+			t.draw(batch, parentAlpha);
 		}
 	}
-	
-	
-	
+
+	public void add(Stage stage) {
+		for (T t : options) {
+			stage.addActor(t);
+		}
+	}
+
+	public void setX(float x) {
+		for (T t : options) {
+			t.setX(t.getX() - (this.x - x));
+		}
+	}
+
 }

@@ -29,7 +29,10 @@ import no.kash.gamedev.jag.controller.JustAnotherGameController;
 import no.kash.gamedev.jag.controller.lobby.ColorPicker;
 import no.kash.gamedev.jag.controller.lobby.ColorPicker.ColorOption;
 import no.kash.gamedev.jag.controller.lobby.GameSessionControls;
+import no.kash.gamedev.jag.controller.lobby.TeamColorPicker;
+import no.kash.gamedev.jag.controller.preferences.GameSessionPreferences;
 import no.kash.gamedev.jag.controller.preferences.PlayerPreferences;
+import no.kash.gamedev.jag.game.gamesession.GameMode;
 
 public class LobbyControllerScreen extends AbstractControllerScreen {
 
@@ -39,6 +42,9 @@ public class LobbyControllerScreen extends AbstractControllerScreen {
 	GlyphLayout lobbyLabel;
 	BitmapFont font;
 	Skin skin;
+
+	public static final int STANDARD_VIEW = 1, SETTINGS_VIEW = 2;
+	int currentView = STANDARD_VIEW;
 
 	// StandardView
 
@@ -103,11 +109,8 @@ public class LobbyControllerScreen extends AbstractControllerScreen {
 
 		lobbyLabel = new GlyphLayout(font, "Lobby");
 
-		initStandardView();
+		initStandardView(false);
 		initSettingsView();
-		setStandardView();
-		// Testing purposes:
-		// setSettingsView();
 
 		game.setReceiver(new JagClientPacketHandler() {
 
@@ -118,9 +121,10 @@ public class LobbyControllerScreen extends AbstractControllerScreen {
 					if (update.fieldId[0] == PlayerUpdate.GAME_MASTER) {
 						gameMaster = true;
 						initSettingsView();
-						setStandardView();
 						sendGameSessionUpdate();
 					}
+				} else if (m instanceof GameSessionUpdate) {
+					handleGameSessionUpdate((GameSessionUpdate) m);
 				}
 			}
 
@@ -134,6 +138,30 @@ public class LobbyControllerScreen extends AbstractControllerScreen {
 		});
 
 		sendUpdate();
+
+	}
+
+	protected void handleGameSessionUpdate(GameSessionUpdate update) {
+		GameMode gm = GameMode.values()[update.gameModeIndex];
+
+		switch (gm) {
+		case STANDARD_FFA:
+			initStandardView(false);
+			if (currentView == STANDARD_VIEW) {
+				refreshAndSetStandardView();
+			}
+			sendUpdate();
+			break;
+		case STANDARD_TEAM:
+			initStandardView(true);
+			if (currentView == STANDARD_VIEW) {
+				refreshAndSetStandardView();
+			}
+			sendUpdate();
+			break;
+		default:
+			break;
+		}
 
 	}
 
@@ -222,8 +250,7 @@ public class LobbyControllerScreen extends AbstractControllerScreen {
 			});
 
 			// Draw names option
-			drawNames = new TextButton("Show names: " + (sessionControls.session.drawNames ? "on" : "off"),
-					skin);
+			drawNames = new TextButton("Show names: " + (sessionControls.session.drawNames ? "on" : "off"), skin);
 			drawNames.addListener(new ClickListener() {
 				@Override
 				public void clicked(InputEvent event, float x, float y) {
@@ -232,15 +259,15 @@ public class LobbyControllerScreen extends AbstractControllerScreen {
 				}
 			});
 
-			scrollingTable.add(gameMasterLabel).row();
-			scrollingTable.add(gameMode).row();
-			scrollingTable.add(roundTime).row();
-			scrollingTable.add(roundsToWin).row();
-			scrollingTable.add(startingHealth).row();
-			scrollingTable.add(friendlyFire).row();
-			scrollingTable.add(drawNames).row();
-			scrollingTable.add(dropIn).row();
-			scrollingTable.add(testMode).row();
+			scrollingTable.add(gameMasterLabel).expandX().fillX().row();
+			scrollingTable.add(gameMode).expandX().fillX().row();
+			scrollingTable.add(roundTime).expandX().fillX().row();
+			scrollingTable.add(roundsToWin).expandX().fillX().row();
+			scrollingTable.add(startingHealth).expandX().fillX().row();
+			scrollingTable.add(friendlyFire).expandX().fillX().row();
+			scrollingTable.add(drawNames).expandX().fillX().row();
+			scrollingTable.add(dropIn).expandX().fillX().row();
+			scrollingTable.add(testMode).expandX().fillX().row();
 		}
 
 		preferenceLabel = new Label("Preferences (TODO)", skin);
@@ -251,7 +278,7 @@ public class LobbyControllerScreen extends AbstractControllerScreen {
 		back.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				setStandardView();
+				refreshAndSetStandardView();
 			}
 		});
 		scrollingTable.add(preferenceLabel);
@@ -263,9 +290,10 @@ public class LobbyControllerScreen extends AbstractControllerScreen {
 		stage.getActors().clear();
 		stage.addActor(container);
 		stage.addActor(back);
+		currentView = SETTINGS_VIEW;
 	}
 
-	private void setStandardView() {
+	private void refreshAndSetStandardView() {
 
 		stage.getActors().clear();
 
@@ -278,10 +306,10 @@ public class LobbyControllerScreen extends AbstractControllerScreen {
 		stage.addActor(newColors);
 		stage.addActor(ready);
 		stage.addActor(settings);
-
+		currentView = STANDARD_VIEW;
 	}
 
-	private void initStandardView() {
+	private void initStandardView(boolean teams) {
 
 		settings = new TextButton("Settings", skin);
 		settings.setX(0);
@@ -321,45 +349,54 @@ public class LobbyControllerScreen extends AbstractControllerScreen {
 			}
 		});
 
-		picker = new ColorPicker(stage.getWidth() - ColorOption.WIDTH * 3, stage.getHeight() - ColorOption.HEIGHT * 4,
-				3, 3, new Callback() {
+		if (teams) {
+			picker = new TeamColorPicker(stage.getWidth() - ColorOption.WIDTH * 3,
+					stage.getHeight() - ColorOption.HEIGHT * 4, new Callback() {
+						@Override
+						public void callback() {
+							sendUpdate();
+						}
+					});
+			newColors = new TextButton("...", skin);
+			picker.setInitialSelection(0);
+			sendUpdate();
+		} else {
+			picker = new ColorPicker(stage.getWidth() - ColorOption.WIDTH * 3,
+					stage.getHeight() - ColorOption.HEIGHT * 4, 3, 3, new Callback() {
 
-					@Override
-					public void callback() {
-						Color c = picker.getSelectedColor(Color.WHITE);
-						PlayerPreferences.setColor(c);
-						PlayerPreferences.save();
-						sendUpdate();
-					}
-				});
-		picker.setInitialSelection(PlayerPreferences.getColor());
+						@Override
+						public void callback() {
+							Color c = picker.getSelectedColor(Color.WHITE);
+							PlayerPreferences.setColor(c);
+							PlayerPreferences.save();
+							sendUpdate();
+						}
+					});
+			picker.setInitialSelection(PlayerPreferences.getColor());
+			newColors = new TextButton("More colors", skin);
+			newColors.setX(picker.getX());
+			newColors.setWidth(picker.getWidth());
+			newColors.setHeight(newColors.getHeight() * 2);
+			newColors.setY(picker.getY() - newColors.getHeight());
 
-		newColors = new TextButton("More colors", skin);
-		newColors.setX(picker.getX());
-		newColors.setWidth(picker.getWidth());
-		newColors.setHeight(newColors.getHeight() * 2);
-		newColors.setY(picker.getY() - newColors.getHeight());
-
-		newColors.addListener(new ClickListener() {
-			@Override
-			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-				picker.shuffle();
-				return true;
-			}
-		});
+			newColors.addListener(new ClickListener() {
+				@Override
+				public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+					picker.shuffle();
+					return true;
+				}
+			});
+		}
 
 		ready = new CheckBox("READY", skin);
 		ready.setX(stage.getWidth() / 2 - ready.getWidth() / 2);
 		ready.setY(0);
 		ready.addListener(new ChangeListener() {
-
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				sendUpdate();
 			}
-
 		});
-
 	}
 
 	protected void sendUpdate() {
@@ -368,8 +405,10 @@ public class LobbyControllerScreen extends AbstractControllerScreen {
 		int level = PlayerPreferences.getLevel();
 		float xp = PlayerPreferences.getExp();
 		int rdy = ready.isChecked() ? 1 : 0;
+		int teamId = picker.getSelectedIndex() + 1;
 		PlayerUpdate update = new PlayerUpdate(1, new int[] { PlayerUpdate.PLAYER_INFO },
-				new float[][] { { tp, level, xp }, { c.r, c.g, c.b }, { rdy } }, new String[] { nameField.getText() });
+				new float[][] { { tp, level, xp }, { c.r, c.g, c.b }, { rdy, teamId } },
+				new String[] { nameField.getText() });
 		game.getClient().broadcast(update);
 	}
 

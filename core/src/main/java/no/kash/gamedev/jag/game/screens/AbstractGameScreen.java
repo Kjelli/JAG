@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
 
+import no.kash.gamedev.jag.assets.Assets;
 import no.kash.gamedev.jag.commons.defs.Defs;
 import no.kash.gamedev.jag.game.JustAnotherGame;
 import no.kash.gamedev.jag.game.gamecontext.GameContext;
@@ -46,6 +47,15 @@ public abstract class AbstractGameScreen implements Screen {
 		hudBatch.enableBlending();
 		gameContext = new GameContext(game);
 		inputMux = new InputMultiplexer(stage);
+
+		fixAnnouncerFont();
+	}
+
+	/**
+	 * Quickfix, works but it makes the announcer-font somewhat pixely
+	 */
+	private void fixAnnouncerFont() {
+		Assets.announcerFont.getData().scale(Gdx.graphics.getWidth() / Defs.WIDTH);
 	}
 
 	@Override
