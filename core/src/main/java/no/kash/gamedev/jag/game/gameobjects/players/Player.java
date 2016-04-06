@@ -116,7 +116,7 @@ public class Player extends AbstractGameObject implements Collidable {
 		nameLabel = new GlyphLayout(Assets.font, info.name);
 		healthHud = new HealthHud(this, getCenterX() - HealthHud.WIDTH / 2, getCenterY() - HealthHud.HEIGHT / 2 - 20f);
 
-		equipGun(GunType.pistol);
+		equipGun(GunType.flamethrower);
 		grenadeCooldown = new Cooldown(grenadeCooldownDuration);
 
 		getGameContext().bringToFront(this);

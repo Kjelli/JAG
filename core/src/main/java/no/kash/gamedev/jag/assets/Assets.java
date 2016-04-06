@@ -1,5 +1,7 @@
 package no.kash.gamedev.jag.assets;
 
+import java.awt.datatransfer.FlavorMap;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -22,10 +24,13 @@ public class Assets {
 	public static Texture mac10;
 	public static Texture shotgun;
 	public static Texture goldengun;
+	public static Texture flamethrower;
 	public static Texture grenade;
+	
 
 	// Particles
 	public static Texture blood;
+	public static Texture fire;
 	public static Texture star;
 	public static Texture confetti;
 	public static Texture wepSpawnEffect;
@@ -37,6 +42,7 @@ public class Assets {
 	public static Texture shotgun_ground;
 	public static Texture goldengun_ground;
 	public static Texture mac10_ground;
+	public static Texture flamethrower_ground;
 	
 	//Icons
 	public static Texture health_icon;
@@ -67,11 +73,13 @@ public class Assets {
 		shotgun = load("playerSprite/shotgun.png");
 		goldengun = load("playerSprite/goldengun.png");
 		mac10 = load("playerSprite/mac10.png");
+		flamethrower = load("playerSprite/flamethrower.png");
 		
 		grenade = load("sprites/grenade.png");
 
 		// Particles
 		blood = load("blood.png");
+		fire = load("fire.png");
 		wepSpawnEffect = load("sprites/spawnEffect.png");
 		star = load("sprites/star.png");
 		confetti = load("sprites/confetti.png");
@@ -81,9 +89,11 @@ public class Assets {
 		pistol_ground = load("sprites/gun_pistol.png");
 		shotgun_ground = load("sprites/gun_shotgun.png");
 		goldengun_ground = load("sprites/gun_goldengun.png");
-
-		// Icons
+		flamethrower_ground = load("sprites/gun_flamethrower.png");
 		goldengun_ground = load ("sprites/gun_goldengun.png");
+
+		
+		// Icons
 		mac10_ground = load("sprites/gun_mac10.png");
 		
 		icon_border = load("sprites/health_icon.png");

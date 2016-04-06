@@ -9,6 +9,7 @@ import no.kash.gamedev.jag.game.JustAnotherGame;
 import no.kash.gamedev.jag.game.announcer.Announcement;
 import no.kash.gamedev.jag.game.commons.utils.Cooldown;
 import no.kash.gamedev.jag.game.gameobjects.bullets.Bullet;
+import no.kash.gamedev.jag.game.gameobjects.bullets.Fire;
 import no.kash.gamedev.jag.game.gameobjects.players.Player;
 
 public class Gun {
@@ -82,6 +83,10 @@ public class Gun {
 						player.getBulletOriginY() + (float) Math.sin(player.getRotation() - offset + Math.PI/2) * bullWidth,
 						(float) (player.getRotation() + Math.PI / 2), damage, bulletSpeed);
 				player.getGameContext().spawn(temp);
+				break;
+			case flamethrower:
+				Fire fire = new Fire(player,player.getBulletOriginX(), player.getBulletOriginY(),(float) (player.getRotation() + Math.PI / 2),bulletSpeed);
+				player.getGameContext().spawn(fire);
 				break;
 			default:
 				Bullet tempo = new Bullet(player, player.getBulletOriginX(), player.getBulletOriginY(),
