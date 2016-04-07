@@ -13,6 +13,7 @@ import no.kash.gamedev.jag.commons.network.packets.PlayerInput;
 import no.kash.gamedev.jag.commons.tweens.TweenGlobal;
 import no.kash.gamedev.jag.game.screens.PlayScreen;
 import no.kash.gamedev.jag.game.screens.LobbyScreen;
+import no.kash.gamedev.jag.game.screens.MapSelectionScreen;
 
 public class JustAnotherGame extends JagEndpoint {
 

@@ -416,6 +416,7 @@ public class LobbyControllerScreen extends AbstractControllerScreen {
 		GameSessionUpdate update = new GameSessionUpdate();
 		update.dropIn = sessionControls.session.dropIn;
 		update.gameModeIndex = sessionControls.getGameModeIndex();
+		update.roundTime = sessionControls.session.roundTime;
 		update.roundsToWin = sessionControls.session.roundsToWin;
 		update.startingHealth = sessionControls.session.startingHealth;
 		update.testMode = sessionControls.session.testMode;

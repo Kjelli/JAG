@@ -71,10 +71,6 @@ public class JagServer {
 		}
 	}
 
-	public void update(int timeout) throws IOException {
-		server.update(timeout);
-	}
-
 	public void listen(int port) {
 		server.start();
 		this.port = port;
@@ -88,14 +84,29 @@ public class JagServer {
 
 	public void send(int id, GamePacket packet) {
 		server.sendToTCP(id, packet);
+		try {
+			server.update(20);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void broadcast(GamePacket packet) {
 		server.sendToAllTCP(packet);
+		try {
+			server.update(20);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
-	
-	public void broadcastExcept(int id, GamePacket packet){
+
+	public void broadcastExcept(int id, GamePacket packet) {
 		server.sendToAllExceptTCP(id, packet);
+		try {
+			server.update(20);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public NetworkListener getListener() {
