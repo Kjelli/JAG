@@ -86,7 +86,7 @@ public abstract class AbstractGameScreen implements Screen {
 		hudBatch.end();
 		stage.draw();
 		shapes.setProjectionMatrix(camera.combined);
-		//debugDraw(shapes);
+		debugDraw(shapes);
 
 	}
 

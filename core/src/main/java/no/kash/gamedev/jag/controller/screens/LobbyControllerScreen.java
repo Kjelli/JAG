@@ -1,5 +1,8 @@
 package no.kash.gamedev.jag.controller.screens;
 
+import java.util.Collection;
+import java.util.Map;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -20,6 +23,7 @@ import com.badlogic.gdx.utils.Align;
 import com.esotericsoftware.kryonet.Connection;
 
 import no.kash.gamedev.jag.assets.Assets;
+import no.kash.gamedev.jag.commons.defs.Defs;
 import no.kash.gamedev.jag.commons.network.JagClientPacketHandler;
 import no.kash.gamedev.jag.commons.network.packets.GamePacket;
 import no.kash.gamedev.jag.commons.network.packets.GameSessionUpdate;
@@ -32,7 +36,9 @@ import no.kash.gamedev.jag.controller.lobby.GameSessionControls;
 import no.kash.gamedev.jag.controller.lobby.TeamColorPicker;
 import no.kash.gamedev.jag.controller.preferences.GameSessionPreferences;
 import no.kash.gamedev.jag.controller.preferences.PlayerPreferences;
+import no.kash.gamedev.jag.game.commons.utils.SettingClickListener;
 import no.kash.gamedev.jag.game.gamesession.GameMode;
+import no.kash.gamedev.jag.game.gamesession.GameSettings.Setting;
 
 public class LobbyControllerScreen extends AbstractControllerScreen {
 
@@ -44,7 +50,7 @@ public class LobbyControllerScreen extends AbstractControllerScreen {
 	Skin skin;
 
 	public static final int STANDARD_VIEW = 1, SETTINGS_VIEW = 2;
-	int currentView = STANDARD_VIEW;
+	int currentView = 0;
 
 	// StandardView
 
@@ -67,14 +73,7 @@ public class LobbyControllerScreen extends AbstractControllerScreen {
 
 	// (GameMaster settings)
 	Label gameMasterLabel;
-	TextButton gameMode;
-	TextButton dropIn;
-	TextButton roundTime;
-	TextButton roundsToWin;
-	TextButton testMode;
-	TextButton friendlyFire;
-	TextButton startingHealth;
-	TextButton drawNames;
+	TextButton[] settingButtons;
 	// TextButton suddenDeath;
 
 	Label preferenceLabel;
@@ -107,15 +106,18 @@ public class LobbyControllerScreen extends AbstractControllerScreen {
 		skin = new Skin(Gdx.files.internal("uiskin.json"));
 		font = Assets.font;
 
+		sessionControls = new GameSessionControls();
 		lobbyLabel = new GlyphLayout(font, "Lobby");
 
-		initStandardView(false);
+		initStandardView();
 		initSettingsView();
+		refreshAndSetStandardView();
 
 		game.setReceiver(new JagClientPacketHandler() {
 
 			@Override
 			public void handlePacket(Connection c, GamePacket m) {
+				System.out.println("Received " + m.getClass());
 				if (m instanceof PlayerUpdate) {
 					PlayerUpdate update = (PlayerUpdate) m;
 					if (update.fieldId[0] == PlayerUpdate.GAME_MASTER) {
@@ -142,25 +144,20 @@ public class LobbyControllerScreen extends AbstractControllerScreen {
 	}
 
 	protected void handleGameSessionUpdate(GameSessionUpdate update) {
-		GameMode gm = GameMode.values()[update.gameModeIndex];
+		GameMode gameModeFromUpdate = update.settings.getSelectedValue(Defs.SESSION_GM, GameMode.class);
 
-		switch (gm) {
-		case STANDARD_FFA:
-			initStandardView(false);
+		boolean newGameMode = sessionControls.session.settings.getSelectedValue(Defs.SESSION_GM,
+				GameMode.class) != gameModeFromUpdate;
+		System.out.println("New game mode:" + newGameMode);
+
+		sessionControls.session.settings.fromPacket(update);
+
+		if (newGameMode) {
+			initStandardView();
 			if (currentView == STANDARD_VIEW) {
 				refreshAndSetStandardView();
 			}
 			sendUpdate();
-			break;
-		case STANDARD_TEAM:
-			initStandardView(true);
-			if (currentView == STANDARD_VIEW) {
-				refreshAndSetStandardView();
-			}
-			sendUpdate();
-			break;
-		default:
-			break;
 		}
 
 	}
@@ -174,100 +171,30 @@ public class LobbyControllerScreen extends AbstractControllerScreen {
 		container.setSize(stage.getWidth(), stage.getHeight() - 200);
 
 		if (gameMaster) {
-			sessionControls = new GameSessionControls();
 
 			gameMasterLabel = new Label("Game settings", skin);
 
-			// Game mode option
-			gameMode = new TextButton("Game mode: " + sessionControls.session.gameMode.displayName, skin);
-			gameMode.addListener(new ClickListener() {
-				@Override
-				public void clicked(InputEvent event, float x, float y) {
-					gameMode.setText("Game mode: " + sessionControls.nextOptionGameMode().displayName);
-					sendGameSessionUpdate();
-				}
-			});
+			Map<String, Setting<?>> settings = sessionControls.session.settings.settings;
+			settingButtons = new TextButton[settings.size()];
 
-			// Round time option
-			roundTime = new TextButton("Round time:" + sessionControls.session.roundTime + "s", skin);
-			roundTime.addListener(new ClickListener() {
-				@Override
-				public void clicked(InputEvent event, float x, float y) {
-					roundTime.setText("Round time: " + sessionControls.nextOptionRoundTime() + "s");
-					sendGameSessionUpdate();
-				}
-			});
-
-			// Rounds to win option
-			roundsToWin = new TextButton("Win limit: " + sessionControls.session.roundsToWin + " rounds", skin);
-			roundsToWin.addListener(new ClickListener() {
-				@Override
-				public void clicked(InputEvent event, float x, float y) {
-					roundsToWin.setText("Win limit: " + sessionControls.nextOptionRoundsToWin() + " rounds");
-					sendGameSessionUpdate();
-				}
-			});
-
-			// Starting health option
-			startingHealth = new TextButton("Starting health: " + sessionControls.session.startingHealth, skin);
-			startingHealth.addListener(new ClickListener() {
-				@Override
-				public void clicked(InputEvent event, float x, float y) {
-					startingHealth.setText("Starting health:  " + sessionControls.nextOptionStartingHealth());
-					sendGameSessionUpdate();
-				}
-			});
-
-			// Drop in option
-			dropIn = new TextButton("Drop in: " + (sessionControls.session.dropIn ? "on" : "off"), skin);
-			dropIn.addListener(new ClickListener() {
-				@Override
-				public void clicked(InputEvent event, float x, float y) {
-					dropIn.setText("Drop in: " + (sessionControls.nextOptionDropIn() ? "on" : "off"));
-					sendGameSessionUpdate();
-				}
-			});
-
-			// Test mode option
-			testMode = new TextButton("Test mode: " + (sessionControls.session.testMode ? "on" : "off"), skin);
-			testMode.addListener(new ClickListener() {
-				@Override
-				public void clicked(InputEvent event, float x, float y) {
-					testMode.setText("Test mode: " + (sessionControls.nextOptionTestMode() ? "on" : "off"));
-					sendGameSessionUpdate();
-				}
-			});
-
-			// Friendly fire option
-			friendlyFire = new TextButton("Friendly fire: " + (sessionControls.session.friendlyFire ? "on" : "off"),
-					skin);
-			friendlyFire.addListener(new ClickListener() {
-				@Override
-				public void clicked(InputEvent event, float x, float y) {
-					friendlyFire.setText("Friendly fire: " + (sessionControls.nextOptionFriendlyFire() ? "on" : "off"));
-					sendGameSessionUpdate();
-				}
-			});
-
-			// Draw names option
-			drawNames = new TextButton("Show names: " + (sessionControls.session.drawNames ? "on" : "off"), skin);
-			drawNames.addListener(new ClickListener() {
-				@Override
-				public void clicked(InputEvent event, float x, float y) {
-					drawNames.setText("Show names: " + (sessionControls.nextOptionDrawNames() ? "on" : "off"));
-					sendGameSessionUpdate();
-				}
-			});
+			int i = 0;
+			for (final Setting<?> setting : settings.values()) {
+				settingButtons[i] = new TextButton(setting.toString(), skin);
+				settingButtons[i].addListener(new SettingClickListener(settingButtons[i], setting) {
+					@Override
+					public void clicked(InputEvent event, float x, float y) {
+						mySetting.selectNext();
+						myButton.setText(setting.toString());
+						sendGameSessionUpdate();
+					}
+				});
+				i++;
+			}
 
 			scrollingTable.add(gameMasterLabel).expandX().fillX().row();
-			scrollingTable.add(gameMode).expandX().fillX().row();
-			scrollingTable.add(roundTime).expandX().fillX().row();
-			scrollingTable.add(roundsToWin).expandX().fillX().row();
-			scrollingTable.add(startingHealth).expandX().fillX().row();
-			scrollingTable.add(friendlyFire).expandX().fillX().row();
-			scrollingTable.add(drawNames).expandX().fillX().row();
-			scrollingTable.add(dropIn).expandX().fillX().row();
-			scrollingTable.add(testMode).expandX().fillX().row();
+			for (TextButton tb : settingButtons) {
+				scrollingTable.add(tb).expand().fillX().row();
+			}
 		}
 
 		preferenceLabel = new Label("Preferences (TODO)", skin);
@@ -278,23 +205,24 @@ public class LobbyControllerScreen extends AbstractControllerScreen {
 		back.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
+				initStandardView();
 				refreshAndSetStandardView();
 			}
 		});
-		scrollingTable.add(preferenceLabel);
+		scrollingTable.add(preferenceLabel).expandX().fillX().row();
 
 		container.setWidget(scrollingTable);
 	}
 
 	private void setSettingsView() {
 		stage.getActors().clear();
+
 		stage.addActor(container);
 		stage.addActor(back);
 		currentView = SETTINGS_VIEW;
 	}
 
 	private void refreshAndSetStandardView() {
-
 		stage.getActors().clear();
 
 		// Add to stage
@@ -309,7 +237,8 @@ public class LobbyControllerScreen extends AbstractControllerScreen {
 		currentView = STANDARD_VIEW;
 	}
 
-	private void initStandardView(boolean teams) {
+	private void initStandardView() {
+		boolean teams = sessionControls.session.settings.getSelectedValue(Defs.SESSION_GM, GameMode.class).teamBased;
 
 		settings = new TextButton("Settings", skin);
 		settings.setX(0);
@@ -404,7 +333,7 @@ public class LobbyControllerScreen extends AbstractControllerScreen {
 		int tp = PlayerPreferences.getTimesPlayed();
 		int level = PlayerPreferences.getLevel();
 		float xp = PlayerPreferences.getExp();
-		int rdy = ready.isChecked() ? 1 : 0;
+		int rdy = ready != null && ready.isChecked() ? 1 : 0;
 		int teamId = picker.getSelectedIndex() + 1;
 		PlayerUpdate update = new PlayerUpdate(1, new int[] { PlayerUpdate.PLAYER_INFO },
 				new float[][] { { tp, level, xp }, { c.r, c.g, c.b }, { rdy, teamId } },
@@ -413,15 +342,7 @@ public class LobbyControllerScreen extends AbstractControllerScreen {
 	}
 
 	protected void sendGameSessionUpdate() {
-		GameSessionUpdate update = new GameSessionUpdate();
-		update.dropIn = sessionControls.session.dropIn;
-		update.gameModeIndex = sessionControls.getGameModeIndex();
-		update.roundTime = sessionControls.session.roundTime;
-		update.roundsToWin = sessionControls.session.roundsToWin;
-		update.startingHealth = sessionControls.session.startingHealth;
-		update.testMode = sessionControls.session.testMode;
-		update.friendlyFire = sessionControls.session.friendlyFire;
-		update.drawNames = sessionControls.session.drawNames;
+		GameSessionUpdate update = new GameSessionUpdate(sessionControls.session.settings);
 		game.getClient().broadcast(update);
 	}
 

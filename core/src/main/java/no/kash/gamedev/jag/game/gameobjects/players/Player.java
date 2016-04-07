@@ -3,14 +3,17 @@ package no.kash.gamedev.jag.game.gameobjects.players;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.math.Intersector.MinimumTranslationVector;
 import com.badlogic.gdx.math.Polygon;
-import com.badlogic.gdx.math.Rectangle;
 
 import no.kash.gamedev.jag.assets.Assets;
+import no.kash.gamedev.jag.commons.defs.Defs;
 import no.kash.gamedev.jag.commons.graphics.Draw;
+import no.kash.gamedev.jag.commons.network.packets.PlayerStateChange;
 import no.kash.gamedev.jag.commons.network.packets.PlayerUpdate;
+import no.kash.gamedev.jag.controller.JustAnotherGameController;
 import no.kash.gamedev.jag.game.JustAnotherGame;
 import no.kash.gamedev.jag.game.commons.utils.Cooldown;
 import no.kash.gamedev.jag.game.gamecontext.physics.Collidable;
@@ -32,7 +35,9 @@ import no.kash.gamedev.jag.game.gameobjects.players.guns.GunType;
 import no.kash.gamedev.jag.game.gameobjects.players.hud.HealthHud;
 import no.kash.gamedev.jag.game.gameobjects.players.status.Status;
 import no.kash.gamedev.jag.game.gameobjects.players.status.StatusHandler;
+import no.kash.gamedev.jag.game.gamesession.GameMode;
 import no.kash.gamedev.jag.game.gamesession.GameSession;
+import no.kash.gamedev.jag.game.screens.LobbyScreen;
 
 public class Player extends AbstractGameObject implements Collidable {
 
@@ -48,12 +53,16 @@ public class Player extends AbstractGameObject implements Collidable {
 		return info;
 	}
 
+	private Cooldown exitTimer;
+	private boolean isExiting;
+
 	private boolean firing;
 	private boolean holdingGrenade;
 	private boolean aiming;
 
 	private boolean blockInput = false;
 	private boolean invincible = false;
+	private boolean drawNames = true;
 
 	private Gun gun;
 	private Hitbox hitbox;
@@ -78,6 +87,7 @@ public class Player extends AbstractGameObject implements Collidable {
 	private GameSession gameSession;
 
 	private GunType startingGun = GunType.pistol;
+	private boolean reloading;
 
 	public Player(GameSession gameSession, PlayerInfo info, float x, float y) {
 		super(x, y, WIDTH, HEIGHT);
@@ -92,13 +102,17 @@ public class Player extends AbstractGameObject implements Collidable {
 		};
 	}
 
-	private void init(GameSession gameSettings) {
-		this.gameSession = gameSettings;
-		this.healthMax = gameSettings.startingHealth;
+	private void init(GameSession gameSession) {
+		this.drawNames = gameSession.settings.getSelectedValue(Defs.SESSION_DRAW_NAMES, Boolean.class);
+
+		this.gameSession = gameSession;
+		this.healthMax = gameSession.settings.getSelectedValue(Defs.SESSION_START_HP, Integer.class);
 		this.health = healthMax;
+		this.exitTimer = new Cooldown(3.0f);
 		this.statusHandler = new StatusHandler(this);
-		dot = new Dot(this, getCenterX(), this.getCenterY(), getRotation());
-		switch (gameSettings.gameMode) {
+		// this.dot = new Dot(this, getCenterX(), this.getCenterY(),
+		// getRotation());
+		switch (gameSession.settings.getSelectedValue(Defs.SESSION_GM, GameMode.class)) {
 		case STANDARD_FFA:
 		case STANDARD_TEAM:
 			setDamageHandler(new VanillaDamageHandler(this));
@@ -142,7 +156,7 @@ public class Player extends AbstractGameObject implements Collidable {
 		gun.update(delta);
 		statusHandler.update(delta);
 		grenadeCooldown.update(delta);
-		//dot.update(delta);
+		// dot.update(delta);
 		if (blockInput) {
 			accelerate(0, 0);
 		}
@@ -156,12 +170,35 @@ public class Player extends AbstractGameObject implements Collidable {
 			spawnStars();
 		}
 
-		fireingLogic();
+		gunLogic(delta);
 
 		TileCollisionDetector.checkTileCollisions(getGameContext().getLevel(), this, tileCollisionListener);
 	}
 
-	private void fireingLogic() {
+	private void gunLogic(float delta) {
+
+		if (isReloading()) {
+			reload();
+			if (info.gameMaster) {
+				exitTimer.update(delta);
+				if (exitTimer.getCooldownTimer() < 1.0f && isExiting == false) {
+					getGameContext().getAnnouncer().announce("Exiting...");
+					isExiting = true;
+				}
+				if (!exitTimer.isOnCooldown()) {
+					getGameContext().getGame()
+							.setScreen(new LobbyScreen((JustAnotherGame) getGameContext().getGame(), gameSession));
+					((JustAnotherGame) getGameContext().getGame()).getServer()
+							.broadcast(new PlayerStateChange(JustAnotherGameController.LOBBY_STATE));
+					return;
+				}
+			}
+		} else {
+			// Reset cooldown
+			exitTimer.startCooldown();
+			isExiting = false;
+		}
+
 		if (!isFiring() && aiming) {
 			fireBullet();
 			aiming = false;
@@ -178,10 +215,8 @@ public class Player extends AbstractGameObject implements Collidable {
 
 	private void spawnStars() {
 		if (Math.random() < 0.2f) {
-			getGameContext()
-					.spawn(new Star(
-							getCenterX() + (float) ((Math.random() - 0.5f) * hitbox.poly.getBoundingRectangle().width
-									* 2),
+			getGameContext().spawn(new Star(
+					getCenterX() + (float) ((Math.random() - 0.5f) * hitbox.poly.getBoundingRectangle().width * 2),
 					getCenterY() + (float) ((Math.random() - 0.5f) * hitbox.poly.getBoundingRectangle().height * 2)));
 		}
 	}
@@ -195,13 +230,21 @@ public class Player extends AbstractGameObject implements Collidable {
 			Draw.sprite(batch, holding_grenade, getX(), getY(), getWidth(), getHeight(), getRotation());
 		}
 
-		//dot.draw(batch);
+		// dot.draw(batch);
 
-		if (gameSession.drawNames) {
+		if (drawNames) {
 			Assets.font.draw(batch, nameLabel, getX() + getWidth() / 2 - nameLabel.width / 2,
 					getY() + getHeight() + nameLabel.height);
 		}
 		healthHud.draw(batch);
+	}
+
+	@Override
+	public void debugDraw(ShapeRenderer renderer) {
+		super.debugDraw(renderer);
+		if (dot != null) {
+			renderer.polygon(dot.getBounds().getTransformedVertices());
+		}
 	}
 
 	public void accelerate(float xacc, float yacc) {
@@ -397,6 +440,14 @@ public class Player extends AbstractGameObject implements Collidable {
 
 	public void applyStatus(Status status) {
 		statusHandler.apply(status);
+	}
+
+	public boolean isReloading() {
+		return reloading;
+	}
+
+	public void setReloading(boolean reloading) {
+		this.reloading = reloading;
 	}
 
 }

@@ -5,12 +5,14 @@ import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Intersector.MinimumTranslationVector;
 
+import no.kash.gamedev.jag.commons.defs.Defs;
 import no.kash.gamedev.jag.game.gamecontext.physics.Collidable;
 import no.kash.gamedev.jag.game.gamecontext.physics.Collision;
 import no.kash.gamedev.jag.game.gamecontext.physics.tilecollisions.TileCollisionDetector;
 import no.kash.gamedev.jag.game.gamecontext.physics.tilecollisions.TileCollisionListener;
 import no.kash.gamedev.jag.game.gameobjects.AbstractGameObject;
 import no.kash.gamedev.jag.game.gameobjects.players.Player;
+import no.kash.gamedev.jag.game.gamesession.GameMode;
 
 public abstract class AbstractBullet extends AbstractGameObject implements Bullet, Collidable {
 	protected Player shooter;
@@ -72,9 +74,9 @@ public abstract class AbstractBullet extends AbstractGameObject implements Bulle
 				return;
 			}
 
-			boolean friendlyFireDisabled = !target.getGameSession().friendlyFire;
+			boolean friendlyFireDisabled = !target.getGameSession().settings.getSelectedValue(Defs.SESSION_FRIENDLY_FIRE, Boolean.class);
 			boolean sameTeam = shooter.getInfo().teamId == target.getInfo().teamId;
-			boolean teamBasedGame = target.getGameSession().gameMode.teamBased;
+			boolean teamBasedGame = target.getGameSession().settings.getSelectedValue(Defs.SESSION_GM, GameMode.class).teamBased;
 			if (teamBasedGame && sameTeam && friendlyFireDisabled) {
 				return;
 			}

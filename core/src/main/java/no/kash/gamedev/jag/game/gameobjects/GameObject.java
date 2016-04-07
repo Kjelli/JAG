@@ -2,6 +2,7 @@ package no.kash.gamedev.jag.game.gameobjects;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -47,6 +48,8 @@ public interface GameObject {
 	public float getScale();
 
 	public void draw(SpriteBatch batch);
+	
+	public void debugDraw(ShapeRenderer renderer);
 
 	public void update(float delta);
 

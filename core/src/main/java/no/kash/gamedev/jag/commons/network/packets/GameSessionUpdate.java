@@ -1,19 +1,20 @@
 package no.kash.gamedev.jag.commons.network.packets;
 
+import java.util.Map;
+
+import no.kash.gamedev.jag.game.gamesession.GameSettings;
+import no.kash.gamedev.jag.game.gamesession.GameSettings.Setting;
+
 public class GameSessionUpdate implements GamePacket {
 
-	public int gameModeIndex;
-	public int roundsToWin;
-	public int roundTime;
-	public int startingHealth;
-
-	public boolean dropIn;
-	public boolean testMode;
-	public boolean friendlyFire;
-	public boolean drawNames;
+	public GameSettings settings;
 
 	public GameSessionUpdate() {
 
+	}
+
+	public GameSessionUpdate(GameSettings settings) {
+		this.settings = settings;
 	}
 
 }

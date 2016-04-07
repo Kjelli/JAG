@@ -10,4 +10,9 @@ public enum GameMode {
 		this.displayName = displayName;
 		this.teamBased = teamBased;
 	}
+	
+	@Override
+	public String toString() {
+		return displayName;
+	}
 }

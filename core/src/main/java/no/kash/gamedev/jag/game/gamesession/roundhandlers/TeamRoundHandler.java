@@ -3,6 +3,7 @@ package no.kash.gamedev.jag.game.gamesession.roundhandlers;
 import java.util.HashMap;
 import java.util.Map;
 
+import no.kash.gamedev.jag.commons.defs.Defs;
 import no.kash.gamedev.jag.game.gamecontext.GameContext;
 import no.kash.gamedev.jag.game.gameobjects.players.Player;
 import no.kash.gamedev.jag.game.gameobjects.players.PlayerInfo;
@@ -67,13 +68,13 @@ public class TeamRoundHandler extends AbstractRoundHandler<Integer> {
 					}
 				}
 			}
-
-			if (gameSession.roundsToWin == -1 || wins < gameSession.roundsToWin) {
+			int rtw = gameSession.settings.getSelectedValue(Defs.SESSION_RTW, Integer.class);
+			if (rtw == -1 || wins < rtw) {
 				gameContext.getAnnouncer().announce("=== Team " + winningTeam + " wins the round! ===");
 			} else {
 				gameContext.getAnnouncer().announce("*** TEAM " + winningTeam + " WINS THE MATCH! ***");
 			}
-			return new TeamRoundResult(false, winningTeam, wins == gameSession.roundsToWin);
+			return new TeamRoundResult(false, winningTeam, wins == rtw);
 
 		} else if (teamPlayersAlive.size() == 0) {
 			return TeamRoundResult.NO_RESULT;
@@ -84,7 +85,7 @@ public class TeamRoundHandler extends AbstractRoundHandler<Integer> {
 	@Override
 	public void setup() {
 
-		if (gameSession.testMode) {
+		if (gameSession.settings.getSelectedValue(Defs.SESSION_TEST_MODE, Boolean.class)) {
 			// Distribute teams evenly on 1 and 2
 			int team = 1;
 			int dummyId = -500;

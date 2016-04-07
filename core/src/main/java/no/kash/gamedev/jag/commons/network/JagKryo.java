@@ -1,8 +1,10 @@
 package no.kash.gamedev.jag.commons.network;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import com.esotericsoftware.kryo.Kryo;
 
-import no.kash.gamedev.jag.commons.network.packets.PlayerUpdate;
 import no.kash.gamedev.jag.commons.network.packets.GamePacket;
 import no.kash.gamedev.jag.commons.network.packets.GameSessionUpdate;
 import no.kash.gamedev.jag.commons.network.packets.PlayerConnect;
@@ -10,6 +12,11 @@ import no.kash.gamedev.jag.commons.network.packets.PlayerInput;
 import no.kash.gamedev.jag.commons.network.packets.PlayerNewStats;
 import no.kash.gamedev.jag.commons.network.packets.PlayerStateChange;
 import no.kash.gamedev.jag.commons.network.packets.PlayerStateChangeResponse;
+import no.kash.gamedev.jag.commons.network.packets.PlayerUpdate;
+import no.kash.gamedev.jag.game.gamesession.GameMode;
+import no.kash.gamedev.jag.game.gamesession.GameSettings;
+import no.kash.gamedev.jag.game.gamesession.GameSettings.Option;
+import no.kash.gamedev.jag.game.gamesession.GameSettings.Setting;
 
 public class JagKryo {
 	public static void register(Kryo kryo) {
@@ -21,6 +28,13 @@ public class JagKryo {
 		kryo.register(PlayerStateChangeResponse.class);
 		kryo.register(PlayerNewStats.class);
 		kryo.register(GameSessionUpdate.class);
+		kryo.register(GameSettings.class);
+		kryo.register(GameMode.class);
+		kryo.register(Setting.class);
+		kryo.register(Option.class);
+		kryo.register(Option[].class);
+		kryo.register(Map.class);
+		kryo.register(LinkedHashMap.class);
 		kryo.register(float[].class);
 		kryo.register(float[][].class);
 		kryo.register(int[].class);

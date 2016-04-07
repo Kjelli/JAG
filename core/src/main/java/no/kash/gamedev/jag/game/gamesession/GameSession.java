@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import no.kash.gamedev.jag.commons.defs.Defs;
 import no.kash.gamedev.jag.game.gamecontext.GameContext;
 import no.kash.gamedev.jag.game.gameobjects.players.Player;
 import no.kash.gamedev.jag.game.gameobjects.players.PlayerInfo;
@@ -15,16 +16,7 @@ import no.kash.gamedev.jag.game.screens.PlayScreen;
 public class GameSession {
 	public String mapFilename = "maps/sumoarena_team1.tmx";
 
-	public GameMode gameMode = GameMode.STANDARD_FFA;
-
-	public boolean friendlyFire = false;
-	public boolean dropIn = true;
-	public boolean testMode = true;
-	public boolean drawNames = true;
-
-	public int startingHealth = 100;
-	public int roundTime = 60;
-	public int roundsToWin = 2;
+	public GameSettings settings;
 
 	public Map<Integer, PlayerInfo> players;
 	public RoundHandler<?> roundHandler;
@@ -32,6 +24,7 @@ public class GameSession {
 
 	public GameSession() {
 		players = new HashMap<>();
+		settings = new GameSettings();
 	}
 
 	public void reset() {
@@ -49,9 +42,10 @@ public class GameSession {
 	}
 
 	public void init(PlayScreen playScreen, GameContext gameContext, Map<Integer, Player> players) {
+		GameMode gameMode = settings.getSelectedValue(Defs.SESSION_GM, GameMode.class);
 		switch (gameMode) {
 		default:
-			gameContext.getAnnouncer().announce("GameMode: " + gameMode.displayName + " not finished!");
+			gameContext.getAnnouncer().announce("GameMode: " + gameMode.displayName + " not implemented!");
 		case STANDARD_FFA:
 			roundHandler = new FFARoundHandler(playScreen, gameContext, this, players);
 			break;

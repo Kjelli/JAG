@@ -2,6 +2,7 @@ package no.kash.gamedev.jag.game.gameobjects;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
@@ -34,7 +35,7 @@ public abstract class AbstractGameObject implements GameObject {
 		max_acceleration = new Vector2(5000, 5000);
 		bounds = new Polygon(new float[] { 0, 0, width, 0, width, height, 0, height });
 		bounds.setPosition(x, y);
-		bounds.setOrigin(0, 0);
+		bounds.setOrigin(width/2, height/2);
 		setX(x);
 		setY(y);
 		setWidth(width);
@@ -108,7 +109,7 @@ public abstract class AbstractGameObject implements GameObject {
 		this.width = width / getScale();
 		updateBounds();
 	}
-
+	
 	@Override
 	public final float getHeight() {
 		return height * getScale();
@@ -276,6 +277,10 @@ public abstract class AbstractGameObject implements GameObject {
 	@Override
 	public Polygon getBounds() {
 		return bounds;
+	}
+
+	public void debugDraw(ShapeRenderer renderer) {
+		renderer.polygon(getBounds().getTransformedVertices());
 	}
 
 	/**

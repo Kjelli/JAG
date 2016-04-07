@@ -5,6 +5,7 @@ import java.util.Map;
 import aurelienribon.tweenengine.BaseTween;
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenCallback;
+import no.kash.gamedev.jag.commons.defs.Defs;
 import no.kash.gamedev.jag.commons.network.packets.PlayerNewStats;
 import no.kash.gamedev.jag.commons.network.packets.PlayerStateChange;
 import no.kash.gamedev.jag.commons.tweens.TweenGlobal;
@@ -112,7 +113,7 @@ public abstract class AbstractRoundHandler<T> implements RoundHandler<T> {
 
 	protected boolean gameOver() {
 		for (PlayerInfo info : gameSession.players.values()) {
-			if (info.roundsWon >= gameSession.roundsToWin) {
+			if (info.roundsWon >= gameSession.settings.getSelectedValue(Defs.SESSION_RTW, Integer.class)) {
 				return true;
 			}
 		}
@@ -122,7 +123,7 @@ public abstract class AbstractRoundHandler<T> implements RoundHandler<T> {
 	@Override
 	public boolean canJoin() {
 		// Default is if no one has died yet
-		return gameSession.dropIn && players.size() == gameSession.players.size();
+		return gameSession.settings.getSelectedValue(Defs.SESSION_TEST_MODE, Boolean.class) && players.size() == gameSession.players.size();
 	}
 
 	@Override

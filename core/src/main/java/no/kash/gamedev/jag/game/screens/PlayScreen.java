@@ -10,6 +10,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -82,7 +85,28 @@ public class PlayScreen extends AbstractGameScreen {
 		initInputReceiver();
 		initSession();
 		loadLevel();
+		if (gameSession.settings.getSelectedValue(Defs.SESSION_TEST_MODE, Boolean.class)) {
+			initDebugControls();
+		}
 		start();
+	}
+
+	private void initDebugControls() {
+		inputMux.addProcessor(new InputAdapter() {
+			@Override
+			public boolean keyUp(int keycode) {
+				if (keycode == Keys.UP) {
+					gameContext.setTimeModifier(gameContext.getTimeModifier() * 2);
+					gameContext.getAnnouncer().announce(String.format("%.2f%%", gameContext.getTimeModifier() * 100),
+							gameContext.getTimeModifier());
+				} else if (keycode == Keys.DOWN) {
+					gameContext.setTimeModifier(Math.max(0.125f, gameContext.getTimeModifier() / 2));
+					gameContext.getAnnouncer().announce(String.format("%.2f%%", gameContext.getTimeModifier() * 100),
+							gameContext.getTimeModifier());
+				}
+				return true;
+			}
+		});
 	}
 
 	private void initSession() {
@@ -134,7 +158,7 @@ public class PlayScreen extends AbstractGameScreen {
 
 	public void spawnPlayer(PlayerInfo playerInfo) {
 
-		if (gameSession.gameMode == GameMode.STANDARD_TEAM) {
+		if (gameSession.settings.getSelectedValue(Defs.SESSION_GM, GameMode.class).teamBased) {
 			Rectangle spawnZone = level.teamSpawnZones.get(playerInfo.teamId);
 
 			float spawnX = (float) (spawnZone.x + Player.WIDTH / 2 + Math.random() * (spawnZone.width - Player.WIDTH));
@@ -252,7 +276,7 @@ public class PlayScreen extends AbstractGameScreen {
 				}
 
 				if (m instanceof PlayerConnect) {
-					if (gameSession.dropIn) {
+					if (gameSession.settings.getSelectedValue(Defs.SESSION_DROP_IN, Boolean.class)) {
 						game.getServer().send(c.getID(), new PlayerStateChange(JustAnotherGameController.VOTE_MAP));
 					} else {
 						// TODO send message to wait for next game
@@ -298,7 +322,7 @@ public class PlayScreen extends AbstractGameScreen {
 					break;
 
 				case BUTTON_RELOAD:
-					p.reload();
+					p.setReloading(input.state[0] == 1.0f);
 					break;
 				default:
 					System.out.println("Unknown input: " + input.inputId);
@@ -343,14 +367,14 @@ public class PlayScreen extends AbstractGameScreen {
 
 	@Override
 	protected void debugDraw(ShapeRenderer renderer) {
+		if(!gameSession.settings.getSelectedValue(Defs.SESSION_DEBUG_DRAW, Boolean.class)){
+			return;
+		}
 		renderer.begin(ShapeRenderer.ShapeType.Line);
 		for (GameObject go : gameContext.getObjects()) {
-			renderer.polygon(go.getBounds().getTransformedVertices());
+			go.debugDraw(renderer);
 		}
-		for(Player player : players.values()){
-			renderer.polygon(player.dot.getBounds().getTransformedVertices());
-		}
-		
+
 		MapLayer layer = level.map.getLayers().get("collision");
 		MapObjects objects = layer.getObjects();
 

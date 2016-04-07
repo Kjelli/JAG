@@ -39,6 +39,7 @@ public class Confetti extends AbstractParticle {
 		move(delta);
 		setRotation(getAliveTime() * rotationSpeed);
 		getSprite().setOrigin(getWidth() / 2, getHeight() / 2);
+		getBounds().setOrigin(getWidth()/2, getHeight()/2);
 		setWidth((float) (WIDTH * Math.cos(getAliveTime() * rotationSpeed)));
 	}
 

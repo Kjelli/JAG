@@ -193,4 +193,8 @@ public class GameContext {
 		return announcer;
 	}
 
+	public float getTimeModifier() {
+		return timeModifier;
+	}
+
 }

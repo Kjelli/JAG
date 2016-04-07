@@ -109,10 +109,8 @@ public class ControllerScreen extends AbstractControllerScreen {
 							new float[] { stick_mid.getXValue(), stick_mid.getYValue() }));
 					break;
 				case BUTTON_RELOAD:
-					if (!((TextButton) event.getSource()).isOver()) {
 						game.getClient().broadcast(new PlayerInput(game.getClient().getId(), BUTTON_RELOAD,
 								new float[] { reload.isPressed() ? 1 : 0 }));
-					}
 					break;
 				default:
 					game.getActionResolver().toast("Unknown input: " + event.getId());

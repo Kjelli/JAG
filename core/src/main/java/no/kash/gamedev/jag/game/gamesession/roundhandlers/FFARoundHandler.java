@@ -2,6 +2,7 @@ package no.kash.gamedev.jag.game.gamesession.roundhandlers;
 
 import java.util.Map;
 
+import no.kash.gamedev.jag.commons.defs.Defs;
 import no.kash.gamedev.jag.game.gamecontext.GameContext;
 import no.kash.gamedev.jag.game.gameobjects.players.Player;
 import no.kash.gamedev.jag.game.gameobjects.players.PlayerInfo;
@@ -23,7 +24,7 @@ public class FFARoundHandler extends AbstractRoundHandler<Player> {
 			PlayerInfo winnerInfo = winner.getInfo();
 			winnerInfo.roundsWon++;
 			boolean gameEnding;
-			if (winnerInfo.roundsWon < gameSession.roundsToWin) {
+			if (winnerInfo.roundsWon < gameSession.settings.getSelectedValue(Defs.SESSION_RTW, Integer.class)) {
 				gameContext.getAnnouncer().announce(String.format("--- %s wins the round ---", winner));
 				gameEnding = false;
 			} else {
@@ -40,7 +41,7 @@ public class FFARoundHandler extends AbstractRoundHandler<Player> {
 
 
 	public void setup() {
-		if (gameSession.testMode) {
+		if (gameSession.settings.getSelectedValue(Defs.SESSION_TEST_MODE, Boolean.class)) {
 			PlayerInfo dummyPlayer = new PlayerInfo();
 			dummyPlayer.temporary = true;
 			gameSession.players.put(-500, dummyPlayer);
