@@ -1,7 +1,9 @@
 package no.kash.gamedev.jag.game.gameobjects.bullets;
 
 import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Intersector.MinimumTranslationVector;
 
 import no.kash.gamedev.jag.game.gamecontext.physics.Collidable;
 import no.kash.gamedev.jag.game.gamecontext.physics.Collision;
@@ -28,7 +30,7 @@ public abstract class AbstractBullet extends AbstractGameObject implements Bulle
 
 		this.tileCollisionListener = new TileCollisionListener() {
 			@Override
-			public void onCollide(MapObject rectangleObject, Rectangle intersection) {
+			public void onCollide(MapObject rectangleObject, MinimumTranslationVector col) {
 				String data = (String) rectangleObject.getProperties().get("collision_level");
 				if (data != null) {
 					if (Integer.parseInt(data) == 2) {

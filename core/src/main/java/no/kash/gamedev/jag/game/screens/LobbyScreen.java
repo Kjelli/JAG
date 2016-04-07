@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.esotericsoftware.kryonet.Connection;
 
@@ -198,6 +199,11 @@ public class LobbyScreen extends AbstractGameScreen {
 		sessionUpdate.friendlyFire = session.friendlyFire;
 		sessionUpdate.drawNames = session.drawNames;
 		return sessionUpdate;
+	}
+
+	@Override
+	protected void debugDraw(ShapeRenderer renderer) {
+		
 	}
 
 }

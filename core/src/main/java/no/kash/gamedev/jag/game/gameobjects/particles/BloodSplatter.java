@@ -3,7 +3,9 @@ package no.kash.gamedev.jag.game.gameobjects.particles;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Intersector.MinimumTranslationVector;
 
 import aurelienribon.tweenengine.BaseTween;
 import aurelienribon.tweenengine.Tween;
@@ -20,7 +22,7 @@ public class BloodSplatter extends AbstractParticle {
 
 	public TileCollisionListener tileCollisionListener = new TileCollisionListener() {
 		@Override
-		public void onCollide(MapObject rectangleObject, Rectangle intersection) {
+		public void onCollide(MapObject rectangleObject, MinimumTranslationVector intersection) {
 			velocity.x = 0;
 			velocity.y = 0;
 			stopped = true;
