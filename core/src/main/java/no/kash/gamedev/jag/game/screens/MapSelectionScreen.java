@@ -2,6 +2,7 @@ package no.kash.gamedev.jag.game.screens;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.esotericsoftware.kryonet.Connection;
 
 import no.kash.gamedev.jag.commons.network.JagServerPacketHandler;
@@ -68,6 +69,11 @@ public class MapSelectionScreen extends AbstractGameScreen {
 			}
 
 		});
+	}
+
+	@Override
+	protected void debugDraw(ShapeRenderer renderer) {
+		
 	}
 
 }

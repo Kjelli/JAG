@@ -3,6 +3,7 @@ package no.kash.gamedev.jag.game.gameobjects;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
@@ -16,7 +17,7 @@ public abstract class AbstractGameObject implements GameObject {
 	protected Vector2 velocity, acceleration, max_acceleration;
 	private float x, y;
 	private float width, height;
-	protected Rectangle bounds;
+	protected Polygon bounds;
 	protected boolean alive = true;
 
 	protected Sprite sprite;
@@ -31,7 +32,9 @@ public abstract class AbstractGameObject implements GameObject {
 		velocity = new Vector2();
 		acceleration = new Vector2();
 		max_acceleration = new Vector2(5000, 5000);
-		bounds = new Rectangle(x, y, width, height);
+		bounds = new Polygon(new float[] { 0, 0, width, 0, width, height, 0, height });
+		bounds.setPosition(x, y);
+		bounds.setOrigin(0, 0);
 		setX(x);
 		setY(y);
 		setWidth(width);
@@ -55,12 +58,12 @@ public abstract class AbstractGameObject implements GameObject {
 	}
 
 	public void setX(float x) {
-		bounds.x = x;
+		bounds.setPosition(x, y);
 		this.x = x;
 	}
 
 	public void setY(float y) {
-		bounds.y = y;
+		bounds.setPosition(x, y);
 		this.y = y;
 	}
 
@@ -103,6 +106,7 @@ public abstract class AbstractGameObject implements GameObject {
 
 	public final void setWidth(float width) {
 		this.width = width / getScale();
+		updateBounds();
 	}
 
 	@Override
@@ -112,6 +116,11 @@ public abstract class AbstractGameObject implements GameObject {
 
 	public final void setHeight(float height) {
 		this.height = height / getScale();
+		updateBounds();
+	}
+
+	private void updateBounds() {
+		bounds.setVertices(new float[] { 0, 0, getWidth(), 0, getWidth(), getHeight(), 0, getHeight() });
 	}
 
 	protected void move(float delta) {
@@ -146,7 +155,7 @@ public abstract class AbstractGameObject implements GameObject {
 	}
 
 	public boolean intersects(GameObject other) {
-		return Intersector.overlaps(other.getBounds(), this.getBounds());
+		return Intersector.overlapConvexPolygons(other.getBounds(), this.getBounds());
 	}
 
 	@Override
@@ -257,6 +266,7 @@ public abstract class AbstractGameObject implements GameObject {
 		if (sprite != null) {
 			sprite.setRotation(this.rot);
 		}
+		bounds.setRotation((float) (rot * 180 / Math.PI));
 	}
 
 	public float getRotation() {
@@ -264,7 +274,7 @@ public abstract class AbstractGameObject implements GameObject {
 	}
 
 	@Override
-	public Rectangle getBounds() {
+	public Polygon getBounds() {
 		return bounds;
 	}
 

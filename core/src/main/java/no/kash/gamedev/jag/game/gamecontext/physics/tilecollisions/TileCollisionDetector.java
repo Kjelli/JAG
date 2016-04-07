@@ -4,13 +4,15 @@ import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Intersector.MinimumTranslationVector;
 
 import no.kash.gamedev.jag.game.gameobjects.GameObject;
 import no.kash.gamedev.jag.game.levels.Level;
 
 public class TileCollisionDetector {
-	private static Rectangle NO_COLLIDE = new Rectangle(-1, -1, -1, -1);
+	private static Polygon NO_COLLIDE = new Polygon();
 
 	public static void checkTileCollisions(Level level, GameObject go) {
 		checkTileCollisions(level, go, null);
@@ -21,39 +23,26 @@ public class TileCollisionDetector {
 		MapObjects objects = layer.getObjects();
 
 		for (RectangleMapObject rectangleObject : objects.getByType(RectangleMapObject.class)) {
-			Rectangle intersection = new Rectangle(NO_COLLIDE);
+			MinimumTranslationVector col = new MinimumTranslationVector();
 
 			// TODO point of optimization in future, if needed
+			Rectangle r = rectangleObject.getRectangle();
+			Polygon p = new Polygon(new float[] { 0, 0, r.width, 0, r.width, r.height, 0, r.height });
+			p.setPosition(r.x, r.y);
+			p.setOrigin(0, 0);
 
-			if (Intersector.intersectRectangles(rectangleObject.getRectangle(), go.getBounds(), intersection)) {
-				if (intersection.equals(NO_COLLIDE)) {
-					return;
-				}
+			if (Intersector.overlapConvexPolygons(p, go.getBounds(), col)) {
 
 				if (listener != null) {
-					listener.onCollide(rectangleObject, intersection);
+					listener.onCollide(rectangleObject, col);
 				}
 			}
 		}
 	}
 
-	public static void nudge(GameObject go, Rectangle intersection) {
-		// Determine colliding edge:
-		if (intersection.width < intersection.height) {
-			// Collision horizontal
-			if (go.getCenterX() > intersection.x) {
-				go.setX(go.getX() + intersection.width);
-			} else {
-				go.setX(go.getX() - intersection.width);
-			}
-		} else {
-
-			// Collision vertical
-			if (go.getCenterY() > intersection.y) {
-				go.setY(go.getY() + intersection.height);
-			} else {
-				go.setY(go.getY() - intersection.height);
-			}
-		}
+	public static void nudge(GameObject go, MinimumTranslationVector col) {
+		// TODO
+		go.setX(go.getX() - col.depth * col.normal.x);
+		go.setY(go.getY() - col.depth * col.normal.y);
 	}
 }

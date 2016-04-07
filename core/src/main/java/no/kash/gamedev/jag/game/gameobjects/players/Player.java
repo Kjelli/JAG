@@ -4,6 +4,8 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.math.Intersector.MinimumTranslationVector;
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 
 import no.kash.gamedev.jag.assets.Assets;
@@ -49,7 +51,7 @@ public class Player extends AbstractGameObject implements Collidable {
 	private boolean firing;
 	private boolean holdingGrenade;
 	private boolean aiming;
-	
+
 	private boolean blockInput = false;
 	private boolean invincible = false;
 
@@ -71,8 +73,10 @@ public class Player extends AbstractGameObject implements Collidable {
 
 	private Sprite holding_grenade;
 
+	public Dot dot;
+
 	private GameSession gameSession;
-	
+
 	private GunType startingGun = GunType.pistol;
 
 	public Player(GameSession gameSession, PlayerInfo info, float x, float y) {
@@ -82,8 +86,8 @@ public class Player extends AbstractGameObject implements Collidable {
 		this.info = info;
 		this.tileCollisionListener = new TileCollisionListener() {
 			@Override
-			public void onCollide(MapObject rectangleObject, Rectangle intersection) {
-				TileCollisionDetector.nudge(Player.this, intersection);
+			public void onCollide(MapObject rectangleObject, MinimumTranslationVector col) {
+				TileCollisionDetector.nudge(Player.this, col);
 			}
 		};
 	}
@@ -93,7 +97,7 @@ public class Player extends AbstractGameObject implements Collidable {
 		this.healthMax = gameSettings.startingHealth;
 		this.health = healthMax;
 		this.statusHandler = new StatusHandler(this);
-
+		dot = new Dot(this, getCenterX(), this.getCenterY(), getRotation());
 		switch (gameSettings.gameMode) {
 		case STANDARD_FFA:
 		case STANDARD_TEAM:
@@ -138,6 +142,7 @@ public class Player extends AbstractGameObject implements Collidable {
 		gun.update(delta);
 		statusHandler.update(delta);
 		grenadeCooldown.update(delta);
+		//dot.update(delta);
 		if (blockInput) {
 			accelerate(0, 0);
 		}
@@ -150,23 +155,22 @@ public class Player extends AbstractGameObject implements Collidable {
 		if (isInvincible()) {
 			spawnStars();
 		}
-		
+
 		fireingLogic();
-		
 
 		TileCollisionDetector.checkTileCollisions(getGameContext().getLevel(), this, tileCollisionListener);
 	}
 
 	private void fireingLogic() {
-		if(!isFiring() && aiming){
+		if (!isFiring() && aiming) {
 			fireBullet();
 			aiming = false;
 			gun.checkOutOfAmmo();
 		}
 		if (isFiring()) {
-			if(gun.isHoldToShoot()){
+			if (gun.isHoldToShoot()) {
 				fireBullet();
-			}else{
+			} else {
 				aiming = true;
 			}
 		}
@@ -174,8 +178,11 @@ public class Player extends AbstractGameObject implements Collidable {
 
 	private void spawnStars() {
 		if (Math.random() < 0.2f) {
-			getGameContext().spawn(new Star(getCenterX() + (float) ((Math.random() - 0.5f) * hitbox.rect.width * 2),
-					getCenterY() + (float) ((Math.random() - 0.5f) * hitbox.rect.height * 2)));
+			getGameContext()
+					.spawn(new Star(
+							getCenterX() + (float) ((Math.random() - 0.5f) * hitbox.poly.getBoundingRectangle().width
+									* 2),
+					getCenterY() + (float) ((Math.random() - 0.5f) * hitbox.poly.getBoundingRectangle().height * 2)));
 		}
 	}
 
@@ -187,6 +194,8 @@ public class Player extends AbstractGameObject implements Collidable {
 		} else if (holdingGrenade) {
 			Draw.sprite(batch, holding_grenade, getX(), getY(), getWidth(), getHeight(), getRotation());
 		}
+
+		//dot.draw(batch);
 
 		if (gameSession.drawNames) {
 			Assets.font.draw(batch, nameLabel, getX() + getWidth() / 2 - nameLabel.width / 2,
@@ -250,8 +259,8 @@ public class Player extends AbstractGameObject implements Collidable {
 	}
 
 	@Override
-	public Rectangle getBounds() {
-		return hitbox.rect;
+	public Polygon getBounds() {
+		return hitbox.poly;
 	}
 
 	public void setFiring(boolean firing) {

@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.Array;
 
 public class Assets {
 	public static Texture plain;
+	public static Texture dot;
 
 	// Player
 	public static Texture man, man_holding_grenade;
@@ -70,6 +71,7 @@ public class Assets {
 		plain = load("plain.png");
 		man = load("playerSprite/player.png");
 		man_holding_grenade = load("playerSprite/holding_grenade.png");
+		dot = load("dot.png");
 
 		// Weapons
 		bullet = load("bullet.png");

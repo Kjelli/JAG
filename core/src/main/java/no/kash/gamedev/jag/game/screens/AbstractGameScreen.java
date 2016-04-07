@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
@@ -30,6 +31,8 @@ public abstract class AbstractGameScreen implements Screen {
 	protected final InputMultiplexer inputMux;
 
 	private final SpriteBatch batch, hudBatch;
+	
+	public ShapeRenderer shapes;
 
 	private Texture background;
 
@@ -43,6 +46,7 @@ public abstract class AbstractGameScreen implements Screen {
 		hudCamera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		stage = new Stage(new ScalingViewport(Scaling.stretch, Defs.WIDTH, Defs.HEIGHT, camera));
 		batch = new SpriteBatch();
+		shapes = new ShapeRenderer();
 		hudBatch = new SpriteBatch();
 		hudBatch.enableBlending();
 		gameContext = new GameContext(game);
@@ -81,8 +85,12 @@ public abstract class AbstractGameScreen implements Screen {
 		drawHud(hudBatch, delta);
 		hudBatch.end();
 		stage.draw();
+		shapes.setProjectionMatrix(camera.combined);
+		//debugDraw(shapes);
 
 	}
+
+	protected abstract void debugDraw(ShapeRenderer renderer);
 
 	protected abstract void update(float delta);
 

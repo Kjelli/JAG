@@ -12,6 +12,11 @@ import java.util.Map;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.MapObjects;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
@@ -334,6 +339,30 @@ public class PlayScreen extends AbstractGameScreen {
 	public void dispose() {
 		super.dispose();
 		level.dispose();
+	}
+
+	@Override
+	protected void debugDraw(ShapeRenderer renderer) {
+		renderer.begin(ShapeRenderer.ShapeType.Line);
+		for (GameObject go : gameContext.getObjects()) {
+			renderer.polygon(go.getBounds().getTransformedVertices());
+		}
+		for(Player player : players.values()){
+			renderer.polygon(player.dot.getBounds().getTransformedVertices());
+		}
+		
+		MapLayer layer = level.map.getLayers().get("collision");
+		MapObjects objects = layer.getObjects();
+
+		for (RectangleMapObject rectangleObject : objects.getByType(RectangleMapObject.class)) {
+			Rectangle r = rectangleObject.getRectangle();
+			Polygon poly = new Polygon(new float[] { 0, 0, r.width, 0, r.width, r.height, 0, r.height });
+			poly.setPosition(r.x, r.y);
+			poly.setOrigin(0, 0);
+			renderer.polygon(poly.getTransformedVertices());
+		}
+
+		renderer.end();
 	}
 
 }
