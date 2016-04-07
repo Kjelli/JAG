@@ -77,11 +77,11 @@ public class Announcement {
 	}
 
 	public float getHeight() {
-		return glyphLayout.height;
+		return glyphLayout.height * font.getData().scaleY;
 	}
 
 	public float getWidth() {
-		return glyphLayout.width;
+		return glyphLayout.width * font.getData().scaleX;
 	}
 
 	public void setColor(Color color) {

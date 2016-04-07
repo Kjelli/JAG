@@ -6,6 +6,7 @@ import java.util.Map;
 import no.kash.gamedev.jag.game.gamecontext.GameContext;
 import no.kash.gamedev.jag.game.gameobjects.players.Player;
 import no.kash.gamedev.jag.game.gameobjects.players.PlayerInfo;
+import no.kash.gamedev.jag.game.gameobjects.players.status.Status;
 import no.kash.gamedev.jag.game.gamesession.GameSession;
 import no.kash.gamedev.jag.game.screens.PlayScreen;
 
@@ -32,6 +33,16 @@ public class TeamRoundHandler extends AbstractRoundHandler<Integer> {
 	public void playerKilled(Player killer, Player killed) {
 		super.playerKilled(killer, killed);
 
+		updateTeamStatus(killed);
+	}
+
+	@Override
+	public void playerKilled(Player killed, Status status) {
+		super.playerKilled(killed, status);
+		updateTeamStatus(killed);
+	}
+
+	private void updateTeamStatus(Player killed) {
 		int teamId = killed.getInfo().teamId;
 		int leftOnTeam = teamPlayersAlive.get(teamId) - 1;
 		teamPlayersAlive.put(teamId, leftOnTeam);

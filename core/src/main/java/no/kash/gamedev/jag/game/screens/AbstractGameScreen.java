@@ -55,7 +55,10 @@ public abstract class AbstractGameScreen implements Screen {
 	 * Quickfix, works but it makes the announcer-font somewhat pixely
 	 */
 	private void fixAnnouncerFont() {
-		Assets.announcerFont.getData().scale(Gdx.graphics.getWidth() / Defs.WIDTH);
+		float scale = Gdx.graphics.getWidth() / Defs.WIDTH;
+		Assets.announcerFont.getData().scaleX = scale;
+		Assets.announcerFont.getData().scaleY = scale;
+		Assets.announcerFont.getData().setScale(scale);
 	}
 
 	@Override

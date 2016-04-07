@@ -47,6 +47,8 @@ public class JagServer {
 		});
 	}
 
+	int lastSeen;
+
 	public void update(float delta) {
 		if (listener == null) {
 			eventQueue.clear();
@@ -56,6 +58,12 @@ public class JagServer {
 			NetworkEvent next = eventQueue.removeFirst();
 			if (next == null) {
 				continue;
+			}
+			if (next.id > lastSeen) {
+				lastSeen = next.id;
+			}else{
+				System.out.println(next.id + " came after " + lastSeen);
+				Gdx.app.exit();
 			}
 			switch (next.type) {
 			case NetworkEvent.CONNECT:
@@ -84,29 +92,17 @@ public class JagServer {
 
 	public void send(int id, GamePacket packet) {
 		server.sendToTCP(id, packet);
-		try {
-			server.update(20);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+
 	}
 
 	public void broadcast(GamePacket packet) {
 		server.sendToAllTCP(packet);
-		try {
-			server.update(20);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+
 	}
 
 	public void broadcastExcept(int id, GamePacket packet) {
 		server.sendToAllExceptTCP(id, packet);
-		try {
-			server.update(20);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+
 	}
 
 	public NetworkListener getListener() {

@@ -84,11 +84,6 @@ public class JagClient {
 
 	public void broadcast(GamePacket packet) {
 		client.sendTCP(packet);
-		try {
-			client.update(20);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 
 	public NetworkListener getListener() {

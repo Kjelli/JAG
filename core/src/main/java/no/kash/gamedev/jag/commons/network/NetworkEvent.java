@@ -6,7 +6,9 @@ import no.kash.gamedev.jag.commons.network.packets.GamePacket;
 
 public class NetworkEvent {
 	public static final int CONNECT = 1, DISCONNECT = 2, PACKET = 3;
-
+	public static int serial;
+	
+	public final int id;
 	public final int type;
 	public final Connection connection;
 	public final GamePacket packet;
@@ -16,6 +18,7 @@ public class NetworkEvent {
 	}
 
 	public NetworkEvent(int type, Connection connection, GamePacket packet) {
+		id = ++serial;
 		if (type == PACKET && packet == null) {
 			throw new IllegalArgumentException("Packet required if network event is of type PACKET!");
 		}

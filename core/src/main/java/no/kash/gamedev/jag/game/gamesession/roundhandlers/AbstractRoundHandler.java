@@ -141,7 +141,9 @@ public abstract class AbstractRoundHandler<T> implements RoundHandler<T> {
 			public void onEvent(int arg0, BaseTween<?> arg1) {
 				if (arg0 == TweenCallback.COMPLETE) {
 					for (PlayerInfo player : gameSession.players.values()) {
-						players.get(player.id).blockInput(false);
+						if (players.containsKey(player.id)) {
+							players.get(player.id).blockInput(false);
+						}
 					}
 				}
 			}

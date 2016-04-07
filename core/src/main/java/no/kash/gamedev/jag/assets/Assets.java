@@ -166,7 +166,7 @@ public class Assets {
 		FreeTypeFontParameter font40params = new FreeTypeFontParameter();
 		font40params.minFilter = Texture.TextureFilter.Nearest;
 		font40params.magFilter = Texture.TextureFilter.MipMapLinearNearest;
-		font40params.size = 24;
+		font40params.size = 60;
 
 		announcerFont = fontgen.generateFont(font40params);
 	}

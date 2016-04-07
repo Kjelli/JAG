@@ -9,6 +9,7 @@ public class Status {
 	public Player causer;
 	public StatusType type;
 	public Cooldown duration;
+	public Cooldown ticker;
 
 	public boolean finished = false;
 
@@ -16,28 +17,38 @@ public class Status {
 		this.type = type;
 		this.causer = causer;
 		this.duration = new Cooldown(duration);
+		this.ticker = new Cooldown(0.5f);
 	}
 
 	public void update(float delta) {
 		duration.update(delta);
+		ticker.update(delta);
 		if (!duration.isOnCooldown()) {
 			finished = true;
 		}
 	}
 
 	public void effect(Player player) {
+
 		switch (type) {
 		case burn:
 			player.getGameContext()
 					.spawn(new Burn(player.getCenterX() + (float) (Math.random() * Player.WIDTH / 2 - Player.WIDTH / 4),
 							player.getCenterY() + (float) (Math.random() * Player.HEIGHT / 2 - Player.HEIGHT / 4)));
-			player.damage(this);
+			if (!ticker.isOnCooldown()) {
+				player.damage(this);
+				ticker.startCooldown();
+			}
 			break;
 		case poison:
 			player.getGameContext()
-			.spawn(new Poison(player.getCenterX() + (float) (Math.random() * Player.WIDTH / 2 - Player.WIDTH / 4),
-					player.getCenterY() + (float) (Math.random() * Player.HEIGHT / 2 - Player.HEIGHT / 4)));
-			player.damage(this);
+					.spawn(new Poison(
+							player.getCenterX() + (float) (Math.random() * Player.WIDTH / 2 - Player.WIDTH / 4),
+							player.getCenterY() + (float) (Math.random() * Player.HEIGHT / 2 - Player.HEIGHT / 4)));
+			if (!ticker.isOnCooldown()) {
+				player.damage(this);
+				ticker.startCooldown();
+			}
 			break;
 		case slow:
 			break;
