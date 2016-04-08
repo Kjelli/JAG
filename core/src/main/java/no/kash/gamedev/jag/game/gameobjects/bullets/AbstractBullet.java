@@ -19,6 +19,7 @@ public abstract class AbstractBullet extends AbstractGameObject implements Bulle
 	protected float damage;
 
 	protected float speed;
+	protected float direction;
 
 	TileCollisionListener tileCollisionListener;
 
@@ -28,6 +29,7 @@ public abstract class AbstractBullet extends AbstractGameObject implements Bulle
 		this.shooter = shooter;
 		this.damage = damage;
 		this.speed = speed;
+		this.direction = direction;
 		setRotation(direction);
 
 		this.tileCollisionListener = new TileCollisionListener() {
@@ -74,9 +76,11 @@ public abstract class AbstractBullet extends AbstractGameObject implements Bulle
 				return;
 			}
 
-			boolean friendlyFireDisabled = !target.getGameSession().settings.getSelectedValue(Defs.SESSION_FRIENDLY_FIRE, Boolean.class);
+			boolean friendlyFireDisabled = !target.getGameSession().settings
+					.getSelectedValue(Defs.SESSION_FRIENDLY_FIRE, Boolean.class);
 			boolean sameTeam = shooter.getInfo().teamId == target.getInfo().teamId;
-			boolean teamBasedGame = target.getGameSession().settings.getSelectedValue(Defs.SESSION_GM, GameMode.class).teamBased;
+			boolean teamBasedGame = target.getGameSession().settings.getSelectedValue(Defs.SESSION_GM,
+					GameMode.class).teamBased;
 			if (teamBasedGame && sameTeam && friendlyFireDisabled) {
 				return;
 			}
@@ -91,6 +95,14 @@ public abstract class AbstractBullet extends AbstractGameObject implements Bulle
 
 	public float getDamage() {
 		return damage;
+	}
+
+	public float getDirection() {
+		return direction;
+	}
+
+	public void setDirection(float direction) {
+		this.direction = direction;
 	}
 
 }

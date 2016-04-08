@@ -23,7 +23,7 @@ public abstract class AbstractGameObject implements GameObject {
 
 	protected Sprite sprite;
 
-	protected float maxSpeed = 500f;
+	protected float maxSpeed = 50000f;
 	protected float rot = 0f;
 	protected float scale = 1.0f;
 

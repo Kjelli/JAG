@@ -41,6 +41,7 @@ public class FFARoundHandler extends AbstractRoundHandler<Player> {
 
 
 	public void setup() {
+		super.setup();
 		if (gameSession.settings.getSelectedValue(Defs.SESSION_TEST_MODE, Boolean.class)) {
 			PlayerInfo dummyPlayer = new PlayerInfo();
 			dummyPlayer.temporary = true;

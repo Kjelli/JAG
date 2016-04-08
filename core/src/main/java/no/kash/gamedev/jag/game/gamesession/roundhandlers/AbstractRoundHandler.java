@@ -2,33 +2,57 @@ package no.kash.gamedev.jag.game.gamesession.roundhandlers;
 
 import java.util.Map;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
 import aurelienribon.tweenengine.BaseTween;
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenCallback;
+import no.kash.gamedev.jag.assets.Assets;
 import no.kash.gamedev.jag.commons.defs.Defs;
 import no.kash.gamedev.jag.commons.network.packets.PlayerNewStats;
 import no.kash.gamedev.jag.commons.network.packets.PlayerStateChange;
+import no.kash.gamedev.jag.commons.network.packets.PlayerUpdate;
 import no.kash.gamedev.jag.commons.tweens.TweenGlobal;
 import no.kash.gamedev.jag.commons.tweens.TweenableFloat;
 import no.kash.gamedev.jag.commons.tweens.accessors.FloatAccessor;
 import no.kash.gamedev.jag.controller.JustAnotherGameController;
 import no.kash.gamedev.jag.game.JustAnotherGame;
+import no.kash.gamedev.jag.game.announcer.Announcement;
+import no.kash.gamedev.jag.game.commons.utils.Cooldown;
 import no.kash.gamedev.jag.game.gamecontext.GameContext;
 import no.kash.gamedev.jag.game.gameobjects.players.Player;
 import no.kash.gamedev.jag.game.gameobjects.players.PlayerInfo;
+import no.kash.gamedev.jag.game.gameobjects.players.guns.GunType;
 import no.kash.gamedev.jag.game.gameobjects.players.status.Status;
 import no.kash.gamedev.jag.game.gamesession.GameSession;
+import no.kash.gamedev.jag.game.gamesession.roundhandlers.suddendeaths.SuddenDeathType;
 import no.kash.gamedev.jag.game.screens.PlayScreen;
 import no.kash.gamedev.jag.game.screens.LobbyScreen;
 
 public abstract class AbstractRoundHandler<T> implements RoundHandler<T> {
+
+	public static final BitmapFont font = Announcement.font;
 
 	protected Map<Integer, Player> players;
 	protected PlayScreen gameScreen;
 	protected GameContext gameContext;
 	protected GameSession gameSession;
 
+	protected GlyphLayout roundTimeLabel;
+	protected Cooldown roundTime;
+
+	protected boolean hasStarted;
+	protected boolean suddenDeath = false;
+
 	protected int currentRound = 0;
+
+	protected float roundTimeX;
+	protected float roundTimeY;
+
+	private boolean roundFinished;
 
 	public AbstractRoundHandler(PlayScreen screen, GameContext gameContext, GameSession gameSession,
 			Map<Integer, Player> players) {
@@ -36,6 +60,11 @@ public abstract class AbstractRoundHandler<T> implements RoundHandler<T> {
 		this.gameScreen = screen;
 		this.gameContext = gameContext;
 		this.gameSession = gameSession;
+		this.roundTime = new Cooldown(gameSession.settings.getSelectedValue(Defs.SESSION_ROUNDTIME, Integer.class));
+		this.roundTime.startCooldown();
+		this.roundTimeLabel = new GlyphLayout(Assets.announcerFont,
+				String.format("%.2f", roundTime.getCooldownTimer()));
+
 	}
 
 	@Override
@@ -69,9 +98,73 @@ public abstract class AbstractRoundHandler<T> implements RoundHandler<T> {
 		players.remove(killed.getId());
 	}
 
+	public void update(float delta) {
+
+		if (!hasStarted) {
+			if (this.roundTime.getCooldownTimer() > 0) {
+				this.roundTime.startCooldown();
+			} else if (!suddenDeath) {
+				suddenDeath();
+			}
+			return;
+		}
+		if (roundTime.isOnCooldown() && !roundFinished) {
+			roundTime.update(delta);
+			roundTimeLabel.setText(Assets.announcerFont, String.format("%.2f", roundTime.getCooldownTimer()));
+		} else if (!roundFinished && !suddenDeath) {
+			suddenDeath = true;
+			suddenDeath();
+		}
+	}
+
+	@Override
+	public void setup() {
+	}
+
+	public void suddenDeath() {
+		roundTimeLabel.setText(Assets.announcerFont, "SUDDEN DEATH");
+		switch (gameSession.settings.getSelectedValue(Defs.SESSION_SUDDEN_DEATH, SuddenDeathType.class)) {
+		case none:
+			roundTimeLabel.setText(Assets.announcerFont, "");
+			break;
+		case ONE_HP:
+			for (Player player : players.values()) {
+				player.setHealth(1.0f);
+				((JustAnotherGame) gameContext.getGame()).getServer().send(player.getInfo().id,
+						new PlayerUpdate(2, new int[] { PlayerUpdate.HEALTH, PlayerUpdate.FEEDBACK_VIBRATION },
+								new float[][] { { player.getHealth() }, { 30.0f } }));
+			}
+			break;
+		case GOLDEN_GUN:
+			gameContext.getLevel().weaponSpawner.stop();
+			for (Player player : players.values()) {
+				player.equipGun(GunType.goldengun, 97, 3);
+			}
+			break;
+		case PISTOLS_ONLY:
+			gameContext.getLevel().weaponSpawner.stop();
+			for (Player player : players.values()) {
+				player.equipGun(GunType.pistol);
+			}
+			break;
+		default:
+			break;
+
+		}
+	}
+
+	public boolean isSuddenDeath() {
+		return suddenDeath;
+	}
+
+	@Override
+	public void drawRoundTime(SpriteBatch batch) {
+		font.draw(batch, roundTimeLabel, roundTimeX - roundTimeLabel.width / 2, roundTimeY);
+	}
+
 	@Override
 	public void proceed() {
-
+		roundFinished = true;
 		gameContext.setTimeModifier(0.25f);
 
 		// No op
@@ -123,11 +216,24 @@ public abstract class AbstractRoundHandler<T> implements RoundHandler<T> {
 	@Override
 	public boolean canJoin() {
 		// Default is if no one has died yet
-		return gameSession.settings.getSelectedValue(Defs.SESSION_TEST_MODE, Boolean.class) && players.size() == gameSession.players.size();
+		return gameSession.settings.getSelectedValue(Defs.SESSION_TEST_MODE, Boolean.class)
+				&& players.size() == gameSession.players.size();
 	}
 
 	@Override
 	public void start() {
+		hasStarted = false;
+		suddenDeath = false;
+		roundFinished = false;
+		roundTimeX = gameContext.getStage().getViewport().getScreenWidth() / 2;
+		roundTimeY = gameContext.getStage().getViewport().getScreenHeight();
+		roundTime.startCooldown();
+		roundTimeLabel.setText(Assets.announcerFont, String.format("%.2f", roundTime.getCooldownTimer()));
+
+		if (!gameSession.settings.getSelectedValue(Defs.SESSION_SPAWN_GUNS, Boolean.class)) {
+			gameContext.getLevel().weaponSpawner.stop();
+		}
+
 		for (PlayerInfo player : gameSession.players.values()) {
 			gameScreen.spawnPlayer(player);
 			// If spawning succeeded, block input
@@ -144,17 +250,25 @@ public abstract class AbstractRoundHandler<T> implements RoundHandler<T> {
 					for (PlayerInfo player : gameSession.players.values()) {
 						if (players.containsKey(player.id)) {
 							players.get(player.id).blockInput(false);
+
 						}
 					}
+					hasStarted = true;
 				}
 			}
 		}));
+
 		gameContext.getAnnouncer().announceRoundStart(gameSession.roundHandler.currentRound(), 3);
 	}
 
 	@Override
 	public void reset() {
 		currentRound = 0;
+	}
+
+	@Override
+	public float getRoundTimer() {
+		return roundTime.getCooldownTimer();
 	}
 
 	@Override

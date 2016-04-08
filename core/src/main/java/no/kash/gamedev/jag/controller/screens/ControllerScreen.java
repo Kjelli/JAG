@@ -110,7 +110,7 @@ public class ControllerScreen extends AbstractControllerScreen {
 					break;
 				case BUTTON_RELOAD:
 						game.getClient().broadcast(new PlayerInput(game.getClient().getId(), BUTTON_RELOAD,
-								new float[] { reload.isPressed() ? 1 : 0 }));
+								new float[] { event.isReleased() ? 0 : 1 }));
 					break;
 				default:
 					game.getActionResolver().toast("Unknown input: " + event.getId());
@@ -121,7 +121,7 @@ public class ControllerScreen extends AbstractControllerScreen {
 		scheme.addInputElement(JOYSTICK_RIGHT, stick_right.getTouchpad());
 		scheme.addInputElement(JOYSTICK_LEFT, stick_left.getTouchpad());
 		scheme.addInputElement(JOYSTICK_MID, stick_mid.getTouchpad());
-		scheme.addInputElement(BUTTON_RELOAD, reload);
+		scheme.addInputElement(BUTTON_RELOAD, reload, true);
 
 		game.setReceiver(new JagClientPacketHandler() {
 

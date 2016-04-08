@@ -11,4 +11,6 @@ public interface Bullet extends GameObject {
 
 	void onImpact(Player target);
 
+	float getDirection();
+
 }

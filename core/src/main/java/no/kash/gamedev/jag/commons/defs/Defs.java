@@ -26,9 +26,12 @@ public class Defs {
 	public static final String SESSION_FRIENDLY_FIRE = "SESSION_FRIENDLY_FIRE";
 	public static final String SESSION_DRAW_NAMES = "SESSION_DRAW_NAMES";
 	public static final String SESSION_DEBUG_DRAW = "SESSION_DEBUG_DRAW";
-	
+	public static final String SESSION_SUDDEN_DEATH = "SESSION_SUDDEN_DEATH";
+	public static final String SESSION_STARTING_GUN = "SESSION_STARTING_GUN";
+	public static final String SESSION_SPAWN_GUNS = "SESSION_SPAWN_GUNS";
+
 	// Misc
-	public static final Boolean[] BOOLEAN_OPTIONS = new Boolean[]{true, false};
+	public static final Boolean[] BOOLEAN_OPTIONS = new Boolean[] { true, false };
 
 	// ################# Game Definitions #################
 	public static final Integer[] ROUND_TIME_OPTIONS = new Integer[] { 30, 60, 90, 120, 180, 240, 300, 600, -1 };

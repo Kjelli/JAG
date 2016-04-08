@@ -72,10 +72,10 @@ public class GameSessionInfoGUI {
 		float spacing = font.getCapHeight() + 2;
 		fontLarge.draw(batch, sessionLabel, x + 2 * BORDER_WIDTH, y - 1 * spacing);
 		for (int i = 0; i < settingLabels.length; i++) {
-			font.draw(batch, settingLabels[i], x + 2 * BORDER_WIDTH, y - (i + 3) * spacing - i/3 * spacing);
+			font.draw(batch, settingLabels[i], x + 2 * BORDER_WIDTH, y - (i + 3) * spacing - i/4 * spacing);
 		}
 		for (int i = 0; i < valueLabels.length; i++) {
-			font.draw(batch, valueLabels[i], x + 22 * BORDER_WIDTH, y - (i + 3) * spacing - i/3 * spacing);
+			font.draw(batch, valueLabels[i], x + 22 * BORDER_WIDTH, y - (i + 3) * spacing - i/4 * spacing);
 		}
 	}
 }

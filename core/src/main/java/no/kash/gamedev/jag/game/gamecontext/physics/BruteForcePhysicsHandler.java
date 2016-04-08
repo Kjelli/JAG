@@ -1,18 +1,20 @@
 package no.kash.gamedev.jag.game.gamecontext.physics;
 
-import java.util.Collection;
+import java.util.List;
 
 import no.kash.gamedev.jag.game.gameobjects.GameObject;
 
 public class BruteForcePhysicsHandler implements PhysicsHandler {
 
 	@Override
-	public void collisonCheck(Collection<? extends GameObject> gameobjects) {
-		for (GameObject one : gameobjects) {
+	public void collisonCheck(List<? extends GameObject> gameobjects) {
+		for (int i = 0; i < gameobjects.size(); i++) {
+			GameObject one = gameobjects.get(i);
 			if (!(one instanceof Collidable)) {
 				continue;
 			}
-			for (GameObject other : gameobjects) {
+			for (int j = 0; j < gameobjects.size(); j++) {
+				GameObject other = gameobjects.get(j);
 				if (!(other instanceof Collidable)) {
 					continue;
 				} else if (other == one) {

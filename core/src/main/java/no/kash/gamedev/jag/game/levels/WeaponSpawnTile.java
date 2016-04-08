@@ -63,6 +63,9 @@ public class WeaponSpawnTile extends AbstractGameObject {
 	}
 
 	private void spawnWeapon() {
+		if(spawner.isStopped()){
+			return;
+		}
 		weapon = new Weapon(getCenterX(), getCenterY(), nextWeapon);
 		getGameContext().spawn(weapon);
 		getGameContext().spawn(new WeaponSpawnEffect(getCenterX(), getCenterY()));

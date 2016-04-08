@@ -185,6 +185,7 @@ public class LobbyControllerScreen extends AbstractControllerScreen {
 					public void clicked(InputEvent event, float x, float y) {
 						mySetting.selectNext();
 						myButton.setText(setting.toString());
+						GameSessionPreferences.update(sessionControls.session.settings);
 						sendGameSessionUpdate();
 					}
 				});

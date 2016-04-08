@@ -59,12 +59,6 @@ public class JagServer {
 			if (next == null) {
 				continue;
 			}
-			if (next.id > lastSeen) {
-				lastSeen = next.id;
-			}else{
-				System.out.println(next.id + " came after " + lastSeen);
-				Gdx.app.exit();
-			}
 			switch (next.type) {
 			case NetworkEvent.CONNECT:
 				listener.connected(next.connection);

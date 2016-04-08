@@ -116,6 +116,7 @@ public class PlayScreen extends AbstractGameScreen {
 	@Override
 	protected void update(float delta) {
 		gameContext.update(delta);
+		gameSession.roundHandler.update(delta);
 		handleCamera(delta);
 		level.update(delta);
 
@@ -140,11 +141,13 @@ public class PlayScreen extends AbstractGameScreen {
 	@Override
 	protected void drawHud(SpriteBatch hudBatch, float delta) {
 		getGameContext().getAnnouncer().draw(hudBatch);
+		gameSession.roundHandler.drawRoundTime(hudBatch);
 	}
 
 	public void start() {
 		gameOver = false;
 		level.spawnWeaponTiles();
+		level.weaponSpawner.start();
 		gameSession.roundHandler.start();
 	}
 
@@ -172,8 +175,10 @@ public class PlayScreen extends AbstractGameScreen {
 		}
 
 		int index = (int) (Math.random() * level.playerSpawns.size());
+		int tries = 0;
 		while (true) {
-			if (index >= level.playerSpawns.size()) {
+			// TODO Might be too high
+			if (tries > 100) {
 				break;
 			}
 
@@ -190,7 +195,8 @@ public class PlayScreen extends AbstractGameScreen {
 			gameContext.spawn(player);
 
 			spawnPoint.taken = true;
-			index++;
+			index = (index + 1) % level.playerSpawns.size();
+			tries++;
 
 			return;
 		}
@@ -322,7 +328,8 @@ public class PlayScreen extends AbstractGameScreen {
 					break;
 
 				case BUTTON_RELOAD:
-					p.setReloading(input.state[0] == 1.0f);
+					p.setReloading(input.state[0] == 1);
+					
 					break;
 				default:
 					System.out.println("Unknown input: " + input.inputId);

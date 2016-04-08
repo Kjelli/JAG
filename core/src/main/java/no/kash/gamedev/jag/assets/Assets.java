@@ -15,10 +15,12 @@ public class Assets {
 	// Player
 	public static Texture man, man_holding_grenade;
 
-	// Weapons
+	// Projectiles
 	public static Texture bullet;
 	public static Texture dart;
+	public static Texture golden_bullet;
 
+	// Weapons
 	public static Texture pistol;
 	public static Texture m4;
 	public static Texture mac10;
@@ -27,10 +29,11 @@ public class Assets {
 	public static Texture flamethrower;
 	public static Texture grenade;
 	public static Texture crossbow;
-	
 
 	// Particles
 	public static Texture blood;
+	public static Texture blood2;
+	public static Texture blood3;
 	public static Texture fire;
 	public static Texture poison;
 	public static Texture star;
@@ -46,7 +49,6 @@ public class Assets {
 	public static Texture mac10_ground;
 	public static Texture flamethrower_ground;
 	public static Texture crossbow_ground;
-	
 
 	// Icons
 	public static Texture health_icon;
@@ -73,9 +75,12 @@ public class Assets {
 		man_holding_grenade = load("playerSprite/holding_grenade.png");
 		dot = load("dot.png");
 
-		// Weapons
+		// Projectiles
 		bullet = load("bullet.png");
+		golden_bullet = load("goldenbullet.png");
 		dart = load("dart.png");
+
+		// Weapons
 		pistol = load("playerSprite/pistol.png");
 		m4 = load("playerSprite/m4.png");
 		shotgun = load("playerSprite/shotgun.png");
@@ -87,6 +92,8 @@ public class Assets {
 
 		// Particles
 		blood = load("blood.png");
+		blood2 = load("blood2.png");
+		blood3 = load("blood3.png");
 		fire = load("fire.png");
 		poison = load("poison.png");
 		wepSpawnEffect = load("sprites/spawnEffect.png");
@@ -100,9 +107,8 @@ public class Assets {
 		goldengun_ground = load("sprites/gun_goldengun.png");
 		flamethrower_ground = load("sprites/gun_flamethrower.png");
 
-		goldengun_ground = load ("sprites/gun_goldengun.png");
-		crossbow_ground = load ("sprites/gun_crossbow.png");
-
+		goldengun_ground = load("sprites/gun_goldengun.png");
+		crossbow_ground = load("sprites/gun_crossbow.png");
 
 		// Icons
 
@@ -131,7 +137,7 @@ public class Assets {
 		card_square_bg = load("sprites/card_square_bg.png");
 		card_square_border = load("sprites/card_square_border.png");
 		card_square_border_selected = load("sprites/card_square_border_selected.png");
-		
+
 		card_xl_bg = load("sprites/card_xl_bg.png");
 		card_xl_border = load("sprites/card_xl_border.png");
 		// Animations
