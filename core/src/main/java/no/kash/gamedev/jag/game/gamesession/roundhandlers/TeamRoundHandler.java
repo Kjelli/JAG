@@ -84,7 +84,7 @@ public class TeamRoundHandler extends AbstractRoundHandler<Integer> {
 
 	@Override
 	public void setup() {
-
+		super.setup();
 		if (gameSession.settings.getSelectedValue(Defs.SESSION_TEST_MODE, Boolean.class)) {
 			// Distribute teams evenly on 1 and 2
 			int team = 1;

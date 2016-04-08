@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Queue;
 
 import no.kash.gamedev.jag.commons.tweens.TweenGlobal;
+import no.kash.gamedev.jag.game.announcer.Announcement;
 import no.kash.gamedev.jag.game.announcer.Announcer;
 import no.kash.gamedev.jag.game.gamecontext.physics.BruteForcePhysicsHandler;
 import no.kash.gamedev.jag.game.gamecontext.physics.PhysicsHandler;
@@ -48,7 +49,7 @@ public class GameContext {
 		newlyDespawned = new Queue<>();
 
 		stage = new Stage();
-		announcer = new Announcer(stage.getWidth() / 2, stage.getHeight());
+		announcer = new Announcer(stage.getWidth() / 2, stage.getHeight() - Announcement.font.getCapHeight()*3);
 
 		// TODO Optimize in the future
 		physics = new BruteForcePhysicsHandler();
@@ -64,7 +65,8 @@ public class GameContext {
 
 		TweenGlobal.update(delta * timeModifier);
 
-		for (GameObject object : objects) {
+		for (int i = 0; i < objects.size(); i ++) {
+			GameObject object = objects.get(i);
 			object.update(delta * timeModifier);
 			object.updateAliveTime(delta * timeModifier);
 		}
@@ -105,7 +107,7 @@ public class GameContext {
 		List<GameObject> returnVals = new ArrayList<>();
 		obj: for (GameObject object : objects) {
 			for (int i = 0; i < classes.length; i++) {
-				if (object.getClass().equals(classes[i])) {
+				if (classes[i].isAssignableFrom(object.getClass())) {
 					returnVals.add(object);
 					continue obj;
 				}

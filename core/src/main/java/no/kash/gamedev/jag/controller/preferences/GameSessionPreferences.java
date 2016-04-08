@@ -42,4 +42,11 @@ public class GameSessionPreferences {
 		return settings.getSelectedValue(key, cls);
 	}
 
+	public static void update(GameSettings settings) {
+		for (Entry<String, Setting<?>> setting : settings.settings.entrySet()) {
+			GameSessionPreferences.settings.select(setting.getKey(), setting.getValue().getSelection().value);
+		}
+		save();
+	}
+
 }

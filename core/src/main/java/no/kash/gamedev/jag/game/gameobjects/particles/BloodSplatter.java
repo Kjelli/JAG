@@ -1,5 +1,7 @@
 package no.kash.gamedev.jag.game.gameobjects.particles;
 
+import java.util.Random;
+
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.MapObject;
@@ -40,7 +42,9 @@ public class BloodSplatter extends AbstractParticle {
 
 	public BloodSplatter(float x, float y, float direction, float power) {
 		super(x, y, 8, 8, (float) (TIME_TO_LIVE * Math.random()));
-		setSprite(new Sprite(Assets.blood));
+		int r = new Random(System.nanoTime()).nextInt(3);
+		setSprite(new Sprite(r == 0 ? Assets.blood : r == 1 ? Assets.blood2 : Assets.blood3));
+		setScale((float) (Math.random() * 0.5 + 0.5));
 
 		this.color = new Color(Color.WHITE);
 		this.power = power;

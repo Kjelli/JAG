@@ -86,7 +86,6 @@ public class Player extends AbstractGameObject implements Collidable {
 
 	private GameSession gameSession;
 
-	private GunType startingGun = GunType.pistol;
 	private boolean reloading;
 
 	public Player(GameSession gameSession, PlayerInfo info, float x, float y) {
@@ -139,20 +138,28 @@ public class Player extends AbstractGameObject implements Collidable {
 
 		nameLabel = new GlyphLayout(Assets.font, info.name);
 		healthHud = new HealthHud(this, getCenterX() - HealthHud.WIDTH / 2, getCenterY() - HealthHud.HEIGHT / 2 - 20f);
-
+		getGameContext().spawn(healthHud);
+		GunType startingGun = gameSession.settings.getSelectedValue(Defs.SESSION_STARTING_GUN, GunType.class);
 		equipGun(startingGun);
 		grenadeCooldown = new Cooldown(grenadeCooldownDuration);
 
 		getGameContext().bringToFront(this);
 
-		((JustAnotherGame) getGameContext().getGame()).getServer().send(info.id,
-				new PlayerUpdate(3, new int[] { PlayerUpdate.GUN, PlayerUpdate.AMMO, PlayerUpdate.HEALTH },
-						new float[][] { { startingGun.ordinal() },
-								{ gun.getMagasineAmmo(), gun.getMagasineSize(), gun.getAmmo() }, { health } }));
 	}
+
+	boolean firstFrame = true;
 
 	@Override
 	public void update(float delta) {
+		if (firstFrame) {
+			((JustAnotherGame) getGameContext().getGame()).getServer()
+					.send(info.id,
+							new PlayerUpdate(3, new int[] { PlayerUpdate.GUN, PlayerUpdate.AMMO, PlayerUpdate.HEALTH },
+									new float[][] { { gun.getType().ordinal() },
+											{ gun.getMagasineAmmo(), gun.getMagasineSize(), gun.getAmmo() },
+											{ health } }));
+			firstFrame = false;
+		}
 		gun.update(delta);
 		statusHandler.update(delta);
 		grenadeCooldown.update(delta);
@@ -164,7 +171,6 @@ public class Player extends AbstractGameObject implements Collidable {
 		hitbox.update(getX() + getWidth() / 2 - 8, getY() + getHeight() / 2 - 8);
 		healthHud.setX(getCenterX() - HealthHud.WIDTH / 2);
 		healthHud.setY(getCenterY() - HealthHud.HEIGHT / 2 - 20f);
-		healthHud.update(delta);
 
 		if (isInvincible()) {
 			spawnStars();
@@ -180,6 +186,7 @@ public class Player extends AbstractGameObject implements Collidable {
 		if (isReloading()) {
 			reload();
 			if (info.gameMaster) {
+				System.out.println("EXITING: " + exitTimer.getCooldownTimer());
 				exitTimer.update(delta);
 				if (exitTimer.getCooldownTimer() < 1.0f && isExiting == false) {
 					getGameContext().getAnnouncer().announce("Exiting...");
@@ -217,7 +224,8 @@ public class Player extends AbstractGameObject implements Collidable {
 		if (Math.random() < 0.2f) {
 			getGameContext().spawn(new Star(
 					getCenterX() + (float) ((Math.random() - 0.5f) * hitbox.poly.getBoundingRectangle().width * 2),
-					getCenterY() + (float) ((Math.random() - 0.5f) * hitbox.poly.getBoundingRectangle().height * 2)));
+					getCenterY() + (float) ((Math.random() - 0.5f) * hitbox.poly.getBoundingRectangle().height * 2), 0,
+					-50.0f));
 		}
 	}
 
@@ -236,7 +244,6 @@ public class Player extends AbstractGameObject implements Collidable {
 			Assets.font.draw(batch, nameLabel, getX() + getWidth() / 2 - nameLabel.width / 2,
 					getY() + getHeight() + nameLabel.height);
 		}
-		healthHud.draw(batch);
 	}
 
 	@Override
@@ -253,12 +260,27 @@ public class Player extends AbstractGameObject implements Collidable {
 	}
 
 	public void equipWeapon(Weapon weapon) {
-		equipGun(weapon.gun);
+		int newAmmo = weapon.ammo;
+		int newMag = weapon.mag;
+		if (gun.getType() == weapon.gun) {
+			newAmmo += gun.getAmmo() + weapon.mag;
+			gun.setAmmo(newAmmo);
+			((JustAnotherGame) getGameContext().getGame()).getServer().send(info.id,
+					new PlayerUpdate(1, new int[] { PlayerUpdate.AMMO },
+							new float[][] { { gun.getMagasineAmmo(), gun.getMagasineSize(), gun.getAmmo() } }));
+		} else {
+			equipGun(weapon.gun, newAmmo, weapon.mag);
+		}
 	}
 
 	public void equipGun(GunType type) {
+		equipGun(type, type.getMaxAmmo(), type.getMagazineSize());
+	}
+
+	public void equipGun(GunType type, int ammo, int mag) {
 		gun = new Gun(type);
 		gun.equip(this);
+		gun.setAmmo(ammo);
 		((JustAnotherGame) getGameContext().getGame()).getServer().send(info.id, new PlayerUpdate(2,
 				new int[] { PlayerUpdate.GUN, PlayerUpdate.AMMO },
 				new float[][] { { type.ordinal() }, { gun.getMagasineAmmo(), gun.getMagasineSize(), gun.getAmmo() } }));
@@ -275,11 +297,10 @@ public class Player extends AbstractGameObject implements Collidable {
 
 	public void fireBullet() {
 		if (!isHoldingGrenade()) {
-			if (gun.getMagasineAmmo() == 0) {
+			gun.shoot();
+			if (gun.getMagasineAmmo() < 1) {
 				reload();
 			}
-			gun.shoot();
-
 		}
 	}
 
@@ -293,12 +314,12 @@ public class Player extends AbstractGameObject implements Collidable {
 
 	public float getBulletOriginX() {
 		return (float) (getCenterX() + Math.cos((rot) + (Math.PI / 2) + gun.getAngleOffset()) * getWidth() / 2
-				- NormalBullet.WIDTH / 2);
+				- gun.getBulletWidth() / 2);
 	}
 
 	public float getBulletOriginY() {
 		return (float) (getCenterY() + Math.sin((rot) + (Math.PI / 2) + gun.getAngleOffset()) * getHeight() / 2
-				- NormalBullet.HEIGHT / 2);
+				- gun.getBulletHeight() / 2);
 	}
 
 	@Override
@@ -326,18 +347,18 @@ public class Player extends AbstractGameObject implements Collidable {
 	public void setHealth(float health) {
 		this.health = health;
 		healthHud.display();
-
 	}
 
 	public void death(Player killer) {
 		if (isAlive()) {
 			for (int i = 0; i < 200; i++) {
 				getGameContext().spawn(
-						new BloodSplatter(getCenterX(), getCenterY(), (float) (Math.random() * 2 * Math.PI), 40.0f));
+						new BloodSplatter(getCenterX(), getCenterY(), (float) (Math.random() * 2 * Math.PI), 10.0f));
 			}
 
 			gameSession.roundHandler.playerKilled(killer, this);
 		}
+		onDeath();
 	}
 
 	public float getHealth() {
@@ -374,10 +395,10 @@ public class Player extends AbstractGameObject implements Collidable {
 		if (isInvincible()) {
 			return;
 		}
-		for (int i = 0; i < bullet.getDamage(); i++) {
-			getGameContext().spawn(new BloodSplatter(bullet.getCenterX(), bullet.getCenterY(),
-					(float) (bullet.getRotation() + (Math.random() * 0.5f - 0.25f)), bullet.getDamage()));
-			// getGameContext().bringToBack(temp);
+		for (int i = 0; i < Math.min(bullet.getDamage(), 250); i++) {
+			getGameContext().spawn(new BloodSplatter(getCenterX(), getCenterY(),
+					(float) (bullet.getDirection() + (Math.random() * 0.5f - 0.25f)),
+					Math.min(bullet.getDamage(), 100f)));
 		}
 		damageHandler.onDamage(bullet);
 		((JustAnotherGame) getGameContext().getGame()).getServer().send(info.id,
@@ -393,6 +414,13 @@ public class Player extends AbstractGameObject implements Collidable {
 		((JustAnotherGame) getGameContext().getGame()).getServer().send(info.id,
 				new PlayerUpdate(2, new int[] { PlayerUpdate.HEALTH, PlayerUpdate.FEEDBACK_VIBRATION },
 						new float[][] { { health }, { 400.0f } }));
+	}
+
+	public void damage(Status status) {
+		damageHandler.onDamage(status);
+		((JustAnotherGame) getGameContext().getGame()).getServer().send(info.id,
+				new PlayerUpdate(2, new int[] { PlayerUpdate.HEALTH, PlayerUpdate.FEEDBACK_VIBRATION },
+						new float[][] { { health }, { 30.0f } }));
 	}
 
 	@Override
@@ -420,22 +448,25 @@ public class Player extends AbstractGameObject implements Collidable {
 		return blockInput;
 	}
 
-	public void damage(Status status) {
-		damageHandler.onDamage(status);
-		((JustAnotherGame) getGameContext().getGame()).getServer().send(info.id,
-				new PlayerUpdate(2, new int[] { PlayerUpdate.HEALTH, PlayerUpdate.FEEDBACK_VIBRATION },
-						new float[][] { { health }, { 50.0f } }));
-	}
-
 	public void death(Status status) {
 		if (isAlive()) {
 			for (int i = 0; i < 200; i++) {
 				getGameContext().spawn(
-						new BloodSplatter(getCenterX(), getCenterY(), (float) (Math.random() * 2 * Math.PI), 40.0f));
+						new BloodSplatter(getCenterX(), getCenterY(), (float) (Math.random() * 2 * Math.PI), 10.0f));
 			}
 
 			gameSession.roundHandler.playerKilled(this, status);
 		}
+
+		onDeath();
+	}
+
+	private void onDeath() {
+		if(gun.getType() == GunType.pistol){
+			return;
+		}
+		getGameContext()
+				.spawn(new Weapon(getCenterX(), getCenterY(), gun.getType(), gun.getAmmo(), gun.getMagasineAmmo()));
 	}
 
 	public void applyStatus(Status status) {
@@ -448,6 +479,12 @@ public class Player extends AbstractGameObject implements Collidable {
 
 	public void setReloading(boolean reloading) {
 		this.reloading = reloading;
+	}
+
+	@Override
+	public void destroy() {
+		super.destroy();
+		healthHud.destroy();
 	}
 
 }

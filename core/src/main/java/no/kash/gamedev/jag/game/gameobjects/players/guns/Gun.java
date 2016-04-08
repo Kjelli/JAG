@@ -7,8 +7,10 @@ import no.kash.gamedev.jag.commons.graphics.Draw;
 import no.kash.gamedev.jag.commons.network.packets.PlayerUpdate;
 import no.kash.gamedev.jag.game.JustAnotherGame;
 import no.kash.gamedev.jag.game.commons.utils.Cooldown;
+import no.kash.gamedev.jag.game.gameobjects.bullets.Bullet;
 import no.kash.gamedev.jag.game.gameobjects.bullets.Dart;
 import no.kash.gamedev.jag.game.gameobjects.bullets.Fire;
+import no.kash.gamedev.jag.game.gameobjects.bullets.GoldenBullet;
 import no.kash.gamedev.jag.game.gameobjects.bullets.NormalBullet;
 import no.kash.gamedev.jag.game.gameobjects.players.Player;
 
@@ -22,7 +24,7 @@ public class Gun {
 	protected int ammo;
 	protected float damage;
 	protected float bulletSpeed;
-	
+
 	protected boolean holdToShoot;
 
 	protected double angleOffset;
@@ -46,7 +48,6 @@ public class Gun {
 		this.angleOffset = type.getAngleOffset();
 		this.holdToShoot = type.isHoldToShoot();
 
-		
 		bulletCooldown = new Cooldown(type.getCooldown());
 		reloadCooldown = new Cooldown(type.getReloadTime());
 	}
@@ -60,8 +61,8 @@ public class Gun {
 		this.player = player;
 		sprite.setOrigin(player.getWidth() / 2, player.getHeight() / 2);
 	}
-	
-	public void checkOutOfAmmo(){
+
+	public void checkOutOfAmmo() {
 		if (ammo == 0 && magazineAmmo == 0) {
 			player.equipGun(GunType.pistol);
 		}
@@ -72,53 +73,54 @@ public class Gun {
 		if ((magazineAmmo == -1 || magazineAmmo > 0) && bulletCooldown.getCooldownTimer() == 0
 				&& reloadCooldown.getCooldownTimer() == 0) {
 			switch (type) {
+			default:
+				player.getGameContext().spawn(new NormalBullet(player, player.getBulletOriginX(),
+						player.getBulletOriginY(), (float) (player.getRotation() + Math.PI / 2), damage, bulletSpeed));
+				break;
 			case shotgun:
 				for (int i = 0; i < 6; i++) {
-					NormalBullet temp = new NormalBullet(player, player.getBulletOriginX(), player.getBulletOriginY(),
-							(float) (player.getRotation() + Math.PI / 32.0f * (i - 2) + Math.PI / 2), damage,
-							bulletSpeed);
-					player.getGameContext().spawn(temp);
+					player.getGameContext()
+							.spawn(new NormalBullet(player, player.getBulletOriginX(), player.getBulletOriginY(),
+									(float) (player.getRotation() + Math.PI / 32.0f * (i - 2) + Math.PI / 2), damage,
+									bulletSpeed));
 				}
 				break;
 			case mac10:
 				float offset = (float) (Math.PI / 4);
 				float bullWidth = NormalBullet.WIDTH;
-				NormalBullet temp = new NormalBullet(player,
-						player.getBulletOriginX()
-								+ (float) Math.cos(player.getRotation() + offset + Math.PI / 2) * bullWidth,
-						player.getBulletOriginY()
-								+ (float) Math.sin(player.getRotation() + offset + Math.PI / 2) * bullWidth,
-						(float) (player.getRotation() + Math.PI / 2), damage, bulletSpeed);
-				player.getGameContext().spawn(temp);
-				temp = new NormalBullet(player,
-						player.getBulletOriginX()
-								+ (float) Math.cos(player.getRotation() - offset + Math.PI / 2) * bullWidth,
-						player.getBulletOriginY()
-								+ (float) Math.sin(player.getRotation() - offset + Math.PI / 2) * bullWidth,
-						(float) (player.getRotation() + Math.PI / 2), damage, bulletSpeed);
-				player.getGameContext().spawn(temp);
+				player.getGameContext()
+						.spawn(new NormalBullet(player,
+								player.getBulletOriginX()
+										+ (float) Math.cos(player.getRotation() + offset + Math.PI / 2) * bullWidth,
+								player.getBulletOriginY()
+										+ (float) Math.sin(player.getRotation() + offset + Math.PI / 2) * bullWidth,
+								(float) (player.getRotation() + Math.PI / 2), damage, bulletSpeed));
+				player.getGameContext()
+						.spawn(new NormalBullet(player,
+								player.getBulletOriginX()
+										+ (float) Math.cos(player.getRotation() - offset + Math.PI / 2) * bullWidth,
+								player.getBulletOriginY()
+										+ (float) Math.sin(player.getRotation() - offset + Math.PI / 2) * bullWidth,
+								(float) (player.getRotation() + Math.PI / 2), damage, bulletSpeed));
 				break;
 			case flamethrower:
 				float amountFire = 2 + (int) (Math.random() * 4);
 				for (int i = 0; i < amountFire; i++) {
 					float randDir = -4 + (int) (Math.random() * 8);
-					Fire fire = new Fire(player, player.getBulletOriginX(), player.getBulletOriginY(),
-							(float) (player.getRotation() + Math.PI / 32.0f * randDir + Math.PI / 2),
-							bulletSpeed);
-					player.getGameContext().spawn(fire);
+					player.getGameContext().spawn(new Fire(player, player.getBulletOriginX(), player.getBulletOriginY(),
+							(float) (player.getRotation() + Math.PI / 32.0f * randDir + Math.PI / 2), bulletSpeed));
 
 				}
 				break;
 			case crossbow:
-				Dart dart = new Dart(player, player.getBulletOriginX(), player.getBulletOriginY(),
-						(float) (player.getRotation() + Math.PI / 2), damage, bulletSpeed);
-				player.getGameContext().spawn(dart);
+				player.getGameContext().spawn(new Dart(player, player.getBulletOriginX(), player.getBulletOriginY(),
+						(float) (player.getRotation() + Math.PI / 2), damage, bulletSpeed));
 				break;
-			default:
-				NormalBullet tempo = new NormalBullet(player, player.getBulletOriginX(), player.getBulletOriginY(),
-						(float) (player.getRotation() + Math.PI / 2), damage, bulletSpeed);
-				player.getGameContext().spawn(tempo);
+			case goldengun:
+				player.getGameContext().spawn(new GoldenBullet(player, player.getBulletOriginX(),
+						player.getBulletOriginY(), (float) (player.getRotation() + Math.PI / 2), damage, bulletSpeed));
 				break;
+
 			}
 
 			if (magazineAmmo != -1) {
@@ -186,12 +188,56 @@ public class Gun {
 		return ammo;
 	}
 
-	public float getMagasineAmmo() {
+	public int getMagasineAmmo() {
 		return magazineAmmo;
 	}
 
 	public boolean isHoldToShoot() {
 		return holdToShoot;
 	}
-	
+
+	public float getBulletWidth() {
+		float width;
+		switch (type) {
+		case crossbow:
+			width = Dart.WIDTH;
+			break;
+		case flamethrower:
+			width = Fire.WIDTH;
+			break;
+		case goldengun:
+			width = GoldenBullet.WIDTH;
+			break;
+		default:
+			width = NormalBullet.WIDTH;
+			break;
+
+		}
+		return width;
+	}
+
+	public float getBulletHeight() {
+		float height;
+		switch (type) {
+		case crossbow:
+			height = Dart.HEIGHT;
+			break;
+		case flamethrower:
+			height = Fire.HEIGHT;
+			break;
+		case goldengun:
+			height = GoldenBullet.HEIGHT;
+			break;
+		default:
+			height = NormalBullet.HEIGHT;
+			break;
+
+		}
+		return height;
+	}
+
+	public GunType getType() {
+		return type;
+	}
+
 }

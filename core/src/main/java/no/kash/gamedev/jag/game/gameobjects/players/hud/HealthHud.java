@@ -60,6 +60,9 @@ public class HealthHud extends AbstractGameObject {
 	public void display() {
 		color.a = 1;
 		visible = true;
+		
+		player.getGameContext().bringToFront(this);
+		
 		tween.kill();
 		tween = newFadeOutTween();
 		TweenGlobal.start(tween);

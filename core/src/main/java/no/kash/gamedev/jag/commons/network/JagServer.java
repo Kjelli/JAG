@@ -58,7 +58,7 @@ public class JagServer {
 			if (next == null) {
 				continue;
 			}
-			
+
 			switch (next.type) {
 			case NetworkEvent.CONNECT:
 				listener.connected(next.connection);
