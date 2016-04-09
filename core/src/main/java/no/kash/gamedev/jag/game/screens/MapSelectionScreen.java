@@ -1,21 +1,28 @@
 package no.kash.gamedev.jag.game.screens;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.esotericsoftware.kryonet.Connection;
 
+import no.kash.gamedev.jag.commons.defs.Defs;
 import no.kash.gamedev.jag.commons.network.JagServerPacketHandler;
 import no.kash.gamedev.jag.commons.network.packets.GamePacket;
 import no.kash.gamedev.jag.commons.network.packets.PlayerInput;
 import no.kash.gamedev.jag.game.JustAnotherGame;
+import no.kash.gamedev.jag.game.gamesession.GameMode;
 import no.kash.gamedev.jag.game.gamesession.GameSession;
 import no.kash.gamedev.jag.game.levels.MapHandler;
 import no.kash.gamedev.jag.game.levels.MiniMap;
 
 public class MapSelectionScreen extends AbstractGameScreen {
 
+	private static final int MAX_MAPS = 3;
 	GameSession session;
+	List<MiniMap> miniMaps;
 
 	public MapSelectionScreen(JustAnotherGame game, GameSession session) {
 		super(game);
@@ -39,18 +46,10 @@ public class MapSelectionScreen extends AbstractGameScreen {
 
 	}
 
-	MiniMap[] miniMaps;
-
 	@Override
 	protected void onShow() {
-		FileHandle[] maps = MapHandler.availableMaps();
-		miniMaps = new MiniMap[maps.length];
-		for (int i = 0; i < maps.length; i++) {
-			miniMaps[i] = MiniMap.build(MapHandler.load(maps[i]));
-			miniMaps[i].setTargetWidth(128);
-			miniMaps[i].setX(stage.getWidth() / 2 + (i - maps.length / 2.0f) * 128 + (i- maps.length / 2.0f) * 8f);
-			miniMaps[i].setY(stage.getHeight() / 2 - miniMaps[i].getEffectiveMapHeight() / 2);
-		}
+		initMaps();
+
 		game.setReceiver(new JagServerPacketHandler() {
 
 			@Override
@@ -71,9 +70,34 @@ public class MapSelectionScreen extends AbstractGameScreen {
 		});
 	}
 
+	private void initMaps() {
+		miniMaps = new ArrayList<>();
+		FileHandle[] maps = MapHandler.availableMaps();
+		for (int i = 0; i < maps.length; i++) {
+			MiniMap mm = MiniMap.build(MapHandler.load(maps[i]));
+			boolean compatible = mm.isCompatible(session);
+			System.out.println(mm.getName() + (compatible ? " works" : " did not"));
+			if (compatible) {
+				miniMaps.add(mm);
+			}
+		}
+		
+		while(miniMaps.size() > MAX_MAPS){
+			miniMaps.remove((int)(Math.random() * miniMaps.size()));
+		}
+
+		for (int i = 0; i < miniMaps.size(); i++) {
+			MiniMap mm = miniMaps.get(i);
+			float tWidth = (stage.getWidth() - 50) / 3;
+			mm.setTargetWidth(tWidth);
+			mm.setX(stage.getWidth() / 2 + (i - miniMaps.size() / 2.0f) * tWidth + (i - miniMaps.size() / 2.0f) * 8f);
+			mm.setY(stage.getHeight() / 2 - mm.getEffectiveMapHeight() / 2);
+		}
+	}
+
 	@Override
 	protected void debugDraw(ShapeRenderer renderer) {
-		
+
 	}
 
 }

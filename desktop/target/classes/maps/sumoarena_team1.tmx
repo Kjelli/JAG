@@ -2,6 +2,7 @@
 <map version="1.0" orientation="orthogonal" renderorder="right-down" width="50" height="30" tilewidth="16" tileheight="16" nextobjectid="121">
  <properties>
   <property name="ffa" type="bool" value="true"/>
+  <property name="name" value="The Sandpit"/>
   <property name="team" type="bool" value="true"/>
  </properties>
  <tileset firstgid="1" name="obstaclesSheet" tilewidth="16" tileheight="16" tilecount="128" columns="16">

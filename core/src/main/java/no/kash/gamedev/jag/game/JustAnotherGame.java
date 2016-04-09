@@ -12,6 +12,7 @@ import no.kash.gamedev.jag.commons.network.packets.GamePacket;
 import no.kash.gamedev.jag.commons.network.packets.PlayerInput;
 import no.kash.gamedev.jag.commons.tweens.TweenGlobal;
 import no.kash.gamedev.jag.game.screens.PlayScreen;
+import no.kash.gamedev.jag.game.gamesession.GameSession;
 import no.kash.gamedev.jag.game.screens.LobbyScreen;
 import no.kash.gamedev.jag.game.screens.MapSelectionScreen;
 
@@ -29,7 +30,7 @@ public class JustAnotherGame extends JagEndpoint {
 	@Override
 	public void create() {
 		init();
-		setScreen(new LobbyScreen(this));
+		setScreen(new MapSelectionScreen(this, new GameSession()));
 	}
 
 	private void init() {
