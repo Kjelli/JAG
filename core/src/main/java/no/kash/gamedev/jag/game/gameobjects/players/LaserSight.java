@@ -28,6 +28,7 @@ public class LaserSight extends AbstractGameObject implements Bullet {
 		this.player = player;
 		setSprite(new Sprite(Assets.laserSight));
 		getSprite().setOrigin(0, 0);
+		getSprite().setColor(1.0f, 1.0f, 1.0f, 0.3f);
 		setRotation(direction);
 		bounds.setOrigin(0, 0);
 
