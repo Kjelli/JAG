@@ -226,6 +226,9 @@ public class Gun {
 		case goldengun:
 			width = GoldenBullet.WIDTH;
 			break;
+		case awp:
+			width = 0;
+			break;
 		default:
 			width = NormalBullet.WIDTH;
 			break;
@@ -245,6 +248,9 @@ public class Gun {
 			break;
 		case goldengun:
 			height = GoldenBullet.HEIGHT;
+			break;
+		case awp:
+			height = 0;
 			break;
 		default:
 			height = NormalBullet.HEIGHT;

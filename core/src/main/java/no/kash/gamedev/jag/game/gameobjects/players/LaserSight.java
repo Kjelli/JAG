@@ -26,8 +26,8 @@ public class LaserSight extends AbstractGameObject implements Bullet {
 	public LaserSight(Player player, float x, float y, float direction) {
 		super(x, y, WIDTH, HEIGHT);
 		this.player = player;
-		Sprite dot = new Sprite(Assets.dot);
-		setSprite(dot);
+		setSprite(new Sprite(Assets.laserSight));
+		getSprite().setOrigin(0, 0);
 		setRotation(direction);
 		bounds.setOrigin(0, 0);
 
@@ -57,11 +57,9 @@ public class LaserSight extends AbstractGameObject implements Bullet {
 	public void update(float delta) {
 		setWidth(WIDTH);
 		setRotation((float) (player.getRotation() + (Math.PI / 2)));
-		getSprite().setOrigin(0, 0);
-		setX((float) (player.getCenterX() + Math.cos(player.getRotation()) * 5));
-		setY((float) (player.getCenterY() + Math.sin(player.getRotation()) * 5));
+		setX((float) (player.getBulletOriginX()));
+		setY((float) (player.getBulletOriginY()));
 		setHeight((float) (0.75f + 0.25f * Math.sin(player.getAliveTime() * 10f)) * HEIGHT);
-		System.out.println(getHeight() + " " + player.getAliveTime());
 		TileCollisionDetector.checkTileCollisions(player.getGameContext().getLevel(), this, this.tileCollisionListener);
 	}
 
@@ -83,7 +81,7 @@ public class LaserSight extends AbstractGameObject implements Bullet {
 
 	@Override
 	public float getDirection() {
-		return player.getRotation();
+		return (float) (player.getRotation() + Math.PI/2);
 	}
 
 	@Override
