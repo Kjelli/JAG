@@ -31,7 +31,11 @@ public class MapSelectionScreen extends AbstractGameScreen {
 
 	@Override
 	protected void update(float delta) {
-
+		gameContext.update(delta);
+		for(int i = 0; i < miniMaps.size(); i ++){
+			MiniMap mm = miniMaps.get(i);
+			mm.setY((float) (stage.getHeight() / 2 - mm.getEffectiveMapHeight() / 2 - 30* Math.sin(gameContext.getElapsedTime() + (i+1) * 20)));
+		}
 	}
 
 	@Override
@@ -73,25 +77,27 @@ public class MapSelectionScreen extends AbstractGameScreen {
 	private void initMaps() {
 		miniMaps = new ArrayList<>();
 		FileHandle[] maps = MapHandler.availableMaps();
+		
+		// Find compatible maps
 		for (int i = 0; i < maps.length; i++) {
 			MiniMap mm = MiniMap.build(MapHandler.load(maps[i]));
 			boolean compatible = mm.isCompatible(session);
-			System.out.println(mm.getName() + (compatible ? " works" : " did not"));
 			if (compatible) {
 				miniMaps.add(mm);
 			}
 		}
-		
+		// Trim the list randomly, to fit MAX_MAPS number of maps
 		while(miniMaps.size() > MAX_MAPS){
 			miniMaps.remove((int)(Math.random() * miniMaps.size()));
 		}
-
+		
+		// Prepare maps
 		for (int i = 0; i < miniMaps.size(); i++) {
 			MiniMap mm = miniMaps.get(i);
 			float tWidth = (stage.getWidth() - 50) / 3;
 			mm.setTargetWidth(tWidth);
 			mm.setX(stage.getWidth() / 2 + (i - miniMaps.size() / 2.0f) * tWidth + (i - miniMaps.size() / 2.0f) * 8f);
-			mm.setY(stage.getHeight() / 2 - mm.getEffectiveMapHeight() / 2);
+			mm.setY((float) (stage.getHeight() / 2 - mm.getEffectiveMapHeight() / 2 * Math.sin(gameContext.getElapsedTime())));
 		}
 	}
 
