@@ -14,7 +14,7 @@ public enum GunType {
 	mac10("mac10", 1, 0.1f, 1.2f, Assets.mac10, 60, 60,Assets.mac10_ground, 6f, 400f, 0, 0.2f,true),
 	flamethrower("flamethrower", 2, 0.005f, 0.7f, Assets.flamethrower, 0, 200,Assets.flamethrower_ground, 10f, 100f, -Math.PI / 18, 0.1f,true),
 	crossbow("goldengun", 2, 0.5f, 1.2f, Assets.crossbow, 0, 8, Assets.crossbow_ground, 20f, 800f,  -Math.PI / 18, 0.1f,false),
-	awp("awp", 2, 1f, 1f, Assets.awp, 10, 5,Assets.awp_ground, 70f, 0, -Math.PI / 18, 0.2f,false);
+	awp("awp", 2, 1f, 1f, Assets.awp, 10, 5,Assets.awp_ground, 40f, 0, -Math.PI / 18, 0.2f,false);
 
 	
 	public static GunType random(){
