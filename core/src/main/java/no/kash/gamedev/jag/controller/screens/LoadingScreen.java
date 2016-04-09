@@ -39,7 +39,7 @@ public class LoadingScreen extends AbstractControllerScreen {
 							"Connection failed, retrying(" + retryAttempts + ")...");
 				}
 			} else {
-				game.getClient().broadcast(new PlayerConnect(game.getClient().getId(), "Svettleif"));
+				game.getClient().send(new PlayerConnect(game.getClient().getId(), "Svettleif"));
 			}
 		}
 	}

@@ -96,20 +96,20 @@ public class ControllerScreen extends AbstractControllerScreen {
 			protected void handleInputEvent(InputEvent event) {
 				switch (event.getId()) {
 				case JOYSTICK_LEFT:
-					game.getClient().broadcast(new PlayerInput(game.getClient().getId(), JOYSTICK_LEFT,
+					game.getClient().send(new PlayerInput(game.getClient().getId(), JOYSTICK_LEFT,
 							new float[] { stick_left.getXValue(), stick_left.getYValue() }));
 					break;
 				case JOYSTICK_RIGHT:
 
-					game.getClient().broadcast(new PlayerInput(game.getClient().getId(), JOYSTICK_RIGHT,
+					game.getClient().send(new PlayerInput(game.getClient().getId(), JOYSTICK_RIGHT,
 							new float[] { stick_right.getXValue(), stick_right.getYValue() }));
 					break;
 				case JOYSTICK_MID:
-					game.getClient().broadcast(new PlayerInput(game.getClient().getId(), JOYSTICK_MID,
+					game.getClient().send(new PlayerInput(game.getClient().getId(), JOYSTICK_MID,
 							new float[] { stick_mid.getXValue(), stick_mid.getYValue() }));
 					break;
 				case BUTTON_RELOAD:
-						game.getClient().broadcast(new PlayerInput(game.getClient().getId(), BUTTON_RELOAD,
+						game.getClient().send(new PlayerInput(game.getClient().getId(), BUTTON_RELOAD,
 								new float[] { event.isReleased() ? 0 : 1 }));
 					break;
 				default:

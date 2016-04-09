@@ -28,6 +28,9 @@ public class GameSessionPreferences {
 				Prefs.get().putBoolean(settingEntry.getKey(), (Boolean) value);
 			} else if (value instanceof String) {
 				Prefs.get().putString(settingEntry.getKey(), (String) value);
+			} else if (value instanceof Enum) {
+				int i = ((Enum<?>) value).ordinal();
+				Prefs.get().putInteger(settingEntry.getKey(), i);
 			}
 		}
 		Prefs.get().flush();

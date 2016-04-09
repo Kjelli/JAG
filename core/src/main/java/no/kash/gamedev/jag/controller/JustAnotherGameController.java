@@ -99,7 +99,7 @@ public class JustAnotherGameController extends JagEndpoint {
 		}
 
 		if (!failed) {
-			getClient().broadcast(new PlayerStateChangeResponse(sc.stateId));
+			getClient().send(new PlayerStateChangeResponse(sc.stateId));
 		}
 	}
 

@@ -18,6 +18,7 @@ public class JagClient {
 	private NetworkListener listener;
 
 	private Queue<NetworkEvent> eventQueue;
+	private Queue<GamePacket> packetsToSend;
 
 	private boolean connected = false;
 
@@ -25,6 +26,7 @@ public class JagClient {
 		client = new Client();
 		init();
 		eventQueue = new Queue<>();
+		packetsToSend = new Queue<>();
 	}
 
 	private void init() {
@@ -55,22 +57,27 @@ public class JagClient {
 	public void update(float delta) {
 		if (listener == null) {
 			eventQueue.clear();
-			return;
-		}
-		while (eventQueue.size > 0) {
-			NetworkEvent next = eventQueue.removeFirst();
-			switch (next.type) {
-			case NetworkEvent.CONNECT:
-				listener.connected(next.connection);
-				break;
-			case NetworkEvent.DISCONNECT:
-				listener.disconnected(next.connection);
-				break;
-			case NetworkEvent.PACKET:
-				listener.receivedPacket(next.connection, next.packet);
-				break;
+		} else {
+			while (eventQueue.size > 0) {
+				NetworkEvent next = eventQueue.removeFirst();
+				switch (next.type) {
+				case NetworkEvent.CONNECT:
+					listener.connected(next.connection);
+					break;
+				case NetworkEvent.DISCONNECT:
+					listener.disconnected(next.connection);
+					break;
+				case NetworkEvent.PACKET:
+					listener.receivedPacket(next.connection, next.packet);
+					break;
+				}
 			}
 		}
+		
+		while(packetsToSend.size > 0 && client.isIdle()){
+			client.sendTCP(packetsToSend.removeFirst());
+		}
+		
 	}
 
 	public void connect(String address, int port) throws UnknownHostException, IOException {
@@ -82,8 +89,9 @@ public class JagClient {
 		client.connect(2000, address, port);
 	}
 
-	public void broadcast(GamePacket packet) {
-		client.sendTCP(packet);
+	public void send(GamePacket packet) {
+		packetsToSend.addLast(packet);
+
 	}
 
 	public NetworkListener getListener() {

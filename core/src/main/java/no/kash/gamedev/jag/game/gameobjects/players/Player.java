@@ -24,9 +24,9 @@ import no.kash.gamedev.jag.game.gameobjects.AbstractGameObject;
 import no.kash.gamedev.jag.game.gameobjects.bullets.Bullet;
 import no.kash.gamedev.jag.game.gameobjects.bullets.NormalBullet;
 import no.kash.gamedev.jag.game.gameobjects.collectables.weapons.Weapon;
+import no.kash.gamedev.jag.game.gameobjects.grenades.Explosion;
 import no.kash.gamedev.jag.game.gameobjects.grenades.Grenade;
 import no.kash.gamedev.jag.game.gameobjects.particles.BloodSplatter;
-import no.kash.gamedev.jag.game.gameobjects.particles.Explosion;
 import no.kash.gamedev.jag.game.gameobjects.particles.Star;
 import no.kash.gamedev.jag.game.gameobjects.players.damagehandlers.DamageHandler;
 import no.kash.gamedev.jag.game.gameobjects.players.damagehandlers.VanillaDamageHandler;
@@ -44,6 +44,7 @@ public class Player extends AbstractGameObject implements Collidable {
 	public static final float MAX_SPEED = 150;
 	public static final float ACCELERATION = 3200;
 	public static final float WIDTH = 64, HEIGHT = 64;
+	public static final float HITBOX_WIDTH = 14, HITBOX_HEIGHT = 14;
 
 	private final TileCollisionListener tileCollisionListener;
 
@@ -65,7 +66,7 @@ public class Player extends AbstractGameObject implements Collidable {
 	private boolean drawNames = true;
 
 	private Gun gun;
-	private Hitbox hitbox;
+	private CircularHitbox hitbox;
 	private HealthHud healthHud;
 
 	private float grenadePower;
@@ -134,7 +135,8 @@ public class Player extends AbstractGameObject implements Collidable {
 		maxAcceleration().y = ACCELERATION;
 		setMaxSpeed(MAX_SPEED);
 
-		hitbox = new Hitbox(getX() + getWidth() / 2 - 8, getY() + getHeight() / 2 - 8, 16, 16);
+		hitbox = new CircularHitbox(getX() + getWidth() / 2 - HITBOX_WIDTH / 2, getY() + getHeight() / 2 - HITBOX_HEIGHT / 2,
+				HITBOX_WIDTH, HITBOX_HEIGHT);
 
 		nameLabel = new GlyphLayout(Assets.font, info.name);
 		healthHud = new HealthHud(this, getCenterX() - HealthHud.WIDTH / 2, getCenterY() - HealthHud.HEIGHT / 2 - 20f);
@@ -168,7 +170,7 @@ public class Player extends AbstractGameObject implements Collidable {
 			accelerate(0, 0);
 		}
 		move(delta);
-		hitbox.update(getX() + getWidth() / 2 - 8, getY() + getHeight() / 2 - 8);
+		hitbox.update(getX() + getWidth() / 2- HITBOX_WIDTH / 2, getY() + getHeight() / 2 - HITBOX_HEIGHT / 2, (float) (rot * 180 / Math.PI));
 		healthHud.setX(getCenterX() - HealthHud.WIDTH / 2);
 		healthHud.setY(getCenterY() - HealthHud.HEIGHT / 2 - 20f);
 
@@ -462,7 +464,7 @@ public class Player extends AbstractGameObject implements Collidable {
 	}
 
 	private void onDeath() {
-		if(gun.getType() == GunType.pistol){
+		if (gun.getType() == GunType.pistol) {
 			return;
 		}
 		getGameContext()

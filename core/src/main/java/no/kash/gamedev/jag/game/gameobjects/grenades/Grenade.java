@@ -7,7 +7,6 @@ import no.kash.gamedev.jag.assets.Assets;
 import no.kash.gamedev.jag.commons.tweens.TweenGlobal;
 import no.kash.gamedev.jag.commons.tweens.accessors.Vector2Accessor;
 import no.kash.gamedev.jag.game.gameobjects.AbstractGameObject;
-import no.kash.gamedev.jag.game.gameobjects.particles.Explosion;
 import no.kash.gamedev.jag.game.gameobjects.players.Player;
 
 public class Grenade extends AbstractGameObject {

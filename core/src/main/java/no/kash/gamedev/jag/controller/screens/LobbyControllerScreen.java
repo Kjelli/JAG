@@ -339,12 +339,12 @@ public class LobbyControllerScreen extends AbstractControllerScreen {
 		PlayerUpdate update = new PlayerUpdate(1, new int[] { PlayerUpdate.PLAYER_INFO },
 				new float[][] { { tp, level, xp }, { c.r, c.g, c.b }, { rdy, teamId } },
 				new String[] { nameField.getText() });
-		game.getClient().broadcast(update);
+		game.getClient().send(update);
 	}
 
 	protected void sendGameSessionUpdate() {
 		GameSessionUpdate update = new GameSessionUpdate(sessionControls.session.settings);
-		game.getClient().broadcast(update);
+		game.getClient().send(update);
 	}
 
 }
