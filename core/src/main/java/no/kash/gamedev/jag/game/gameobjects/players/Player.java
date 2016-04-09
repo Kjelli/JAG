@@ -83,7 +83,7 @@ public class Player extends AbstractGameObject implements Collidable {
 
 	private Sprite holding_grenade;
 
-	public Dot dot;
+	public LaserSight laserSight;
 
 	private GameSession gameSession;
 
@@ -110,8 +110,7 @@ public class Player extends AbstractGameObject implements Collidable {
 		this.health = healthMax;
 		this.exitTimer = new Cooldown(3.0f);
 		this.statusHandler = new StatusHandler(this);
-		// this.dot = new Dot(this, getCenterX(), this.getCenterY(),
-		// getRotation());
+
 		switch (gameSession.settings.getSelectedValue(Defs.SESSION_GM, GameMode.class)) {
 		case STANDARD_FFA:
 		case STANDARD_TEAM:
@@ -119,6 +118,7 @@ public class Player extends AbstractGameObject implements Collidable {
 		default:
 			break;
 		}
+
 	}
 
 	@Override
@@ -135,8 +135,8 @@ public class Player extends AbstractGameObject implements Collidable {
 		maxAcceleration().y = ACCELERATION;
 		setMaxSpeed(MAX_SPEED);
 
-		hitbox = new CircularHitbox(getX() + getWidth() / 2 - HITBOX_WIDTH / 2, getY() + getHeight() / 2 - HITBOX_HEIGHT / 2,
-				HITBOX_WIDTH, HITBOX_HEIGHT);
+		hitbox = new CircularHitbox(getX() + getWidth() / 2 - HITBOX_WIDTH / 2,
+				getY() + getHeight() / 2 - HITBOX_HEIGHT / 2, HITBOX_WIDTH, HITBOX_HEIGHT);
 
 		nameLabel = new GlyphLayout(Assets.font, info.name);
 		healthHud = new HealthHud(this, getCenterX() - HealthHud.WIDTH / 2, getCenterY() - HealthHud.HEIGHT / 2 - 20f);
@@ -165,12 +165,20 @@ public class Player extends AbstractGameObject implements Collidable {
 		gun.update(delta);
 		statusHandler.update(delta);
 		grenadeCooldown.update(delta);
-		// dot.update(delta);
+
+		if (gun.getType() == GunType.awp && aiming) {
+			if (laserSight == null || laserSight.disposed) {
+				laserSight = new LaserSight(this, getCenterX(), getCenterX(), getRotation());
+			}
+			laserSight.update(delta);
+		}
+
 		if (blockInput) {
 			accelerate(0, 0);
 		}
 		move(delta);
-		hitbox.update(getX() + getWidth() / 2- HITBOX_WIDTH / 2, getY() + getHeight() / 2 - HITBOX_HEIGHT / 2, (float) (rot * 180 / Math.PI));
+		hitbox.update(getX() + getWidth() / 2 - HITBOX_WIDTH / 2, getY() + getHeight() / 2 - HITBOX_HEIGHT / 2,
+				(float) (rot * 180 / Math.PI));
 		healthHud.setX(getCenterX() - HealthHud.WIDTH / 2);
 		healthHud.setY(getCenterY() - HealthHud.HEIGHT / 2 - 20f);
 
@@ -210,8 +218,12 @@ public class Player extends AbstractGameObject implements Collidable {
 
 		if (!isFiring() && aiming) {
 			fireBullet();
+			if (laserSight != null && laserSight.disposed) {
+				laserSight = null;
+			}
 			aiming = false;
 			gun.checkOutOfAmmo();
+
 		}
 		if (isFiring()) {
 			if (gun.isHoldToShoot()) {
@@ -240,7 +252,8 @@ public class Player extends AbstractGameObject implements Collidable {
 			Draw.sprite(batch, holding_grenade, getX(), getY(), getWidth(), getHeight(), getRotation());
 		}
 
-		// dot.draw(batch);
+		if (laserSight != null && gun.getType() == GunType.awp && aiming)
+			laserSight.draw(batch);
 
 		if (drawNames) {
 			Assets.font.draw(batch, nameLabel, getX() + getWidth() / 2 - nameLabel.width / 2,
@@ -251,8 +264,8 @@ public class Player extends AbstractGameObject implements Collidable {
 	@Override
 	public void debugDraw(ShapeRenderer renderer) {
 		super.debugDraw(renderer);
-		if (dot != null) {
-			renderer.polygon(dot.getBounds().getTransformedVertices());
+		if (laserSight != null) {
+			renderer.polygon(laserSight.getBounds().getTransformedVertices());
 		}
 	}
 

@@ -34,9 +34,9 @@ public class Defs {
 	public static final Boolean[] BOOLEAN_OPTIONS = new Boolean[] { true, false };
 
 	// ################# Game Definitions #################
-	public static final Integer[] ROUND_TIME_OPTIONS = new Integer[] { 30, 60, 90, 120, 180, 240, 300, 600, -1 };
-	public static final Integer[] ROUND_WIN_OPTIONS = new Integer[] { 1, 3, 5, 7, 9, 11, 13, 15, -1 };
-	public static final Integer[] STARTING_HEALTH_OPTIONS = new Integer[] { 1, 25, 50, 100, 250, -1 };
+	public static final Integer[] ROUND_TIME_OPTIONS = new Integer[] { 60, 90, 120, 180, 240, 300, 600, -1, 30  };
+	public static final Integer[] ROUND_WIN_OPTIONS = new Integer[] { 3, 5, 7, 9, 11, 13, 15, -1, 1 };
+	public static final Integer[] STARTING_HEALTH_OPTIONS = new Integer[] { 100 ,150, 200, 250, -1, 1, 25, 50, };
 
 
 }

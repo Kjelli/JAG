@@ -47,7 +47,6 @@ public class JagServer {
 		});
 	}
 
-	int lastSeen;
 
 	public void update(float delta) {
 		if (listener == null) {
@@ -59,6 +58,7 @@ public class JagServer {
 			if (next == null) {
 				continue;
 			}
+
 			switch (next.type) {
 			case NetworkEvent.CONNECT:
 				listener.connected(next.connection);

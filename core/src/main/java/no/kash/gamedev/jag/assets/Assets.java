@@ -29,6 +29,7 @@ public class Assets {
 	public static Texture flamethrower;
 	public static Texture grenade;
 	public static Texture crossbow;
+	public static Texture awp;
 
 	// Particles
 	public static Texture blood;
@@ -49,6 +50,7 @@ public class Assets {
 	public static Texture mac10_ground;
 	public static Texture flamethrower_ground;
 	public static Texture crossbow_ground;
+	public static Texture awp_ground;
 
 	// Icons
 	public static Texture health_icon;
@@ -88,6 +90,7 @@ public class Assets {
 		mac10 = load("playerSprite/mac10.png");
 		flamethrower = load("playerSprite/flamethrower.png");
 		crossbow = load("playerSprite/crossbow.png");
+		awp = load("playerSprite/awp.png");
 		grenade = load("sprites/grenade.png");
 
 		// Particles
@@ -106,7 +109,7 @@ public class Assets {
 		shotgun_ground = load("sprites/gun_shotgun.png");
 		goldengun_ground = load("sprites/gun_goldengun.png");
 		flamethrower_ground = load("sprites/gun_flamethrower.png");
-
+		awp_ground = load("sprites/gun_awp.png");
 		goldengun_ground = load("sprites/gun_goldengun.png");
 		crossbow_ground = load("sprites/gun_crossbow.png");
 
