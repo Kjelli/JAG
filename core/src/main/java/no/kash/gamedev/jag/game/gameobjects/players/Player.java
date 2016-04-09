@@ -109,8 +109,7 @@ public class Player extends AbstractGameObject implements Collidable {
 		this.health = healthMax;
 		this.exitTimer = new Cooldown(3.0f);
 		this.statusHandler = new StatusHandler(this);
-		// this.dot = new Dot(this, getCenterX(), this.getCenterY(),
-		// getRotation());
+	
 		switch (gameSession.settings.getSelectedValue(Defs.SESSION_GM, GameMode.class)) {
 		case STANDARD_FFA:
 		case STANDARD_TEAM:
@@ -118,6 +117,8 @@ public class Player extends AbstractGameObject implements Collidable {
 		default:
 			break;
 		}
+		dot = new Dot(this, getCenterX(),getCenterX(),getRotation());
+	
 	}
 
 	@Override
@@ -163,7 +164,11 @@ public class Player extends AbstractGameObject implements Collidable {
 		gun.update(delta);
 		statusHandler.update(delta);
 		grenadeCooldown.update(delta);
-		// dot.update(delta);
+		
+		if(dot != null && gun.getType() == GunType.awp && aiming){
+			dot.update(delta);
+		}
+		
 		if (blockInput) {
 			accelerate(0, 0);
 		}
@@ -205,17 +210,19 @@ public class Player extends AbstractGameObject implements Collidable {
 			exitTimer.startCooldown();
 			isExiting = false;
 		}
-
+	
 		if (!isFiring() && aiming) {
 			fireBullet();
 			aiming = false;
 			gun.checkOutOfAmmo();
+			
 		}
 		if (isFiring()) {
 			if (gun.isHoldToShoot()) {
 				fireBullet();
 			} else {
 				aiming = true;
+				
 			}
 		}
 	}
@@ -237,8 +244,9 @@ public class Player extends AbstractGameObject implements Collidable {
 		} else if (holdingGrenade) {
 			Draw.sprite(batch, holding_grenade, getX(), getY(), getWidth(), getHeight(), getRotation());
 		}
-
-		// dot.draw(batch);
+		
+		if(dot != null && gun.getType() == GunType.awp && aiming)
+			dot.draw(batch);
 
 		if (drawNames) {
 			Assets.font.draw(batch, nameLabel, getX() + getWidth() / 2 - nameLabel.width / 2,
@@ -249,7 +257,7 @@ public class Player extends AbstractGameObject implements Collidable {
 	@Override
 	public void debugDraw(ShapeRenderer renderer) {
 		super.debugDraw(renderer);
-		if (dot != null) {
+		if (dot != null ) {
 			renderer.polygon(dot.getBounds().getTransformedVertices());
 		}
 	}

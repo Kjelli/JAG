@@ -1,5 +1,7 @@
 package no.kash.gamedev.jag.game.gameobjects.players.guns;
 
+import java.util.List;
+
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -7,12 +9,16 @@ import no.kash.gamedev.jag.commons.graphics.Draw;
 import no.kash.gamedev.jag.commons.network.packets.PlayerUpdate;
 import no.kash.gamedev.jag.game.JustAnotherGame;
 import no.kash.gamedev.jag.game.commons.utils.Cooldown;
+import no.kash.gamedev.jag.game.gamecontext.GameContext;
+import no.kash.gamedev.jag.game.gameobjects.GameObject;
 import no.kash.gamedev.jag.game.gameobjects.bullets.Bullet;
 import no.kash.gamedev.jag.game.gameobjects.bullets.Dart;
 import no.kash.gamedev.jag.game.gameobjects.bullets.Fire;
 import no.kash.gamedev.jag.game.gameobjects.bullets.GoldenBullet;
 import no.kash.gamedev.jag.game.gameobjects.bullets.NormalBullet;
+import no.kash.gamedev.jag.game.gameobjects.players.Dot;
 import no.kash.gamedev.jag.game.gameobjects.players.Player;
+import no.kash.gamedev.jag.game.gameobjects.players.PlayerInfo;
 
 public class Gun {
 
@@ -119,6 +125,14 @@ public class Gun {
 			case goldengun:
 				player.getGameContext().spawn(new GoldenBullet(player, player.getBulletOriginX(),
 						player.getBulletOriginY(), (float) (player.getRotation() + Math.PI / 2), damage, bulletSpeed));
+				break;
+			case awp:
+				List<GameObject> playerList = player.getGameContext().getByClass(new Class[]{Player.class});
+				for(GameObject obj : playerList){
+					if(player.dot.intersects(obj))
+					((Player)obj).damage(player.dot);
+				}
+				
 				break;
 
 			}

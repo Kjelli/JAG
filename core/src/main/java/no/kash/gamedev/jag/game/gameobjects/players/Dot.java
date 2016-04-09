@@ -11,9 +11,11 @@ import no.kash.gamedev.jag.game.gamecontext.physics.tilecollisions.TileCollision
 import no.kash.gamedev.jag.game.gamecontext.physics.tilecollisions.TileCollisionListener;
 import no.kash.gamedev.jag.game.gameobjects.AbstractGameObject;
 import no.kash.gamedev.jag.game.gameobjects.GameObject;
+import no.kash.gamedev.jag.game.gameobjects.bullets.Bullet;
+import no.kash.gamedev.jag.game.gameobjects.players.guns.GunType;
 import no.kash.gamedev.jag.game.levels.Level;
 
-public class Dot extends AbstractGameObject {
+public class Dot extends AbstractGameObject implements Bullet{
 	private final static int WIDTH = 1000;
 	private final static int HEIGHT = 1;
 	private Player player;
@@ -56,6 +58,27 @@ public class Dot extends AbstractGameObject {
 		setX(player.getCenterX());
 		setY(player.getCenterY());
 		TileCollisionDetector.checkTileCollisions(player.getGameContext().getLevel(), this, this.tileCollisionListener);
+	}
+
+	@Override
+	public float getDamage() {
+		return GunType.awp.getDamage();
+	}
+
+	@Override
+	public Player getShooter() {
+		return player;
+	}
+
+	@Override
+	public void onImpact(Player target) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public float getDirection() {
+		return player.getRotation();
 	}
 
 }
