@@ -166,7 +166,7 @@ public class Player extends AbstractGameObject implements Collidable {
 		statusHandler.update(delta);
 		grenadeCooldown.update(delta);
 
-		if (gun.getType() == GunType.awp && aiming) {
+		if (gun.getType() == GunType.awp && aiming && !gun.isReloading()) {
 			if (laserSight == null || laserSight.disposed) {
 				laserSight = new LaserSight(this, getCenterX(), getCenterX(), getRotation());
 			}
@@ -228,7 +228,7 @@ public class Player extends AbstractGameObject implements Collidable {
 		if (isFiring()) {
 			if (gun.isHoldToShoot()) {
 				fireBullet();
-			} else {
+			} else if(!gun.isReloading()){
 				aiming = true;
 			}
 		}

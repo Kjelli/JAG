@@ -14,7 +14,7 @@ import no.kash.gamedev.jag.game.gamesession.roundhandlers.TeamRoundHandler;
 import no.kash.gamedev.jag.game.screens.PlayScreen;
 
 public class GameSession {
-	public String mapFilename = "maps/sumoarena_team1.tmx";
+	public String mapFilename = "maps/sumoarena_team3.tmx";
 
 	public GameSettings settings;
 
