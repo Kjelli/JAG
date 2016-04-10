@@ -78,10 +78,8 @@ public class LobbyScreen extends AbstractGameScreen {
 				for (PlayerInfoGUI playerInfoGUI : playerInfos.values()) {
 					PlayerInfo info = playerInfoGUI.getInfo();
 					session.players.put(info.id, info);
-					System.out.println("Making " + info + " ready");
-					game.getServer().send(info.id, new PlayerStateChange(JustAnotherGameController.VOTE_MAP));
 				}
-				game.setScreen(new PlayScreen(game, session));
+				game.setScreen(new MapSelectionScreen(game, session));
 			}
 		}
 	}
@@ -104,6 +102,7 @@ public class LobbyScreen extends AbstractGameScreen {
 
 	@Override
 	protected void onShow() {
+		getGame().getServer().broadcast(new PlayerStateChange(JustAnotherGameController.LOBBY_STATE));
 		font = Assets.font;
 		lobbyLabel = new GlyphLayout(font, "Lobby");
 		stage.setViewport(new StretchViewport(Defs.WIDTH, Defs.HEIGHT, camera));
@@ -135,7 +134,8 @@ public class LobbyScreen extends AbstractGameScreen {
 					info.level = (int) update.state[0][1];
 					info.xp = (int) update.state[0][2];
 					info.ready = update.state[2][0] > 0;
-					info.teamId = session.settings.getSelectedValue(Defs.SESSION_GM, GameMode.class).teamBased ? (int) update.state[2][1] : -1;
+					info.teamId = session.settings.getSelectedValue(Defs.SESSION_GM, GameMode.class).teamBased
+							? (int) update.state[2][1] : -1;
 					info.color = new Color(update.state[1][0], update.state[1][1], update.state[1][2], 1);
 					if (playerInfos.isEmpty()) {
 						info.gameMaster = true;

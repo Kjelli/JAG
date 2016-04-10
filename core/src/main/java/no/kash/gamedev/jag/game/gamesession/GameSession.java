@@ -58,4 +58,8 @@ public class GameSession {
 		roundHandler.setup();
 	}
 
+	public int numberOfPlayers() {
+		return players.size();
+	}
+
 }

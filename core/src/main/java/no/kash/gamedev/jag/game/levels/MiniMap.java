@@ -1,5 +1,6 @@
 package no.kash.gamedev.jag.game.levels;
 
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
@@ -10,6 +11,7 @@ import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 
 import no.kash.gamedev.jag.assets.Assets;
 import no.kash.gamedev.jag.commons.defs.Defs;
@@ -19,7 +21,7 @@ import no.kash.gamedev.jag.game.gamesession.GameSession;
 public class MiniMap {
 	private static final BitmapFont font = Assets.fontSmall;
 
-	private TiledMap map;
+	private String filepath;
 
 	private float x, y;
 	private float mapWidth, mapHeight, tileWidth = 8, tileHeight = 8;
@@ -33,8 +35,8 @@ public class MiniMap {
 	GlyphLayout nameLabel;
 	Sprite[][] cells;
 
-	private MiniMap(TiledMap map, Sprite[][] cells) {
-		this.map = map;
+	private MiniMap(TiledMap map, String filepath, Sprite[][] cells) {
+		this.filepath = filepath;
 		this.cells = cells;
 		this.mapWidth = cells.length;
 		this.mapHeight = cells[0].length;
@@ -62,7 +64,6 @@ public class MiniMap {
 
 	public void setY(float y) {
 		this.y = y;
-		;
 		updateSprites();
 	}
 
@@ -117,7 +118,10 @@ public class MiniMap {
 		}
 	}
 
-	public static MiniMap build(TiledMap map) {
+	public static MiniMap build(FileHandle mapFile) {
+		TmxMapLoader loader = new TmxMapLoader();
+		TiledMap map = loader.load(mapFile.path());
+
 		Sprite[][] cells = new Sprite[(Integer) map.getProperties().get("width", -1, Integer.class)][(Integer) map
 				.getProperties().get("height", -1, Integer.class)];
 
@@ -144,7 +148,11 @@ public class MiniMap {
 				}
 			}
 		}
-		return new MiniMap(map, cells);
+		return new MiniMap(map, mapFile.path(), cells);
+	}
+
+	public boolean isAvailable() {
+		return available;
 	}
 
 	public boolean isFfaMap() {
@@ -153,6 +161,10 @@ public class MiniMap {
 
 	public boolean isTeamMap() {
 		return teamMap;
+	}
+
+	public String getFilename() {
+		return filepath;
 	}
 
 	public void setTeamMap(boolean teamMap) {

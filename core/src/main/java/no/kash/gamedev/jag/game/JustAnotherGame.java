@@ -30,7 +30,7 @@ public class JustAnotherGame extends JagEndpoint {
 	@Override
 	public void create() {
 		init();
-		setScreen(new MapSelectionScreen(this, new GameSession()));
+		setScreen(new LobbyScreen(this, new GameSession()));
 	}
 
 	private void init() {

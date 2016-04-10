@@ -189,7 +189,6 @@ public class Gun {
 	}
 
 	public void draw(SpriteBatch batch) {
-		// TODO draw correctly
 		Draw.sprite(batch, sprite, player.getX(), player.getY(), player.getWidth(), player.getHeight(),
 				player.getRotation());
 	}
@@ -262,6 +261,10 @@ public class Gun {
 
 	public GunType getType() {
 		return type;
+	}
+
+	public boolean isOnCooldown() {
+		return bulletCooldown.getCooldownTimer() > 0;
 	}
 
 }

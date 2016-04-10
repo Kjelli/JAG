@@ -228,7 +228,7 @@ public class Player extends AbstractGameObject implements Collidable {
 		if (isFiring()) {
 			if (gun.isHoldToShoot()) {
 				fireBullet();
-			} else if(!gun.isReloading()){
+			} else if(!gun.isReloading() && !gun.isOnCooldown()){
 				aiming = true;
 			}
 		}

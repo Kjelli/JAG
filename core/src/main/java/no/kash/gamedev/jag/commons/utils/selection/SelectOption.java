@@ -1,4 +1,4 @@
-package no.kash.gamedev.jag.commons.selection;
+package no.kash.gamedev.jag.commons.utils.selection;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
