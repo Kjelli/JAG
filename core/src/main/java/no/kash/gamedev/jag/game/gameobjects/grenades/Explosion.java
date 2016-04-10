@@ -26,10 +26,10 @@ public class Explosion extends AbstractParticle implements Collidable {
 
 	CircularHitbox hitbox;
 	
-	Grenade grenade;
+	AbstractGrenade grenade;
 	List<Player> damaged;
 
-	public Explosion(Grenade grenade, float x, float y) {
+	public Explosion(AbstractGrenade grenade, float x, float y) {
 		super(x, y, 128, 128, TIME_TO_LIVE);
 		this.grenade = grenade;
 		hitbox = new CircularHitbox(getCenterX() - EXPLOSION_RADIUS/2, getCenterY() - EXPLOSION_RADIUS/2, EXPLOSION_RADIUS, EXPLOSION_RADIUS);
@@ -70,7 +70,7 @@ public class Explosion extends AbstractParticle implements Collidable {
 		}
 	}
 	
-	public Grenade getSourceGrenade() {
+	public AbstractGrenade getSourceGrenade() {
 		return grenade;
 	}
 

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" renderorder="right-down" width="40" height="26" tilewidth="16" tileheight="16" nextobjectid="38">
  <properties>
-  <property name="ffa" type="bool" value="true"/>
+  <property name="ffa" value="true"/>
   <property name="name" value="Close Quarters"/>
-  <property name="team" type="bool" value="false"/>
+  <property name="team" value="false"/>
  </properties>
  <tileset firstgid="1" name="obstaclesSheet" tilewidth="16" tileheight="16" tilecount="128" columns="16">
   <image source="sprites/obstaclesSheet.png" width="256" height="128"/>
@@ -98,7 +98,7 @@
   </object>
   <object id="14" name="collision" type="collision_full" x="0" y="0" width="80" height="416">
    <properties>
-    <property name="collision_level" value="2"/>
+    <property name="collision_level" value="3"/>
    </properties>
   </object>
   <object id="15" name="collision" type="collision_full" x="528" y="224" width="32" height="32">
@@ -118,12 +118,12 @@
   </object>
   <object id="18" name="collision" type="collision_full" x="80" y="0" width="480" height="32">
    <properties>
-    <property name="collision_level" value="2"/>
+    <property name="collision_level" value="3"/>
    </properties>
   </object>
   <object id="19" name="collision" type="collision_full" x="560" y="0" width="80" height="416">
    <properties>
-    <property name="collision_level" value="2"/>
+    <property name="collision_level" value="3"/>
    </properties>
   </object>
   <object id="20" name="collision" type="collision_full" x="240" y="256" width="64" height="32">
@@ -153,7 +153,7 @@
   </object>
   <object id="25" name="collision" type="collision_full" x="80" y="384" width="480" height="32">
    <properties>
-    <property name="collision_level" value="2"/>
+    <property name="collision_level" value="3"/>
    </properties>
   </object>
  </objectgroup>

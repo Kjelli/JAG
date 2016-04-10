@@ -17,6 +17,7 @@ import no.kash.gamedev.jag.commons.network.packets.PlayerStateChange;
 import no.kash.gamedev.jag.commons.network.packets.PlayerStateChangeResponse;
 import no.kash.gamedev.jag.commons.network.packets.PlayerUpdate;
 import no.kash.gamedev.jag.game.gameobjects.players.guns.GunType;
+import no.kash.gamedev.jag.game.gameobjects.players.item.ItemType;
 import no.kash.gamedev.jag.game.gamesession.GameMode;
 import no.kash.gamedev.jag.game.gamesession.GameSettings;
 import no.kash.gamedev.jag.game.gamesession.GameSettings.Option;
@@ -39,6 +40,7 @@ public class JagKryo {
 		kryo.register(GameMode.class);
 		kryo.register(SuddenDeathType.class);
 		kryo.register(GunType.class);
+		kryo.register(ItemType.class);
 		kryo.register(Texture.class);
 		kryo.register(Setting.class);
 		kryo.register(Option.class);

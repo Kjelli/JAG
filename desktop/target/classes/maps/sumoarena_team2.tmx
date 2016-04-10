@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" renderorder="right-down" width="60" height="50" tilewidth="16" tileheight="16" nextobjectid="75">
  <properties>
-  <property name="ffa" type="bool" value="true"/>
+  <property name="ffa" value="true"/>
   <property name="name" value="The Grasspit"/>
-  <property name="team" type="bool" value="true"/>
+  <property name="team" value="true"/>
  </properties>
  <tileset firstgid="1" name="landscapetextures" tilewidth="16" tileheight="16" tilecount="32" columns="8">
   <image source="sprites/landscapetextures.png" width="128" height="64"/>
@@ -62,22 +62,22 @@
  <objectgroup name="collision">
   <object id="29" name="collision" type="collision_full" x="32" y="128" width="896" height="48">
    <properties>
-    <property name="collision_level" value="2"/>
+    <property name="collision_level" value="3"/>
    </properties>
   </object>
   <object id="32" name="collision" type="collision_full" x="32" y="624" width="896" height="48">
    <properties>
-    <property name="collision_level" value="2"/>
+    <property name="collision_level" value="3"/>
    </properties>
   </object>
   <object id="33" name="collision" type="collision_full" x="32" y="176" width="48" height="448">
    <properties>
-    <property name="collision_level" value="2"/>
+    <property name="collision_level" value="3"/>
    </properties>
   </object>
   <object id="37" name="collision" type="collision_full" x="880" y="176" width="48" height="448">
    <properties>
-    <property name="collision_level" value="2"/>
+    <property name="collision_level" value="3"/>
    </properties>
   </object>
   <object id="39" name="collision" type="collision_full" x="144" y="176" width="32" height="64">
@@ -132,37 +132,37 @@
   </object>
   <object id="54" name="collision" type="collision_full" x="240" y="240" width="160" height="48">
    <properties>
-    <property name="collision_level" value="2"/>
+    <property name="collision_level" value="3"/>
    </properties>
   </object>
   <object id="55" name="collision" type="collision_full" x="560" y="240" width="160" height="48">
    <properties>
-    <property name="collision_level" value="2"/>
+    <property name="collision_level" value="3"/>
    </properties>
   </object>
   <object id="56" name="collision" type="collision_full" x="560" y="512" width="160" height="48">
    <properties>
-    <property name="collision_level" value="2"/>
+    <property name="collision_level" value="3"/>
    </properties>
   </object>
   <object id="57" name="collision" type="collision_full" x="240" y="512" width="160" height="48">
    <properties>
-    <property name="collision_level" value="2"/>
+    <property name="collision_level" value="3"/>
    </properties>
   </object>
   <object id="58" name="collision" type="collision_full" x="240" y="288" width="48" height="80">
    <properties>
-    <property name="collision_level" value="2"/>
+    <property name="collision_level" value="3"/>
    </properties>
   </object>
   <object id="59" name="collision" type="collision_full" x="240" y="432" width="48" height="80">
    <properties>
-    <property name="collision_level" value="2"/>
+    <property name="collision_level" value="3"/>
    </properties>
   </object>
   <object id="61" name="collision" type="collision_full" x="672" y="432" width="48" height="80">
    <properties>
-    <property name="collision_level" value="2"/>
+    <property name="collision_level" value="3"/>
    </properties>
   </object>
   <object id="64" name="collision" type="collision_full" x="448" y="368" width="62" height="62">
@@ -172,7 +172,7 @@
   </object>
   <object id="74" name="collision" type="collision_full" x="672" y="288" width="48" height="80">
    <properties>
-    <property name="collision_level" value="2"/>
+    <property name="collision_level" value="3"/>
    </properties>
   </object>
  </objectgroup>

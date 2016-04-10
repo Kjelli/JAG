@@ -31,6 +31,9 @@ public class Assets {
 	public static Texture crossbow;
 	public static Texture awp;
 
+	// Items
+	public static Texture tripmine_ground, tripmine_placed;
+	
 	// Particles
 	public static Texture blood;
 	public static Texture blood2;
@@ -91,7 +94,11 @@ public class Assets {
 		flamethrower = load("playerSprite/flamethrower.png");
 		crossbow = load("playerSprite/crossbow.png");
 		awp = load("playerSprite/awp.png");
+		
+		// Items
 		grenade = load("sprites/grenade.png");
+		tripmine_ground = load("sprites/tripmine_ground.png");
+		tripmine_ground = load("sprites/tripmine_placed.png");
 
 		// Particles
 		blood = load("blood.png");

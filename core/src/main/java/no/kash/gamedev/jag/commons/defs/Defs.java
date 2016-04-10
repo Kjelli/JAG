@@ -28,6 +28,7 @@ public class Defs {
 	public static final String SESSION_DEBUG_DRAW = "SESSION_DEBUG_DRAW";
 	public static final String SESSION_SUDDEN_DEATH = "SESSION_SUDDEN_DEATH";
 	public static final String SESSION_STARTING_GUN = "SESSION_STARTING_GUN";
+	public static final String SESSION_STARTING_ITEM = "SESSION_STARTING_ITEM";
 	public static final String SESSION_SPAWN_GUNS = "SESSION_SPAWN_GUNS";
 
 	// Misc
@@ -37,6 +38,7 @@ public class Defs {
 	public static final Integer[] ROUND_TIME_OPTIONS = new Integer[] { 60, 90, 120, 180, 240, 300, 600, -1, 30  };
 	public static final Integer[] ROUND_WIN_OPTIONS = new Integer[] { 3, 5, 7, 9, 11, 13, 15, -1, 1 };
 	public static final Integer[] STARTING_HEALTH_OPTIONS = new Integer[] { 100 ,150, 200, 250, -1, 1, 25, 50, };
+
 
 
 }

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="16" tileheight="16" nextobjectid="59">
  <properties>
-  <property name="ffa" type="bool" value="true"/>
+  <property name="ffa" value="true"/>
   <property name="name" value="The Original"/>
-  <property name="team" type="bool" value="false"/>
+  <property name="team" value="false"/>
  </properties>
  <tileset firstgid="1" name="landscapetextures" tilewidth="16" tileheight="16" tilecount="32" columns="8">
   <image source="sprites/landscapetextures.png" width="128" height="64"/>
@@ -37,22 +37,22 @@
   </object>
   <object id="46" name="collision" type="collision_full" x="64" y="160" width="640" height="48">
    <properties>
-    <property name="collision_level" value="2"/>
+    <property name="collision_level" value="3"/>
    </properties>
   </object>
   <object id="47" name="collision" type="collision_full" x="64" y="208" width="48" height="464">
    <properties>
-    <property name="collision_level" value="2"/>
+    <property name="collision_level" value="3"/>
    </properties>
   </object>
   <object id="48" name="collision" type="collision_full" x="112" y="624" width="640" height="48">
    <properties>
-    <property name="collision_level" value="2"/>
+    <property name="collision_level" value="3"/>
    </properties>
   </object>
   <object id="49" name="collision" type="collision_full" x="704" y="160" width="48" height="464">
    <properties>
-    <property name="collision_level" value="2"/>
+    <property name="collision_level" value="3"/>
    </properties>
   </object>
   <object id="51" name="collision" type="collision_full" x="480" y="352.667" width="32" height="32">
