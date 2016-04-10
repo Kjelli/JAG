@@ -16,7 +16,6 @@ import no.kash.gamedev.jag.game.gameobjects.bullets.Dart;
 import no.kash.gamedev.jag.game.gameobjects.bullets.Fire;
 import no.kash.gamedev.jag.game.gameobjects.bullets.GoldenBullet;
 import no.kash.gamedev.jag.game.gameobjects.bullets.NormalBullet;
-import no.kash.gamedev.jag.game.gameobjects.players.LaserSight;
 import no.kash.gamedev.jag.game.gameobjects.players.Player;
 import no.kash.gamedev.jag.game.gameobjects.players.PlayerInfo;
 

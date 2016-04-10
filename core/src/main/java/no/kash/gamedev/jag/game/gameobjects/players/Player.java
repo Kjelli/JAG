@@ -32,6 +32,7 @@ import no.kash.gamedev.jag.game.gameobjects.players.damagehandlers.DamageHandler
 import no.kash.gamedev.jag.game.gameobjects.players.damagehandlers.VanillaDamageHandler;
 import no.kash.gamedev.jag.game.gameobjects.players.guns.Gun;
 import no.kash.gamedev.jag.game.gameobjects.players.guns.GunType;
+import no.kash.gamedev.jag.game.gameobjects.players.guns.LaserSight;
 import no.kash.gamedev.jag.game.gameobjects.players.hud.HealthHud;
 import no.kash.gamedev.jag.game.gameobjects.players.item.Item;
 import no.kash.gamedev.jag.game.gameobjects.players.item.ItemType;

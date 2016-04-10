@@ -1,4 +1,4 @@
-package no.kash.gamedev.jag.game.gameobjects.players;
+package no.kash.gamedev.jag.game.gameobjects.players.guns;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.MapObject;
@@ -12,7 +12,7 @@ import no.kash.gamedev.jag.game.gamecontext.physics.tilecollisions.TileCollision
 import no.kash.gamedev.jag.game.gameobjects.AbstractGameObject;
 import no.kash.gamedev.jag.game.gameobjects.GameObject;
 import no.kash.gamedev.jag.game.gameobjects.bullets.Bullet;
-import no.kash.gamedev.jag.game.gameobjects.players.guns.GunType;
+import no.kash.gamedev.jag.game.gameobjects.players.Player;
 import no.kash.gamedev.jag.game.levels.Level;
 
 public class LaserSight extends AbstractGameObject implements Bullet {
