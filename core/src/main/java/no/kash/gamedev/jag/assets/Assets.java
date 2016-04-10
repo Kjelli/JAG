@@ -51,6 +51,9 @@ public class Assets {
 	public static Texture flamethrower_ground;
 	public static Texture crossbow_ground;
 	public static Texture awp_ground;
+	
+	//Items
+	public static Texture healthpack;
 
 	// Icons
 	public static Texture health_icon;
@@ -112,6 +115,9 @@ public class Assets {
 		awp_ground = load("sprites/gun_awp.png");
 		goldengun_ground = load("sprites/gun_goldengun.png");
 		crossbow_ground = load("sprites/gun_crossbow.png");
+		
+		//Items
+		healthpack = load("sprites/health_pack.png");
 
 		// Icons
 

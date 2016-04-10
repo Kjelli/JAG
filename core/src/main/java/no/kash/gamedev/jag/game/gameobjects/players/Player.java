@@ -16,6 +16,7 @@ import no.kash.gamedev.jag.commons.network.packets.PlayerUpdate;
 import no.kash.gamedev.jag.controller.JustAnotherGameController;
 import no.kash.gamedev.jag.game.JustAnotherGame;
 import no.kash.gamedev.jag.game.commons.utils.Cooldown;
+import no.kash.gamedev.jag.game.gamecontext.GameContext;
 import no.kash.gamedev.jag.game.gamecontext.physics.Collidable;
 import no.kash.gamedev.jag.game.gamecontext.physics.Collision;
 import no.kash.gamedev.jag.game.gamecontext.physics.tilecollisions.TileCollisionDetector;
@@ -32,6 +33,7 @@ import no.kash.gamedev.jag.game.gameobjects.players.damagehandlers.VanillaDamage
 import no.kash.gamedev.jag.game.gameobjects.players.guns.Gun;
 import no.kash.gamedev.jag.game.gameobjects.players.guns.GunType;
 import no.kash.gamedev.jag.game.gameobjects.players.hud.HealthHud;
+import no.kash.gamedev.jag.game.gameobjects.players.item.CollectableItem;
 import no.kash.gamedev.jag.game.gameobjects.players.item.Item;
 import no.kash.gamedev.jag.game.gameobjects.players.item.ItemType;
 import no.kash.gamedev.jag.game.gameobjects.players.status.Status;
@@ -125,6 +127,8 @@ public class Player extends AbstractGameObject implements Collidable {
 
 	@Override
 	public void onSpawn() {
+		
+		
 		// Set sprite
 		Sprite sprite = new Sprite(Assets.man);
 		sprite.setOrigin(getWidth() / 2, getHeight() / 2);
@@ -151,6 +155,10 @@ public class Player extends AbstractGameObject implements Collidable {
 		throwableCooldown = new Cooldown(grenadeCooldownDuration);
 
 		getGameContext().bringToFront(this);
+		
+		
+		CollectableItem item = new CollectableItem(getX()+40,getY()+40,ItemType.healthpack);
+		getGameContext().spawn(item);
 
 	}
 
@@ -310,6 +318,23 @@ public class Player extends AbstractGameObject implements Collidable {
 	
 	private void equipItem(ItemType itemType) {
 		throwable = new Item(itemType);
+	}
+	
+	public void pickUpItem(CollectableItem collectableItem){
+		ItemType type = collectableItem.type;
+		if(type.isUseOnPickup()){
+			switch (type) {
+			case healthpack:
+				//TODO NO HARDCODE; EDIT TO MAGNITUDE
+				setHealth(getHealth() + 50); 
+				break;
+
+			default:
+				break;
+			}
+		}else{
+			equipItem(type);
+		}
 	}
 
 

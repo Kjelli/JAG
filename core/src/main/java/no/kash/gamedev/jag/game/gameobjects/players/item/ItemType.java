@@ -7,7 +7,8 @@ import no.kash.gamedev.jag.assets.Assets;
 public enum ItemType {
 	
 	
-	grenade("Default", Assets.grenade, -1,false);
+	grenade("Default", Assets.grenade, -1,false),
+	healthpack("Healthpack", Assets.healthpack,1,true);
 	
 	private Texture texture;
 	private int uses;
