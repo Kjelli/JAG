@@ -25,6 +25,14 @@ public class NormalGrenade extends AbstractGrenade {
 	}
 
 	@Override
+	public void update(float delta) {
+		super.update(delta);
+		setRotation(
+				(Math.max(timeToLive - TIME_TO_LIVE_MAX / 2, 0) / TIME_TO_LIVE_MAX) * power * 10 + power * direction);
+		TileCollisionDetector.checkTileCollisions(getGameContext().getLevel(), this, tileListener);
+	}
+
+	@Override
 	protected void collision(MapObject rectangleObject, MinimumTranslationVector col) {
 		if (Integer.parseInt((String) rectangleObject.getProperties().get("collision_level")) == 3) {
 			TileCollisionDetector.nudge(this, col);

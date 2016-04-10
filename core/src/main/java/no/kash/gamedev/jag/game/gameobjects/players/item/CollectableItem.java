@@ -35,8 +35,7 @@ public class CollectableItem extends AbstractCollectable{
 	@Override
 	public void update(float delta) {
 		setScale((float) (Math.sin(getGameContext().getElapsedTime() * 5.0f)) * 0.1f + 1.0f);
-		setX(getX() - getWidth() / 2);
-		setY(getY() - getHeight() / 2);
+	
 	}
 	
 	@Override

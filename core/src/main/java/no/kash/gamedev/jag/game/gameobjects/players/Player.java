@@ -26,6 +26,7 @@ import no.kash.gamedev.jag.game.gameobjects.bullets.Bullet;
 import no.kash.gamedev.jag.game.gameobjects.collectables.weapons.Weapon;
 import no.kash.gamedev.jag.game.gameobjects.grenades.Explosion;
 import no.kash.gamedev.jag.game.gameobjects.grenades.NormalGrenade;
+import no.kash.gamedev.jag.game.gameobjects.grenades.TripMine;
 import no.kash.gamedev.jag.game.gameobjects.particles.BloodSplatter;
 import no.kash.gamedev.jag.game.gameobjects.particles.Star;
 import no.kash.gamedev.jag.game.gameobjects.players.damagehandlers.DamageHandler;
@@ -38,6 +39,7 @@ import no.kash.gamedev.jag.game.gameobjects.players.item.Item;
 import no.kash.gamedev.jag.game.gameobjects.players.item.ItemType;
 import no.kash.gamedev.jag.game.gameobjects.players.status.Status;
 import no.kash.gamedev.jag.game.gameobjects.players.status.StatusHandler;
+import no.kash.gamedev.jag.game.gameobjects.players.status.StatusType;
 import no.kash.gamedev.jag.game.gamesession.GameMode;
 import no.kash.gamedev.jag.game.gamesession.GameSession;
 import no.kash.gamedev.jag.game.screens.LobbyScreen;
@@ -157,8 +159,6 @@ public class Player extends AbstractGameObject implements Collidable {
 		getGameContext().bringToFront(this);
 		
 		
-		CollectableItem item = new CollectableItem(getX()+40,getY()+40,ItemType.healthpack);
-		getGameContext().spawn(item);
 
 	}
 
@@ -305,7 +305,6 @@ public class Player extends AbstractGameObject implements Collidable {
 		equipGun(type, type.getMaxAmmo(), type.getMagazineSize());
 	}
 
-	
 	public void equipGun(GunType type, int ammo, int mag) {
 		gun = new Gun(type);
 		gun.equip(this);
@@ -315,7 +314,7 @@ public class Player extends AbstractGameObject implements Collidable {
 				new float[][] { { type.ordinal() }, { gun.getMagasineAmmo(), gun.getMagasineSize(), gun.getAmmo() } }));
 
 	}
-	
+
 	private void equipItem(ItemType itemType) {
 		throwable = new Item(itemType);
 	}
@@ -325,8 +324,8 @@ public class Player extends AbstractGameObject implements Collidable {
 		if(type.isUseOnPickup()){
 			switch (type) {
 			case healthpack:
-				//TODO NO HARDCODE; EDIT TO MAGNITUDE
-				setHealth(getHealth() + 50); 
+				heal(type.getMagnitude()); 
+				
 				break;
 
 			default:
@@ -336,7 +335,6 @@ public class Player extends AbstractGameObject implements Collidable {
 			equipItem(type);
 		}
 	}
-
 
 	public int getId() {
 		return info.id;
@@ -394,10 +392,21 @@ public class Player extends AbstractGameObject implements Collidable {
 			holdingGrenade = true;
 		}
 	}
+	
+	public void heal(float amount){
+		float newHP = getHealth() + amount;
+		if(newHP > healthMax){
+			setHealth(healthMax);
+		}else{
+			setHealth(newHP);
+		}
+		applyStatus(new Status(this, StatusType.healing ,2f));
+	}
+	
 
 	public void setHealth(float health) {
-		this.health = health;
-		healthHud.display();
+			this.health = health;
+			healthHud.display();
 	}
 
 	public void death(Player killer) {
@@ -426,6 +435,10 @@ public class Player extends AbstractGameObject implements Collidable {
 			case grenade:
 				getGameContext()
 						.spawn(new NormalGrenade(this, getCenterX(), getCenterY(), grenadeDirection, grenadePower));
+				break;
+			case tripmine:
+				getGameContext()
+						.spawn(new TripMine(this, getCenterX(), getCenterY(), grenadeDirection, grenadePower));
 				break;
 			default:
 				break;
@@ -480,6 +493,8 @@ public class Player extends AbstractGameObject implements Collidable {
 				new PlayerUpdate(2, new int[] { PlayerUpdate.HEALTH, PlayerUpdate.FEEDBACK_VIBRATION },
 						new float[][] { { health }, { 30.0f } }));
 	}
+	
+	
 
 	@Override
 	public String toString() {
@@ -529,6 +544,10 @@ public class Player extends AbstractGameObject implements Collidable {
 
 	public void applyStatus(Status status) {
 		statusHandler.apply(status);
+	}
+	
+	public void removeAllStatuses(){
+		statusHandler.removeAllStatuses();
 	}
 
 	public boolean isReloading() {

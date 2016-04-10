@@ -40,7 +40,7 @@ public abstract class AbstractGrenade extends AbstractGameObject implements Gren
 		this.power = power;
 		this.thrower = thrower;
 		this.bounceCooldown = new Cooldown(0.1f);
-		this.hitbox = new CircularHitbox(x, y, getWidth()/3, getHeight()/3);
+		this.hitbox = new CircularHitbox(x, y, getWidth() / 3, getHeight() / 3);
 		acceleration().x = EPSILON;
 		acceleration().y = EPSILON;
 		velocity().x = (float) (thrower.velocity().x + Math.cos(direction) * power * SPEED);
@@ -61,16 +61,15 @@ public abstract class AbstractGrenade extends AbstractGameObject implements Gren
 			timeOut();
 		}
 		bounceCooldown.update(delta);
-		
+
 		velocity().x *= 0.98f;
 		velocity().y *= 0.98f;
-		setRotation(
-				(Math.max(timeToLive - TIME_TO_LIVE_MAX / 2, 0) / TIME_TO_LIVE_MAX) * power * 10 + power * direction);
+
 		hitbox.update(getCenterX(), getCenterY(), getRotation());
 		move(delta);
-		TileCollisionDetector.checkTileCollisions(getGameContext().getLevel(), this, tileListener);
+
 	}
-	
+
 	@Override
 	public Polygon getBounds() {
 		return hitbox.poly;

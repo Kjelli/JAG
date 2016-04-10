@@ -21,7 +21,7 @@ public class Dart extends AbstractBullet {
 
 	@Override
 	public void onImpact(Player target) {
-		target.applyStatus(new Status(shooter, StatusType.poison, 10f));
+		target.applyStatus(new Status(shooter, StatusType.poison, 7f));
 		target.damage(this);
 		destroy();
 	}
