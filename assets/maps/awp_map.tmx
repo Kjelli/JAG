@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="60" height="30" tilewidth="16" tileheight="16" nextobjectid="44">
+ <properties>
+  <property name="ffa" type="bool" value="false"/>
+  <property name="name" value="Sniper Range"/>
+  <property name="team" type="bool" value="true"/>
+ </properties>
+ <tileset firstgid="1" name="landscapetextures" tilewidth="16" tileheight="16" tilecount="32" columns="8">
+  <image source="sprites/landscapetextures.png" width="128" height="64"/>
+ </tileset>
+ <tileset firstgid="33" name="obstaclesSheet" tilewidth="16" tileheight="16" tilecount="128" columns="16">
+  <image source="sprites/obstaclesSheet.png" width="256" height="128"/>
+ </tileset>
+ <layer name="ground" width="60" height="30">
+  <data encoding="base64" compression="zlib">
+   eJyF1jtyxDAMA1AVLl2q1P3PmRTZGeQZ9BaeXetLgiDge611/z4nfq947r8n33eM32XsMHfF+I7/n/cr9mzuuv7GDuecGD/rf4xXnHk4I9937Dvcl/ns+E2cMt/D2os9m/Ovcm7OZR3a+swp7zWuPEOs7/XE4TOfa8X35ryL/455hly5Vq+fWGSsp9yZ+cvRzCtrJo4NO++XY1NdXbc5Y69nDaccP7+ZS57b3uVm7vVs+dc4IW4TfmIsn/I+MTzMTRjd7FMrstbJBTG011Pz3vRlr2fcN/OtH5uOuCbjTr6YY9Ng+7P12KTJLfaJ51NN5WLThqYdra6e0zTQeCctltMZrxptP6vRak3zyuabrUZnPeO+ylr9TwyaZrYcG18njcz75KscbXXLs5NrGc/Er9bjYqcOTk/zcDFRI+2Npp/N4/Yw3zSnaZU6Y52thXrQuKQmNA24y/7WN42HufZN++Sy3iP3mu5N+tbimGpkPJv3phWNew0TPaflab2c00fto6aN1rxhb281LP32mGrR+sP/h303Y6224pDvevXED73BO83trRZNX/Vez/V+9d/Y3zCesJp8Tm076xlXq1PTVD2j9ZX75IEeknNN977FKu6NJ2c989Pjmx80jXrzPe+Uq7mn1c/ft3ubrra6N32bdM3YWx2bpjev1M/1eHmi5kx9JX6Nc8Ykd6bY3vTCGjSO2cOTLqnBb17juDlM/txqaP/qEfLH/c37XGeN7LPW6/JnlzlzbRg0j08+mVfrlRaX/NAX5ZZ917BR15o/tzgbplPN1QTrNeF5s9Y8Jp2a+li98H/y3F6w1xKHXGudJg9q68VbPNLrmn62GiUW5mt/v+XfcjN3udm+NZrufvOe5u+TBrea2x97uG8aa30vHxu2akKuk+ctV/PRf+xR+dr8ouXY+r31mr0txya++f2jR8jhpiv6Q9ZXr3M8426cTe7LGbVIbPWTpr85JhfktPooTyY/aT1rX3mHeqiGNg81z8TjlPPFVf7lPrnR6mq8TfvPesbpPS1uOdY0Ry3Pu+xjvcKaNh0VRz21+a497Lk+apEYTL0mrpNH6Vd6iHll7eWN3wCffT+AlnAh
+  </data>
+ </layer>
+ <layer name="obstacles" width="60" height="30">
+  <data encoding="base64" compression="zlib">
+   eJztmLtOAzEQRf0rPPoQoOeVjkB4dSCF0IIEpE0k6EGCnuencq3NSCtv7Dtms0tw9kinib32TLIeK9M3xrTgO/yAn/ALrsHbia3JZ/Msi9eOX8A+vDRFzsm4ZQCv4BJchitw1TP3N7jryn7T8MUrz7B8ruGNyb6vO88e93AI23AdbsBNZS4a3HVlv2n44pVnWL4jOIYP8JHEtQN34R7s0Cz0xKzL4mX5PsFn+AJfyV7H8ASewjMyN4aYdVm8LN83k9Uwe9a/lfGFzleV8yws3ph6pCV0vqqcJ2jqmaYe/Rc09UxTj1JA6lnofU4JqWeh9zklJN9FeZ9j7tcU0OQbex/9NaF4NfmmdB81v2+RRft9U6LJN22afNOmuY+KzPL/dpXzhDL30T7swh48msF+Vc6zsHjL9rfy1NV/DlG2/6jpPwt19Z9DsHjdfN2zouk/yzN19Z9D55nFK+OSr3tWYupZXf3nMvVIxq1bJjvrebfJ+Lx4AA898cpYLzf+A35ywIU=
+  </data>
+ </layer>
+ <objectgroup name="spawnzones">
+  <object id="36" name="Left_Team" type="team" x="48" y="32" width="32" height="384">
+   <properties>
+    <property name="team_id" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="37" name="Right_Team" type="team" x="880" y="64" width="32" height="384">
+   <properties>
+    <property name="team_id" type="int" value="2"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup name="collision">
+  <object id="1" name="collision" type="collision_full" x="32" y="0" width="928" height="16">
+   <properties>
+    <property name="collision_level" value="2"/>
+   </properties>
+  </object>
+  <object id="2" name="collision" type="collision_full" x="0" y="0" width="32" height="464">
+   <properties>
+    <property name="collision_level" value="2"/>
+   </properties>
+  </object>
+  <object id="3" name="collision" type="collision_full" x="0" y="464" width="928" height="16">
+   <properties>
+    <property name="collision_level" value="2"/>
+   </properties>
+  </object>
+  <object id="4" name="collision" type="collision_full" x="928" y="16" width="32" height="464">
+   <properties>
+    <property name="collision_level" value="2"/>
+   </properties>
+  </object>
+  <object id="5" name="collision" type="collision_full" x="272" y="400" width="64" height="64">
+   <properties>
+    <property name="collision_level" value="2"/>
+   </properties>
+  </object>
+  <object id="7" name="collision" type="collision_full" x="272" y="16" width="64" height="64">
+   <properties>
+    <property name="collision_level" value="2"/>
+   </properties>
+  </object>
+  <object id="8" name="collision" type="collision_full" x="624" y="16" width="64" height="64">
+   <properties>
+    <property name="collision_level" value="2"/>
+   </properties>
+  </object>
+  <object id="9" name="collision" type="collision_full" x="624" y="400" width="64" height="64">
+   <properties>
+    <property name="collision_level" value="2"/>
+   </properties>
+  </object>
+  <object id="13" name="collision" type="collision_full" x="624" y="80" width="32" height="32">
+   <properties>
+    <property name="collision_level" value="2"/>
+   </properties>
+  </object>
+  <object id="14" name="collision" type="collision_full" x="688" y="16" width="32" height="32">
+   <properties>
+    <property name="collision_level" value="2"/>
+   </properties>
+  </object>
+  <object id="15" name="collision" type="collision_full" x="816" y="96" width="32" height="32">
+   <properties>
+    <property name="collision_level" value="2"/>
+   </properties>
+  </object>
+  <object id="16" name="collision" type="collision_full" x="896" y="16" width="32" height="32">
+   <properties>
+    <property name="collision_level" value="2"/>
+   </properties>
+  </object>
+  <object id="17" name="collision" type="collision_full" x="816" y="352" width="32" height="32">
+   <properties>
+    <property name="collision_level" value="2"/>
+   </properties>
+  </object>
+  <object id="18" name="collision" type="collision_full" x="816" y="208" width="32" height="64">
+   <properties>
+    <property name="collision_level" value="2"/>
+   </properties>
+  </object>
+  <object id="20" name="collision" type="collision_full" x="112" y="208" width="32" height="64">
+   <properties>
+    <property name="collision_level" value="2"/>
+   </properties>
+  </object>
+  <object id="21" name="collision" type="collision_full" x="800" y="16" width="64" height="80">
+   <properties>
+    <property name="collision_level" value="2"/>
+   </properties>
+  </object>
+  <object id="22" name="collision" type="collision_full" x="800" y="384" width="64" height="80">
+   <properties>
+    <property name="collision_level" value="2"/>
+   </properties>
+  </object>
+  <object id="23" name="collision" type="collision_full" x="96" y="384" width="64" height="80">
+   <properties>
+    <property name="collision_level" value="2"/>
+   </properties>
+  </object>
+  <object id="24" name="collision" type="collision_full" x="96" y="16" width="64" height="80">
+   <properties>
+    <property name="collision_level" value="2"/>
+   </properties>
+  </object>
+  <object id="25" name="collision" type="collision_full" x="464" y="80" width="32" height="32">
+   <properties>
+    <property name="collision_level" value="2"/>
+   </properties>
+  </object>
+  <object id="26" name="collision" type="collision_full" x="304" y="80" width="32" height="32">
+   <properties>
+    <property name="collision_level" value="2"/>
+   </properties>
+  </object>
+  <object id="27" name="collision" type="collision_full" x="240" y="16" width="32" height="32">
+   <properties>
+    <property name="collision_level" value="2"/>
+   </properties>
+  </object>
+  <object id="28" name="collision" type="collision_full" x="112" y="96" width="32" height="32">
+   <properties>
+    <property name="collision_level" value="2"/>
+   </properties>
+  </object>
+  <object id="29" name="collision" type="collision_full" x="112" y="352" width="32" height="32">
+   <properties>
+    <property name="collision_level" value="2"/>
+   </properties>
+  </object>
+  <object id="30" name="collision" type="collision_full" x="32" y="432" width="32" height="32">
+   <properties>
+    <property name="collision_level" value="2"/>
+   </properties>
+  </object>
+  <object id="31" name="collision" type="collision_full" x="240" y="432" width="32" height="32">
+   <properties>
+    <property name="collision_level" value="2"/>
+   </properties>
+  </object>
+  <object id="32" name="collision" type="collision_full" x="304" y="368" width="32" height="32">
+   <properties>
+    <property name="collision_level" value="2"/>
+   </properties>
+  </object>
+  <object id="33" name="collision" type="collision_full" x="464" y="368" width="32" height="32">
+   <properties>
+    <property name="collision_level" value="2"/>
+   </properties>
+  </object>
+  <object id="34" name="collision" type="collision_full" x="624" y="368" width="32" height="32">
+   <properties>
+    <property name="collision_level" value="2"/>
+   </properties>
+  </object>
+  <object id="35" name="collision" type="collision_full" x="688" y="432" width="32" height="32">
+   <properties>
+    <property name="collision_level" value="2"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup name="weaponspawn">
+  <object id="41" name="weaponspawn" x="80" y="224" width="32" height="32">
+   <properties>
+    <property name="rate" type="float" value="1"/>
+    <property name="type" value="awp"/>
+   </properties>
+  </object>
+  <object id="42" name="weaponspawn" x="848" y="224" width="32" height="32">
+   <properties>
+    <property name="rate" type="float" value="1"/>
+    <property name="type" value="awp"/>
+   </properties>
+  </object>
+  <object id="43" name="weaponspawn" x="464" y="224" width="32" height="32">
+   <properties>
+    <property name="rate" type="float" value="0.02"/>
+    <property name="type" value="goldengun"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup name="spawnpoints">
+  <object id="39" name="spawn1" type="spawn" x="48" y="224" width="32" height="32">
+   <ellipse/>
+  </object>
+  <object id="40" name="spawn1" type="spawn" x="880" y="224" width="32" height="32">
+   <ellipse/>
+  </object>
+ </objectgroup>
+</map>

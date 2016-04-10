@@ -40,7 +40,7 @@ public class LaserSight extends AbstractGameObject implements Bullet {
 				if (data != null) {
 					if (Integer.parseInt(data) <= 2) {
 						// TODO
-						setWidth(getWidth() - 10);
+						setWidth(getWidth() - 5);
 						if (stillColliding) {
 							stillColliding = false;
 							TileCollisionDetector.checkTileCollisions(
