@@ -98,7 +98,7 @@ public class Assets {
 		// Items
 		grenade = load("sprites/grenade.png");
 		tripmine_ground = load("sprites/tripmine_ground.png");
-		tripmine_ground = load("sprites/tripmine_placed.png");
+		tripmine_placed = load("sprites/tripmine_placed.png");
 
 		// Particles
 		blood = load("blood.png");
