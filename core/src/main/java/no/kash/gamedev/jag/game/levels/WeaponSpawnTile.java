@@ -11,6 +11,9 @@ import no.kash.gamedev.jag.game.gameobjects.players.guns.GunType;
 
 public class WeaponSpawnTile extends AbstractGameObject {
 
+	public static final float WIDTH = 32;
+	public static final float HEIGHT = 32;
+
 	public Cooldown reSpawnCooldown;
 
 	private Sprite regular;
@@ -24,19 +27,23 @@ public class WeaponSpawnTile extends AbstractGameObject {
 	private boolean preStage;
 
 	public GunType nextWeapon;
+	public GunType limitingGunType;
 
 	public WeaponSpawner spawner;
+	public float spawnRate;
 
-	public WeaponSpawnTile(WeaponSpawner spawner, float x, float y) {
-		super(x, y, 32, 32);
+	public WeaponSpawnTile(WeaponSpawner spawner, WeaponSpawnTileInfo info) {
+		super(info.pos.x, info.pos.y, WIDTH, HEIGHT);
 		this.spawner = spawner;
+		this.limitingGunType = info.gunType;
+		this.spawnRate = info.spawnRate;
 		regular = new Sprite(Assets.spawntile_regular);
 		epic = new Sprite(Assets.spawntile_epic);
 		rare = new Sprite(Assets.spawntile_rare);
 		common = new Sprite(Assets.spawntile_common);
 		setSprite(regular);
 		cooldown = new Cooldown(3);
-		reSpawnCooldown = new Cooldown(8);
+		reSpawnCooldown = new Cooldown(3);
 		occupied = false;
 		preStage = false;
 
@@ -63,7 +70,7 @@ public class WeaponSpawnTile extends AbstractGameObject {
 	}
 
 	private void spawnWeapon() {
-		if(spawner.isStopped()){
+		if (spawner.isStopped()) {
 			return;
 		}
 		weapon = new Weapon(getCenterX(), getCenterY(), nextWeapon);
@@ -72,8 +79,12 @@ public class WeaponSpawnTile extends AbstractGameObject {
 	}
 
 	public void preSpawnWeapon() {
-		nextWeapon = randomGun();
-		switch(nextWeapon.getTier()){
+		if (limitingGunType == null) {
+			nextWeapon = randomGun();
+		}else{
+			nextWeapon = limitingGunType;
+		}
+		switch (nextWeapon.getTier()) {
 		default:
 		case 1:
 			setSprite(common);

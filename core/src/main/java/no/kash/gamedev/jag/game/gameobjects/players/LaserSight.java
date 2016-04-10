@@ -28,7 +28,7 @@ public class LaserSight extends AbstractGameObject implements Bullet {
 		this.player = player;
 		setSprite(new Sprite(Assets.laserSight));
 		getSprite().setOrigin(0, 0);
-		getSprite().setColor(1.0f, 1.0f, 1.0f, 0.3f);
+		getSprite().setColor(1.0f, 1.0f, 1.0f, 0.7f);
 		setRotation(direction);
 		bounds.setOrigin(0, 0);
 
@@ -40,7 +40,7 @@ public class LaserSight extends AbstractGameObject implements Bullet {
 				if (data != null) {
 					if (Integer.parseInt(data) > 1) {
 						// TODO
-						setWidth(getWidth() - 10);
+						setWidth(getWidth() - 5);
 						if (stillColliding) {
 							stillColliding = false;
 							TileCollisionDetector.checkTileCollisions(

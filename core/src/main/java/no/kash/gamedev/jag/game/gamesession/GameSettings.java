@@ -13,6 +13,7 @@ import no.kash.gamedev.jag.commons.defs.Defs;
 import no.kash.gamedev.jag.commons.network.packets.GameSessionUpdate;
 import no.kash.gamedev.jag.controller.preferences.GameSessionPreferences;
 import no.kash.gamedev.jag.game.gameobjects.players.guns.GunType;
+import no.kash.gamedev.jag.game.gameobjects.players.item.ItemType;
 import no.kash.gamedev.jag.game.gamesession.roundhandlers.suddendeaths.SuddenDeathType;
 
 public class GameSettings {
@@ -27,6 +28,7 @@ public class GameSettings {
 				new Setting<SuddenDeathType>("Sudden death", SuddenDeathType.values()));
 		DEFAULT_OPTIONS.put(Defs.SESSION_START_HP, new Setting<Integer>("Starting health", STARTING_HEALTH_OPTIONS));
 		DEFAULT_OPTIONS.put(Defs.SESSION_STARTING_GUN, new Setting<GunType>("Starting gun", GunType.values()));
+		DEFAULT_OPTIONS.put(Defs.SESSION_STARTING_ITEM, new Setting<ItemType>("Starting item", ItemType.values()));
 		DEFAULT_OPTIONS.put(Defs.SESSION_SPAWN_GUNS, new Setting<Boolean>("Spawn guns", BOOLEAN_OPTIONS));
 		DEFAULT_OPTIONS.put(Defs.SESSION_FRIENDLY_FIRE, new Setting<Boolean>("Friendly Fire", BOOLEAN_OPTIONS));
 		DEFAULT_OPTIONS.put(Defs.SESSION_DROP_IN, new Setting<Boolean>("Drop in", BOOLEAN_OPTIONS));

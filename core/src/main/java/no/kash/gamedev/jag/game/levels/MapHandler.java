@@ -31,10 +31,5 @@ public class MapHandler {
 		return maps;
 	}
 
-	public static TiledMap load(FileHandle mapFile) {
-		TmxMapLoader loader = new TmxMapLoader();
-		TiledMap map = loader.load(mapFile.path());
-		return map;
-	}
 
 }

@@ -43,7 +43,7 @@ import no.kash.gamedev.jag.game.JustAnotherGame;
 import no.kash.gamedev.jag.game.gameobjects.GameObject;
 import no.kash.gamedev.jag.game.gameobjects.collectables.weapons.Weapon;
 import no.kash.gamedev.jag.game.gameobjects.grenades.Explosion;
-import no.kash.gamedev.jag.game.gameobjects.grenades.Grenade;
+import no.kash.gamedev.jag.game.gameobjects.grenades.AbstractGrenade;
 import no.kash.gamedev.jag.game.gameobjects.particles.Confetti;
 import no.kash.gamedev.jag.game.gameobjects.players.Player;
 import no.kash.gamedev.jag.game.gameobjects.players.PlayerInfo;
@@ -61,7 +61,7 @@ public class PlayScreen extends AbstractGameScreen {
 
 	@SuppressWarnings({ "rawtypes" })
 	private static final Class[] focusCameraOnPOIs = new Class[] { Player.class, Weapon.class, WeaponSpawnTile.class,
-			Grenade.class, Explosion.class }, focusCameraOnWinner = new Class[] { Player.class };
+			AbstractGrenade.class, Explosion.class }, focusCameraOnWinner = new Class[] { Player.class };
 
 	GameSession gameSession;
 	Map<Integer, Player> players;
@@ -81,6 +81,7 @@ public class PlayScreen extends AbstractGameScreen {
 
 	@Override
 	protected void onShow() {
+		game.getServer().broadcast(new PlayerStateChange(JustAnotherGameController.PLAY_STATE));
 		stage.setViewport(new StretchViewport(Defs.WIDTH, Defs.HEIGHT, camera));
 		initInputReceiver();
 		initSession();
@@ -184,7 +185,7 @@ public class PlayScreen extends AbstractGameScreen {
 
 			PlayerSpawnPoint spawnPoint = level.playerSpawns.get(index);
 			if (spawnPoint.taken) {
-				index++;
+				index = (index + 1) % level.playerSpawns.size();
 				continue;
 			}
 
@@ -329,7 +330,7 @@ public class PlayScreen extends AbstractGameScreen {
 
 				case BUTTON_RELOAD:
 					p.setReloading(input.state[0] == 1);
-					
+
 					break;
 				default:
 					System.out.println("Unknown input: " + input.inputId);
@@ -374,7 +375,7 @@ public class PlayScreen extends AbstractGameScreen {
 
 	@Override
 	protected void debugDraw(ShapeRenderer renderer) {
-		if(!gameSession.settings.getSelectedValue(Defs.SESSION_DEBUG_DRAW, Boolean.class)){
+		if (!gameSession.settings.getSelectedValue(Defs.SESSION_DEBUG_DRAW, Boolean.class)) {
 			return;
 		}
 		renderer.begin(ShapeRenderer.ShapeType.Line);

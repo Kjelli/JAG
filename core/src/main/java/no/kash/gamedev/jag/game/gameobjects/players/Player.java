@@ -22,10 +22,9 @@ import no.kash.gamedev.jag.game.gamecontext.physics.tilecollisions.TileCollision
 import no.kash.gamedev.jag.game.gamecontext.physics.tilecollisions.TileCollisionListener;
 import no.kash.gamedev.jag.game.gameobjects.AbstractGameObject;
 import no.kash.gamedev.jag.game.gameobjects.bullets.Bullet;
-import no.kash.gamedev.jag.game.gameobjects.bullets.NormalBullet;
 import no.kash.gamedev.jag.game.gameobjects.collectables.weapons.Weapon;
 import no.kash.gamedev.jag.game.gameobjects.grenades.Explosion;
-import no.kash.gamedev.jag.game.gameobjects.grenades.Grenade;
+import no.kash.gamedev.jag.game.gameobjects.grenades.NormalGrenade;
 import no.kash.gamedev.jag.game.gameobjects.particles.BloodSplatter;
 import no.kash.gamedev.jag.game.gameobjects.particles.Star;
 import no.kash.gamedev.jag.game.gameobjects.players.damagehandlers.DamageHandler;
@@ -33,6 +32,8 @@ import no.kash.gamedev.jag.game.gameobjects.players.damagehandlers.VanillaDamage
 import no.kash.gamedev.jag.game.gameobjects.players.guns.Gun;
 import no.kash.gamedev.jag.game.gameobjects.players.guns.GunType;
 import no.kash.gamedev.jag.game.gameobjects.players.hud.HealthHud;
+import no.kash.gamedev.jag.game.gameobjects.players.item.Item;
+import no.kash.gamedev.jag.game.gameobjects.players.item.ItemType;
 import no.kash.gamedev.jag.game.gameobjects.players.status.Status;
 import no.kash.gamedev.jag.game.gameobjects.players.status.StatusHandler;
 import no.kash.gamedev.jag.game.gamesession.GameMode;
@@ -65,6 +66,7 @@ public class Player extends AbstractGameObject implements Collidable {
 	private boolean invincible = false;
 	private boolean drawNames = true;
 
+	private Item throwable;
 	private Gun gun;
 	private CircularHitbox hitbox;
 	private HealthHud healthHud;
@@ -73,7 +75,7 @@ public class Player extends AbstractGameObject implements Collidable {
 	private float grenadeDirection;
 	private float healthMax;
 	private float health;
-	private Cooldown grenadeCooldown;
+	private Cooldown throwableCooldown;
 	private float grenadeCooldownDuration = 3;
 
 	private GlyphLayout nameLabel;
@@ -143,7 +145,10 @@ public class Player extends AbstractGameObject implements Collidable {
 		getGameContext().spawn(healthHud);
 		GunType startingGun = gameSession.settings.getSelectedValue(Defs.SESSION_STARTING_GUN, GunType.class);
 		equipGun(startingGun);
-		grenadeCooldown = new Cooldown(grenadeCooldownDuration);
+		ItemType startingItem = gameSession.settings.getSelectedValue(Defs.SESSION_STARTING_ITEM, ItemType.class);
+		equipItem(startingItem);
+		System.out.println("Equipped: " + startingItem);
+		throwableCooldown = new Cooldown(grenadeCooldownDuration);
 
 		getGameContext().bringToFront(this);
 
@@ -164,7 +169,7 @@ public class Player extends AbstractGameObject implements Collidable {
 		}
 		gun.update(delta);
 		statusHandler.update(delta);
-		grenadeCooldown.update(delta);
+		throwableCooldown.update(delta);
 
 		if (gun.getType() == GunType.awp && aiming && !gun.isReloading()) {
 			if (laserSight == null || laserSight.disposed) {
@@ -228,7 +233,7 @@ public class Player extends AbstractGameObject implements Collidable {
 		if (isFiring()) {
 			if (gun.isHoldToShoot()) {
 				fireBullet();
-			} else if(!gun.isReloading()){
+			} else if (!gun.isReloading() && !gun.isOnCooldown()) {
 				aiming = true;
 			}
 		}
@@ -292,6 +297,7 @@ public class Player extends AbstractGameObject implements Collidable {
 		equipGun(type, type.getMaxAmmo(), type.getMagazineSize());
 	}
 
+	
 	public void equipGun(GunType type, int ammo, int mag) {
 		gun = new Gun(type);
 		gun.equip(this);
@@ -301,6 +307,11 @@ public class Player extends AbstractGameObject implements Collidable {
 				new float[][] { { type.ordinal() }, { gun.getMagasineAmmo(), gun.getMagasineSize(), gun.getAmmo() } }));
 
 	}
+	
+	private void equipItem(ItemType itemType) {
+		throwable = new Item(itemType);
+	}
+
 
 	public int getId() {
 		return info.id;
@@ -351,7 +362,7 @@ public class Player extends AbstractGameObject implements Collidable {
 	}
 
 	public void holdGrenade(float power, float dir) {
-		if (!grenadeCooldown.isOnCooldown() && !isFiring()) {
+		if (!throwableCooldown.isOnCooldown() && !isFiring()) {
 			this.grenadeDirection = dir;
 			this.grenadePower = power;
 			setRotation((float) (dir - Math.PI / 2));
@@ -385,9 +396,16 @@ public class Player extends AbstractGameObject implements Collidable {
 	}
 
 	public void releaseGrenade() {
-		if (!grenadeCooldown.isOnCooldown() && holdingGrenade) {
-			getGameContext().spawn(new Grenade(this, getCenterX(), getCenterY(), grenadeDirection, grenadePower));
-			grenadeCooldown.startCooldown();
+		if (!throwableCooldown.isOnCooldown() && holdingGrenade) {
+			switch (throwable.getType()) {
+			case grenade:
+				getGameContext()
+						.spawn(new NormalGrenade(this, getCenterX(), getCenterY(), grenadeDirection, grenadePower));
+				break;
+			default:
+				break;
+			}
+			throwableCooldown.startCooldown();
 
 			holdingGrenade = false;
 		}

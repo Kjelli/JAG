@@ -23,6 +23,7 @@ import no.kash.gamedev.jag.controller.screens.ConfigureScreen;
 import no.kash.gamedev.jag.controller.screens.ControllerScreen;
 import no.kash.gamedev.jag.controller.screens.LoadingScreen;
 import no.kash.gamedev.jag.controller.screens.LobbyControllerScreen;
+import no.kash.gamedev.jag.controller.screens.MapSelectionControllerScreen;
 
 public class JustAnotherGameController extends JagEndpoint {
 	public static final int VOTE_MAP = 1, LOBBY_STATE = 2, PLAY_STATE = 3;
@@ -88,6 +89,9 @@ public class JustAnotherGameController extends JagEndpoint {
 		boolean failed = false;
 		switch (sc.stateId) {
 		case JustAnotherGameController.VOTE_MAP:
+			((AbstractControllerScreen) getScreen()).queueNextScreen(new MapSelectionControllerScreen(this));
+			break;
+		case JustAnotherGameController.PLAY_STATE:
 			((AbstractControllerScreen) getScreen()).queueNextScreen(new ControllerScreen(this));
 			break;
 		case JustAnotherGameController.LOBBY_STATE:

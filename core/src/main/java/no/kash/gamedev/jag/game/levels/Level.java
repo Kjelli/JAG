@@ -15,6 +15,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 import no.kash.gamedev.jag.game.gamecontext.GameContext;
+import no.kash.gamedev.jag.game.gameobjects.players.guns.GunType;
 import no.kash.gamedev.jag.game.gamesession.GameSession;
 
 public class Level {
@@ -55,8 +56,7 @@ public class Level {
 		} catch (NullPointerException npe) {
 			System.err.println("NOT A TEAM MAP!");
 		}
-		weaponSpawns = determineWeaponSpawnPoints();
-		weaponSpawner = new WeaponSpawner(weaponSpawns, context);
+		weaponSpawner = determineWeaponSpawnPoints();
 
 		renderer.setView(context.getStage().getCamera().projection, 0, 0, width * tileWidth, height * tileHeight);
 	}
@@ -90,15 +90,17 @@ public class Level {
 		return tempList;
 	}
 
-	private ArrayList<Vector2> determineWeaponSpawnPoints() {
+	private WeaponSpawner determineWeaponSpawnPoints() {
 		MapObjects weaponSpawnPoints = map.getLayers().get("weaponspawn").getObjects();
-		ArrayList<Vector2> tempList = new ArrayList<>();
+		ArrayList<WeaponSpawnTileInfo> tempList = new ArrayList<>();
 		for (int i = 0; i < weaponSpawnPoints.getCount(); i++) {
 			MapObject temp = weaponSpawnPoints.get(i);
-			tempList.add(new Vector2(temp.getProperties().get("x", Float.class),
-					temp.getProperties().get("y", Float.class)));
+			GunType gunType = temp.getProperties().containsKey("type") ? GunType.valueOf((String)temp.getProperties().get("type")) : null;
+			float spawnRate = temp.getProperties().containsKey("rate") ? Float.valueOf((String)temp.getProperties().get("rate")) : WeaponSpawner.SPAWN_RATE;
+			tempList.add(new WeaponSpawnTileInfo(new Vector2(temp.getProperties().get("x", Float.class),
+					temp.getProperties().get("y", Float.class)), gunType, spawnRate ));
 		}
-		return tempList;
+		return new WeaponSpawner(tempList, context);
 	}
 
 	public void dispose() {

@@ -183,8 +183,7 @@ public abstract class AbstractRoundHandler<T> implements RoundHandler<T> {
 							} else {
 								statsHandler();
 								gameScreen.getGame().setScreen(new LobbyScreen(gameScreen.getGame(), gameSession));
-								gameScreen.getGame().getServer()
-										.broadcast(new PlayerStateChange(JustAnotherGameController.LOBBY_STATE));
+
 							}
 						}
 					}

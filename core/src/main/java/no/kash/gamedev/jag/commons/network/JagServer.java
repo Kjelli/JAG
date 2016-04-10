@@ -9,6 +9,7 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 
+import no.kash.gamedev.jag.commons.network.QueuedPacket.Type;
 import no.kash.gamedev.jag.commons.network.packets.GamePacket;
 
 public class JagServer {
@@ -17,12 +18,14 @@ public class JagServer {
 	private NetworkListener listener;
 
 	private Queue<NetworkEvent> eventQueue;
+	private Queue<QueuedPacket> packetQueue;
 
 	public JagServer() {
 		server = new Server();
 		new HashMap<>();
 		init();
-		eventQueue = new Queue<NetworkEvent>();
+		eventQueue = new Queue<>();
+		packetQueue = new Queue<>();
 	}
 
 	private void init() {
@@ -47,12 +50,8 @@ public class JagServer {
 		});
 	}
 
-
 	public void update(float delta) {
-		if (listener == null) {
-			eventQueue.clear();
-			return;
-		}
+
 		while (eventQueue.size > 0) {
 			NetworkEvent next = eventQueue.removeFirst();
 			if (next == null) {
@@ -61,14 +60,39 @@ public class JagServer {
 
 			switch (next.type) {
 			case NetworkEvent.CONNECT:
-				listener.connected(next.connection);
+				if (listener != null) {
+					listener.connected(next.connection);
+				}
 				break;
 			case NetworkEvent.DISCONNECT:
-				listener.disconnected(next.connection);
+				if (listener != null) {
+					listener.disconnected(next.connection);
+				}
 				break;
 			case NetworkEvent.PACKET:
-				listener.receivedPacket(next.connection, next.packet);
+				if (listener != null) {
+					listener.receivedPacket(next.connection, next.packet);
+				}
 				break;
+			}
+		}
+
+		while (packetQueue.size > 0) {
+			QueuedPacket next = packetQueue.removeFirst();
+
+			switch (next.type) {
+			case BROADCAST:
+				server.sendToAllTCP(next.packet);
+				break;
+			case BROADCAST_EXCEPT:
+				server.sendToAllExceptTCP(next.id, next.packet);
+				break;
+			case SEND:
+				server.sendToTCP(next.id, next.packet);
+				break;
+			default:
+				break;
+
 			}
 		}
 	}
@@ -85,18 +109,15 @@ public class JagServer {
 	}
 
 	public void send(int id, GamePacket packet) {
-		server.sendToTCP(id, packet);
-
+		packetQueue.addLast(new QueuedPacket(id, packet, Type.SEND));
 	}
 
 	public void broadcast(GamePacket packet) {
-		server.sendToAllTCP(packet);
-
+		packetQueue.addLast(new QueuedPacket(-1, packet, Type.BROADCAST));
 	}
 
 	public void broadcastExcept(int id, GamePacket packet) {
-		server.sendToAllExceptTCP(id, packet);
-
+		packetQueue.addLast(new QueuedPacket(-1, packet, Type.BROADCAST_EXCEPT));
 	}
 
 	public NetworkListener getListener() {
