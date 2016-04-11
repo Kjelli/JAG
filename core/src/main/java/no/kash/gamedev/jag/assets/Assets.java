@@ -41,6 +41,7 @@ public class Assets {
 	public static Texture fire;
 	public static Texture poison;
 	public static Texture star;
+	public static Texture healing;
 	public static Texture confetti;
 	public static Texture wepSpawnEffect;
 	public static Array<TextureRegion> explosion_frames;
@@ -54,6 +55,9 @@ public class Assets {
 	public static Texture flamethrower_ground;
 	public static Texture crossbow_ground;
 	public static Texture awp_ground;
+	
+	//Items
+	public static Texture healthpack;
 
 	// Icons
 	public static Texture health_icon;
@@ -106,6 +110,7 @@ public class Assets {
 		blood3 = load("blood3.png");
 		fire = load("fire.png");
 		poison = load("poison.png");
+		healing = load("heal.png");
 		wepSpawnEffect = load("sprites/spawnEffect.png");
 		star = load("sprites/star.png");
 		confetti = load("sprites/confetti.png");
@@ -119,6 +124,9 @@ public class Assets {
 		awp_ground = load("sprites/gun_awp.png");
 		goldengun_ground = load("sprites/gun_goldengun.png");
 		crossbow_ground = load("sprites/gun_crossbow.png");
+		
+		//Items
+		healthpack = load("sprites/health_pack.png");
 
 		// Icons
 

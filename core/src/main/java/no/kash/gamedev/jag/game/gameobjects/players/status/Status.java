@@ -2,6 +2,7 @@ package no.kash.gamedev.jag.game.gameobjects.players.status;
 
 import no.kash.gamedev.jag.game.commons.utils.Cooldown;
 import no.kash.gamedev.jag.game.gameobjects.particles.Burn;
+import no.kash.gamedev.jag.game.gameobjects.particles.HealingParticle;
 import no.kash.gamedev.jag.game.gameobjects.particles.Poison;
 import no.kash.gamedev.jag.game.gameobjects.players.Player;
 
@@ -50,6 +51,12 @@ public class Status {
 				ticker.startCooldown();
 			}
 			break;
+		case healing:
+			player.removeAllStatuses();
+			player.getGameContext()
+			.spawn(new HealingParticle(
+					player.getCenterX() + (float) (Math.random() * Player.WIDTH / 2 - Player.WIDTH / 4),
+					player.getCenterY() + (float) (Math.random() * Player.HEIGHT / 2 - Player.HEIGHT / 4)));
 		case slow:
 			break;
 		case stun:

@@ -16,6 +16,7 @@ import no.kash.gamedev.jag.commons.network.packets.PlayerUpdate;
 import no.kash.gamedev.jag.controller.JustAnotherGameController;
 import no.kash.gamedev.jag.game.JustAnotherGame;
 import no.kash.gamedev.jag.game.commons.utils.Cooldown;
+import no.kash.gamedev.jag.game.gamecontext.GameContext;
 import no.kash.gamedev.jag.game.gamecontext.physics.Collidable;
 import no.kash.gamedev.jag.game.gamecontext.physics.Collision;
 import no.kash.gamedev.jag.game.gamecontext.physics.tilecollisions.TileCollisionDetector;
@@ -34,10 +35,12 @@ import no.kash.gamedev.jag.game.gameobjects.players.guns.Gun;
 import no.kash.gamedev.jag.game.gameobjects.players.guns.GunType;
 import no.kash.gamedev.jag.game.gameobjects.players.guns.LaserSight;
 import no.kash.gamedev.jag.game.gameobjects.players.hud.HealthHud;
+import no.kash.gamedev.jag.game.gameobjects.players.item.CollectableItem;
 import no.kash.gamedev.jag.game.gameobjects.players.item.Item;
 import no.kash.gamedev.jag.game.gameobjects.players.item.ItemType;
 import no.kash.gamedev.jag.game.gameobjects.players.status.Status;
 import no.kash.gamedev.jag.game.gameobjects.players.status.StatusHandler;
+import no.kash.gamedev.jag.game.gameobjects.players.status.StatusType;
 import no.kash.gamedev.jag.game.gamesession.GameMode;
 import no.kash.gamedev.jag.game.gamesession.GameSession;
 import no.kash.gamedev.jag.game.screens.LobbyScreen;
@@ -127,6 +130,7 @@ public class Player extends AbstractGameObject implements Collidable {
 
 	@Override
 	public void onSpawn() {
+
 		// Set sprite
 		Sprite sprite = new Sprite(Assets.man);
 		sprite.setOrigin(getWidth() / 2, getHeight() / 2);
@@ -313,6 +317,23 @@ public class Player extends AbstractGameObject implements Collidable {
 		throwable = new Item(itemType);
 	}
 
+	public void pickUpItem(CollectableItem collectableItem) {
+		ItemType type = collectableItem.type;
+		if (type.isUseOnPickup()) {
+			switch (type) {
+			case healthpack:
+				heal(type.getMagnitude());
+
+				break;
+
+			default:
+				break;
+			}
+		} else {
+			equipItem(type);
+		}
+	}
+
 	public int getId() {
 		return info.id;
 	}
@@ -370,6 +391,19 @@ public class Player extends AbstractGameObject implements Collidable {
 		}
 	}
 
+	public void heal(float amount) {
+		float newHP = getHealth() + amount;
+		if (newHP > healthMax) {
+			setHealth(healthMax);
+		} else {
+			setHealth(newHP);
+		}
+		applyStatus(new Status(this, StatusType.healing, 2f));
+		((JustAnotherGame) getGameContext().getGame()).getServer().send(info.id,
+				new PlayerUpdate(2, new int[] { PlayerUpdate.HEALTH, PlayerUpdate.FEEDBACK_VIBRATION },
+						new float[][] { { health }, { 10.0f } }));
+	}
+
 	public void setHealth(float health) {
 		this.health = health;
 		healthHud.display();
@@ -403,8 +437,7 @@ public class Player extends AbstractGameObject implements Collidable {
 						.spawn(new NormalGrenade(this, getCenterX(), getCenterY(), grenadeDirection, grenadePower));
 				break;
 			case tripmine:
-				getGameContext()
-						.spawn(new TripMine(this, getCenterX(), getCenterY(), grenadeDirection, grenadePower));
+				getGameContext().spawn(new TripMine(this, getCenterX(), getCenterY(), grenadeDirection, grenadePower));
 				break;
 			default:
 				break;
@@ -508,6 +541,10 @@ public class Player extends AbstractGameObject implements Collidable {
 
 	public void applyStatus(Status status) {
 		statusHandler.apply(status);
+	}
+
+	public void removeAllStatuses() {
+		statusHandler.removeAllNegativeStatuses();
 	}
 
 	public boolean isReloading() {

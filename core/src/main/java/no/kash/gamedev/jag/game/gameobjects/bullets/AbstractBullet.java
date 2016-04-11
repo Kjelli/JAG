@@ -37,7 +37,7 @@ public abstract class AbstractBullet extends AbstractGameObject implements Bulle
 			public void onCollide(MapObject rectangleObject, MinimumTranslationVector col) {
 				String data = (String) rectangleObject.getProperties().get("collision_level");
 				if (data != null) {
-					if (Integer.parseInt(data) == 2) {
+					if (Integer.parseInt(data) >= 2) {
 						destroy();
 					}
 				}

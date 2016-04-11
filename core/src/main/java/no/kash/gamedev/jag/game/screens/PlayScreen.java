@@ -43,10 +43,14 @@ import no.kash.gamedev.jag.game.JustAnotherGame;
 import no.kash.gamedev.jag.game.gameobjects.GameObject;
 import no.kash.gamedev.jag.game.gameobjects.collectables.weapons.Weapon;
 import no.kash.gamedev.jag.game.gameobjects.grenades.Explosion;
+import no.kash.gamedev.jag.game.gameobjects.grenades.Grenade;
 import no.kash.gamedev.jag.game.gameobjects.grenades.AbstractGrenade;
 import no.kash.gamedev.jag.game.gameobjects.particles.Confetti;
 import no.kash.gamedev.jag.game.gameobjects.players.Player;
 import no.kash.gamedev.jag.game.gameobjects.players.PlayerInfo;
+import no.kash.gamedev.jag.game.gameobjects.players.hud.HealthHud;
+import no.kash.gamedev.jag.game.gameobjects.players.item.CollectableItem;
+import no.kash.gamedev.jag.game.gameobjects.players.item.ItemType;
 import no.kash.gamedev.jag.game.gamesession.GameMode;
 import no.kash.gamedev.jag.game.gamesession.GameSession;
 import no.kash.gamedev.jag.game.gamesession.roundhandlers.FFARoundHandler;
@@ -61,7 +65,7 @@ public class PlayScreen extends AbstractGameScreen {
 
 	@SuppressWarnings({ "rawtypes" })
 	private static final Class[] focusCameraOnPOIs = new Class[] { Player.class, Weapon.class, WeaponSpawnTile.class,
-			AbstractGrenade.class, Explosion.class }, focusCameraOnWinner = new Class[] { Player.class };
+			Grenade.class, CollectableItem.class, Explosion.class }, focusCameraOnWinner = new Class[] { Player.class };
 
 	GameSession gameSession;
 	Map<Integer, Player> players;
@@ -194,6 +198,8 @@ public class PlayScreen extends AbstractGameScreen {
 			Player player = new Player(gameSession, playerInfo, spawnX, spawnY);
 			players.put(playerInfo.id, player);
 			gameContext.spawn(player);
+			
+			gameContext.spawn(new CollectableItem(spawnX+player.getWidth(), spawnY, ItemType.healthpack));
 
 			spawnPoint.taken = true;
 			index = (index + 1) % level.playerSpawns.size();
@@ -235,8 +241,8 @@ public class PlayScreen extends AbstractGameScreen {
 					if (!((WeaponSpawnTile) object).isSpawning()) {
 						continue;
 					}
-				} else if (object instanceof Weapon) {
-					if (((Weapon) object).getAliveTime() > 5.0f) {
+				} else if (object instanceof Weapon || object instanceof Grenade || object instanceof CollectableItem) {
+					if (object.getAliveTime() > 5.0f) {
 						continue;
 					}
 				}
