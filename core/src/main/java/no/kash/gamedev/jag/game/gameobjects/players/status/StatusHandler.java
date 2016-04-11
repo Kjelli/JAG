@@ -39,10 +39,10 @@ public class StatusHandler {
 		statuses.add(status);
 		status.duration.startCooldown();
 	}
-	
-	public void removeAllStatuses(){
-		for(int i = 0; i<statuses.size()-1;i++){
-			if(statuses.get(i).type != StatusType.healing){
+
+	public void removeAllNegativeStatuses() {
+		for (int i = 0; i < statuses.size(); i++) {
+			if (statuses.get(i).type != StatusType.healing) {
 				statuses.remove(i);
 			}
 		}

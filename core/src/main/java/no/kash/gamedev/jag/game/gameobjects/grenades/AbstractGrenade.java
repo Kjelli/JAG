@@ -19,10 +19,9 @@ import no.kash.gamedev.jag.game.gameobjects.players.Player;
 
 public abstract class AbstractGrenade extends AbstractGameObject implements Grenade {
 
-	public static final float TIME_TO_LIVE_MAX = 1.0f;
 	public static final float SPEED = 300f;
 
-	public float timeToLive = TIME_TO_LIVE_MAX;
+	public float timeToLive;
 	public final float direction;
 	public final float power;
 
@@ -32,10 +31,11 @@ public abstract class AbstractGrenade extends AbstractGameObject implements Gren
 
 	public final TileCollisionListener tileListener;
 
-	public AbstractGrenade(Player thrower, Texture texture, float x, float y, float direction, float power) {
-		super(x, y, 16, 16);
+	public AbstractGrenade(Player thrower, Texture texture, float x, float y, float width, float height, float direction, float power, float timeToLive) {
+		super(x, y, width, height);
 		setSprite(new Sprite(texture));
 		getSprite().setOrigin(getWidth() / 2, getHeight() / 2);
+		this.timeToLive = timeToLive;
 		this.direction = direction;
 		this.power = power;
 		this.thrower = thrower;

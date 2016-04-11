@@ -10,8 +10,6 @@ public class CollectableItem extends AbstractCollectable{
 	
 	public ItemType type;
 	
-	
-	
 	public CollectableItem(float x, float y, ItemType type) {
 		super(x, y, 32,32 );
 		this.type = type;
