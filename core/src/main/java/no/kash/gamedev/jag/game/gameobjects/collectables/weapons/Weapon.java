@@ -60,4 +60,9 @@ public class Weapon extends AbstractCollectable {
 		setY(startingY - getHeight() / 2);
 	}
 
+	@Override
+	public boolean isCollected() {
+		return !isAlive();
+	}
+
 }

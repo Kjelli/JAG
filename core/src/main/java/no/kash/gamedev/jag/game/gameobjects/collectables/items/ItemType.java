@@ -1,4 +1,4 @@
-package no.kash.gamedev.jag.game.gameobjects.players.item;
+package no.kash.gamedev.jag.game.gameobjects.collectables.items;
 
 import com.badlogic.gdx.graphics.Texture;
 
@@ -43,7 +43,7 @@ public enum ItemType {
 
 
 
-	public int getUses() {
+	public int getDefaultUses() {
 		return uses;
 	}
 

@@ -5,15 +5,13 @@ import static no.kash.gamedev.jag.controller.screens.ControllerScreen.JOYSTICK_L
 import static no.kash.gamedev.jag.controller.screens.ControllerScreen.JOYSTICK_MID;
 import static no.kash.gamedev.jag.controller.screens.ControllerScreen.JOYSTICK_RIGHT;
 
-import java.util.ArrayList;
+import java.awt.Point;
 import java.util.HashMap;
-import java.util.List;
+import java.util.Iterator;
 import java.util.Map;
 
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapLayer;
@@ -21,13 +19,9 @@ import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.esotericsoftware.kryonet.Connection;
 
-import aurelienribon.tweenengine.BaseTween;
-import aurelienribon.tweenengine.Tween;
-import aurelienribon.tweenengine.TweenCallback;
 import no.kash.gamedev.jag.commons.defs.Defs;
 import no.kash.gamedev.jag.commons.network.JagServerPacketHandler;
 import no.kash.gamedev.jag.commons.network.packets.GamePacket;
@@ -35,31 +29,27 @@ import no.kash.gamedev.jag.commons.network.packets.PlayerConnect;
 import no.kash.gamedev.jag.commons.network.packets.PlayerInput;
 import no.kash.gamedev.jag.commons.network.packets.PlayerStateChange;
 import no.kash.gamedev.jag.commons.network.packets.PlayerStateChangeResponse;
-import no.kash.gamedev.jag.commons.tweens.TweenGlobal;
-import no.kash.gamedev.jag.commons.tweens.TweenableFloat;
-import no.kash.gamedev.jag.commons.tweens.accessors.FloatAccessor;
 import no.kash.gamedev.jag.controller.JustAnotherGameController;
 import no.kash.gamedev.jag.game.JustAnotherGame;
 import no.kash.gamedev.jag.game.gameobjects.GameObject;
+import no.kash.gamedev.jag.game.gameobjects.collectables.items.CollectableItem;
+import no.kash.gamedev.jag.game.gameobjects.collectables.items.Item;
+import no.kash.gamedev.jag.game.gameobjects.collectables.items.ItemType;
 import no.kash.gamedev.jag.game.gameobjects.collectables.weapons.Weapon;
 import no.kash.gamedev.jag.game.gameobjects.grenades.Explosion;
 import no.kash.gamedev.jag.game.gameobjects.grenades.Grenade;
-import no.kash.gamedev.jag.game.gameobjects.grenades.AbstractGrenade;
 import no.kash.gamedev.jag.game.gameobjects.particles.Confetti;
 import no.kash.gamedev.jag.game.gameobjects.players.Player;
 import no.kash.gamedev.jag.game.gameobjects.players.PlayerInfo;
-import no.kash.gamedev.jag.game.gameobjects.players.hud.HealthHud;
-import no.kash.gamedev.jag.game.gameobjects.players.item.CollectableItem;
-import no.kash.gamedev.jag.game.gameobjects.players.item.ItemType;
 import no.kash.gamedev.jag.game.gamesession.GameMode;
 import no.kash.gamedev.jag.game.gamesession.GameSession;
-import no.kash.gamedev.jag.game.gamesession.roundhandlers.FFARoundHandler;
-import no.kash.gamedev.jag.game.gamesession.roundhandlers.RoundHandler;
 import no.kash.gamedev.jag.game.gamesession.roundhandlers.RoundResult;
 import no.kash.gamedev.jag.game.levels.Level;
 import no.kash.gamedev.jag.game.levels.PlayerSpawnPoint;
 import no.kash.gamedev.jag.game.levels.WeaponSpawnTile;
-import no.kash.gamedev.jag.game.gamesession.roundhandlers.FFARoundResult;
+import no.kash.gamedev.jag.game.levels.pathfinding.LevelPathFinder;
+import no.kash.gamedev.jag.game.levels.pathfinding.MapNode;
+import no.kash.gamedev.jag.game.levels.pathfinding.PathResult;
 
 public class PlayScreen extends AbstractGameScreen {
 
@@ -127,6 +117,7 @@ public class PlayScreen extends AbstractGameScreen {
 
 		checkWinCondition();
 	}
+
 
 	public void spawnConfetti() {
 		for (int i = 0; i < 2; i++) {
@@ -198,8 +189,8 @@ public class PlayScreen extends AbstractGameScreen {
 			Player player = new Player(gameSession, playerInfo, spawnX, spawnY);
 			players.put(playerInfo.id, player);
 			gameContext.spawn(player);
-			
-			gameContext.spawn(new CollectableItem(spawnX+player.getWidth(), spawnY, ItemType.healthpack));
+
+			gameContext.spawn(new CollectableItem(spawnX + player.getWidth(), spawnY, new Item(ItemType.healthpack)));
 
 			spawnPoint.taken = true;
 			index = (index + 1) % level.playerSpawns.size();
@@ -290,7 +281,7 @@ public class PlayScreen extends AbstractGameScreen {
 
 				if (m instanceof PlayerConnect) {
 					if (gameSession.settings.getSelectedValue(Defs.SESSION_DROP_IN, Boolean.class)) {
-						game.getServer().send(c.getID(), new PlayerStateChange(JustAnotherGameController.VOTE_MAP));
+						game.getServer().send(c.getID(), new PlayerStateChange(JustAnotherGameController.PLAY_STATE));
 					} else {
 						// TODO send message to wait for next game
 					}

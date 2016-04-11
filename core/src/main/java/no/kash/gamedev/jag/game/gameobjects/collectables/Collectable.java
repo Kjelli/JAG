@@ -10,4 +10,6 @@ public interface Collectable {
 
 	// A gun on the ground can be collected by the player
 	void collect(Player player);
+
+	boolean isCollected();
 }

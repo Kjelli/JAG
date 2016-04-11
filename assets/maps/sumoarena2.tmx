@@ -13,7 +13,7 @@
  </tileset>
  <layer name="ground" width="40" height="26">
   <data encoding="base64" compression="zlib">
-   eJzt1LENACAMA8GsBhvASikpKVmWDEAbbISL6yO9FTczF5GjSW6RQ/dT37/7skPvS/vLNcih96X9aX/M0P0y+pZQifu20C/dh/4fr/+XDTlFN/E=
+   eJzt1KENADAMA0HvHlhY2GW7QGlkV3lwPJJfKUkF4GmHO+Hc+7Hv7H3Tufuiv14rnLsv+qO/ZO79pu/bfZ/7f/z+Xy5xAzkP
   </data>
  </layer>
  <objectgroup name="spawnpoints">
@@ -32,7 +32,7 @@
  </objectgroup>
  <layer name="obstacles" width="40" height="26">
   <data encoding="base64" compression="zlib">
-   eJzFl8tSAjEQRdvHXhH3oLATQdGdo6BbFZUt+Ngr8AGA+uneqXGqUpnEdJ521VkkzMDNTac7ZER0Ca7AADyDj4TMwBwsfn87k/TI4x2wSsgafIIvsMvQN6TwcQ1uGM9dKPTcgXswAg/gMYK+JzB21DelYt9fwCt4Y3yP7Ec55vpko89lf2U/yjHXp9j6uD7Z+hrLP9NzPvnnc351vrjmY2h9Ol9c85GjrwF64ER4z/dclrEBNsEW2Bbmj0AHNBn68v6R1/Jv4X3fc1lGDeyBOtgX5pdU9BJV/+DUZ926beMAHIIWaCs+d63PunXbxinogzNwztTHyT/Tum1Dzmff/DOt2zbkfP4r/0LUP1Md5Eas+meqg6n12faH/+q/tn3YFLdUrXch7886X7n+Taha70Lq0/nK9e+dqv+ZUtzvuaHaX5f7faxQ7a+sN+8fnYQcgy4VPaup0CPrzeezhIi5P1Lo+QFYDoxt
+   eJzFl0lTAjEQhVvxroB3UbiBuzdHQa8sLlfc7m4/wI2fzpsapyrVk5jOMrGrvkPCDLy8dLpDRkRn4BwMwT14ScgreAPvv7+dMT18vA4+E/IFvsEP2BDoG1H8uACXgudONXomYApm4Apc16DvBtx66rujYt8fwCN4EnwP96McS31y0eezv9yPciz1qW59Up9cfa3LP9tzIfkXcn5NvvjmY2x9Jl9881GibwvsgwPlvdBzWcYKWAUNsKbM98EAdAT68v6R1/KF8n7ouSyjCVqgDTaV+Q8qeomuf0jqs2ndrrENdkAX9DSf+9Zn07pd4xAcgWNwItQnyT/bul2D53No/tnW7Ro8n//Kvxj1z1YHpVFX/bPVwdT6XPvDf/Vf1z5sizFV613M+7PJV6l/c6rWu5j6TL5K/Xum6n8mn/t9rH7MQ7e/Pvf7WP2Yh25/ud68fwwSsgv2qOhZHY0erjefzxKi5v5Mo2cJk0SNkw==
   </data>
  </layer>
  <objectgroup name="collision">

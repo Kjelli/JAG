@@ -2,11 +2,13 @@ package no.kash.gamedev.jag.controller.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.esotericsoftware.kryonet.Connection;
 
 import aurelienribon.tweenengine.Tween;
+import no.kash.gamedev.jag.assets.Assets;
 import no.kash.gamedev.jag.commons.defs.Defs;
 import no.kash.gamedev.jag.commons.defs.Prefs;
 import no.kash.gamedev.jag.commons.network.JagClientPacketHandler;
@@ -38,6 +40,8 @@ public class ControllerScreen extends AbstractControllerScreen {
 	private Tween bgFadeTween = newFadeFromTween();
 
 	private Color bgColor;
+
+	private GlyphLayout deadLabel;
 
 	public ControllerScreen(JustAnotherGameController controller) {
 		super(controller);
@@ -80,6 +84,8 @@ public class ControllerScreen extends AbstractControllerScreen {
 		stage.addActor(stick_mid.getTouchpad());
 		stage.addActor(reload);
 
+		deadLabel = new GlyphLayout(Assets.fontLarge, "YOU ARE DEAD :'(");
+
 		InputScheme scheme = new InputScheme() {
 			/*
 			 * TODO
@@ -109,8 +115,8 @@ public class ControllerScreen extends AbstractControllerScreen {
 							new float[] { stick_mid.getXValue(), stick_mid.getYValue() }));
 					break;
 				case BUTTON_RELOAD:
-						game.getClient().send(new PlayerInput(game.getClient().getId(), BUTTON_RELOAD,
-								new float[] { event.isReleased() ? 0 : 1 }));
+					game.getClient().send(new PlayerInput(game.getClient().getId(), BUTTON_RELOAD,
+							new float[] { event.isReleased() ? 0 : 1 }));
 					break;
 				default:
 					game.getActionResolver().toast("Unknown input: " + event.getId());
@@ -174,6 +180,8 @@ public class ControllerScreen extends AbstractControllerScreen {
 			case PlayerUpdate.GUN:
 				hud.updateGun((int) m.state[i][0]);
 				break;
+			case PlayerUpdate.ITEM:
+				hud.updateItem((int) m.state[i][0], (int) m.state[i][1]);
 			}
 	}
 
@@ -183,11 +191,22 @@ public class ControllerScreen extends AbstractControllerScreen {
 
 	@Override
 	public void draw(float delta) {
-		stick_left.getTouchpad().draw(batch, 1.0f);
-		stick_right.getTouchpad().draw(batch, 1.0f);
-		stick_mid.getTouchpad().draw(batch, 1.0f);
-		reload.draw(batch, 1.0f);
-		hud.draw(batch);
+		if (hud.getHealth() > 0) {
+			if(stick_left.getTouchpad().getColor().a == 0){
+				stick_left.getTouchpad().setColor(1, 1, 1, 0.25f);
+				stick_right.getTouchpad().setColor(1, 1, 1, 0.25f);
+				stick_mid.getTouchpad().setColor(1, 1, 1, 0.25f);
+			}
+			reload.setColor(1,1,1,1);
+			hud.draw(batch);
+		} else {
+			stick_left.getTouchpad().setColor(1, 1, 1, 0);
+			stick_right.getTouchpad().setColor(1, 1, 1, 0);
+			stick_mid.getTouchpad().setColor(1, 1, 1, 0);
+			reload.setColor(1,1,1,0);
+			Assets.fontLarge.draw(batch, deadLabel, stage.getWidth() / 2 - deadLabel.width / 2,
+					stage.getHeight() / 2);
+		}
 
 	}
 

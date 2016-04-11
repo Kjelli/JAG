@@ -1,4 +1,4 @@
-package no.kash.gamedev.jag.game.gameobjects.players.item;
+package no.kash.gamedev.jag.game.gameobjects.collectables.items;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
@@ -8,13 +8,13 @@ import no.kash.gamedev.jag.game.gameobjects.players.Player;
 public class CollectableItem extends AbstractCollectable{
 
 	
-	public ItemType type;
+	public Item item;
 	
-	public CollectableItem(float x, float y, ItemType type) {
+	public CollectableItem(float x, float y, Item item) {
 		super(x, y, 32,32 );
-		this.type = type;
+		this.item = item;
 		
-		Sprite sprite = new Sprite(type.getTexture());
+		Sprite sprite = new Sprite(item.getTexture());
 		setSprite(sprite);
 	}
 	
@@ -39,6 +39,11 @@ public class CollectableItem extends AbstractCollectable{
 	@Override
 	public void onSpawn() {
 		getGameContext().bringToFront(this);
+	}
+
+	@Override
+	public boolean isCollected() {
+		return !isAlive();
 	}
 
 }

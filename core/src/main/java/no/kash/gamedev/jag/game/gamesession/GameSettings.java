@@ -12,8 +12,8 @@ import java.util.Map.Entry;
 import no.kash.gamedev.jag.commons.defs.Defs;
 import no.kash.gamedev.jag.commons.network.packets.GameSessionUpdate;
 import no.kash.gamedev.jag.controller.preferences.GameSessionPreferences;
+import no.kash.gamedev.jag.game.gameobjects.collectables.items.ItemType;
 import no.kash.gamedev.jag.game.gameobjects.players.guns.GunType;
-import no.kash.gamedev.jag.game.gameobjects.players.item.ItemType;
 import no.kash.gamedev.jag.game.gamesession.roundhandlers.suddendeaths.SuddenDeathType;
 
 public class GameSettings {

@@ -1,5 +1,6 @@
 package no.kash.gamedev.jag.game.levels;
 
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -7,7 +8,6 @@ import java.util.Map;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
-import com.badlogic.gdx.maps.objects.TextureMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -15,8 +15,10 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 import no.kash.gamedev.jag.game.gamecontext.GameContext;
+import no.kash.gamedev.jag.game.gameobjects.GameObject;
 import no.kash.gamedev.jag.game.gameobjects.players.guns.GunType;
 import no.kash.gamedev.jag.game.gamesession.GameSession;
+import no.kash.gamedev.jag.game.levels.pathfinding.LevelPathFinder;
 
 public class Level {
 	public TiledMap map;
@@ -42,6 +44,10 @@ public class Level {
 		init();
 	}
 
+	public Point getTileCoordinate(GameObject go) {
+		return new Point((int) (go.getCenterX() / tileWidth), (int) (go.getCenterY() / tileHeight));
+	}
+
 	public void init() {
 		map = new TmxMapLoader().load(session.mapFilename);
 		width = (Integer) map.getProperties().get("width", -1, Integer.class);
@@ -59,6 +65,7 @@ public class Level {
 		weaponSpawner = determineWeaponSpawnPoints();
 
 		renderer.setView(context.getStage().getCamera().projection, 0, 0, width * tileWidth, height * tileHeight);
+		LevelPathFinder.build(this);
 	}
 
 	public void spawnWeaponTiles() {
@@ -95,10 +102,13 @@ public class Level {
 		ArrayList<WeaponSpawnTileInfo> tempList = new ArrayList<>();
 		for (int i = 0; i < weaponSpawnPoints.getCount(); i++) {
 			MapObject temp = weaponSpawnPoints.get(i);
-			GunType gunType = temp.getProperties().containsKey("type") ? GunType.valueOf((String)temp.getProperties().get("type")) : null;
-			float spawnRate = temp.getProperties().containsKey("rate") ? Float.valueOf((String)temp.getProperties().get("rate")) : WeaponSpawner.SPAWN_RATE;
-			tempList.add(new WeaponSpawnTileInfo(new Vector2(temp.getProperties().get("x", Float.class),
-					temp.getProperties().get("y", Float.class)), gunType, spawnRate ));
+			GunType gunType = temp.getProperties().containsKey("type")
+					? GunType.valueOf((String) temp.getProperties().get("type")) : null;
+			float spawnRate = temp.getProperties().containsKey("rate")
+					? Float.valueOf((String) temp.getProperties().get("rate")) : WeaponSpawner.SPAWN_RATE;
+			tempList.add(new WeaponSpawnTileInfo(
+					new Vector2(temp.getProperties().get("x", Float.class), temp.getProperties().get("y", Float.class)),
+					gunType, spawnRate));
 		}
 		return new WeaponSpawner(tempList, context);
 	}

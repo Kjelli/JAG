@@ -31,9 +31,9 @@ public class BloodSplatter extends AbstractParticle {
 		}
 	};
 
-	public static final int BASE_SPEED = 20;
-	public static final float TIME_TO_LIVE = 0.5f;
-	private static final float FADE_OUT_TIME = 60f;
+	public static final int BASE_SPEED = 22;
+	public static final float TIME_TO_LIVE = .8f;
+	private static final float FADE_OUT_TIME = 20f;
 	public float direction;
 	public float power;
 	public boolean stopped = false;

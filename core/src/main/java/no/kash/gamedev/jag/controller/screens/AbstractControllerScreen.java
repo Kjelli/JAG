@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
+import no.kash.gamedev.jag.commons.defs.Defs;
 import no.kash.gamedev.jag.commons.network.packets.PlayerStateChange;
 import no.kash.gamedev.jag.commons.network.packets.PlayerStateChangeResponse;
 import no.kash.gamedev.jag.commons.tweens.TweenGlobal;
@@ -76,7 +77,7 @@ public abstract class AbstractControllerScreen implements Screen {
 	@Override
 	public void show() {
 		camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		stage = new Stage(new StretchViewport(640, 480, camera));
+		stage = new Stage(new StretchViewport(Defs.WIDTH/2, Defs.HEIGHT/2, camera));
 		batch = new SpriteBatch();
 		gameContext = new GameContext(game);
 		inputMux = new InputMultiplexer(stage);

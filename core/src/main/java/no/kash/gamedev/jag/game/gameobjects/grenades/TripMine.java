@@ -13,10 +13,10 @@ import no.kash.gamedev.jag.game.gamecontext.physics.Collidable;
 import no.kash.gamedev.jag.game.gamecontext.physics.Collision;
 import no.kash.gamedev.jag.game.gamecontext.physics.tilecollisions.TileCollisionDetector;
 import no.kash.gamedev.jag.game.gameobjects.bullets.Fire;
+import no.kash.gamedev.jag.game.gameobjects.collectables.items.CollectableItem;
+import no.kash.gamedev.jag.game.gameobjects.collectables.items.Item;
+import no.kash.gamedev.jag.game.gameobjects.collectables.items.ItemType;
 import no.kash.gamedev.jag.game.gameobjects.players.Player;
-import no.kash.gamedev.jag.game.gameobjects.players.item.CollectableItem;
-import no.kash.gamedev.jag.game.gameobjects.players.item.Item;
-import no.kash.gamedev.jag.game.gameobjects.players.item.ItemType;
 
 public class TripMine extends AbstractGrenade implements Collidable {
 	private static final float WIDTH = 6, HEIGHT = 18;
@@ -38,8 +38,8 @@ public class TripMine extends AbstractGrenade implements Collidable {
 	@Override
 	public void timeOut() {
 		if (!placed) {
-			getGameContext()
-					.spawn(new CollectableItem(getX() - getWidth(), getY() - getHeight(), ItemType.tripmine));
+			getGameContext().spawn(
+					new CollectableItem(getX() - getWidth(), getY() - getHeight(), new Item(ItemType.tripmine, 1)));
 			destroy();
 		}
 	}
@@ -55,6 +55,9 @@ public class TripMine extends AbstractGrenade implements Collidable {
 
 	@Override
 	protected void collision(MapObject rectangleObject, MinimumTranslationVector col) {
+		if (Integer.parseInt((String) rectangleObject.getProperties().get("collision_level")) == 1) {
+			return;
+		}
 		if (placed || placingCooldown.isOnCooldown()) {
 			return;
 		}
@@ -101,7 +104,7 @@ public class TripMine extends AbstractGrenade implements Collidable {
 
 	@Override
 	public void onCollide(Collision collision) {
-		if(collision.getTarget() instanceof Explosion || collision.getTarget() instanceof Fire){
+		if (collision.getTarget() instanceof Explosion || collision.getTarget() instanceof Fire) {
 			blowUp();
 		}
 	}

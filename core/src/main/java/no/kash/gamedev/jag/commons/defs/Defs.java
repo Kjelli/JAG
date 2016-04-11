@@ -1,7 +1,7 @@
 package no.kash.gamedev.jag.commons.defs;
 
 public class Defs {
-	public static final float WIDTH = 800, HEIGHT = 600;
+	public static final float WIDTH = 1200, HEIGHT = 800;
 
 	// ################# Preference keys #################
 

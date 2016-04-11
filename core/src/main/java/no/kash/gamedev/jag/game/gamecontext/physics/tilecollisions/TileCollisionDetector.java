@@ -19,6 +19,10 @@ public class TileCollisionDetector {
 	}
 
 	public static void checkTileCollisions(Level level, GameObject go, TileCollisionListener listener) {
+		checkTileCollisions(level, go.getBounds(), listener);
+	}
+
+	public static void checkTileCollisions(Level level, Polygon go, TileCollisionListener listener) {
 		MapLayer layer = level.map.getLayers().get("collision");
 		MapObjects objects = layer.getObjects();
 
@@ -31,7 +35,7 @@ public class TileCollisionDetector {
 			p.setPosition(r.x, r.y);
 			p.setOrigin(0, 0);
 
-			if (Intersector.overlapConvexPolygons(p, go.getBounds(), col)) {
+			if (Intersector.overlapConvexPolygons(p, go, col)) {
 
 				if (listener != null) {
 					listener.onCollide(rectangleObject, col);

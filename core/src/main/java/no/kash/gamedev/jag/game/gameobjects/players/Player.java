@@ -1,5 +1,6 @@
 package no.kash.gamedev.jag.game.gameobjects.players;
 
+import com.badlogic.gdx.ai.GdxAI;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -7,6 +8,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.math.Intersector.MinimumTranslationVector;
 import com.badlogic.gdx.math.Polygon;
+import com.badlogic.gdx.math.Vector2;
 
 import no.kash.gamedev.jag.assets.Assets;
 import no.kash.gamedev.jag.commons.defs.Defs;
@@ -23,21 +25,22 @@ import no.kash.gamedev.jag.game.gamecontext.physics.tilecollisions.TileCollision
 import no.kash.gamedev.jag.game.gamecontext.physics.tilecollisions.TileCollisionListener;
 import no.kash.gamedev.jag.game.gameobjects.AbstractGameObject;
 import no.kash.gamedev.jag.game.gameobjects.bullets.Bullet;
+import no.kash.gamedev.jag.game.gameobjects.collectables.items.CollectableItem;
+import no.kash.gamedev.jag.game.gameobjects.collectables.items.Item;
+import no.kash.gamedev.jag.game.gameobjects.collectables.items.ItemType;
 import no.kash.gamedev.jag.game.gameobjects.collectables.weapons.Weapon;
 import no.kash.gamedev.jag.game.gameobjects.grenades.Explosion;
 import no.kash.gamedev.jag.game.gameobjects.grenades.NormalGrenade;
 import no.kash.gamedev.jag.game.gameobjects.grenades.TripMine;
 import no.kash.gamedev.jag.game.gameobjects.particles.BloodSplatter;
 import no.kash.gamedev.jag.game.gameobjects.particles.Star;
+import no.kash.gamedev.jag.game.gameobjects.players.ai.PlayerAI;
 import no.kash.gamedev.jag.game.gameobjects.players.damagehandlers.DamageHandler;
 import no.kash.gamedev.jag.game.gameobjects.players.damagehandlers.VanillaDamageHandler;
 import no.kash.gamedev.jag.game.gameobjects.players.guns.Gun;
 import no.kash.gamedev.jag.game.gameobjects.players.guns.GunType;
 import no.kash.gamedev.jag.game.gameobjects.players.guns.LaserSight;
 import no.kash.gamedev.jag.game.gameobjects.players.hud.HealthHud;
-import no.kash.gamedev.jag.game.gameobjects.players.item.CollectableItem;
-import no.kash.gamedev.jag.game.gameobjects.players.item.Item;
-import no.kash.gamedev.jag.game.gameobjects.players.item.ItemType;
 import no.kash.gamedev.jag.game.gameobjects.players.status.Status;
 import no.kash.gamedev.jag.game.gameobjects.players.status.StatusHandler;
 import no.kash.gamedev.jag.game.gameobjects.players.status.StatusType;
@@ -96,6 +99,8 @@ public class Player extends AbstractGameObject implements Collidable {
 
 	private boolean reloading;
 
+	private PlayerAI ai;
+
 	public Player(GameSession gameSession, PlayerInfo info, float x, float y) {
 		super(x, y, WIDTH, HEIGHT);
 		init(gameSession);
@@ -130,7 +135,9 @@ public class Player extends AbstractGameObject implements Collidable {
 
 	@Override
 	public void onSpawn() {
-
+		if (getInfo().temporary) {
+			ai = new PlayerAI(this, getGameContext());
+		}
 		// Set sprite
 		Sprite sprite = new Sprite(Assets.man);
 		sprite.setOrigin(getWidth() / 2, getHeight() / 2);
@@ -173,6 +180,10 @@ public class Player extends AbstractGameObject implements Collidable {
 											{ health } }));
 			firstFrame = false;
 		}
+		if (ai != null && !blockInput) {
+			ai.update(delta);
+		}
+
 		gun.update(delta);
 		statusHandler.update(delta);
 		throwableCooldown.update(delta);
@@ -278,6 +289,9 @@ public class Player extends AbstractGameObject implements Collidable {
 		if (laserSight != null) {
 			renderer.polygon(laserSight.getBounds().getTransformedVertices());
 		}
+		if (ai != null) {
+			ai.debugDraw(renderer);
+		}
 	}
 
 	public void accelerate(float xacc, float yacc) {
@@ -314,24 +328,42 @@ public class Player extends AbstractGameObject implements Collidable {
 	}
 
 	private void equipItem(ItemType itemType) {
-		throwable = new Item(itemType);
+		equipItem(new Item(itemType));
+	}
+
+	private void equipItem(Item item) {
+		if (throwable != null && throwable.getType() == item.getType()) {
+			throwable.setUses(throwable.getUses() + item.getUses());
+		} else {
+			throwable = item;
+		}
+
+		((JustAnotherGame) getGameContext().getGame()).getServer().send(info.id,
+				new PlayerUpdate(1, new int[] { PlayerUpdate.ITEM },
+						new float[][] { { throwable.getType().ordinal(), throwable.getUses() } }));
 	}
 
 	public void pickUpItem(CollectableItem collectableItem) {
-		ItemType type = collectableItem.type;
+		ItemType type = collectableItem.item.getType();
 		if (type.isUseOnPickup()) {
 			switch (type) {
 			case healthpack:
 				heal(type.getMagnitude());
-
 				break;
-
 			default:
 				break;
 			}
 		} else {
-			equipItem(type);
+			equipItem(collectableItem.item);
 		}
+	}
+
+	public Item getThrowable() {
+		return throwable;
+	}
+
+	public Gun getGun() {
+		return gun;
 	}
 
 	public int getId() {
@@ -442,9 +474,16 @@ public class Player extends AbstractGameObject implements Collidable {
 			default:
 				break;
 			}
+			throwable.decrementUses();
 			throwableCooldown.startCooldown();
 
+			if (throwable.isSpent()) {
+				equipItem(ItemType.grenade);
+			}
 			holdingGrenade = false;
+			((JustAnotherGame) getGameContext().getGame()).getServer().send(info.id,
+					new PlayerUpdate(1, new int[] { PlayerUpdate.ITEM },
+							new float[][] { { throwable.getType().ordinal(), throwable.getUses() } }));
 		}
 	}
 
@@ -561,4 +600,7 @@ public class Player extends AbstractGameObject implements Collidable {
 		healthHud.destroy();
 	}
 
+	public Cooldown getThrowableCooldown() {
+		return throwableCooldown;
+	}
 }

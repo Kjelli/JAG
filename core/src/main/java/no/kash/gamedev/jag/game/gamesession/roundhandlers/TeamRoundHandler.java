@@ -3,6 +3,8 @@ package no.kash.gamedev.jag.game.gamesession.roundhandlers;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.badlogic.gdx.graphics.Color;
+
 import no.kash.gamedev.jag.commons.defs.Defs;
 import no.kash.gamedev.jag.game.gamecontext.GameContext;
 import no.kash.gamedev.jag.game.gameobjects.players.Player;
@@ -90,7 +92,7 @@ public class TeamRoundHandler extends AbstractRoundHandler<Integer> {
 			int team = 1;
 			int dummyId = -500;
 			PlayerInfo dummyPlayer;
-			while (gameSession.players.size() < 4) {
+			while (gameSession.players.size() < 6) {
 				dummyId++;
 				dummyPlayer = new PlayerInfo();
 				dummyPlayer.temporary = true;
@@ -99,6 +101,7 @@ public class TeamRoundHandler extends AbstractRoundHandler<Integer> {
 			}
 			for (PlayerInfo player : gameSession.players.values()) {
 				team = (team % 2) + 1;
+				player.color = team == 1 ? Color.RED : Color.BLUE; 
 				player.teamId = team;
 			}
 		}

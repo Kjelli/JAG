@@ -44,6 +44,7 @@ public abstract class AbstractRoundHandler<T> implements RoundHandler<T> {
 	protected GlyphLayout roundTimeLabel;
 	protected Cooldown roundTime;
 
+	protected boolean firstFrame = true;
 	protected boolean hasStarted;
 	protected boolean suddenDeath = false;
 
@@ -100,6 +101,11 @@ public abstract class AbstractRoundHandler<T> implements RoundHandler<T> {
 
 	public void update(float delta) {
 
+		if (firstFrame) {
+			firstFrame = false;
+			onPlayersSpawned();
+		}
+
 		if (!hasStarted) {
 			if (this.roundTime.getCooldownTimer() > 0) {
 				this.roundTime.startCooldown();
@@ -114,6 +120,19 @@ public abstract class AbstractRoundHandler<T> implements RoundHandler<T> {
 		} else if (!roundFinished && !suddenDeath) {
 			suddenDeath = true;
 			suddenDeath();
+		}
+	}
+
+	protected void onPlayersSpawned() {
+		for (Player player : players.values()) {
+			gameScreen.getGame().getServer().send(player.getInfo().id,
+					new PlayerUpdate(4,
+							new int[] { PlayerUpdate.GUN, PlayerUpdate.AMMO, PlayerUpdate.ITEM, PlayerUpdate.HEALTH },
+							new float[][] { { player.getGun().getType().ordinal() },
+									{ player.getGun().getMagasineAmmo(), player.getGun().getMagasineSize(),
+											player.getGun().getAmmo() },
+									{ player.getThrowable().getType().ordinal(), player.getThrowable().getUses() },
+									{ player.getHealth() } }));
 		}
 	}
 
@@ -233,11 +252,15 @@ public abstract class AbstractRoundHandler<T> implements RoundHandler<T> {
 			gameContext.getLevel().weaponSpawner.stop();
 		}
 
-		for (PlayerInfo player : gameSession.players.values()) {
-			gameScreen.spawnPlayer(player);
+		for (PlayerInfo playerInfo : gameSession.players.values()) {
+			gameScreen.spawnPlayer(playerInfo);
+
+			Player player = null;
+
 			// If spawning succeeded, block input
-			if (players.containsKey(player.id)) {
-				players.get(player.id).blockInput(true);
+			if (players.containsKey(playerInfo.id)) {
+				player = players.get(playerInfo.id);
+				player.blockInput(true);
 			}
 		}
 		// No op
