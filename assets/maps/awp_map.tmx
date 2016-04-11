@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="60" height="30" tilewidth="16" tileheight="16" nextobjectid="44">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="60" height="30" tilewidth="16" tileheight="16" nextobjectid="48">
  <properties>
   <property name="ffa" value="true"/>
   <property name="name" value="Sniper Range"/>
@@ -212,5 +212,9 @@
   <object id="40" name="spawn1" type="spawn" x="880" y="224" width="32" height="32">
    <ellipse/>
   </object>
+ </objectgroup>
+ <objectgroup name="itemspawn">
+  <object id="45" name="itemspawn" x="176" y="32" width="32" height="32"/>
+  <object id="47" name="itemspawn" x="752" y="416" width="32" height="32"/>
  </objectgroup>
 </map>

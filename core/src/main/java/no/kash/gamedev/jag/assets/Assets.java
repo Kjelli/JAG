@@ -68,6 +68,9 @@ public class Assets {
 	public static Texture spawntile_common;
 	public static Texture spawntile_rare;
 	public static Texture spawntile_epic;
+	
+	public static Texture itemtile_regular;
+	public static Texture itemtile_common;
 
 	// Hud
 	public static Texture health, health_lost, health_bg, health_border, health_shine;
@@ -140,6 +143,9 @@ public class Assets {
 		spawntile_common = load("maps/sprites/spawner_common.png");
 		spawntile_rare = load("maps/sprites/spawner_rare.png");
 		spawntile_epic = load("maps/sprites/spawner_epic.png");
+		
+		itemtile_regular = load("maps/sprites/itenspawner_regular.png");
+		itemtile_common = load("maps/sprites/itenspawner_common.png");
 
 		// Hud
 		health_icon = load("sprites/health_icon.png");

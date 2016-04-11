@@ -39,13 +39,15 @@ public class FFARoundHandler extends AbstractRoundHandler<Player> {
 		return null;
 	}
 
-
 	public void setup() {
 		super.setup();
 		if (gameSession.settings.getSelectedValue(Defs.SESSION_TEST_MODE, Boolean.class)) {
-			PlayerInfo dummyPlayer = new PlayerInfo();
-			dummyPlayer.temporary = true;
-			gameSession.players.put(-500, dummyPlayer);
+			for (int i = 0; i < 2; i++) {
+				PlayerInfo dummyPlayer = new PlayerInfo();
+				dummyPlayer.temporary = true;
+				dummyPlayer.id = -500 - i;
+				gameSession.players.put(dummyPlayer.id, dummyPlayer);
+			}
 		}
 	}
 

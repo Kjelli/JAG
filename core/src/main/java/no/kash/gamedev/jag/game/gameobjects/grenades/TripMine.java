@@ -104,7 +104,7 @@ public class TripMine extends AbstractGrenade implements Collidable {
 
 	@Override
 	public void onCollide(Collision collision) {
-		if (collision.getTarget() instanceof Explosion || collision.getTarget() instanceof Fire) {
+		if (collision.getTarget() instanceof Fire) {
 			blowUp();
 		}
 	}

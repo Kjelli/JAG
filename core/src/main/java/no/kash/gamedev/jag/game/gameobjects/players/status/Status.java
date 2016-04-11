@@ -54,9 +54,9 @@ public class Status {
 		case healing:
 			player.removeAllStatuses();
 			player.getGameContext()
-			.spawn(new HealingParticle(
-					player.getCenterX() + (float) (Math.random() * Player.WIDTH / 2 - Player.WIDTH / 4),
-					player.getCenterY() + (float) (Math.random() * Player.HEIGHT / 2 - Player.HEIGHT / 4)));
+					.spawn(new HealingParticle(
+							player.getCenterX() + (float) (Math.random() * Player.WIDTH / 2 - Player.WIDTH / 4),
+							player.getCenterY() + (float) (Math.random() * Player.HEIGHT / 2 - Player.HEIGHT / 4)));
 		case slow:
 			break;
 		case stun:

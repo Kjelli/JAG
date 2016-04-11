@@ -144,6 +144,10 @@ public class PlayScreen extends AbstractGameScreen {
 		gameOver = false;
 		level.spawnWeaponTiles();
 		level.weaponSpawner.start();
+		level.spawnItemTiles();
+		if(level.itemsExists){
+		level.itemSpawner.start();
+		}
 		gameSession.roundHandler.start();
 	}
 
@@ -189,8 +193,6 @@ public class PlayScreen extends AbstractGameScreen {
 			Player player = new Player(gameSession, playerInfo, spawnX, spawnY);
 			players.put(playerInfo.id, player);
 			gameContext.spawn(player);
-
-			gameContext.spawn(new CollectableItem(spawnX + player.getWidth(), spawnY, new Item(ItemType.healthpack)));
 
 			spawnPoint.taken = true;
 			index = (index + 1) % level.playerSpawns.size();

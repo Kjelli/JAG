@@ -16,6 +16,7 @@ import com.badlogic.gdx.math.Vector2;
 
 import no.kash.gamedev.jag.game.gamecontext.GameContext;
 import no.kash.gamedev.jag.game.gameobjects.GameObject;
+import no.kash.gamedev.jag.game.gameobjects.collectables.items.ItemType;
 import no.kash.gamedev.jag.game.gameobjects.players.guns.GunType;
 import no.kash.gamedev.jag.game.gamesession.GameSession;
 import no.kash.gamedev.jag.game.levels.pathfinding.LevelPathFinder;
@@ -33,9 +34,12 @@ public class Level {
 	public OrthogonalTiledMapRenderer renderer;
 
 	public ArrayList<Vector2> weaponSpawns;
+	public ArrayList<Vector2> itemSpawns;
 	public ArrayList<PlayerSpawnPoint> playerSpawns;
 	public Map<Integer, Rectangle> teamSpawnZones;
 	public WeaponSpawner weaponSpawner;
+	public ItemSpawner itemSpawner;
+	public boolean itemsExists;
 
 	public Level(GameSession session, SpriteBatch batch, GameContext context) {
 		this.context = context;
@@ -63,13 +67,22 @@ public class Level {
 			System.err.println("NOT A TEAM MAP!");
 		}
 		weaponSpawner = determineWeaponSpawnPoints();
+		
+		itemsExists = true;
+		itemSpawner = determineItemSpawnPoints();
 
 		renderer.setView(context.getStage().getCamera().projection, 0, 0, width * tileWidth, height * tileHeight);
 		LevelPathFinder.build(this);
 	}
 
 	public void spawnWeaponTiles() {
+		
 		weaponSpawner.spawnWeaponTiles();
+	}
+	
+	public void spawnItemTiles(){
+		if(itemsExists)
+		itemSpawner.spawnItemTiles();
 	}
 
 	private Map<Integer, Rectangle> determineTeamSpawnZones() {
@@ -112,13 +125,35 @@ public class Level {
 		}
 		return new WeaponSpawner(tempList, context);
 	}
+	
+	private ItemSpawner determineItemSpawnPoints() {
+		ArrayList<ItemSpawnTileInfo> tempList = new ArrayList<>();
+		try{
+			
+		MapObjects itemSpawnPoints = map.getLayers().get("itemspawn").getObjects();
+		
+		for (int i = 0; i < itemSpawnPoints.getCount(); i++) {
+			MapObject temp = itemSpawnPoints.get(i);
+			ItemType itemType = temp.getProperties().containsKey("type") ? ItemType.valueOf((String)temp.getProperties().get("type")) : null;
+			float spawnRate = temp.getProperties().containsKey("rate") ? Float.valueOf((String)temp.getProperties().get("rate")) : ItemSpawner.SPAWN_RATE;
+			tempList.add(new ItemSpawnTileInfo(new Vector2(temp.getProperties().get("x", Float.class),
+					temp.getProperties().get("y", Float.class)), itemType, spawnRate ));
+		}
+		}catch(NullPointerException e){
+			System.out.println("No items found");
+			itemsExists = false;
+			return null;
+		}
+		return new ItemSpawner(tempList, context);
+	}
+	
+	
 
 	public void dispose() {
 		map.dispose();
 	}
 
 	public void render() {
-
 		renderer.getBatch().end();
 		renderer.render();
 		renderer.getBatch().begin();
@@ -126,7 +161,11 @@ public class Level {
 
 	public void update(float delta) {
 		weaponSpawner.update(delta);
+		if(itemsExists)
+		itemSpawner.update(delta);
 	}
+	
+
 
 	public void resetPlayerSpawns() {
 		for (PlayerSpawnPoint spawn : playerSpawns) {

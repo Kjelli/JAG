@@ -8,9 +8,9 @@ public enum ItemType {
 	
 	
 
-	grenade("Default", Assets.grenade, -1,false, 0),
-	healthpack("Healthpack", Assets.healthpack,1,true, 50),
-	tripmine("Tripmine", Assets.tripmine_ground, 3, false, 0);
+	grenade("Default", Assets.grenade, -1,false, 0,0f,1),
+	healthpack("Healthpack", Assets.healthpack,1,true, 50,0.1f,1),
+	tripmine("Tripmine", Assets.tripmine_ground, 3, false, 0,0.1f,1);
 
 	
 	private Texture texture;
@@ -18,16 +18,23 @@ public enum ItemType {
 	private boolean useOnPickup;
 	private String displayName;
 	private float magnitude;
+	
+	private float probability;
+	private int tier;
 
 	
 	
 	
-	private ItemType(String displayName, Texture texture, int uses, boolean useOnPickup, float magnitude){
+	private ItemType(String displayName, Texture texture, int uses, boolean useOnPickup, float magnitude,
+			float probablity, int tier){
 		this.texture = texture;
 		this.uses = uses;
 		this.displayName = displayName;
 		this.useOnPickup = useOnPickup;
 		this.magnitude = magnitude;
+		
+		this.probability = probablity;
+		this.tier = tier;
 	}
 
 	
@@ -57,8 +64,18 @@ public enum ItemType {
 	public float getMagnitude() {
 		return magnitude;
 	}
-	
-	
+
+
+	public float getProbability() {
+		return probability;
+	}
+
+
+	public int getTier() {
+		return tier;
+	}
+
+
 	
 	
 }

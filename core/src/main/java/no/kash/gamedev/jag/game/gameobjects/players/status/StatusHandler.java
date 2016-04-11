@@ -10,6 +10,7 @@ import no.kash.gamedev.jag.game.gameobjects.players.Player;
 public class StatusHandler {
 	public List<Status> statuses;
 	public Player player;
+	public boolean removeAllNegativeStatuses = false;
 
 	public StatusHandler(Player player) {
 		this.player = player;
@@ -19,12 +20,24 @@ public class StatusHandler {
 	public void update(float delta) {
 		for (Iterator<Status> it = statuses.iterator(); it.hasNext();) {
 			Status next = it.next();
+			if (removeAllNegativeStatuses) {
+				switch (next.type) {
+				case healing:
+					break;
+				default:
+					it.remove();
+					continue;
+				}
+			}
 			if (next.finished) {
 				it.remove();
 			} else {
 				next.update(delta);
 				next.effect(player);
 			}
+		}
+		if(removeAllNegativeStatuses){
+			removeAllNegativeStatuses = false;
 		}
 	}
 

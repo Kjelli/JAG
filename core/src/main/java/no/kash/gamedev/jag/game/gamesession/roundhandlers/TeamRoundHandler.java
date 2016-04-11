@@ -92,7 +92,7 @@ public class TeamRoundHandler extends AbstractRoundHandler<Integer> {
 			int team = 1;
 			int dummyId = -500;
 			PlayerInfo dummyPlayer;
-			while (gameSession.players.size() < 6) {
+			while (gameSession.players.size() < 60) {
 				dummyId++;
 				dummyPlayer = new PlayerInfo();
 				dummyPlayer.temporary = true;

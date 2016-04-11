@@ -136,6 +136,7 @@ public class Player extends AbstractGameObject implements Collidable {
 	@Override
 	public void onSpawn() {
 		if (getInfo().temporary) {
+			System.out.println("Making " + getInfo().id + " a bot!");
 			ai = new PlayerAI(this, getGameContext());
 		}
 		// Set sprite
@@ -467,6 +468,7 @@ public class Player extends AbstractGameObject implements Collidable {
 			case grenade:
 				getGameContext()
 						.spawn(new NormalGrenade(this, getCenterX(), getCenterY(), grenadeDirection, grenadePower));
+				throwableCooldown.startCooldown();
 				break;
 			case tripmine:
 				getGameContext().spawn(new TripMine(this, getCenterX(), getCenterY(), grenadeDirection, grenadePower));
@@ -475,7 +477,6 @@ public class Player extends AbstractGameObject implements Collidable {
 				break;
 			}
 			throwable.decrementUses();
-			throwableCooldown.startCooldown();
 
 			if (throwable.isSpent()) {
 				equipItem(ItemType.grenade);
@@ -583,7 +584,7 @@ public class Player extends AbstractGameObject implements Collidable {
 	}
 
 	public void removeAllStatuses() {
-		statusHandler.removeAllNegativeStatuses();
+		statusHandler.removeAllNegativeStatuses = true;
 	}
 
 	public boolean isReloading() {
