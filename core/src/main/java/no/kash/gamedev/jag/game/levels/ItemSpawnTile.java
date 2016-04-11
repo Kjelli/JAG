@@ -8,8 +8,11 @@ import no.kash.gamedev.jag.game.gameobjects.AbstractGameObject;
 import no.kash.gamedev.jag.game.gameobjects.collectables.weapons.Weapon;
 import no.kash.gamedev.jag.game.gameobjects.particles.WeaponSpawnEffect;
 import no.kash.gamedev.jag.game.gameobjects.players.guns.GunType;
+import no.kash.gamedev.jag.game.gameobjects.players.item.CollectableItem;
+import no.kash.gamedev.jag.game.gameobjects.players.item.Item;
+import no.kash.gamedev.jag.game.gameobjects.players.item.ItemType;
 
-public abstract class AbstractSpawnTile extends AbstractGameObject {
+public class ItemSpawnTile extends AbstractGameObject {
 
 	public static final float WIDTH = 32;
 	public static final float HEIGHT = 32;
@@ -23,24 +26,24 @@ public abstract class AbstractSpawnTile extends AbstractGameObject {
 
 	private Cooldown cooldown;
 
-	private Weapon weapon;
+	private CollectableItem item;
 	private boolean preStage;
 
-	public GunType nextWeapon;
-	public GunType limitingGunType;
+	public ItemType nextItem;
+	public ItemType limitingItemType;
 
-	public WeaponSpawner spawner;
+	public ItemSpawner spawner;
 	public float spawnRate;
 
-	public AbstractSpawnTile(WeaponSpawner spawner, WeaponSpawnTileInfo info) {
+	public ItemSpawnTile(ItemSpawner spawner, ItemSpawnTileInfo info) {
 		super(info.pos.x, info.pos.y, WIDTH, HEIGHT);
 		this.spawner = spawner;
-		this.limitingGunType = info.gunType;
+		this.limitingItemType = info.itemType;
 		this.spawnRate = info.spawnRate;
-		regular = new Sprite(Assets.spawntile_regular);
-		epic = new Sprite(Assets.spawntile_epic);
-		rare = new Sprite(Assets.spawntile_rare);
-		common = new Sprite(Assets.spawntile_common);
+		regular = new Sprite(Assets.itemtile_regular);
+		epic = new Sprite(Assets.itemtile_common);
+		rare = new Sprite(Assets.itemtile_common);
+		common = new Sprite(Assets.itemtile_common);
 		setSprite(regular);
 		cooldown = new Cooldown(3);
 		reSpawnCooldown = new Cooldown(3);
@@ -53,8 +56,8 @@ public abstract class AbstractSpawnTile extends AbstractGameObject {
 	public void update(float delta) {
 		cooldown.update(delta);
 		reSpawnCooldown.update(delta);
-		if (weapon != null) {
-			if (weapon.isAlive()) {
+		if (item != null) {
+			if (item.isAlive()) {
 				occupied = true;
 			} else {
 				occupied = false;
@@ -65,26 +68,26 @@ public abstract class AbstractSpawnTile extends AbstractGameObject {
 			preStage = false;
 			occupied = true;
 			setSprite(regular);
-			spawnWeapon();
+			spawnItem();
 		}
 	}
 
-	private void spawnWeapon() {
+	private void spawnItem() {
 		if (spawner.isStopped()) {
 			return;
 		}
-		weapon = new Weapon(getCenterX(), getCenterY(), nextWeapon);
-		getGameContext().spawn(weapon);
+		item = new CollectableItem(getCenterX(), getCenterY(), nextItem);
+		getGameContext().spawn(item);
 		getGameContext().spawn(new WeaponSpawnEffect(getCenterX(), getCenterY()));
 	}
 
-	public void preSpawnWeapon() {
-		if (limitingGunType == null) {
-			nextWeapon = randomGun();
+	public void preSpawnItem() {
+		if (limitingItemType == null) {
+			nextItem = randomItem();
 		}else{
-			nextWeapon = limitingGunType;
+			nextItem = limitingItemType;
 		}
-		switch (nextWeapon.getTier()) {
+		switch (nextItem.getTier()) {
 		default:
 		case 1:
 			setSprite(common);
@@ -100,12 +103,12 @@ public abstract class AbstractSpawnTile extends AbstractGameObject {
 		preStage = true;
 	}
 
-	private GunType randomGun() {
-		GunType next = null;
+	private ItemType randomItem() {
+		ItemType next = null;
 		double random = Math.random() * spawner.cumProbs;
 		double oldTreshold = 0;
 		double treshold = 0;
-		for (GunType type : GunType.values()) {
+		for (ItemType type : ItemType.values()) {
 			treshold += type.getProbability();
 			if (random > oldTreshold && random < treshold) {
 				next = type;

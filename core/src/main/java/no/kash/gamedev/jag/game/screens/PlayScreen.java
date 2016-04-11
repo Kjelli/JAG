@@ -58,13 +58,13 @@ import no.kash.gamedev.jag.game.gamesession.roundhandlers.RoundHandler;
 import no.kash.gamedev.jag.game.gamesession.roundhandlers.RoundResult;
 import no.kash.gamedev.jag.game.levels.Level;
 import no.kash.gamedev.jag.game.levels.PlayerSpawnPoint;
-import no.kash.gamedev.jag.game.levels.AbstractSpawnTile;
+import no.kash.gamedev.jag.game.levels.WeaponSpawnTile;
 import no.kash.gamedev.jag.game.gamesession.roundhandlers.FFARoundResult;
 
 public class PlayScreen extends AbstractGameScreen {
 
 	@SuppressWarnings({ "rawtypes" })
-	private static final Class[] focusCameraOnPOIs = new Class[] { Player.class, Weapon.class, AbstractSpawnTile.class,
+	private static final Class[] focusCameraOnPOIs = new Class[] { Player.class, Weapon.class, WeaponSpawnTile.class,
 			Grenade.class, CollectableItem.class, Explosion.class }, focusCameraOnWinner = new Class[] { Player.class };
 
 	GameSession gameSession;
@@ -153,6 +153,8 @@ public class PlayScreen extends AbstractGameScreen {
 		gameOver = false;
 		level.spawnWeaponTiles();
 		level.weaponSpawner.start();
+		level.spawnItemTiles();
+		level.itemSpawner.start();
 		gameSession.roundHandler.start();
 	}
 
@@ -199,7 +201,6 @@ public class PlayScreen extends AbstractGameScreen {
 			players.put(playerInfo.id, player);
 			gameContext.spawn(player);
 			
-			gameContext.spawn(new CollectableItem(spawnX+player.getWidth(), spawnY, ItemType.healthpack));
 
 			spawnPoint.taken = true;
 			index = (index + 1) % level.playerSpawns.size();
@@ -237,8 +238,8 @@ public class PlayScreen extends AbstractGameScreen {
 				focusClasses = focusCameraOnPOIs;
 			}
 			for (GameObject object : gameContext.getByClass(focusClasses)) {
-				if (object instanceof AbstractSpawnTile) {
-					if (!((AbstractSpawnTile) object).isSpawning()) {
+				if (object instanceof WeaponSpawnTile) {
+					if (!((WeaponSpawnTile) object).isSpawning()) {
 						continue;
 					}
 				} else if (object instanceof Weapon || object instanceof Grenade || object instanceof CollectableItem) {

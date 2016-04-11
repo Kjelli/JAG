@@ -9,13 +9,15 @@ import no.kash.gamedev.jag.game.gamecontext.GameContext;
 import no.kash.gamedev.jag.game.gameobjects.GameObject;
 import no.kash.gamedev.jag.game.gameobjects.collectables.weapons.Weapon;
 import no.kash.gamedev.jag.game.gameobjects.players.guns.GunType;
+import no.kash.gamedev.jag.game.gameobjects.players.item.Item;
+import no.kash.gamedev.jag.game.gameobjects.players.item.ItemType;
 
-public class WeaponSpawner {
+public class ItemSpawner {
 
 	public static final float SPAWN_RATE = 0.05f;
 	private GameContext gameContext;
-	private ArrayList<WeaponSpawnTile> weaponTiles;
-	private ArrayList<WeaponSpawnTileInfo> wepSpawns;
+	private ArrayList<ItemSpawnTile> itemTiles;
+	private ArrayList<ItemSpawnTileInfo> itemSpawns;
 
 	private Cooldown timerInterval;
 	private float interval = 3;
@@ -23,25 +25,26 @@ public class WeaponSpawner {
 
 	public final float cumProbs;
 
-	public WeaponSpawner(ArrayList<WeaponSpawnTileInfo> tempList, GameContext gameContext) {
+	public ItemSpawner(ArrayList<ItemSpawnTileInfo> tempList, GameContext gameContext) {
 		this.gameContext = gameContext;
-		this.wepSpawns = tempList;
+		this.itemSpawns = tempList;
 		timerInterval = new Cooldown(interval);
-
-		weaponTiles = new ArrayList<WeaponSpawnTile>();
+		
+		itemTiles = new ArrayList<ItemSpawnTile>();
 
 		float realProbs = 0;
-		for (GunType type : GunType.values()) {
+		for (ItemType type : ItemType.values()) {
 			realProbs += type.getProbability();
 		}
 		cumProbs = realProbs;
 
 	}
 
-	public void spawnWeaponTiles() {
-		for (WeaponSpawnTileInfo info : wepSpawns) {
-			WeaponSpawnTile temp = new WeaponSpawnTile(this, info);
-			weaponTiles.add(temp);
+	public void spawnItemTiles() {
+		for (ItemSpawnTileInfo info : itemSpawns) {
+			System.out.println("GREETINGS");
+			ItemSpawnTile temp = new ItemSpawnTile(this, info);
+			itemTiles.add(temp);
 			this.gameContext.spawn(temp);
 			temp.reSpawnCooldown.startCooldown();
 		}
@@ -53,11 +56,11 @@ public class WeaponSpawner {
 		}
 		timerInterval.update(delta);
 		if (!timerInterval.isOnCooldown()) {
-			for (WeaponSpawnTile tile : weaponTiles) {
+			for (ItemSpawnTile tile : itemTiles) {
 				float random = (float) Math.random();
 				if (random <= tile.spawnRate) {
 					if (!tile.isOccupied() && !tile.reSpawnCooldown.isOnCooldown()) {
-						tile.preSpawnWeapon();
+						tile.preSpawnItem();
 						tile.reSpawnCooldown.startCooldown();
 					}
 					timerInterval.startCooldown();
@@ -72,7 +75,7 @@ public class WeaponSpawner {
 
 	public void stop() {
 		stopped = true;
-		for (GameObject o : gameContext.getByClass(new Class[] { Weapon.class })) {
+		for (GameObject o : gameContext.getByClass(new Class[] { Item.class })) {
 			o.destroy();
 		}
 	}
