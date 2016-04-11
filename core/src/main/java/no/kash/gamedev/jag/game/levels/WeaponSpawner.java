@@ -14,7 +14,7 @@ public class WeaponSpawner {
 
 	public static final float SPAWN_RATE = 0.05f;
 	private GameContext gameContext;
-	private ArrayList<WeaponSpawnTile> weaponTiles;
+	private ArrayList<AbstractSpawnTile> weaponTiles;
 	private ArrayList<WeaponSpawnTileInfo> wepSpawns;
 
 	private Cooldown timerInterval;
@@ -28,7 +28,7 @@ public class WeaponSpawner {
 		this.wepSpawns = tempList;
 		timerInterval = new Cooldown(interval);
 
-		weaponTiles = new ArrayList<WeaponSpawnTile>();
+		weaponTiles = new ArrayList<AbstractSpawnTile>();
 
 		float realProbs = 0;
 		for (GunType type : GunType.values()) {
@@ -53,11 +53,11 @@ public class WeaponSpawner {
 		}
 		timerInterval.update(delta);
 		if (!timerInterval.isOnCooldown()) {
-			for (WeaponSpawnTile tile : weaponTiles) {
+			for (AbstractSpawnTile tile : weaponTiles) {
 				float random = (float) Math.random();
 				if (random <= tile.spawnRate) {
 					if (!tile.isOccupied() && !tile.reSpawnCooldown.isOnCooldown()) {
-						tile.preSpawnWeapon();
+						tile.preSpawnObject();
 						tile.reSpawnCooldown.startCooldown();
 					}
 					timerInterval.startCooldown();
