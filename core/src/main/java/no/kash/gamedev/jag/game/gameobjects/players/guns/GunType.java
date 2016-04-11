@@ -13,7 +13,7 @@ public enum GunType {
 	goldengun("Golden gun", 3, 0.7f, 1.6f, Assets.goldengun, 3, 3, Assets.goldengun_ground, 1400f, 800f, 0f, 0.02f,false),
 	mac10("Mac10", 1, 0.1f, 1.7f, Assets.mac10, 60, 60,Assets.mac10_ground, 6f, 400f, 0, 0.2f,true),
 	flamethrower("Flamethrower", 2, 0.005f, 1f, Assets.flamethrower, 0, 200,Assets.flamethrower_ground, 10f, 120f, -Math.PI / 18, 0.1f,true),
-	crossbow("Crossbow", 2, 0.5f, 1.8f, Assets.crossbow, 0, 8, Assets.crossbow_ground, 20f, 800f,  -Math.PI / 18, 0.1f,false),
+	crossbow("Crossbow", 2, 0.5f, 1.8f, Assets.crossbow, 0, 8, Assets.crossbow_ground, 20f, 600f,  -Math.PI / 18, 0.1f,false),
 	awp("AWP", 2, 1f, 1.5f, Assets.awp, 10, 5,Assets.awp_ground, 40f, 0, -Math.PI / 18, 0.1f,false);
 
 
