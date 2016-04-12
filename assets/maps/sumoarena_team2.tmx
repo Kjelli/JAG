@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="60" height="50" tilewidth="16" tileheight="16" nextobjectid="75">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="60" height="50" tilewidth="16" tileheight="16" nextobjectid="77">
  <properties>
   <property name="ffa" value="true"/>
   <property name="name" value="The Grasspit"/>
@@ -187,5 +187,9 @@
   <object id="70" name="weaponspawn" x="832" y="576" width="32" height="32"/>
   <object id="71" name="weaponspawn" x="96" y="576" width="32" height="32"/>
   <object id="72" name="weaponspawn" x="96" y="192" width="32" height="32"/>
+ </objectgroup>
+ <objectgroup name="itemspawn">
+  <object id="75" name="itemspawn" x="832" y="384" width="32" height="32"/>
+  <object id="76" name="itemspawn" x="96" y="384" width="32" height="32"/>
  </objectgroup>
 </map>

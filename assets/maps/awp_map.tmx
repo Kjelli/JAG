@@ -214,7 +214,7 @@
   </object>
  </objectgroup>
  <objectgroup name="itemspawn">
-  <object id="45" name="itemspawn" x="176" y="32" width="32" height="32"/>
-  <object id="47" name="itemspawn" x="752" y="416" width="32" height="32"/>
+  <object id="45" name="itemspawn" x="464" y="32" width="32" height="32"/>
+  <object id="47" name="itemspawn" x="464" y="416" width="32" height="32"/>
  </objectgroup>
 </map>

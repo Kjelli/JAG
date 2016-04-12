@@ -43,7 +43,7 @@ public class WeaponSpawner {
 			WeaponSpawnTile temp = new WeaponSpawnTile(this, info);
 			weaponTiles.add(temp);
 			this.gameContext.spawn(temp);
-			temp.reSpawnCooldown.startCooldown();
+			temp.reSpawnCooldown.start();
 		}
 	}
 
@@ -58,9 +58,9 @@ public class WeaponSpawner {
 				if (random <= tile.spawnRate) {
 					if (!tile.isOccupied() && !tile.reSpawnCooldown.isOnCooldown()) {
 						tile.preSpawnWeapon();
-						tile.reSpawnCooldown.startCooldown();
+						tile.reSpawnCooldown.start();
 					}
-					timerInterval.startCooldown();
+					timerInterval.start();
 				}
 			}
 		}

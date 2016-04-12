@@ -9,8 +9,9 @@ public enum ItemType {
 	
 
 	grenade("Default", Assets.grenade, -1,false, 0,0f,1),
-	healthpack("Healthpack", Assets.healthpack,1,true, 50,0.1f,1),
-	tripmine("Tripmine", Assets.tripmine_ground, 3, false, 0,0.1f,1);
+	healthpack("Healthpack", Assets.healthpack,1,true, 35,0.1f,1),
+	tripmine("Tripmine", Assets.tripmine_ground, 3, false, 0,0.1f,1),
+	snakebite("Snakebite",Assets.snakebite,2,false,8,0.1f,1);
 
 	
 	private Texture texture;

@@ -170,6 +170,9 @@ public class LobbyScreen extends AbstractGameScreen {
 				System.out.println("Disconnected: " + c);
 
 				if (playerInfos.containsKey(c.getID())) {
+					if (session.players.containsKey(c.getID())) {
+						session.players.remove(c.getID());
+					}
 					PlayerInfoGUI dced = playerInfos.remove(c.getID());
 
 					if (dced.getInfo().gameMaster) {

@@ -45,7 +45,7 @@ public class NormalGrenade extends AbstractGrenade implements Collidable {
 		if (Integer.parseInt((String) rectangleObject.getProperties().get("collision_level")) == 3) {
 			TileCollisionDetector.nudge(this, col);
 			if (!bounceCooldown.isOnCooldown()) {
-				bounceCooldown.startCooldown();
+				bounceCooldown.start();
 				if (Math.abs(col.normal.x) > Math.abs(col.normal.y)) {
 					velocity().x *= -1;
 				} else {

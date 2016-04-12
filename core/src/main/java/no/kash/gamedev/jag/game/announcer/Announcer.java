@@ -32,7 +32,7 @@ public class Announcer {
 	public void update(float delta) {
 		announceCd.update(delta);
 		if (!announceCd.isOnCooldown() && newlyAdded.size() > 0) {
-			announceCd.startCooldown();
+			announceCd.start();
 			Announcement newAnn = newlyAdded.remove(0);
 			active.add(0, newAnn);
 			newAnn.setAnnouncer(this);

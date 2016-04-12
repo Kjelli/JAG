@@ -34,7 +34,7 @@ public class Fire extends AbstractBullet {
 
 		setRotation(direction * (10 + ((int) (Math.random() * 20))));
 		livetime = new Cooldown(FADE_OUT_TIME);
-		livetime.startCooldown();
+		livetime.start();
 
 		acceleration.x = EPSILON;
 		acceleration.y = EPSILON;

@@ -13,12 +13,13 @@ public class Assets {
 	public static Texture laserSight;
 
 	// Player
-	public static Texture man, man_holding_grenade;
+	public static Texture man, man_holding_grenade,man_holding_snakebite,man_holding_tripwire;
 
 	// Projectiles
 	public static Texture bullet;
 	public static Texture dart;
 	public static Texture golden_bullet;
+	public static Texture spike;
 
 	// Weapons
 	public static Texture pistol;
@@ -27,10 +28,12 @@ public class Assets {
 	public static Texture shotgun;
 	public static Texture goldengun;
 	public static Texture flamethrower;
-	public static Texture grenade;
 	public static Texture crossbow;
 	public static Texture awp;
 
+	public static Texture grenade;
+	public static Texture snakebite;
+	
 	// Items
 	public static Texture tripmine_ground, tripmine_placed;
 	
@@ -85,12 +88,15 @@ public class Assets {
 		plain = load("plain.png");
 		man = load("playerSprite/player.png");
 		man_holding_grenade = load("playerSprite/holding_grenade.png");
+		man_holding_snakebite = load("playerSprite/holding_snakebite.png");
+		man_holding_tripwire = load("playerSprite/holding_tripwire.png");
 		laserSight = load("dot.png");
 
 		// Projectiles
 		bullet = load("bullet.png");
 		golden_bullet = load("goldenbullet.png");
 		dart = load("dart.png");
+		spike = load("spike.png");
 
 		// Weapons
 		pistol = load("playerSprite/pistol.png");
@@ -130,6 +136,7 @@ public class Assets {
 		
 		//Items
 		healthpack = load("sprites/health_pack.png");
+		snakebite = load("sprites/snakebite_grenade.png");
 
 		// Icons
 

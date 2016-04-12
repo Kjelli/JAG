@@ -53,7 +53,9 @@ public class PlayerAI {
 	private TileCollisionListener tileCollisionListener = new TileCollisionListener() {
 		@Override
 		public void onCollide(MapObject rectangleObject, MinimumTranslationVector col) {
-			inSight = false;
+			if (Integer.parseInt((String) rectangleObject.getProperties().get("collision_level")) >= 2) {
+				inSight = false;
+			}
 		}
 	};
 

@@ -62,7 +62,7 @@ public abstract class AbstractRoundHandler<T> implements RoundHandler<T> {
 		this.gameContext = gameContext;
 		this.gameSession = gameSession;
 		this.roundTime = new Cooldown(gameSession.settings.getSelectedValue(Defs.SESSION_ROUNDTIME, Integer.class));
-		this.roundTime.startCooldown();
+		this.roundTime.start();
 		this.roundTimeLabel = new GlyphLayout(Assets.announcerFont,
 				String.format("%.2f", roundTime.getCooldownTimer()));
 
@@ -108,7 +108,7 @@ public abstract class AbstractRoundHandler<T> implements RoundHandler<T> {
 
 		if (!hasStarted) {
 			if (this.roundTime.getCooldownTimer() > 0) {
-				this.roundTime.startCooldown();
+				this.roundTime.start();
 			} else if (!suddenDeath) {
 				suddenDeath();
 			}
@@ -138,6 +138,10 @@ public abstract class AbstractRoundHandler<T> implements RoundHandler<T> {
 
 	@Override
 	public void setup() {
+		if(gameSession.players.size() > gameContext.getLevel().playerSpawns.size()){
+			gameScreen.getGame().setScreen(new LobbyScreen(gameScreen.getGame(), gameSession));
+			System.out.println("TOO MANY PLAYERS");
+		}
 	}
 
 	public void suddenDeath() {
@@ -245,7 +249,7 @@ public abstract class AbstractRoundHandler<T> implements RoundHandler<T> {
 		roundFinished = false;
 		roundTimeX = gameContext.getStage().getViewport().getScreenWidth() / 2;
 		roundTimeY = gameContext.getStage().getViewport().getScreenHeight();
-		roundTime.startCooldown();
+		roundTime.start();
 		roundTimeLabel.setText(Assets.announcerFont, String.format("%.2f", roundTime.getCooldownTimer()));
 
 		if (!gameSession.settings.getSelectedValue(Defs.SESSION_SPAWN_GUNS, Boolean.class)) {

@@ -46,7 +46,7 @@ public class ItemSpawner {
 			ItemSpawnTile temp = new ItemSpawnTile(this, info);
 			itemTiles.add(temp);
 			this.gameContext.spawn(temp);
-			temp.reSpawnCooldown.startCooldown();
+			temp.reSpawnCooldown.start();
 		}
 	}
 
@@ -61,9 +61,9 @@ public class ItemSpawner {
 				if (random <= tile.spawnRate) {
 					if (!tile.isOccupied() && !tile.reSpawnCooldown.isOnCooldown()) {
 						tile.preSpawnItem();
-						tile.reSpawnCooldown.startCooldown();
+						tile.reSpawnCooldown.start();
 					}
-					timerInterval.startCooldown();
+					timerInterval.start();
 				}
 			}
 		}

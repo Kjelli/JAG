@@ -48,7 +48,7 @@ public class MapSelectionScreen extends AbstractGameScreen {
 		super(game);
 		this.session = session;
 		votes = new HashMap<>();
-		selectionTimer = new Cooldown(30.0f);
+		selectionTimer = new Cooldown(10.0f);
 	}
 
 	@Override
@@ -87,7 +87,7 @@ public class MapSelectionScreen extends AbstractGameScreen {
 
 	@Override
 	protected void onShow() {
-		selectionTimer.startCooldown();
+		selectionTimer.start();
 		getGame().getServer().broadcast(new PlayerStateChange(JustAnotherGameController.VOTE_MAP));
 
 		// TODO: REMOVE:
