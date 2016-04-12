@@ -31,6 +31,7 @@ import no.kash.gamedev.jag.game.gameobjects.collectables.items.ItemType;
 import no.kash.gamedev.jag.game.gameobjects.collectables.weapons.Weapon;
 import no.kash.gamedev.jag.game.gameobjects.grenades.Explosion;
 import no.kash.gamedev.jag.game.gameobjects.grenades.NormalGrenade;
+import no.kash.gamedev.jag.game.gameobjects.grenades.Snakebite;
 import no.kash.gamedev.jag.game.gameobjects.grenades.TripMine;
 import no.kash.gamedev.jag.game.gameobjects.particles.BloodSplatter;
 import no.kash.gamedev.jag.game.gameobjects.particles.Star;
@@ -156,13 +157,12 @@ public class Player extends AbstractGameObject implements Collidable {
 
 		nameLabel = new GlyphLayout(Assets.font, info.name);
 		healthHud = new HealthHud(this, getCenterX() - HealthHud.WIDTH / 2, getCenterY() - HealthHud.HEIGHT / 2 - 20f);
+		throwableCooldown = new Cooldown(grenadeCooldownDuration);
 		getGameContext().spawn(healthHud);
 		GunType startingGun = gameSession.settings.getSelectedValue(Defs.SESSION_STARTING_GUN, GunType.class);
 		equipGun(startingGun);
 		ItemType startingItem = gameSession.settings.getSelectedValue(Defs.SESSION_STARTING_ITEM, ItemType.class);
 		equipItem(startingItem);
-		System.out.println("Equipped: " + startingItem);
-		throwableCooldown = new Cooldown(grenadeCooldownDuration);
 
 		getGameContext().bringToFront(this);
 
@@ -235,7 +235,7 @@ public class Player extends AbstractGameObject implements Collidable {
 			}
 		} else {
 			// Reset cooldown
-			exitTimer.startCooldown();
+			exitTimer.start();
 			isExiting = false;
 		}
 
@@ -337,6 +337,11 @@ public class Player extends AbstractGameObject implements Collidable {
 			throwable.setUses(throwable.getUses() + item.getUses());
 		} else {
 			throwable = item;
+			if (throwable.getType() == ItemType.grenade) {
+				throwableCooldown.start();
+			} else {
+				throwableCooldown.reset();
+			}
 		}
 
 		((JustAnotherGame) getGameContext().getGame()).getServer().send(info.id,
@@ -416,6 +421,22 @@ public class Player extends AbstractGameObject implements Collidable {
 	}
 
 	public void holdGrenade(float power, float dir) {
+		switch (throwable.getType()) {
+		case snakebite:
+			holding_grenade = new Sprite(Assets.man_holding_snakebite);
+			holding_grenade.setOrigin(getWidth() / 2, getHeight() / 2);
+			break;
+		case tripmine:
+			holding_grenade = new Sprite(Assets.man_holding_tripwire);
+			holding_grenade.setOrigin(getWidth() / 2, getHeight() / 2);
+			break;
+
+		default:
+			holding_grenade = new Sprite(Assets.man_holding_grenade);
+			holding_grenade.setOrigin(getWidth() / 2, getHeight() / 2);
+			break;
+		}
+
 		if (!throwableCooldown.isOnCooldown() && !isFiring()) {
 			this.grenadeDirection = dir;
 			this.grenadePower = power;
@@ -468,10 +489,14 @@ public class Player extends AbstractGameObject implements Collidable {
 			case grenade:
 				getGameContext()
 						.spawn(new NormalGrenade(this, getCenterX(), getCenterY(), grenadeDirection, grenadePower));
-				throwableCooldown.startCooldown();
+				throwableCooldown.start();
 				break;
 			case tripmine:
 				getGameContext().spawn(new TripMine(this, getCenterX(), getCenterY(), grenadeDirection, grenadePower));
+				break;
+			case snakebite:
+				getGameContext().spawn(new Snakebite(this, getCenterX(), getCenterY(), grenadeDirection, grenadePower,
+						ItemType.snakebite));
 				break;
 			default:
 				break;

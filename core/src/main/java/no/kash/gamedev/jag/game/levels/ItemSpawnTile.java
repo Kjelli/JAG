@@ -97,7 +97,7 @@ public class ItemSpawnTile extends AbstractGameObject {
 			setSprite(epic);
 			break;
 		}
-		cooldown.startCooldown();
+		cooldown.start();
 		preStage = true;
 	}
 

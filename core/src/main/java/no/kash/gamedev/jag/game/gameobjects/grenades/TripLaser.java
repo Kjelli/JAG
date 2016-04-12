@@ -36,7 +36,7 @@ public class TripLaser extends AbstractGameObject implements Collidable {
 
 	@Override
 	public void onSpawn() {
-		activationTime.startCooldown();
+		activationTime.start();
 		this.tileCollisionListener = new TileCollisionListener() {
 			@Override
 			public void onCollide(MapObject rectangleObject, MinimumTranslationVector col) {

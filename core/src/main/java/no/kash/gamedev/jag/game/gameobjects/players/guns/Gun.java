@@ -145,7 +145,7 @@ public class Gun {
 				((JustAnotherGame) player.getGameContext().getGame()).getServer().send(player.getId(), new PlayerUpdate(
 						1, new int[] { PlayerUpdate.AMMO }, new float[][] { { magazineAmmo, magazineSize, ammo } }));
 			}
-			bulletCooldown.startCooldown();
+			bulletCooldown.start();
 			// TODO Shoot sfx?
 		} else {
 			// player.equipGun(GunType.pistol);
@@ -165,7 +165,7 @@ public class Gun {
 
 			}
 			magazineAmmo = magazineAmmo + newBullets;
-			reloadCooldown.startCooldown();
+			reloadCooldown.start();
 
 			((JustAnotherGame) player.getGameContext().getGame()).getServer().send(player.getId(), new PlayerUpdate(1,
 					new int[] { PlayerUpdate.AMMO }, new float[][] { { magazineAmmo, magazineSize, ammo } }));

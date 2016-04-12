@@ -45,12 +45,12 @@ public class StatusHandler {
 		for (Status s : statuses) {
 			if (s.type == status.type) {
 				// Already exists? refresh;
-				s.duration.startCooldown();
+				s.duration.start();
 				return;
 			}
 		}
 		statuses.add(status);
-		status.duration.startCooldown();
+		status.duration.start();
 	}
 
 	public void removeAllNegativeStatuses() {

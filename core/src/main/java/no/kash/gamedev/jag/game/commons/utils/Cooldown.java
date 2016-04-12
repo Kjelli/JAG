@@ -19,7 +19,7 @@ public class Cooldown {
 		
 	}
 	
-	public void startCooldown(){
+	public void start(){
 		cooldownTimer = cooldown;
 	}
 
@@ -29,6 +29,14 @@ public class Cooldown {
 	
 	public boolean isOnCooldown(){
 		return cooldownTimer>0;
+	}
+	
+	public boolean isReady(){
+		return !isOnCooldown();
+	}
+
+	public void reset() {
+		cooldownTimer = 0;
 	}
 
 

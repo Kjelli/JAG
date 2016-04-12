@@ -32,7 +32,7 @@ public class TripMine extends AbstractGrenade implements Collidable {
 	@Override
 	public void onSpawn() {
 		super.onSpawn();
-		placingCooldown.startCooldown();
+		placingCooldown.start();
 	}
 
 	@Override

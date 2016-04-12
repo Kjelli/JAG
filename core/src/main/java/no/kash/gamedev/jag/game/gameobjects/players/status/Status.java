@@ -38,7 +38,7 @@ public class Status {
 							player.getCenterY() + (float) (Math.random() * Player.HEIGHT / 2 - Player.HEIGHT / 4)));
 			if (!ticker.isOnCooldown()) {
 				player.damage(this);
-				ticker.startCooldown();
+				ticker.start();
 			}
 			break;
 		case poison:
@@ -48,7 +48,7 @@ public class Status {
 							player.getCenterY() + (float) (Math.random() * Player.HEIGHT / 2 - Player.HEIGHT / 4)));
 			if (!ticker.isOnCooldown()) {
 				player.damage(this);
-				ticker.startCooldown();
+				ticker.start();
 			}
 			break;
 		case healing:

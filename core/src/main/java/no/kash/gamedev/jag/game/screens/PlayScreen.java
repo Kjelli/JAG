@@ -78,11 +78,11 @@ public class PlayScreen extends AbstractGameScreen {
 		game.getServer().broadcast(new PlayerStateChange(JustAnotherGameController.PLAY_STATE));
 		stage.setViewport(new StretchViewport(Defs.WIDTH, Defs.HEIGHT, camera));
 		initInputReceiver();
-		initSession();
 		loadLevel();
 		if (gameSession.settings.getSelectedValue(Defs.SESSION_TEST_MODE, Boolean.class)) {
 			initDebugControls();
 		}
+		initSession();
 		start();
 	}
 
@@ -118,7 +118,6 @@ public class PlayScreen extends AbstractGameScreen {
 		checkWinCondition();
 	}
 
-
 	public void spawnConfetti() {
 		for (int i = 0; i < 2; i++) {
 			float x = (float) (Math.random()
@@ -145,8 +144,8 @@ public class PlayScreen extends AbstractGameScreen {
 		level.spawnWeaponTiles();
 		level.weaponSpawner.start();
 		level.spawnItemTiles();
-		if(level.itemsExists){
-		level.itemSpawner.start();
+		if (level.itemsExists) {
+			level.itemSpawner.start();
 		}
 		gameSession.roundHandler.start();
 	}
@@ -185,6 +184,7 @@ public class PlayScreen extends AbstractGameScreen {
 			PlayerSpawnPoint spawnPoint = level.playerSpawns.get(index);
 			if (spawnPoint.taken) {
 				index = (index + 1) % level.playerSpawns.size();
+				tries++;
 				continue;
 			}
 
@@ -196,7 +196,6 @@ public class PlayScreen extends AbstractGameScreen {
 
 			spawnPoint.taken = true;
 			index = (index + 1) % level.playerSpawns.size();
-			tries++;
 
 			return;
 		}

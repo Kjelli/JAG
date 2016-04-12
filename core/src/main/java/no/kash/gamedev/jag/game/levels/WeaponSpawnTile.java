@@ -96,7 +96,7 @@ public class WeaponSpawnTile extends AbstractGameObject {
 			setSprite(epic);
 			break;
 		}
-		cooldown.startCooldown();
+		cooldown.start();
 		preStage = true;
 	}
 
