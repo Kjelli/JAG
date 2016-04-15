@@ -320,7 +320,7 @@ public class PlayScreen extends AbstractGameScreen {
 					float power = (float) Math.hypot(velx, vely);
 					float dir = (float) (Math.atan2(vely, velx));
 					if (velx != 0 || vely != 0) {
-						p.holdGrenade(power, (float) (dir + Math.PI));
+						p.holdGrenade(power, (float) (dir + Math.PI / 2));
 					} else {
 						p.releaseGrenade();
 					}

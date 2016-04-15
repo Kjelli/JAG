@@ -36,7 +36,7 @@ public class StatusHandler {
 				next.effect(player);
 			}
 		}
-		if(removeAllNegativeStatuses){
+		if (removeAllNegativeStatuses) {
 			removeAllNegativeStatuses = false;
 		}
 	}
@@ -53,11 +53,13 @@ public class StatusHandler {
 		status.duration.start();
 	}
 
-	public void removeAllNegativeStatuses() {
-		for (int i = 0; i < statuses.size(); i++) {
-			if (statuses.get(i).type != StatusType.healing) {
-				statuses.remove(i);
+	public boolean hasNegativeStatuses() {
+		for (Status s : statuses) {
+			if (s.isNegative()) {
+				return true;
 			}
 		}
+		return false;
 	}
+
 }

@@ -49,6 +49,6 @@ public abstract class InputScheme {
 		}
 	}
 
-	protected abstract void handleInputEvent(InputEvent event);
+	public abstract void handleInputEvent(InputEvent event);
 
 }

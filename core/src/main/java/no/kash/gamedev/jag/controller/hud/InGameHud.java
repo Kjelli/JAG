@@ -107,7 +107,11 @@ public class InGameHud extends AbstractGameObject {
 		setMagazineAmmo(magAmmo);
 		setMagazineSize(magSize);
 		setAmmo(ammo);
-		ammoLabel.setText(font, magazineAmmo + " / " + ammo);
+		if (ammo == -1 && magAmmo == -1) {
+			ammoLabel.setText(font, "");
+		} else {
+			ammoLabel.setText(font, magazineAmmo + " / " + ammo);
+		}
 	}
 
 	public void updateGun(int gunTypeIndex) {

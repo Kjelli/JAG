@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="40" height="20" tilewidth="16" tileheight="16" nextobjectid="56">
+ <properties>
+  <property name="ffa" type="bool" value="true"/>
+  <property name="name" value="Dev AI"/>
+  <property name="team" type="bool" value="false"/>
+ </properties>
+ <tileset firstgid="1" name="obstaclesSheet" tilewidth="16" tileheight="16" tilecount="128" columns="16">
+  <image source="sprites/obstaclesSheet.png" width="256" height="128"/>
+ </tileset>
+ <tileset firstgid="129" name="landscapetextures" tilewidth="16" tileheight="16" tilecount="32" columns="8">
+  <image source="sprites/landscapetextures.png" width="128" height="64"/>
+  <tile id="0" probability="0.25"/>
+  <tile id="8" probability="0.25"/>
+  <tile id="16" probability="0.25"/>
+  <tile id="24" probability="0.25"/>
+ </tileset>
+ <layer name="ground" width="40" height="20">
+  <data encoding="base64" compression="zlib">
+   eJyFlrsOxCAMBPl1SkqX/tu7IkijyfquiEgAP1ivl/Ra63yf/j77eT/P+50rfBfGDVv6uN+FfdfPkR/aNmJX8H0wf0J8rl//W9+13nnRjrkyVmONeXawNRY8L9d7vXFnHOZKfJibMeO5uMbctvb0mmvj2tVgn9ZYJ/KFsVx/xmNutfIZnXfijDHa8ms+7eA/1bs0b+wStzvENzdtb15xn3FOfWDcjNm/OhbWeF7GdD4cS3E89nrj4njG2ji5Z5x3Gn1e1to1oU3SEL+7fgmjX1wwzuRBwtD7iQlj29Y6bk3yujWXdUlcoq6V9hMrxnPPWX9cN+trypnz1pZ0t6V592O6U4yze8E4T3rjWiaOJ1tyJHHS+Dr3o5juW/eHtZ7P1KtJ96Z6mGsTP5MP92m6H4ynee5zGkvj5Z5xDtY3+yZX3N+p56Y7qxTf3HMtXQtrsHlrrvvecb7uX+uFcXd/W7eSViTuOHfa+r8haVcHf9433UNTrdK9QftfWma9TfVImLkPXGdrj/s6xeUe55HORH93/gPR57mI
+  </data>
+ </layer>
+ <objectgroup name="spawnpoints">
+  <object id="39" name="spawn1" type="spawn" x="64" y="160" width="16" height="16">
+   <ellipse/>
+  </object>
+  <object id="40" name="spawn1" type="spawn" x="576" y="160" width="16" height="16">
+   <ellipse/>
+  </object>
+ </objectgroup>
+ <layer name="obstacles" width="40" height="20">
+  <data encoding="base64" compression="zlib">
+   eJzLZ2BgiBvEOB+I+YG4lkxcRwN9IDkBqPvsgdiBATdwBGInPPLkqiUErIHYhoGw+wKBOIhIM0lRSwh4MxDnvtHwww5g4ecPxAF41FEzTEgBoPDzYaBu+FETgMIvhoG66Y8UQMhcYvMHrcKPkLnE5o/R8MMOiHUfrQCh8CM2fmkFBiL8qFnX0CL8qFnXEFt/kAKoHX6g+iMeiBMocxYcUDv8QPUHqH0qD8S6ZGI9EtTpk6BOgQHRfh7oNjw+DABX41hR
+  </data>
+ </layer>
+ <objectgroup name="collision">
+  <object id="45" name="collision" type="collision_full" x="0" y="0" width="32" height="288">
+   <properties>
+    <property name="collision_level" value="2"/>
+   </properties>
+  </object>
+  <object id="46" name="collision" type="collision_full" x="32" y="0" width="576" height="32">
+   <properties>
+    <property name="collision_level" value="2"/>
+   </properties>
+  </object>
+  <object id="47" name="collision" type="collision_full" x="0" y="288" width="640" height="32">
+   <properties>
+    <property name="collision_level" value="2"/>
+   </properties>
+  </object>
+  <object id="48" name="collision" type="collision_full" x="608" y="0" width="32" height="288">
+   <properties>
+    <property name="collision_level" value="2"/>
+   </properties>
+  </object>
+  <object id="52" name="collision" type="collision_full" x="128" y="32" width="32" height="160">
+   <properties>
+    <property name="collision_level" value="2"/>
+   </properties>
+  </object>
+  <object id="53" name="collision" type="collision_full" x="480" y="128" width="32" height="160">
+   <properties>
+    <property name="collision_level" value="2"/>
+   </properties>
+  </object>
+  <object id="54" name="collision" type="collision_full" x="304" y="32" width="32" height="64">
+   <properties>
+    <property name="collision_level" value="2"/>
+   </properties>
+  </object>
+  <object id="55" name="collision" type="collision_full" x="304" y="224" width="32" height="64">
+   <properties>
+    <property name="collision_level" value="2"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup name="weaponspawn">
+  <object id="41" name="weaponspawn" x="368" y="32" width="32" height="32"/>
+  <object id="42" name="weaponspawn" x="240" y="256" width="32" height="32"/>
+  <object id="43" name="weaponspawn" x="368" y="256" width="32" height="32"/>
+  <object id="44" name="weaponspawn" x="240" y="32" width="32" height="32"/>
+ </objectgroup>
+</map>

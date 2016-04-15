@@ -61,7 +61,7 @@ public abstract class AbstractRoundHandler<T> implements RoundHandler<T> {
 		this.gameScreen = screen;
 		this.gameContext = gameContext;
 		this.gameSession = gameSession;
-		this.roundTime = new Cooldown(gameSession.settings.getSelectedValue(Defs.SESSION_ROUNDTIME, Integer.class));
+		this.roundTime = new Cooldown((int)gameSession.settings.getSelectedValue(Defs.SESSION_ROUNDTIME, Integer.class));
 		this.roundTime.start();
 		this.roundTimeLabel = new GlyphLayout(Assets.announcerFont,
 				String.format("%.2f", roundTime.getCooldownTimer()));
@@ -152,7 +152,7 @@ public abstract class AbstractRoundHandler<T> implements RoundHandler<T> {
 			break;
 		case ONE_HP:
 			for (Player player : players.values()) {
-				player.setHealth(1.0f);
+				player.setHealth(1);
 				((JustAnotherGame) gameContext.getGame()).getServer().send(player.getInfo().id,
 						new PlayerUpdate(2, new int[] { PlayerUpdate.HEALTH, PlayerUpdate.FEEDBACK_VIBRATION },
 								new float[][] { { player.getHealth() }, { 30.0f } }));

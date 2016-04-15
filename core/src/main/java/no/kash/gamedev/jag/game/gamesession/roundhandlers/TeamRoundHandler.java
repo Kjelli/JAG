@@ -92,7 +92,7 @@ public class TeamRoundHandler extends AbstractRoundHandler<Integer> {
 			int team = 1;
 			int dummyId = -500;
 			PlayerInfo dummyPlayer;
-			while (gameSession.players.size() < 4) {
+			while (gameSession.players.size() < 6) {
 				dummyId++;
 				dummyPlayer = new PlayerInfo();
 				dummyPlayer.temporary = true;
@@ -100,9 +100,11 @@ public class TeamRoundHandler extends AbstractRoundHandler<Integer> {
 				gameSession.players.put(dummyId, dummyPlayer);
 			}
 			for (PlayerInfo player : gameSession.players.values()) {
-				team = (team % 2) + 1;
-				player.color = team == 1 ? Color.RED : Color.BLUE; 
-				player.teamId = team;
+				if (player.teamId == -1) {
+					team = (team % 2) + 1;
+					player.color = team == 1 ? Color.RED : Color.BLUE;
+					player.teamId = team;
+				}
 			}
 		}
 

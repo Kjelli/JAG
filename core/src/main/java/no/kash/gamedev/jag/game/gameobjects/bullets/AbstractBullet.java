@@ -21,7 +21,7 @@ public abstract class AbstractBullet extends AbstractGameObject implements Bulle
 
 	TileCollisionListener tileCollisionListener;
 
-	public AbstractBullet(Player shooter, float x, float y, float width, float height, float direction, float damage,
+	public AbstractBullet(final Player shooter, float x, float y, float width, float height, float direction, float damage,
 			float speed) {
 		super(x, y, width, height);
 		this.shooter = shooter;
@@ -37,6 +37,9 @@ public abstract class AbstractBullet extends AbstractGameObject implements Bulle
 				if (data != null) {
 					int cLevel = Integer.parseInt(data);
 					if (cLevel >= 2) {
+						if (shooter.isAI()) {
+							shooter.getAI().missedBullets++;
+						}
 						destroy();
 					}
 				}

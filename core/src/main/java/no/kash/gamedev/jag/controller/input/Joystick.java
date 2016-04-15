@@ -18,6 +18,8 @@ public class Joystick {
 	private final Skin tpSkin;
 	private final TouchpadStyle tpStyle;
 
+	private float xValueOverridden = -2, yValueOverridden = -2;
+
 	private boolean active;
 
 	public Joystick(float x, float y, float bgRadius, float knobRadius, float deadzoneRadius) {
@@ -61,15 +63,22 @@ public class Joystick {
 	}
 
 	public float getXValue() {
-		return tp.getKnobPercentX();
+		return xValueOverridden == -2 ? tp.getKnobPercentX() : xValueOverridden;
 	}
 
 	public float getYValue() {
-		return tp.getKnobPercentY();
+		return yValueOverridden == -2 ? tp.getKnobPercentY() : yValueOverridden;
 	}
 
 	public Touchpad getTouchpad() {
 		return tp;
 	}
 
+	public void overrideXValue(float x) {
+		xValueOverridden = x;
+	}
+
+	public void overrideYValue(float y) {
+		yValueOverridden = y;
+	}
 }

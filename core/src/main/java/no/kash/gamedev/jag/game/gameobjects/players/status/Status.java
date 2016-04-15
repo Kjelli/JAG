@@ -66,6 +66,10 @@ public class Status {
 		}
 
 	}
+	
+	public boolean isNegative(){
+		return type.negative;
+	}
 
 	public float getDamage() {
 		return type.damage;

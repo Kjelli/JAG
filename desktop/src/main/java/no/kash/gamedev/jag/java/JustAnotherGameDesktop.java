@@ -18,6 +18,8 @@ public class JustAnotherGameDesktop {
 		if (args.length == 0) {
 			new LwjglApplication(new JustAnotherGame(resolver), config);
 		} else {
+			config.width = 300;
+			config.height = 200;
 			new LwjglApplication(new JustAnotherGameController(resolver), config);
 		}
 	}

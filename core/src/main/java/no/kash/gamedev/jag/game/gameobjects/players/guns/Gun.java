@@ -203,6 +203,10 @@ public class Gun {
 	public int getAmmo() {
 		return ammo;
 	}
+	
+	public int getTotalAmmo(){
+		return getAmmo() + getMagasineAmmo();
+	}
 
 	public int getMagasineAmmo() {
 		return magazineAmmo;
@@ -264,6 +268,10 @@ public class Gun {
 
 	public boolean isOnCooldown() {
 		return bulletCooldown.getCooldownTimer() > 0;
+	}
+
+	public float getTotalAmmoPercentage() {
+		return getTotalAmmo() *1.0f / getType().getMaxAmmo() * 1.0f;
 	}
 
 }

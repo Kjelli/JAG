@@ -82,8 +82,8 @@ public class Player extends AbstractGameObject implements Collidable {
 
 	private float grenadePower;
 	private float grenadeDirection;
-	private float healthMax;
-	private float health;
+	private int healthMax;
+	private int health;
 	private Cooldown throwableCooldown;
 	private float grenadeCooldownDuration = 3;
 
@@ -354,7 +354,7 @@ public class Player extends AbstractGameObject implements Collidable {
 		if (type.isUseOnPickup()) {
 			switch (type) {
 			case healthpack:
-				heal(type.getMagnitude());
+				heal((int) type.getMagnitude());
 				break;
 			default:
 				break;
@@ -438,15 +438,15 @@ public class Player extends AbstractGameObject implements Collidable {
 		}
 
 		if (!throwableCooldown.isOnCooldown() && !isFiring()) {
-			this.grenadeDirection = dir;
+			this.grenadeDirection = (float) (dir + Math.PI / 2);
 			this.grenadePower = power;
-			setRotation((float) (dir - Math.PI / 2));
+			setRotation((float) (dir));
 			holdingGrenade = true;
 		}
 	}
 
-	public void heal(float amount) {
-		float newHP = getHealth() + amount;
+	public void heal(int amount) {
+		int newHP = getHealth() + amount;
 		if (newHP > healthMax) {
 			setHealth(healthMax);
 		} else {
@@ -458,7 +458,7 @@ public class Player extends AbstractGameObject implements Collidable {
 						new float[][] { { health }, { 10.0f } }));
 	}
 
-	public void setHealth(float health) {
+	public void setHealth(int health) {
 		this.health = health;
 		healthHud.display();
 	}
@@ -475,12 +475,12 @@ public class Player extends AbstractGameObject implements Collidable {
 		onDeath();
 	}
 
-	public float getHealth() {
+	public int getHealth() {
 		return health;
 	}
 
 	public float getHealthPercentage() {
-		return health / healthMax;
+		return health *1.0f/ healthMax;
 	}
 
 	public void releaseGrenade() {
@@ -628,5 +628,17 @@ public class Player extends AbstractGameObject implements Collidable {
 
 	public Cooldown getThrowableCooldown() {
 		return throwableCooldown;
+	}
+
+	public boolean isAI() {
+		return ai != null;
+	}
+
+	public PlayerAI getAI() {
+		return ai;
+	}
+
+	public StatusHandler getStatusHandler() {
+		return statusHandler;
 	}
 }

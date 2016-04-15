@@ -1,6 +1,8 @@
 package no.kash.gamedev.jag.controller.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -24,6 +26,7 @@ import no.kash.gamedev.jag.controller.hud.InGameHud;
 import no.kash.gamedev.jag.controller.input.Joystick;
 import no.kash.gamedev.jag.controller.inputschemes.InputEvent;
 import no.kash.gamedev.jag.controller.inputschemes.InputScheme;
+import no.kash.gamedev.jag.game.commons.utils.Cooldown;
 
 public class ControllerScreen extends AbstractControllerScreen {
 
@@ -43,6 +46,8 @@ public class ControllerScreen extends AbstractControllerScreen {
 
 	private GlyphLayout deadLabel;
 
+	private Cooldown vibrationCooldown;
+
 	public ControllerScreen(JustAnotherGameController controller) {
 		super(controller);
 		game.getActionResolver().toast("Making screen " + this);
@@ -50,13 +55,13 @@ public class ControllerScreen extends AbstractControllerScreen {
 
 	@Override
 	public void onShow() {
-		Prefs.get().putInteger(Defs.PREF_TIMES_PLAYED, Prefs.get().getInteger(Defs.PREF_TIMES_PLAYED, 0) + 1);
-		Prefs.get().flush();
 
 		hideUI();
 		hud = new InGameHud(0, stage.getHeight(), stage.getWidth() / 3, stage.getHeight() / 2);
 		bgColor = new Color(Color.GRAY);
 		setBackgroundColor(bgColor);
+		
+		vibrationCooldown = new Cooldown(0.5f);
 
 		game.getActionResolver().toast("Initializing controller");
 
@@ -86,7 +91,7 @@ public class ControllerScreen extends AbstractControllerScreen {
 
 		deadLabel = new GlyphLayout(Assets.fontLarge, "YOU ARE DEAD :'(");
 
-		InputScheme scheme = new InputScheme() {
+		final InputScheme scheme = new InputScheme() {
 			/*
 			 * TODO
 			 * 
@@ -99,7 +104,7 @@ public class ControllerScreen extends AbstractControllerScreen {
 			 * 
 			 */
 			@Override
-			protected void handleInputEvent(InputEvent event) {
+			public void handleInputEvent(InputEvent event) {
 				switch (event.getId()) {
 				case JOYSTICK_LEFT:
 					game.getClient().send(new PlayerInput(game.getClient().getId(), JOYSTICK_LEFT,
@@ -149,13 +154,109 @@ public class ControllerScreen extends AbstractControllerScreen {
 
 			}
 		});
+
+		inputMux.addProcessor(new InputAdapter() {
+			@Override
+			public boolean keyDown(int keycode) {
+				switch (keycode) {
+				case Keys.A:
+					stick_left.overrideXValue(-1);
+					scheme.handleInputEvent(new InputEvent(JOYSTICK_LEFT, stick_left.getTouchpad(), null));
+					break;
+				case Keys.D:
+					stick_left.overrideXValue(1);
+					scheme.handleInputEvent(new InputEvent(JOYSTICK_LEFT, stick_left.getTouchpad(), null));
+					break;
+				case Keys.S:
+					stick_left.overrideYValue(-1);
+					scheme.handleInputEvent(new InputEvent(JOYSTICK_LEFT, stick_left.getTouchpad(), null));
+					break;
+				case Keys.W:
+					stick_left.overrideYValue(1);
+					scheme.handleInputEvent(new InputEvent(JOYSTICK_LEFT, stick_left.getTouchpad(), null));
+					break;
+
+				case Keys.LEFT:
+					stick_right.overrideXValue(-1);
+					scheme.handleInputEvent(new InputEvent(JOYSTICK_RIGHT, stick_right.getTouchpad(), null));
+					break;
+				case Keys.RIGHT:
+					stick_right.overrideXValue(1);
+					scheme.handleInputEvent(new InputEvent(JOYSTICK_RIGHT, stick_right.getTouchpad(), null));
+					break;
+				case Keys.DOWN:
+					stick_right.overrideYValue(-1);
+					scheme.handleInputEvent(new InputEvent(JOYSTICK_RIGHT, stick_right.getTouchpad(), null));
+					break;
+				case Keys.UP:
+					stick_right.overrideYValue(1);
+					scheme.handleInputEvent(new InputEvent(JOYSTICK_RIGHT, stick_right.getTouchpad(), null));
+					break;
+				}
+				return true;
+			}
+
+			@Override
+			public boolean keyUp(int keycode) {
+				switch (keycode) {
+				case Keys.A:
+					if (stick_left.getXValue() < 0)
+						stick_left.overrideXValue(0);
+					scheme.handleInputEvent(new InputEvent(JOYSTICK_LEFT, stick_left.getTouchpad(), null));
+					break;
+				case Keys.D:
+					if (stick_left.getXValue() > 0)
+						stick_left.overrideXValue(0);
+					scheme.handleInputEvent(new InputEvent(JOYSTICK_LEFT, stick_left.getTouchpad(), null));
+					break;
+				case Keys.S:
+
+					if (stick_left.getYValue() < 0)
+						stick_left.overrideYValue(0);
+					scheme.handleInputEvent(new InputEvent(JOYSTICK_LEFT, stick_left.getTouchpad(), null));
+					break;
+				case Keys.W:
+					if (stick_left.getYValue() > 0)
+						stick_left.overrideYValue(0);
+					scheme.handleInputEvent(new InputEvent(JOYSTICK_LEFT, stick_left.getTouchpad(), null));
+					break;
+
+				case Keys.LEFT:
+					if (stick_right.getXValue() < 0)
+						stick_right.overrideXValue(0);
+					scheme.handleInputEvent(new InputEvent(JOYSTICK_RIGHT, stick_right.getTouchpad(), null));
+					break;
+				case Keys.RIGHT:
+					if (stick_right.getXValue() > 0)
+						stick_right.overrideXValue(0);
+					scheme.handleInputEvent(new InputEvent(JOYSTICK_RIGHT, stick_right.getTouchpad(), null));
+					break;
+				case Keys.DOWN:
+					if (stick_right.getYValue() < 0)
+						stick_right.overrideYValue(0);
+					scheme.handleInputEvent(new InputEvent(JOYSTICK_RIGHT, stick_right.getTouchpad(), null));
+					break;
+				case Keys.UP:
+					if (stick_right.getYValue() > 0)
+						stick_right.overrideYValue(0);
+					scheme.handleInputEvent(new InputEvent(JOYSTICK_RIGHT, stick_right.getTouchpad(), null));
+					break;
+				}
+
+				return true;
+			}
+
+		});
 	}
 
 	public void handlePlayerUpdate(PlayerUpdate m) {
 		for (int i = 0; i < m.fields; i++)
 			switch (m.fieldId[i]) {
 			case PlayerUpdate.FEEDBACK_VIBRATION:
-				Gdx.input.vibrate((int) m.state[i][0]);
+				if (vibrationCooldown.isReady()) {
+					vibrationCooldown.start();
+					Gdx.input.vibrate((int) m.state[i][0]);
+				}
 				break;
 			case PlayerUpdate.HEALTH:
 				int oldHealth = hud.getHealth();
@@ -192,26 +293,26 @@ public class ControllerScreen extends AbstractControllerScreen {
 	@Override
 	public void draw(float delta) {
 		if (hud.getHealth() > 0) {
-			if(stick_left.getTouchpad().getColor().a == 0){
+			if (stick_left.getTouchpad().getColor().a == 0) {
 				stick_left.getTouchpad().setColor(1, 1, 1, 0.25f);
 				stick_right.getTouchpad().setColor(1, 1, 1, 0.25f);
 				stick_mid.getTouchpad().setColor(1, 1, 1, 0.25f);
 			}
-			reload.setColor(1,1,1,1);
+			reload.setColor(1, 1, 1, 1);
 			hud.draw(batch);
 		} else {
 			stick_left.getTouchpad().setColor(1, 1, 1, 0);
 			stick_right.getTouchpad().setColor(1, 1, 1, 0);
 			stick_mid.getTouchpad().setColor(1, 1, 1, 0);
-			reload.setColor(1,1,1,0);
-			Assets.fontLarge.draw(batch, deadLabel, stage.getWidth() / 2 - deadLabel.width / 2,
-					stage.getHeight() / 2);
+			reload.setColor(1, 1, 1, 0);
+			Assets.fontLarge.draw(batch, deadLabel, stage.getWidth() / 2 - deadLabel.width / 2, stage.getHeight() / 2);
 		}
 
 	}
 
 	@Override
 	protected void update(float delta) {
+		vibrationCooldown.update(delta);
 	}
 
 	private Tween newFadeFromTween() {
