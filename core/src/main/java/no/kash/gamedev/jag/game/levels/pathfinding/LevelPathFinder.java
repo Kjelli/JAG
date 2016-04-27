@@ -62,15 +62,15 @@ public class LevelPathFinder {
 		DefaultGraphPath<MapNode> path = new DefaultGraphPath<>();
 		path.clear();
 
-		MapNode start = nodes[startX][startY], end = nodes[endX][endY];
-
 		try {
+			MapNode start = nodes[startX][startY], end = nodes[endX][endY];
+
 			pathfinder.searchNodePath(start, end, HEURISTIC, path);
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 		}
 		PathResult result = null;
-		if (path.nodes.size == 0) {
+		if (path == null || path.nodes.size == 0) {
 			result = new PathResult(false, path);
 		} else {
 			result = new PathResult(true, path);

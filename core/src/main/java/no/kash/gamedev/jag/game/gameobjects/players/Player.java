@@ -1,14 +1,14 @@
 package no.kash.gamedev.jag.game.gameobjects.players;
 
-import com.badlogic.gdx.ai.GdxAI;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g3d.particles.ParticleSorter.None;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.math.Intersector.MinimumTranslationVector;
 import com.badlogic.gdx.math.Polygon;
-import com.badlogic.gdx.math.Vector2;
 
 import no.kash.gamedev.jag.assets.Assets;
 import no.kash.gamedev.jag.commons.defs.Defs;
@@ -18,7 +18,6 @@ import no.kash.gamedev.jag.commons.network.packets.PlayerUpdate;
 import no.kash.gamedev.jag.controller.JustAnotherGameController;
 import no.kash.gamedev.jag.game.JustAnotherGame;
 import no.kash.gamedev.jag.game.commons.utils.Cooldown;
-import no.kash.gamedev.jag.game.gamecontext.GameContext;
 import no.kash.gamedev.jag.game.gamecontext.physics.Collidable;
 import no.kash.gamedev.jag.game.gamecontext.physics.Collision;
 import no.kash.gamedev.jag.game.gamecontext.physics.tilecollisions.TileCollisionDetector;
@@ -93,6 +92,7 @@ public class Player extends AbstractGameObject implements Collidable {
 	private StatusHandler statusHandler;
 
 	private Sprite holding_grenade;
+	private Sprite leadStar;
 
 	public LaserSight laserSight;
 
@@ -101,6 +101,8 @@ public class Player extends AbstractGameObject implements Collidable {
 	private boolean reloading;
 
 	private PlayerAI ai;
+
+	public LeadState leadState = LeadState.NONE;
 
 	public Player(GameSession gameSession, PlayerInfo info, float x, float y) {
 		super(x, y, WIDTH, HEIGHT);
@@ -137,7 +139,6 @@ public class Player extends AbstractGameObject implements Collidable {
 	@Override
 	public void onSpawn() {
 		if (getInfo().temporary) {
-			System.out.println("Making " + getInfo().id + " a bot!");
 			ai = new PlayerAI(this, getGameContext());
 		}
 		// Set sprite
@@ -145,6 +146,9 @@ public class Player extends AbstractGameObject implements Collidable {
 		sprite.setOrigin(getWidth() / 2, getHeight() / 2);
 		sprite.setColor(info.color);
 		setSprite(sprite);
+
+		leadStar = new Sprite(Assets.lead_star);
+		leadStar.setScale(0.4f);
 
 		holding_grenade = new Sprite(Assets.man_holding_grenade);
 		holding_grenade.setOrigin(getWidth() / 2, getHeight() / 2);
@@ -184,6 +188,9 @@ public class Player extends AbstractGameObject implements Collidable {
 		if (ai != null && !blockInput) {
 			ai.update(delta);
 		}
+
+		leadStar.setX(getCenterX() - nameLabel.width / 2 - leadStar.getWidth() * leadStar.getScaleX() * 1.4f);
+		leadStar.setY(getY() + getHeight() + nameLabel.height - leadStar.getHeight() * leadStar.getScaleY() - 5f);
 
 		gun.update(delta);
 		statusHandler.update(delta);
@@ -281,6 +288,10 @@ public class Player extends AbstractGameObject implements Collidable {
 		if (drawNames) {
 			Assets.font.draw(batch, nameLabel, getX() + getWidth() / 2 - nameLabel.width / 2,
 					getY() + getHeight() + nameLabel.height);
+		}
+		// TODO FIX
+		if (leadState != LeadState.NONE) {
+			Draw.sprite(batch, leadStar);
 		}
 	}
 
@@ -480,7 +491,7 @@ public class Player extends AbstractGameObject implements Collidable {
 	}
 
 	public float getHealthPercentage() {
-		return health *1.0f/ healthMax;
+		return health * 1.0f / healthMax;
 	}
 
 	public void releaseGrenade() {
@@ -640,5 +651,23 @@ public class Player extends AbstractGameObject implements Collidable {
 
 	public StatusHandler getStatusHandler() {
 		return statusHandler;
+	}
+
+	public void setLeadState(LeadState leadState) {
+		this.leadState = leadState;
+		System.out.println(getInfo().name + " is now: " + leadState);
+		switch (leadState) {
+		case LEAD:
+			leadStar.setTexture(Assets.lead_star);
+			break;
+		case NONE:
+			break;
+		case TIED_FOR_LEAD:
+			leadStar.setTexture(Assets.tied_for_lead_star);
+			break;
+		default:
+			break;
+
+		}
 	}
 }

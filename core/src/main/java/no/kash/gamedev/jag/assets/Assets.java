@@ -3,6 +3,7 @@ package no.kash.gamedev.jag.assets;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
@@ -13,7 +14,7 @@ public class Assets {
 	public static Texture laserSight;
 
 	// Player
-	public static Texture man, man_holding_grenade,man_holding_snakebite,man_holding_tripwire;
+	public static Texture man, man_holding_grenade, man_holding_snakebite, man_holding_tripwire;
 
 	// Projectiles
 	public static Texture bullet;
@@ -33,10 +34,10 @@ public class Assets {
 
 	public static Texture grenade;
 	public static Texture snakebite;
-	
+
 	// Items
 	public static Texture tripmine_ground, tripmine_placed;
-	
+
 	// Particles
 	public static Texture blood;
 	public static Texture blood2;
@@ -58,20 +59,22 @@ public class Assets {
 	public static Texture flamethrower_ground;
 	public static Texture crossbow_ground;
 	public static Texture awp_ground;
-	
-	//Items
+
+	// Items
 	public static Texture healthpack;
 
 	// Icons
 	public static Texture health_icon;
 	public static Texture icon_border;
+	public static Texture tied_for_lead_star;
+	public static Texture lead_star;
 
 	// MapTiles
 	public static Texture spawntile_regular;
 	public static Texture spawntile_common;
 	public static Texture spawntile_rare;
 	public static Texture spawntile_epic;
-	
+
 	public static Texture itemtile_regular;
 	public static Texture itemtile_common;
 
@@ -79,6 +82,8 @@ public class Assets {
 	public static Texture health, health_lost, health_bg, health_border, health_shine;
 	public static Texture card_long_border, card_long_border_ready, card_long_bg, card_square_border, card_square_bg,
 			card_square_border_selected, card_xl_border, card_xl_bg;
+	public static Texture kills, deaths;
+	public static Texture kdbg;
 
 	// Fonts
 	public static BitmapFont font, fontSmall, fontLarge;
@@ -107,7 +112,7 @@ public class Assets {
 		flamethrower = load("playerSprite/flamethrower.png");
 		crossbow = load("playerSprite/crossbow.png");
 		awp = load("playerSprite/awp.png");
-		
+
 		// Items
 		grenade = load("sprites/grenade.png");
 		tripmine_ground = load("sprites/tripmine_ground.png");
@@ -133,15 +138,15 @@ public class Assets {
 		awp_ground = load("sprites/gun_awp.png");
 		goldengun_ground = load("sprites/gun_goldengun.png");
 		crossbow_ground = load("sprites/gun_crossbow.png");
-		
-		//Items
+		mac10_ground = load("sprites/gun_mac10.png");
+
+		// Items
 		healthpack = load("sprites/health_pack.png");
 		snakebite = load("sprites/snakebite_grenade.png");
 
 		// Icons
-
-		mac10_ground = load("sprites/gun_mac10.png");
-
+		lead_star = load("sprites/lead_star.png");
+		tied_for_lead_star = load("sprites/tied_for_lead_star.png");
 		icon_border = load("sprites/health_icon.png");
 		health_icon = load("sprites/health_icon.png");
 
@@ -150,7 +155,7 @@ public class Assets {
 		spawntile_common = load("maps/sprites/spawner_common.png");
 		spawntile_rare = load("maps/sprites/spawner_rare.png");
 		spawntile_epic = load("maps/sprites/spawner_epic.png");
-		
+
 		itemtile_regular = load("maps/sprites/itenspawner_regular.png");
 		itemtile_common = load("maps/sprites/itenspawner_common.png");
 
@@ -171,6 +176,10 @@ public class Assets {
 
 		card_xl_bg = load("sprites/card_xl_bg.png");
 		card_xl_border = load("sprites/card_xl_border.png");
+
+		kills = load("sprites/kills.png");
+		deaths = load("sprites/deaths.png");
+		kdbg = load("sprites/kd_bg.png");
 		// Animations
 
 		Texture explosionSheet = load("animations/explosion1.png");

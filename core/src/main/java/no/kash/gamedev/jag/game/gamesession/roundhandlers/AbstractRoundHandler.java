@@ -1,8 +1,9 @@
 package no.kash.gamedev.jag.game.gamesession.roundhandlers;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -13,24 +14,24 @@ import aurelienribon.tweenengine.TweenCallback;
 import no.kash.gamedev.jag.assets.Assets;
 import no.kash.gamedev.jag.commons.defs.Defs;
 import no.kash.gamedev.jag.commons.network.packets.PlayerNewStats;
-import no.kash.gamedev.jag.commons.network.packets.PlayerStateChange;
 import no.kash.gamedev.jag.commons.network.packets.PlayerUpdate;
 import no.kash.gamedev.jag.commons.tweens.TweenGlobal;
 import no.kash.gamedev.jag.commons.tweens.TweenableFloat;
 import no.kash.gamedev.jag.commons.tweens.accessors.FloatAccessor;
-import no.kash.gamedev.jag.controller.JustAnotherGameController;
 import no.kash.gamedev.jag.game.JustAnotherGame;
 import no.kash.gamedev.jag.game.announcer.Announcement;
 import no.kash.gamedev.jag.game.commons.utils.Cooldown;
 import no.kash.gamedev.jag.game.gamecontext.GameContext;
+import no.kash.gamedev.jag.game.gameobjects.players.LeadState;
 import no.kash.gamedev.jag.game.gameobjects.players.Player;
 import no.kash.gamedev.jag.game.gameobjects.players.PlayerInfo;
 import no.kash.gamedev.jag.game.gameobjects.players.guns.GunType;
 import no.kash.gamedev.jag.game.gameobjects.players.status.Status;
+import no.kash.gamedev.jag.game.gamesession.GameMode;
 import no.kash.gamedev.jag.game.gamesession.GameSession;
 import no.kash.gamedev.jag.game.gamesession.roundhandlers.suddendeaths.SuddenDeathType;
-import no.kash.gamedev.jag.game.screens.PlayScreen;
 import no.kash.gamedev.jag.game.screens.LobbyScreen;
+import no.kash.gamedev.jag.game.screens.PlayScreen;
 
 public abstract class AbstractRoundHandler<T> implements RoundHandler<T> {
 
@@ -61,7 +62,8 @@ public abstract class AbstractRoundHandler<T> implements RoundHandler<T> {
 		this.gameScreen = screen;
 		this.gameContext = gameContext;
 		this.gameSession = gameSession;
-		this.roundTime = new Cooldown((int)gameSession.settings.getSelectedValue(Defs.SESSION_ROUNDTIME, Integer.class));
+		this.roundTime = new Cooldown(
+				(int) gameSession.settings.getSelectedValue(Defs.SESSION_ROUNDTIME, Integer.class));
 		this.roundTime.start();
 		this.roundTimeLabel = new GlyphLayout(Assets.announcerFont,
 				String.format("%.2f", roundTime.getCooldownTimer()));
@@ -80,6 +82,7 @@ public abstract class AbstractRoundHandler<T> implements RoundHandler<T> {
 		killer.getInfo().killed.add(killed.getInfo());
 		killed.getInfo().killedBy.add(killer.getInfo());
 		players.remove(killed.getId());
+		notifyKD(killer, killed);
 	}
 
 	@Override
@@ -97,6 +100,61 @@ public abstract class AbstractRoundHandler<T> implements RoundHandler<T> {
 			killed.getInfo().killedBy.add(killed.getInfo());
 		}
 		players.remove(killed.getId());
+		notifyKD(status.causer, killed);
+	}
+
+	private void updateLead() {
+		for(Player player : players.values()){
+			player.setLeadState(LeadState.NONE);
+		}
+		int maxWins = -1;
+		List<PlayerInfo> lead = new ArrayList<>();
+		for (PlayerInfo player : gameSession.players.values()) {
+			if (player.roundsWon > maxWins) {
+				maxWins = player.roundsWon;
+				lead.clear();
+				lead.add(player);
+			} else if (player.roundsWon == maxWins) {
+				lead.add(player);
+			}
+		}
+		if (maxWins == 0) {
+			return;
+		}
+		if (lead.size() > 1) {
+			for (PlayerInfo player : lead) {
+				if (players.containsKey(player.id)) {
+					players.get(player.id).setLeadState(LeadState.TIED_FOR_LEAD);
+				}
+			}
+		} else {
+			if (players.containsKey(lead.get(0).id)) {
+				players.get(lead.get(0).id).setLeadState(LeadState.LEAD);
+			}
+		}
+	}
+
+	public void notifyKD(Player killer, Player killed) {
+		float[][] killerState = new float[1][2];
+		float[][] killedState = new float[1][2];
+		if (killer.equals(killed)) {
+			// Killer got negative kill and death
+			killerState[0][0] = -1;
+			killerState[0][1] = 1;
+		} else {
+			// Killer got kill
+			killerState[0][0] = 1;
+			killerState[0][1] = 0;
+			// Killed got death
+			killedState[0][0] = 0;
+			killedState[0][1] = 1;
+
+			gameScreen.getGame().getServer().send(killed.getInfo().id,
+					new PlayerUpdate(1, new int[] { PlayerUpdate.KILL_DEATH }, killedState));
+		}
+		gameScreen.getGame().getServer().send(killer.getInfo().id,
+				new PlayerUpdate(1, new int[] { PlayerUpdate.KILL_DEATH }, killerState));
+
 	}
 
 	public void update(float delta) {
@@ -134,11 +192,12 @@ public abstract class AbstractRoundHandler<T> implements RoundHandler<T> {
 									{ player.getThrowable().getType().ordinal(), player.getThrowable().getUses() },
 									{ player.getHealth() } }));
 		}
+		updateLead();
 	}
 
 	@Override
 	public void setup() {
-		if(gameSession.players.size() > gameContext.getLevel().playerSpawns.size()){
+		if (gameSession.settings.getSelectedValue(Defs.SESSION_GM, GameMode.class) == GameMode.STANDARD_FFA && gameSession.players.size() > gameContext.getLevel().playerSpawns.size()) {
 			gameScreen.getGame().setScreen(new LobbyScreen(gameScreen.getGame(), gameSession));
 			System.out.println("TOO MANY PLAYERS");
 		}
@@ -203,6 +262,7 @@ public abstract class AbstractRoundHandler<T> implements RoundHandler<T> {
 							currentRound++;
 							if (!gameOver) {
 								gameScreen.restart();
+								firstFrame = true;
 							} else {
 								statsHandler();
 								gameScreen.getGame().setScreen(new LobbyScreen(gameScreen.getGame(), gameSession));

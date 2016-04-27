@@ -10,7 +10,7 @@ public class MapSelection extends SelectOption {
 	public int index;
 
 	public MapSelection(int i, Callback onClick) {
-		super(Assets.card_square_bg, "Map " + i, onClick);
+		super(Assets.card_square_bg, "Map " + (i+1), onClick);
 		this.index = i;
 	}
 

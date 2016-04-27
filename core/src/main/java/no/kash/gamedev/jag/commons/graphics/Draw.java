@@ -40,4 +40,9 @@ public class Draw {
 		}
 	}
 
+	public static void sprite(SpriteBatch batch, Sprite s) {
+		sprite(batch, s, s.getX(), s.getY(), s.getWidth(), s.getHeight(), s.getScaleX(), s.getScaleY(), s.getRotation(),
+				s.getColor(), false);
+	}
+
 }

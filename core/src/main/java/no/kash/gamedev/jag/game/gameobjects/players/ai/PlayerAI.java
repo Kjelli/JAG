@@ -237,8 +237,13 @@ public class PlayerAI {
 				there = goal.targetPoint;
 			}
 			path = LevelPathFinder.findPath(here.x, here.y, there.x, there.y);
-			targetNodeIndex = 0;
-			targetNode = path.path.get(targetNodeIndex);
+			if (path.success) {
+				targetNodeIndex = 0;
+				targetNode = path.path.get(targetNodeIndex);
+			}else{
+				state = State.scout;
+				return;
+			}
 		} else {
 			if (thisPlayer.distanceTo(targetNode.mX, targetNode.mY) < NODE_PROXIMITY_TRESHOLD) {
 				targetNodeIndex++;

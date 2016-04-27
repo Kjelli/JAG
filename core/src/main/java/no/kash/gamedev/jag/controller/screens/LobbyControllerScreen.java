@@ -1,6 +1,5 @@
 package no.kash.gamedev.jag.controller.screens;
 
-import java.util.Collection;
 import java.util.Map;
 
 import com.badlogic.gdx.Gdx;

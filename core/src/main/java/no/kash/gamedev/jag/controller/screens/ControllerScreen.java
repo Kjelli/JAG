@@ -57,10 +57,10 @@ public class ControllerScreen extends AbstractControllerScreen {
 	public void onShow() {
 
 		hideUI();
-		hud = new InGameHud(0, stage.getHeight(), stage.getWidth() / 3, stage.getHeight() / 2);
+		hud = new InGameHud(stage, 0, stage.getHeight(), stage.getWidth() / 3, stage.getHeight() / 2);
 		bgColor = new Color(Color.GRAY);
 		setBackgroundColor(bgColor);
-		
+
 		vibrationCooldown = new Cooldown(0.5f);
 
 		game.getActionResolver().toast("Initializing controller");
@@ -89,7 +89,7 @@ public class ControllerScreen extends AbstractControllerScreen {
 		stage.addActor(stick_mid.getTouchpad());
 		stage.addActor(reload);
 
-		deadLabel = new GlyphLayout(Assets.fontLarge, "YOU ARE DEAD :'(");
+		deadLabel = new GlyphLayout(Assets.fontLarge, "RIP");
 
 		final InputScheme scheme = new InputScheme() {
 			/*
@@ -283,6 +283,10 @@ public class ControllerScreen extends AbstractControllerScreen {
 				break;
 			case PlayerUpdate.ITEM:
 				hud.updateItem((int) m.state[i][0], (int) m.state[i][1]);
+				break;
+			case PlayerUpdate.KILL_DEATH:
+				hud.updateKD((int) m.state[i][0], (int) m.state[i][1]);
+				break;
 			}
 	}
 
@@ -306,6 +310,7 @@ public class ControllerScreen extends AbstractControllerScreen {
 			stick_mid.getTouchpad().setColor(1, 1, 1, 0);
 			reload.setColor(1, 1, 1, 0);
 			Assets.fontLarge.draw(batch, deadLabel, stage.getWidth() / 2 - deadLabel.width / 2, stage.getHeight() / 2);
+			hud.draw(batch);
 		}
 
 	}
