@@ -228,7 +228,8 @@ public class PlayScreen extends AbstractGameScreen {
 			} else {
 				focusClasses = focusCameraOnPOIs;
 			}
-			for (GameObject object : gameContext.getByClass(focusClasses)) {
+			for (Object ob : gameContext.getByClass(focusClasses)) {
+				GameObject object = (GameObject) ob;
 				if (object instanceof WeaponSpawnTile) {
 					if (!((WeaponSpawnTile) object).isSpawning()) {
 						continue;

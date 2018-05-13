@@ -2,6 +2,7 @@ package no.kash.gamedev.jag.game.levels;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.math.Vector2;
 
 import no.kash.gamedev.jag.game.commons.utils.Cooldown;
@@ -75,8 +76,8 @@ public class ItemSpawner {
 
 	public void stop() {
 		stopped = true;
-		for (GameObject o : gameContext.getByClass(new Class[] { Item.class })) {
-			o.destroy();
+		for (Object o : gameContext.getByClass(new Class[] { Item.class })) {
+			((GameObject)o).destroy();
 		}
 	}
 

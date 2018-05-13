@@ -15,7 +15,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 public class MapHandler {
 
 	public static FileHandle[] availableMaps() {
-		File file = new File("../assets/maps");
+		File file = new File("./assets/maps");
 		File[] files = file.listFiles(new FileFilter() {
 			@Override
 			public boolean accept(File pathname) {

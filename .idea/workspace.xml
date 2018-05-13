@@ -1,0 +1,970 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="13f08d87-45f5-45a2-bb51-ef762b06c3ed" name="Default" comment="">
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_mini2Dx_universal_tween_engine_6_3_3.xml" />
+      <change beforePath="$PROJECT_DIR$/core/pom.xml" afterPath="$PROJECT_DIR$/core/pom.xml" />
+      <change beforePath="$PROJECT_DIR$/core/src/main/java/no/kash/gamedev/jag/game/levels/ItemSpawner.java" afterPath="$PROJECT_DIR$/core/src/main/java/no/kash/gamedev/jag/game/levels/ItemSpawner.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/main/java/no/kash/gamedev/jag/game/levels/MapHandler.java" afterPath="$PROJECT_DIR$/core/src/main/java/no/kash/gamedev/jag/game/levels/MapHandler.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/main/java/no/kash/gamedev/jag/game/levels/WeaponSpawner.java" afterPath="$PROJECT_DIR$/core/src/main/java/no/kash/gamedev/jag/game/levels/WeaponSpawner.java" />
+      <change beforePath="$PROJECT_DIR$/core/src/main/java/no/kash/gamedev/jag/game/screens/PlayScreen.java" afterPath="$PROJECT_DIR$/core/src/main/java/no/kash/gamedev/jag/game/screens/PlayScreen.java" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/DesktopActionResolver.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/DesktopActionResolver.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/JagEndpoint.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/JagEndpoint.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/actionresolvers/ActionResolver.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/actionresolvers/ActionResolver.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/assets/Assets.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/assets/Assets.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/commons/defs/Defs.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/commons/defs/Defs.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/commons/defs/Prefs.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/commons/defs/Prefs.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/commons/graphics/Draw.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/commons/graphics/Draw.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/commons/network/JagClient$1.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/commons/network/JagClient$1.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/commons/network/JagClient.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/commons/network/JagClient.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/commons/network/JagClientPacketHandler.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/commons/network/JagClientPacketHandler.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/commons/network/JagKryo.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/commons/network/JagKryo.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/commons/network/JagServer$1.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/commons/network/JagServer$1.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/commons/network/JagServer.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/commons/network/JagServer.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/commons/network/JagServerPacketHandler.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/commons/network/JagServerPacketHandler.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/commons/network/NetworkEvent.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/commons/network/NetworkEvent.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/commons/network/NetworkListener.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/commons/network/NetworkListener.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/commons/network/QueuedPacket$Type.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/commons/network/QueuedPacket$Type.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/commons/network/QueuedPacket.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/commons/network/QueuedPacket.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/commons/network/packets/GamePacket.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/commons/network/packets/GamePacket.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/commons/network/packets/GameSessionUpdate.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/commons/network/packets/GameSessionUpdate.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/commons/network/packets/PlayerAvailableMaps.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/commons/network/packets/PlayerAvailableMaps.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/commons/network/packets/PlayerConnect.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/commons/network/packets/PlayerConnect.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/commons/network/packets/PlayerInput.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/commons/network/packets/PlayerInput.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/commons/network/packets/PlayerMapVote.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/commons/network/packets/PlayerMapVote.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/commons/network/packets/PlayerNewStats.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/commons/network/packets/PlayerNewStats.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/commons/network/packets/PlayerStateChange.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/commons/network/packets/PlayerStateChange.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/commons/network/packets/PlayerStateChangeResponse.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/commons/network/packets/PlayerStateChangeResponse.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/commons/network/packets/PlayerUpdate.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/commons/network/packets/PlayerUpdate.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/commons/tweens/TweenGlobal.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/commons/tweens/TweenGlobal.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/commons/tweens/TweenableFloat.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/commons/tweens/TweenableFloat.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/commons/tweens/accessors/ColorAccessor.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/commons/tweens/accessors/ColorAccessor.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/commons/tweens/accessors/FloatAccessor.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/commons/tweens/accessors/FloatAccessor.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/commons/tweens/accessors/Vector2Accessor.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/commons/tweens/accessors/Vector2Accessor.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/commons/tweens/accessors/Vector3Accessor.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/commons/tweens/accessors/Vector3Accessor.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/commons/utils/Callback.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/commons/utils/Callback.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/commons/utils/selection/SelectOption$1.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/commons/utils/selection/SelectOption$1.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/commons/utils/selection/SelectOption.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/commons/utils/selection/SelectOption.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/commons/utils/selection/Selector.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/commons/utils/selection/Selector.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/JustAnotherGameController$1.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/JustAnotherGameController$1.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/JustAnotherGameController.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/JustAnotherGameController.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/hud/InGameHud.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/hud/InGameHud.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/input/Joystick$1.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/input/Joystick$1.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/input/Joystick.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/input/Joystick.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/inputschemes/InputEvent.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/inputschemes/InputEvent.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/inputschemes/InputScheme$1.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/inputschemes/InputScheme$1.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/inputschemes/InputScheme$2.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/inputschemes/InputScheme$2.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/inputschemes/InputScheme.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/inputschemes/InputScheme.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/lobby/ColorPicker$1.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/lobby/ColorPicker$1.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/lobby/ColorPicker$ColorOption.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/lobby/ColorPicker$ColorOption.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/lobby/ColorPicker.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/lobby/ColorPicker.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/lobby/GameSessionControls.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/lobby/GameSessionControls.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/lobby/MapPicker.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/lobby/MapPicker.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/lobby/TeamColorPicker$1.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/lobby/TeamColorPicker$1.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/lobby/TeamColorPicker.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/lobby/TeamColorPicker.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/mapselection/MapSelection.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/mapselection/MapSelection.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/mapselection/MapSelector$1.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/mapselection/MapSelector$1.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/mapselection/MapSelector.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/mapselection/MapSelector.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/preferences/GameSessionPreferences.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/preferences/GameSessionPreferences.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/preferences/PlayerPreferences.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/preferences/PlayerPreferences.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/screens/AbstractControllerScreen.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/screens/AbstractControllerScreen.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/screens/ConfigureScreen$1.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/screens/ConfigureScreen$1.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/screens/ConfigureScreen$2.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/screens/ConfigureScreen$2.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/screens/ConfigureScreen.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/screens/ConfigureScreen.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/screens/ControllerScreen$1.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/screens/ControllerScreen$1.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/screens/ControllerScreen$2.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/screens/ControllerScreen$2.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/screens/ControllerScreen$3.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/screens/ControllerScreen$3.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/screens/ControllerScreen.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/screens/ControllerScreen.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/screens/LoadingScreen$1.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/screens/LoadingScreen$1.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/screens/LoadingScreen.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/screens/LoadingScreen.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/screens/LobbyControllerScreen$1.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/screens/LobbyControllerScreen$1.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/screens/LobbyControllerScreen$2.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/screens/LobbyControllerScreen$2.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/screens/LobbyControllerScreen$3.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/screens/LobbyControllerScreen$3.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/screens/LobbyControllerScreen$4.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/screens/LobbyControllerScreen$4.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/screens/LobbyControllerScreen$5.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/screens/LobbyControllerScreen$5.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/screens/LobbyControllerScreen$6.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/screens/LobbyControllerScreen$6.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/screens/LobbyControllerScreen$7.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/screens/LobbyControllerScreen$7.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/screens/LobbyControllerScreen$8.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/screens/LobbyControllerScreen$8.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/screens/LobbyControllerScreen$9.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/screens/LobbyControllerScreen$9.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/screens/LobbyControllerScreen.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/screens/LobbyControllerScreen.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/screens/MapSelectionControllerScreen$1.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/screens/MapSelectionControllerScreen$1.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/screens/MapSelectionControllerScreen.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/controller/screens/MapSelectionControllerScreen.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/JustAnotherGame$1.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/JustAnotherGame$1.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/JustAnotherGame.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/JustAnotherGame.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/announcer/Announcement$1.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/announcer/Announcement$1.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/announcer/Announcement.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/announcer/Announcement.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/announcer/Announcer.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/announcer/Announcer.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/announcer/RoundStartAnnouncement.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/announcer/RoundStartAnnouncement.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/cards/Card.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/cards/Card.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/cards/CardTypes.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/cards/CardTypes.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/commons/utils/Cooldown.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/commons/utils/Cooldown.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/commons/utils/SettingClickListener.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/commons/utils/SettingClickListener.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gamecontext/GameContext.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gamecontext/GameContext.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gamecontext/physics/BruteForcePhysicsHandler.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gamecontext/physics/BruteForcePhysicsHandler.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gamecontext/physics/Collidable.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gamecontext/physics/Collidable.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gamecontext/physics/Collision.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gamecontext/physics/Collision.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gamecontext/physics/PhysicsHandler.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gamecontext/physics/PhysicsHandler.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gamecontext/physics/tilecollisions/TileCollisionDetector.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gamecontext/physics/tilecollisions/TileCollisionDetector.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gamecontext/physics/tilecollisions/TileCollisionListener.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gamecontext/physics/tilecollisions/TileCollisionListener.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/AbstractGameObject.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/AbstractGameObject.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/GameObject.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/GameObject.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/bullets/AbstractBullet$1.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/bullets/AbstractBullet$1.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/bullets/AbstractBullet.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/bullets/AbstractBullet.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/bullets/Bullet.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/bullets/Bullet.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/bullets/Dart.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/bullets/Dart.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/bullets/Fire.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/bullets/Fire.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/bullets/GoldenBullet.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/bullets/GoldenBullet.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/bullets/NormalBullet.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/bullets/NormalBullet.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/bullets/Spike.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/bullets/Spike.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/collectables/AbstractCollectable.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/collectables/AbstractCollectable.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/collectables/Collectable.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/collectables/Collectable.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/collectables/items/CollectableItem.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/collectables/items/CollectableItem.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/collectables/items/Item.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/collectables/items/Item.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/collectables/items/ItemType.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/collectables/items/ItemType.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/collectables/weapons/Weapon.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/collectables/weapons/Weapon.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/grenades/AbstractGrenade$1.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/grenades/AbstractGrenade$1.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/grenades/AbstractGrenade.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/grenades/AbstractGrenade.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/grenades/Explosion.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/grenades/Explosion.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/grenades/Grenade.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/grenades/Grenade.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/grenades/NormalGrenade.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/grenades/NormalGrenade.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/grenades/Snakebite.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/grenades/Snakebite.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/grenades/TripLaser$1.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/grenades/TripLaser$1.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/grenades/TripLaser.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/grenades/TripLaser.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/grenades/TripMine.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/grenades/TripMine.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/particles/AbstractParticle.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/particles/AbstractParticle.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/particles/BloodSplatter$1.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/particles/BloodSplatter$1.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/particles/BloodSplatter$2.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/particles/BloodSplatter$2.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/particles/BloodSplatter.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/particles/BloodSplatter.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/particles/Burn.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/particles/Burn.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/particles/Confetti.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/particles/Confetti.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/particles/HealingParticle.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/particles/HealingParticle.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/particles/Particle.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/particles/Particle.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/particles/Poison.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/particles/Poison.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/particles/Star.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/particles/Star.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/particles/WeaponSpawnEffect.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/particles/WeaponSpawnEffect.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/players/CircularHitbox.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/players/CircularHitbox.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/players/LeadState.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/players/LeadState.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/players/Player$1.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/players/Player$1.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/players/Player.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/players/Player.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/players/PlayerInfo.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/players/PlayerInfo.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/players/ai/Behaviour.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/players/ai/Behaviour.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/players/ai/Goal.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/players/ai/Goal.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/players/ai/PlayerAI$1.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/players/ai/PlayerAI$1.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/players/ai/PlayerAI$State.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/players/ai/PlayerAI$State.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/players/ai/PlayerAI.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/players/ai/PlayerAI.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/players/damagehandlers/DamageHandler.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/players/damagehandlers/DamageHandler.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/players/damagehandlers/VanillaDamageHandler.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/players/damagehandlers/VanillaDamageHandler.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/players/guns/Gun.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/players/guns/Gun.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/players/guns/GunType.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/players/guns/GunType.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/players/guns/LaserSight$1.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/players/guns/LaserSight$1.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/players/guns/LaserSight.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/players/guns/LaserSight.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/players/hud/HealthHud$1.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/players/hud/HealthHud$1.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/players/hud/HealthHud.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/players/hud/HealthHud.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/players/status/Status.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/players/status/Status.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/players/status/StatusHandler.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/players/status/StatusHandler.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/players/status/StatusType.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gameobjects/players/status/StatusType.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gamesession/GameMode.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gamesession/GameMode.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gamesession/GameSession.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gamesession/GameSession.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gamesession/GameSettings$Option.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gamesession/GameSettings$Option.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gamesession/GameSettings$Setting.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gamesession/GameSettings$Setting.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gamesession/GameSettings.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gamesession/GameSettings.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gamesession/roundhandlers/AbstractRoundHandler$1.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gamesession/roundhandlers/AbstractRoundHandler$1.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gamesession/roundhandlers/AbstractRoundHandler$2.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gamesession/roundhandlers/AbstractRoundHandler$2.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gamesession/roundhandlers/AbstractRoundHandler.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gamesession/roundhandlers/AbstractRoundHandler.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gamesession/roundhandlers/FFARoundHandler.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gamesession/roundhandlers/FFARoundHandler.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gamesession/roundhandlers/FFARoundResult.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gamesession/roundhandlers/FFARoundResult.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gamesession/roundhandlers/RoundHandler.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gamesession/roundhandlers/RoundHandler.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gamesession/roundhandlers/RoundResult.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gamesession/roundhandlers/RoundResult.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gamesession/roundhandlers/TeamRoundHandler.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gamesession/roundhandlers/TeamRoundHandler.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gamesession/roundhandlers/TeamRoundResult.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gamesession/roundhandlers/TeamRoundResult.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gamesession/roundhandlers/suddendeaths/SuddenDeathType.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/gamesession/roundhandlers/suddendeaths/SuddenDeathType.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/levels/ItemSpawnTile.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/levels/ItemSpawnTile.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/levels/ItemSpawnTileInfo.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/levels/ItemSpawnTileInfo.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/levels/ItemSpawner.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/levels/ItemSpawner.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/levels/Level.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/levels/Level.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/levels/MapHandler$1.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/levels/MapHandler$1.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/levels/MapHandler.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/levels/MapHandler.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/levels/MiniMap.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/levels/MiniMap.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/levels/PlayerSpawnPoint.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/levels/PlayerSpawnPoint.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/levels/WeaponSpawnTile.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/levels/WeaponSpawnTile.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/levels/WeaponSpawnTileInfo.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/levels/WeaponSpawnTileInfo.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/levels/WeaponSpawner.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/levels/WeaponSpawner.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/levels/pathfinding/LevelGraph.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/levels/pathfinding/LevelGraph.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/levels/pathfinding/LevelPathFinder.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/levels/pathfinding/LevelPathFinder.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/levels/pathfinding/ManhattanDistanceHeuristic.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/levels/pathfinding/ManhattanDistanceHeuristic.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/levels/pathfinding/MapNode.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/levels/pathfinding/MapNode.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/levels/pathfinding/PathResult.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/levels/pathfinding/PathResult.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/lobby/GameSessionInfoGUI.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/lobby/GameSessionInfoGUI.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/lobby/PlayerInfoGUI.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/lobby/PlayerInfoGUI.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/screens/AbstractGameScreen.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/screens/AbstractGameScreen.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/screens/LobbyScreen$1.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/screens/LobbyScreen$1.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/screens/LobbyScreen.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/screens/LobbyScreen.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/screens/MapSelectionScreen$1.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/screens/MapSelectionScreen$1.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/screens/MapSelectionScreen.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/screens/MapSelectionScreen.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/screens/PlayScreen$1.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/screens/PlayScreen$1.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/screens/PlayScreen$2.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/screens/PlayScreen$2.class" />
+      <change beforePath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/screens/PlayScreen.class" afterPath="$PROJECT_DIR$/core/target/classes/no/kash/gamedev/jag/game/screens/PlayScreen.class" />
+      <change beforePath="$PROJECT_DIR$/desktop/target/classes/no/kash/gamedev/jag/java/JustAnotherGameDesktop.class" afterPath="$PROJECT_DIR$/desktop/target/classes/no/kash/gamedev/jag/java/JustAnotherGameDesktop.class" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
+    </list>
+    <ignored path="$PROJECT_DIR$/target/" />
+    <ignored path="$PROJECT_DIR$/core/target/" />
+    <ignored path="$PROJECT_DIR$/desktop/target/" />
+    <ignored path="$PROJECT_DIR$/android/target/" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DockManager">
+    <window id="1">
+      <content type="file-editors">
+        <state>
+          <leaf>
+            <file leaf-file-name="Behaviour.java" pinned="false" current-in-tab="false">
+              <entry file="file://$PROJECT_DIR$/core/src/main/java/no/kash/gamedev/jag/game/gameobjects/players/ai/Behaviour.java">
+                <provider selected="true" editor-type-id="text-editor">
+                  <state relative-caret-position="195">
+                    <caret line="20" column="35" lean-forward="false" selection-start-line="20" selection-start-column="35" selection-end-line="20" selection-end-column="35" />
+                    <folding />
+                  </state>
+                </provider>
+              </entry>
+            </file>
+            <file leaf-file-name="PlayerAI.java" pinned="false" current-in-tab="true">
+              <entry file="file://$PROJECT_DIR$/core/src/main/java/no/kash/gamedev/jag/game/gameobjects/players/ai/PlayerAI.java">
+                <provider selected="true" editor-type-id="text-editor">
+                  <state relative-caret-position="1140">
+                    <caret line="104" column="47" lean-forward="true" selection-start-line="104" selection-start-column="47" selection-end-line="104" selection-end-column="47" />
+                    <folding />
+                  </state>
+                </provider>
+              </entry>
+            </file>
+            <file leaf-file-name="Goal.java" pinned="false" current-in-tab="false">
+              <entry file="file://$PROJECT_DIR$/core/src/main/java/no/kash/gamedev/jag/game/gameobjects/players/ai/Goal.java">
+                <provider selected="true" editor-type-id="text-editor">
+                  <state relative-caret-position="210">
+                    <caret line="16" column="27" lean-forward="false" selection-start-line="16" selection-start-column="27" selection-end-line="16" selection-end-column="27" />
+                    <folding />
+                  </state>
+                </provider>
+              </entry>
+            </file>
+          </leaf>
+        </state>
+      </content>
+    </window>
+  </component>
+  <component name="FileEditorManager">
+    <leaf>
+      <file leaf-file-name="Goal.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/core/src/main/java/no/kash/gamedev/jag/game/gameobjects/players/ai/Goal.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="390">
+              <caret line="28" column="0" lean-forward="true" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>tween</find>
+    </findStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GradleLocalSettings">
+    <option name="externalProjectsViewState">
+      <projects_view />
+    </option>
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/core/pom.xml" />
+        <option value="$PROJECT_DIR$/core/src/main/java/no/kash/gamedev/jag/game/levels/WeaponSpawner.java" />
+        <option value="$PROJECT_DIR$/core/src/main/java/no/kash/gamedev/jag/game/levels/ItemSpawner.java" />
+        <option value="$PROJECT_DIR$/core/src/main/java/no/kash/gamedev/jag/game/screens/PlayScreen.java" />
+        <option value="$PROJECT_DIR$/core/src/main/java/no/kash/gamedev/jag/game/levels/MapHandler.java" />
+      </list>
+    </option>
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="importAutomatically" value="true" />
+      </MavenImportingSettings>
+    </option>
+    <option name="disabledProfiles">
+      <list>
+        <option value="android" />
+      </list>
+    </option>
+  </component>
+  <component name="MavenProjectNavigator">
+    <treeState>
+      <expand>
+        <path>
+          <item name="" type="16c1761:MavenProjectsStructure$RootNode" />
+          <item name="Profiles" type="6783ec58:MavenProjectsStructure$ProfilesNode" />
+        </path>
+        <path>
+          <item name="" type="16c1761:MavenProjectsStructure$RootNode" />
+          <item name="JustAnotherGame Android" type="9519ce18:MavenProjectsStructure$ProjectNode" />
+        </path>
+        <path>
+          <item name="" type="16c1761:MavenProjectsStructure$RootNode" />
+          <item name="JustAnotherGame Android" type="9519ce18:MavenProjectsStructure$ProjectNode" />
+        </path>
+        <path>
+          <item name="" type="16c1761:MavenProjectsStructure$RootNode" />
+          <item name="JustAnotherGame Core" type="9519ce18:MavenProjectsStructure$ProjectNode" />
+        </path>
+      </expand>
+      <select />
+    </treeState>
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="x" value="1440" />
+    <option name="y" value="22" />
+    <option name="width" value="1920" />
+    <option name="height" value="982" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+      <manualOrder />
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scratches" />
+      <pane id="AndroidView" />
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="jag" type="b2602c69:ProjectViewProjectNode" />
+              <item name="JAG" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="jag" type="b2602c69:ProjectViewProjectNode" />
+              <item name="JAG" type="462c0819:PsiDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="jag" type="b2602c69:ProjectViewProjectNode" />
+              <item name="JAG" type="462c0819:PsiDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="jag" type="b2602c69:ProjectViewProjectNode" />
+              <item name="JAG" type="462c0819:PsiDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="jag" type="b2602c69:ProjectViewProjectNode" />
+              <item name="JAG" type="462c0819:PsiDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="jag" type="b2602c69:ProjectViewProjectNode" />
+              <item name="JAG" type="462c0819:PsiDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="jag" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="jag" type="b2602c69:ProjectViewProjectNode" />
+              <item name="JAG" type="462c0819:PsiDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="jag" type="462c0819:PsiDirectoryNode" />
+              <item name="game" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="jag" type="b2602c69:ProjectViewProjectNode" />
+              <item name="JAG" type="462c0819:PsiDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="jag" type="462c0819:PsiDirectoryNode" />
+              <item name="game" type="462c0819:PsiDirectoryNode" />
+              <item name="gameobjects" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="jag" type="b2602c69:ProjectViewProjectNode" />
+              <item name="JAG" type="462c0819:PsiDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="jag" type="462c0819:PsiDirectoryNode" />
+              <item name="game" type="462c0819:PsiDirectoryNode" />
+              <item name="gameobjects" type="462c0819:PsiDirectoryNode" />
+              <item name="players" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="jag" type="b2602c69:ProjectViewProjectNode" />
+              <item name="JAG" type="462c0819:PsiDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="jag" type="462c0819:PsiDirectoryNode" />
+              <item name="game" type="462c0819:PsiDirectoryNode" />
+              <item name="gameobjects" type="462c0819:PsiDirectoryNode" />
+              <item name="players" type="462c0819:PsiDirectoryNode" />
+              <item name="ai" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="jag" type="b2602c69:ProjectViewProjectNode" />
+              <item name="JAG" type="462c0819:PsiDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="jag" type="462c0819:PsiDirectoryNode" />
+              <item name="game" type="462c0819:PsiDirectoryNode" />
+              <item name="levels" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/pom.xml" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="Application.JustAnotherGameDesktop">
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <module />
+    </configuration>
+    <configuration name="JustAnotherGameDesktop" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="no.kash.gamedev.jag.java.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="MAIN_CLASS_NAME" value="no.kash.gamedev.jag.java.JustAnotherGameDesktop" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="jag-desktop" />
+      <envs />
+    </configuration>
+    <configuration default="true" type="Application" factoryName="Application">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="" />
+      <envs />
+    </configuration>
+    <configuration default="true" type="JUnit" factoryName="JUnit">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <module name="" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <envs />
+      <patterns />
+    </configuration>
+    <configuration name="Unnamed" type="MavenRunConfiguration" factoryName="Maven">
+      <MavenSettings>
+        <option name="myGeneralSettings" />
+        <option name="myRunnerSettings" />
+        <option name="myRunnerParameters">
+          <MavenRunnerParameters>
+            <option name="profiles">
+              <set />
+            </option>
+            <option name="goals">
+              <list />
+            </option>
+            <option name="profilesMap">
+              <map />
+            </option>
+            <option name="resolveToWorkspace" value="false" />
+            <option name="workingDirPath" value="" />
+          </MavenRunnerParameters>
+        </option>
+      </MavenSettings>
+    </configuration>
+    <configuration default="true" type="Remote" factoryName="Remote">
+      <option name="USE_SOCKET_TRANSPORT" value="true" />
+      <option name="SERVER_MODE" value="false" />
+      <option name="SHMEM_ADDRESS" value="javadebug" />
+      <option name="HOST" value="localhost" />
+      <option name="PORT" value="5005" />
+    </configuration>
+    <configuration default="true" type="TestNG" factoryName="TestNG">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <module name="" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="SUITE_NAME" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="GROUP_NAME" />
+      <option name="TEST_OBJECT" value="CLASS" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
+      <option name="OUTPUT_DIRECTORY" />
+      <option name="ANNOTATION_TYPE" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <option name="USE_DEFAULT_REPORTERS" value="false" />
+      <option name="PROPERTIES_FILE" />
+      <envs />
+      <properties />
+      <listeners />
+    </configuration>
+    <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" factoryName="Plugin">
+      <module name="" />
+      <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m -ea" />
+      <option name="PROGRAM_PARAMETERS" />
+      <predefined_log_file id="idea.log" enabled="true" />
+    </configuration>
+    <list size="2">
+      <item index="0" class="java.lang.String" itemvalue="Maven.Unnamed" />
+      <item index="1" class="java.lang.String" itemvalue="Application.JustAnotherGameDesktop" />
+    </list>
+    <recent_temporary>
+      <list size="1">
+        <item index="0" class="java.lang.String" itemvalue="Application.JustAnotherGameDesktop" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false">
+    <option name="remove_strategy" value="false" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="13f08d87-45f5-45a2-bb51-ef762b06c3ed" name="Default" comment="" />
+      <created>1526236984296</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1526236984296</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="1440" y="22" width="1920" height="982" extended-state="0" />
+    <editor active="true" />
+    <layout>
+      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3296146" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3296875" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.013186813" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Android Model" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
+      <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+    </layout>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/core/src/main/java/no/kash/gamedev/jag/game/levels/MapHandler.java</url>
+          <line>24</line>
+          <properties />
+        </line-breakpoint>
+      </breakpoints>
+      <option name="time" value="1" />
+    </breakpoint-manager>
+    <watches-manager />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/html/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-984">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/main/java/no/kash/gamedev/jag/controller/screens/ControllerScreen.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="11" column="32" lean-forward="false" selection-start-line="11" selection-start-column="32" selection-end-line="11" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1290">
+          <caret line="86" column="0" lean-forward="false" selection-start-line="86" selection-start-column="0" selection-end-line="86" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="438">
+          <caret line="42" column="36" lean-forward="false" selection-start-line="42" selection-start-column="36" selection-end-line="42" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/main/java/no/kash/gamedev/jag/game/gameobjects/GameObject.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="11" column="17" lean-forward="false" selection-start-line="11" selection-start-column="17" selection-end-line="11" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/main/java/no/kash/gamedev/jag/game/levels/WeaponSpawner.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="257">
+          <caret line="63" column="17" lean-forward="false" selection-start-line="63" selection-start-column="17" selection-end-line="63" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/android/jag-android (2).iml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/android/jag-android (1).iml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="20" column="42" lean-forward="false" selection-start-line="20" selection-start-column="42" selection-end-line="20" selection-end-column="42" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/assets/maps/sprites/spawner_epic.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/assets/maps/sumoarena2.tmx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/com/badlogicgames/gdx/gdx-backend-lwjgl/1.9.2/gdx-backend-lwjgl-1.9.2.jar!/com/badlogic/gdx/backends/lwjgl/LwjglApplication.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="434">
+          <caret line="128" column="30" lean-forward="false" selection-start-line="128" selection-start-column="30" selection-end-line="128" selection-end-column="30" />
+          <folding>
+            <marker date="1519815169339" expanded="false" signature="0:104" ph="/.../" />
+            <marker date="1519815169339" expanded="false" signature="155:937" ph="..." />
+            <marker date="1519815169339" expanded="true" signature="1727:1794" ph="{...}" />
+            <marker date="1519815169339" expanded="false" signature="1853:1864" ph=" { " />
+            <marker date="1519815169339" expanded="false" signature="1903:1909" ph=" }" />
+            <marker date="1519815169339" expanded="true" signature="2007:2073" ph="{...}" />
+            <marker date="1519815169339" expanded="true" signature="2148:2243" ph="{...}" />
+            <marker date="1519815169339" expanded="true" signature="2356:2430" ph="{...}" />
+            <marker date="1519815169339" expanded="true" signature="2552:3930" ph="{...}" />
+            <marker date="1519815169339" expanded="true" signature="4031:4273" ph="{...}" />
+            <marker date="1519815169339" expanded="true" signature="4305:5147" ph="{...}" />
+            <marker date="1519815169339" expanded="true" signature="4369:5103" ph="{...}" />
+            <marker date="1519815169339" expanded="true" signature="4401:5093" ph="{...}" />
+            <marker date="1519815169339" expanded="true" signature="5169:10858" ph="{...}" />
+            <marker date="1519815169339" expanded="true" signature="10898:11547" ph="{...}" />
+            <marker date="1519815169339" expanded="false" signature="11604:11615" ph=" { " />
+            <marker date="1519815169339" expanded="false" signature="11636:11642" ph=" }" />
+            <marker date="1519815169339" expanded="false" signature="11671:11682" ph=" { " />
+            <marker date="1519815169339" expanded="false" signature="11700:11706" ph=" }" />
+            <marker date="1519815169339" expanded="false" signature="11735:11746" ph=" { " />
+            <marker date="1519815169339" expanded="false" signature="11764:11770" ph=" }" />
+            <marker date="1519815169339" expanded="false" signature="11810:11821" ph=" { " />
+            <marker date="1519815169339" expanded="false" signature="11842:11848" ph=" }" />
+            <marker date="1519815169339" expanded="false" signature="11877:11888" ph=" { " />
+            <marker date="1519815169339" expanded="false" signature="11906:11912" ph=" }" />
+            <marker date="1519815169339" expanded="false" signature="11937:11948" ph=" { " />
+            <marker date="1519815169339" expanded="false" signature="11964:11970" ph=" }" />
+            <marker date="1519815169339" expanded="false" signature="12008:12019" ph=" { " />
+            <marker date="1519815169339" expanded="false" signature="12050:12056" ph=" }" />
+            <marker date="1519815169339" expanded="false" signature="12085:12096" ph=" { " />
+            <marker date="1519815169339" expanded="false" signature="12105:12111" ph=" }" />
+            <marker date="1519815169339" expanded="true" signature="12136:12288" ph="{...}" />
+            <marker date="1519815169339" expanded="false" signature="12319:12330" ph=" { " />
+            <marker date="1519815169339" expanded="false" signature="12408:12414" ph=" }" />
+            <marker date="1519815169339" expanded="false" signature="12447:12458" ph=" { " />
+            <marker date="1519815169339" expanded="false" signature="12484:12490" ph=" }" />
+            <marker date="1519815169339" expanded="true" signature="12543:12898" ph="{...}" />
+            <marker date="1519815169339" expanded="false" signature="12935:12946" ph=" { " />
+            <marker date="1519815169339" expanded="false" signature="12974:12980" ph=" }" />
+            <marker date="1519815169339" expanded="true" signature="13030:13210" ph="{...}" />
+            <marker date="1519815169339" expanded="true" signature="13262:13368" ph="{...}" />
+            <marker date="1519815169339" expanded="true" signature="13441:13598" ph="{...}" />
+            <marker date="1519815169339" expanded="true" signature="13648:13754" ph="{...}" />
+            <marker date="1519815169339" expanded="true" signature="13825:13982" ph="{...}" />
+            <marker date="1519815169339" expanded="true" signature="14034:14140" ph="{...}" />
+            <marker date="1519815169339" expanded="true" signature="14213:14370" ph="{...}" />
+            <marker date="1519815169339" expanded="false" signature="14413:14424" ph=" { " />
+            <marker date="1519815169339" expanded="false" signature="14449:14455" ph=" }" />
+            <marker date="1519815169339" expanded="false" signature="14485:14496" ph=" { " />
+            <marker date="1519815169339" expanded="false" signature="14517:14523" ph=" }" />
+            <marker date="1519815169339" expanded="true" signature="14548:14711" ph="{...}" />
+            <marker date="1519815169339" expanded="false" signature="14576:14641" ph="run() → { " />
+            <marker date="1519815169339" expanded="false" signature="14679:14703" ph=" }" />
+            <marker date="1519815169339" expanded="true" signature="14778:14948" ph="{...}" />
+            <marker date="1519815169339" expanded="true" signature="15018:15202" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/com/badlogicgames/gdx/gdx-backend-lwjgl/1.9.2/gdx-backend-lwjgl-1.9.2-sources.jar!/com/badlogic/gdx/backends/lwjgl/LwjglApplication.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-353">
+          <caret line="46" column="33" lean-forward="true" selection-start-line="46" selection-start-column="33" selection-end-line="46" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/com/badlogicgames/gdx/gdx/1.9.2/gdx-1.9.2-sources.jar!/com/badlogic/gdx/files/FileHandle.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="169">
+          <caret line="50" column="13" lean-forward="false" selection-start-line="50" selection-start-column="13" selection-end-line="50" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/main/java/no/kash/gamedev/jag/game/screens/MapSelectionScreen.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="174">
+          <caret line="168" column="0" lean-forward="false" selection-start-line="168" selection-start-column="0" selection-end-line="168" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/main/java/no/kash/gamedev/jag/game/levels/MapHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="31" column="5" lean-forward="true" selection-start-line="31" selection-start-column="5" selection-end-line="31" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/desktop/src/main/java/no/kash/gamedev/jag/java/JustAnotherGameDesktop.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="18" column="41" lean-forward="false" selection-start-line="18" selection-start-column="41" selection-end-line="18" selection-end-column="41" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/main/java/no/kash/gamedev/jag/game/JustAnotherGame.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="630">
+          <caret line="58" column="0" lean-forward="false" selection-start-line="58" selection-start-column="0" selection-end-line="59" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/main/java/no/kash/gamedev/jag/game/screens/PlayScreen.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="251">
+          <caret line="302" column="0" lean-forward="false" selection-start-line="302" selection-start-column="0" selection-end-line="302" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/main/java/no/kash/gamedev/jag/game/levels/ItemSpawner.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="239">
+          <caret line="64" column="53" lean-forward="false" selection-start-line="64" selection-start-column="53" selection-end-line="64" selection-end-column="53" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/main/java/no/kash/gamedev/jag/game/levels/pathfinding/ManhattanDistanceHeuristic.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="13" lean-forward="false" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/main/java/no/kash/gamedev/jag/game/levels/pathfinding/MapNode.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-60">
+          <caret line="9" column="13" lean-forward="false" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/main/java/no/kash/gamedev/jag/game/levels/pathfinding/LevelPathFinder.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-124">
+          <caret line="11" column="13" lean-forward="false" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/main/java/no/kash/gamedev/jag/game/levels/pathfinding/LevelGraph.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="13" lean-forward="false" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/main/java/no/kash/gamedev/jag/game/levels/MiniMap.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="50">
+          <caret line="20" column="13" lean-forward="false" selection-start-line="20" selection-start-column="13" selection-end-line="20" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/main/java/no/kash/gamedev/jag/game/gameobjects/players/ai/Behaviour.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="20" column="35" lean-forward="false" selection-start-line="20" selection-start-column="35" selection-end-line="20" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/main/java/no/kash/gamedev/jag/game/gameobjects/players/ai/PlayerAI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1140">
+          <caret line="104" column="47" lean-forward="true" selection-start-line="104" selection-start-column="47" selection-end-line="104" selection-end-column="47" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/main/java/no/kash/gamedev/jag/game/gameobjects/players/ai/Goal.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="390">
+          <caret line="28" column="0" lean-forward="true" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ProjectJDKs.UI">
+        <settings>
+          <last-edited>1.8</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
+  </component>
+</project>

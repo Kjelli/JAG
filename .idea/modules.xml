@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/jag.iml" filepath="$PROJECT_DIR$/jag.iml" />
+      <module fileurl="file://$PROJECT_DIR$/core/jag-core.iml" filepath="$PROJECT_DIR$/core/jag-core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/desktop/jag-desktop.iml" filepath="$PROJECT_DIR$/desktop/jag-desktop.iml" />
+    </modules>
+  </component>
+</project>

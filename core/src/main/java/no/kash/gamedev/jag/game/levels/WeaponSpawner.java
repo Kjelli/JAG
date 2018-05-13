@@ -72,8 +72,8 @@ public class WeaponSpawner {
 
 	public void stop() {
 		stopped = true;
-		for (GameObject o : gameContext.getByClass(new Class[] { Weapon.class })) {
-			o.destroy();
+		for (Object o : gameContext.getByClass(new Class[] { Weapon.class })) {
+			((GameObject)o).destroy();
 		}
 	}
 

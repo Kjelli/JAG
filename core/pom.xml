@@ -38,11 +38,12 @@
 		
 		<!-- Tween engine for tweening -->
 		<dependency>
-			<groupId>aurelionribon</groupId>
+			<groupId>org.mini2Dx</groupId>
 			<artifactId>universal-tween-engine</artifactId>
 			<version>6.3.3</version>
 		</dependency>
-		
+
+
 		<dependency>
 			<groupId>com.badlogicgames.gdx</groupId>
 			<artifactId>gdx-freetype</artifactId>
@@ -81,6 +82,14 @@
 					<descriptorRefs>
 						<descriptorRef>jar-with-dependencies</descriptorRef>
 					</descriptorRefs>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
 				</configuration>
 			</plugin>
 		</plugins>
